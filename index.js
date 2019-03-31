@@ -11,7 +11,7 @@ var date = new Date;
 
 BOT.login(TOKEN.token);
 
-let statuts = ['GitHub: https://is.gd/MazzGit', 'Creator: Mazz3015#6105', `with my users`, 'Hey it\'s me https://is.gd/InfoBotCode'];
+let statuts = ['GitHub: https://is.gd/MazzGit', 'Creator: Mazz3015#5853', `with my users`, 'Hey it\'s me https://is.gd/MazzBotCode'];
 
 BOT.on('ready', () => {
     console.log('Le bot est prêt ! ' + date.toLocaleTimeString());
@@ -19,7 +19,7 @@ BOT.on('ready', () => {
     setInterval(function () {
         let statut = statuts[Math.floor(Math.random() * statuts.length)];
         BOT.user.setPresence({ game: { name: statut }, status: 'online' });
-    }, 1500);
+    }, 3000);
 });
 
 BOT.on('guildCreate', guild => {
@@ -31,7 +31,7 @@ BOT.on('guildCreate', guild => {
         .setDescription(`Les commandes d'aide ont été envoyées à ${guild.owner.user}, mais elles sont également disponibles à l'aide de la commande *!infohelp*.`)
         .setThumbnail(guild.iconURL)
         .setTimestamp()
-        .setFooter(`${BOT.user.username} - Un bot multitâches crée par Mazz3015#6105`, BOT.user.avatarURL)
+        .setFooter(`${BOT.user.username} - Un bot multitâches crée par Mazz3015#5853`, BOT.user.avatarURL)
         .setColor(Math.floor(Math.random() * 16777214) + 1)
     channel.send(richEmbedGC);
 
@@ -40,9 +40,9 @@ BOT.on('guildCreate', guild => {
         .setTitle(`Merci de m'avoir rajouté sur le serveur ${guild.name} !`)
         .setThumbnail(guild.iconURL)
         .setColor('#4782F9')
-        .setDescription(`Retrouve les différentes commandes du bot crée par @Mazz3015#6105 avec *!infohelp* !`)
+        .setDescription(`Retrouve les différentes commandes du bot crée par @Mazz3015#5853 avec *!infohelp* !`)
         .setTimestamp()
-        .setFooter(`${BOT.user.username} - Un bot multitâches crée par Mazz3015#6105.`, BOT.user.avatarURL)
+        .setFooter(`${BOT.user.username} - Un bot multitâches crée par Mazz3015#5853.`, BOT.user.avatarURL)
     BOT.users.get(guild.owner.id).send(repoRICH);
 });
 
@@ -55,7 +55,7 @@ BOT.on('guildMemberAdd', member => {
         .setDescription(`Bienvenue, ${member} ! Nous te souhaitons une agréable expérience sur le serveur **${member.guild.name}**. Tu es le **${member.guild.memberCount}**e membre !`)
         .setTimestamp()
         .setColor('#83FF00')
-        .setFooter("Informations'Bot", BOT.user.avatarURL)
+        .setFooter(BOT.user.username, BOT.user.avatarURL)
 
     channel.send(reponse);
 
@@ -64,7 +64,7 @@ BOT.on('guildMemberAdd', member => {
         .setDescription(`Bienvenue, ${member} ! Nous te souhaitons une agréable expérience sur le serveur **${member.guild.name}**.`)
         .setTimestamp()
         .setColor('#83FF00')
-        .setFooter("Informations'Bot", BOT.user.avatarURL)
+        .setFooter(BOT.user.username, BOT.user.avatarURL)
     BOT.users.get(member.id).send(reponse2);
 });
 
@@ -77,7 +77,7 @@ BOT.on('guildMemberRemove', member => {
         .setDescription(`Au revoir, ${member.user.username}. Si quelqu'un sait pourquoi cette personne a quitté le serveur, merci de le dire à ${member.guild.owner} pour rendre le serveur meilleur.`)
         .setTimestamp()
         .setColor('#FF0000')
-        .setFooter("Informations'Bot", BOT.user.avatarURL)
+        .setFooter(BOT.user.username, BOT.user.avatarURL)
 
     channel.send(reponse);
 });
