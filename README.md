@@ -1,2 +1,2 @@
 # Mazz'Bot
-A non-finished moderation bot.
+A useful Discord bot, written with Discord.js
