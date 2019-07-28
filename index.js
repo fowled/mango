@@ -10,7 +10,7 @@ var date = new Date;
 BOT.login(TOKEN.token);
 
 BOT.on('ready', () => {
-    console.log('Le bot est prêt ! ' + date.toLocaleTimeString());
+    console.log('Bot is ready ' + date.toLocaleTimeString());
     BOT.user.setPresence({
         game: {
             name: '!infohelp for commands',
@@ -21,63 +21,63 @@ BOT.on('ready', () => {
 });
 
 BOT.on('guildCreate', guild => {
-    const channel = guild.channels.find(ch => ch.name === 'bienvenue');
+    const channel = guild.channels.find(ch => ch.name === 'welcome');
     if (!channel) return;
-    richEmbedGC = new DISCORD.RichEmbed()
+    richEmbedServer = new DISCORD.RichEmbed()
         .setAuthor(BOT.user.username, BOT.user.avatarURL)
-        .setTitle(`Bonjour, je suis ${BOT.user.username}, et je suis nouveau dans ${guild.name} !`)
-        .setDescription(`Les commandes d'aide ont été envoyées à ${guild.owner.user}, mais elles sont également disponibles à l'aide de la commande *!infohelp*.`)
+        .setTitle(`Hi, I'm ${BOT.user.username} and I'm pretty new in ${guild.name}!`)
+        .setDescription(`Help message has been sent to ${guild.owner.user}, but they are also available typing *!infohelp*.`)
         .setThumbnail(guild.iconURL)
         .setTimestamp()
-        .setFooter(`${BOT.user.username} - Un bot multitâches crée par Mazz3015`, BOT.user.avatarURL)
+        .setFooter(`${BOT.user.username} - A multitask and multilingual bot`, BOT.user.avatarURL)
         .setColor(Math.floor(Math.random() * 16777214) + 1)
-    channel.send(richEmbedGC);
+    channel.send(richEmbedServer);
 
-    repoRICH = new DISCORD.RichEmbed()
+    richEmbedOwner = new DISCORD.RichEmbed()
         .setAuthor(BOT.user.username, BOT.user.avatarURL)
-        .setTitle(`Merci de m'avoir rajouté sur le serveur ${guild.name} !`)
+        .setTitle(`Thank you for adding me in ${guild.name}!`)
         .setThumbnail(guild.iconURL)
         .setColor('#4782F9')
-        .setDescription(`Retrouve les différentes commandes du bot crée par @Mazz3015#5853 avec *!infohelp* !`)
+        .setDescription(`Help message: *!infohelp*.`)
         .setTimestamp()
-        .setFooter(`${BOT.user.username} - Un bot multitâches crée par Mazz3015.`, BOT.user.avatarURL)
-    BOT.users.get(guild.owner.id).send(repoRICH);
+        .setFooter(`${BOT.user.username} - A multitask and multilingual bot`, BOT.user.avatarURL)
+    BOT.users.get(guild.owner.id).send(richEmbedServer);
 });
 
 BOT.on('guildMemberAdd', member => {
-    const channel = member.guild.channels.find(ch => ch.name === 'bienvenue');
+    const channel = member.guild.channels.find(ch => ch.name === 'welcome');
     if (!channel) return;
 
-    reponse = new DISCORD.RichEmbed()
-        .setTitle("Arrivée d'un membre sur le serveur :inbox_tray:")
-        .setDescription(`Bienvenue, ${member} ! Nous te souhaitons une agréable expérience sur le serveur **${member.guild.name}**. Tu es le **${member.guild.memberCount}**e membre !`)
+    richEmbedWelcomeServer = new DISCORD.RichEmbed()
+        .setTitle("A member just arrived :inbox_tray:")
+        .setDescription(`Welcome ${member}! We wish you to have fun in **${member.guild.name}**. Guild has now **${member.guild.memberCount}** members!`)
         .setTimestamp()
         .setColor('#83FF00')
         .setFooter(BOT.user.username, BOT.user.avatarURL)
 
-    channel.send(reponse);
+    channel.send(richEmbedWelcomeServer);
 
-    reponse2 = new DISCORD.RichEmbed()
-        .setTitle(`Bienvenue !`)
-        .setDescription(`Bienvenue, ${member} ! Nous te souhaitons une agréable expérience sur le serveur **${member.guild.name}**.`)
+    richEmbedWelcomeMember = new DISCORD.RichEmbed()
+        .setTitle(`Welcome!`)
+        .setDescription(`Welcome ${member}! We wish you to have fun in **${member.guild.name}**. Help message: type *!infohelp* in server!`)
         .setTimestamp()
         .setColor('#83FF00')
         .setFooter(BOT.user.username, BOT.user.avatarURL)
-    BOT.users.get(member.id).send(reponse2);
+    BOT.users.get(member.id).send(richEmbedWelcomeMember);
 });
 
 BOT.on('guildMemberRemove', member => {
-    const channel = member.guild.channels.find(ch => ch.name === 'bienvenue');
+    const channel = member.guild.channels.find(ch => ch.name === 'welcome');
     if (!channel) return;
 
-    reponse = new DISCORD.RichEmbed()
-        .setTitle("Départ d'un membre du serveur :outbox_tray:")
-        .setDescription(`Au revoir, ${member.user.username}. Si quelqu'un sait pourquoi cette personne a quitté le serveur, merci de le dire à ${member.guild.owner} pour rendre le serveur meilleur.`)
+    richEmbedGoodbye = new DISCORD.RichEmbed()
+        .setTitle("A member just left :outbox_tray:")
+        .setDescription(`Goodbye ${member.user.username}. We hope you'll come back :confused:`)
         .setTimestamp()
         .setColor('#FF0000')
         .setFooter(BOT.user.username, BOT.user.avatarURL)
 
-    channel.send(reponse);
+    channel.send(richEmbedGoodbye);
 });
 
 BOT.on("error", error => {
@@ -93,8 +93,6 @@ BOT.on('message', message => {
         if (err) {
             prefix = '!';
         }
-
-
 
         let msg = message.content.toUpperCase();
         let sender = message.author;
@@ -125,7 +123,7 @@ BOT.on('message', message => {
         } catch (e) {
             console.log(e.message);
         } finally {
-            console.log(`${message.author.tag} vient de faire marcher la commande ${cmd}.`);
+            console.log(`${message.author.tag} just used ${cmd}.`);
         }
 
     });
@@ -143,7 +141,7 @@ BOT.on('message', message => {
                     let dataParsed = parseInt(data);
                     let level = dataParsed / 50;
                     level = level.toFixed();
-                    return message.reply("Rank up! Vous êtes maintenant au level **" + level + "**.");
+                    return message.reply("Rank up! You are now level **" + level + "**.");
 
                 }
             }
