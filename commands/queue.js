@@ -17,12 +17,20 @@ exports.run = async (client, message, args, ops) => {
         let reponse = new DISCORD.RichEmbed()
             .setTitle(`Commande queue pour ${message.author.tag}`)
             .addField(`En train de jouer`, `*${nowPlaying.songTitle}* - Demandé par **${nowPlaying.requester}**`)
+            .setColor("#f98257")
+            .setTimestamp()
+            .setAuthor(message.author.username, message.author.avatarURL)
+            .setFooter(client.user.username, client.user.avatarURL)
         message.channel.send(reponse);
     } else {
         let reponse = new DISCORD.RichEmbed()
             .setTitle(`Commande queue pour ${message.author.tag}`)
             .addField(`En train de jouer`, `*${nowPlaying.songTitle}* - Demandé par **${nowPlaying.requester}**`)
             .addField('Queue', resp)
+            .setColor("#f98257")
+            .setTimestamp()
+            .setAuthor(message.author.username, message.author.avatarURL)
+            .setFooter(client.user.username, client.user.avatarURL)
         message.channel.send(reponse);
     }
 

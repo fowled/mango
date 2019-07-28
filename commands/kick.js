@@ -1,5 +1,4 @@
 const DISCORD = require("discord.js");
-const BOT = new DISCORD.Client();
 
 // Commande de modération
 

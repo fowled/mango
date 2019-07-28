@@ -21,6 +21,6 @@ exports.run = async (client, message, args, ops) => {
 
         });
     } else {
-        message.reply("Je n'ai pas compris...");
+        message.reply("Je n'ai pas compris... Veuillez retaper la commande.");
     }
 }

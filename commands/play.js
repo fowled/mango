@@ -1,7 +1,5 @@
 const ytdl = require('ytdl-core');
-const DISCORD = require("discord.js");
-const BOT = new DISCORD.Client();
-//const ffmpeg = require('FFMPEG');
+var module = require("./leave.js");
 
 exports.run = async (client, message, args, ops) => {
     if (!message.member.voiceChannel) return message.channel.send("Connecte-toi à un channel vocal et réessaye la commande");
@@ -10,7 +8,11 @@ exports.run = async (client, message, args, ops) => {
 
     let validate = await ytdl.validateURL(args[0]);
 
-    if (!validate) return message.channel.send("Merci d'indiquer un url valide.");
+    if (!validate) {
+        let commandFile = require("./search.js");
+
+        return commandFile.run(client, message, args, ops);
+    }
 
     message.channel.send("En train de chercher la musique...");
 
@@ -39,28 +41,30 @@ exports.run = async (client, message, args, ops) => {
 }
 
 async function play(client, ops, data) {
-    client.channels.get(data.queue[0].announceChannel).send(`En train de jouer : **${data.queue[0].songTitle}** - Demandé par **${data.queue[0].requester}**`);
-
     data.dispatcher = await data.connection.playStream(ytdl(data.queue[0].url, { filter: 'audioonly' }));
     data.dispatcher.guildID = data.guildID;
 
     data.dispatcher.once('end', function () {
         finish(client, ops, this);
     });
+    
+    if (module.titleNotShown != true) {
+        module.titleNotShown == false;
+        client.channels.get(data.queue[0].announceChannel).send(`En train de jouer : **${data.queue[0].songTitle}** - Demandé par **${data.queue[0].requester}**`);
+    }
 }
 
 function finish(client, ops, dispatcher) {
     let fetched = ops.active.get(dispatcher.guildID);
-
     fetched.queue.shift();
 
     if (fetched.queue.length > 0) {
         ops.active.set(dispatcher.guildID, fetched);
-        play(client, ops, fetched);
+        return play(client, ops, fetched);
     } else {
         ops.active.delete(dispatcher.guildID);
         let vc = client.guilds.get(dispatcher.guildID).me.voiceChannel;
-
         if (vc) vc.leave();
     }
+
 }

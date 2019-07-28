@@ -3,7 +3,7 @@ const DISCORD = require("discord.js");
 exports.run = async (client, message, args, ops) => {
     let fetched = ops.active.get(message.guild.id);
 
-    let parseURL = fetched.queue[0].url.split('https://www.youtube.com/watch?v=')[1];
+    let parseURL = fetched.queue[0].url.split('watch?v=')[1];
 
     var time = fetched.queue[0].songLength;
     var minutes = Math.floor(time / 60);
@@ -18,7 +18,7 @@ exports.run = async (client, message, args, ops) => {
         .addField('Auteur de la musique', fetched.queue[0].songAuthor)
         .addField('Durée de la musique', `${minutes} minute(s) et ${seconds} secondes.`)
         .addField("Channel d'annonces", `Le channel <#${fetched.queue[0].announceChannel}>`)
-        .setURL(fetched.queue[0].url)
+        .setURL(`https://youtube.com/${fetched.queue[0].url}`)
         .setThumbnail(`https://img.youtube.com/vi/${parseURL}/0.jpg`)
         .setFooter(client.user.username, client.user.avatarURL)
         .setTimestamp()

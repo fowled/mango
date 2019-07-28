@@ -11,15 +11,15 @@ var date = new Date;
 
 BOT.login(TOKEN.token);
 
-let statuts = ['GitHub: https://is.gd/MazzGit', 'Creator: Mazz3015#5853', `with my users`, 'Hey it\'s me https://is.gd/MazzBotCode'];
-
 BOT.on('ready', () => {
     console.log('Le bot est prêt ! ' + date.toLocaleTimeString());
-
-    setInterval(function () {
-        let statut = statuts[Math.floor(Math.random() * statuts.length)];
-        BOT.user.setPresence({ game: { name: statut }, status: 'online' });
-    }, 3000);
+    BOT.user.setPresence({
+        game: {
+            name: '!infohelp for commands',
+            type: "WATCHING",
+        },
+        status: 'online'
+    });
 });
 
 BOT.on('guildCreate', guild => {
@@ -31,7 +31,7 @@ BOT.on('guildCreate', guild => {
         .setDescription(`Les commandes d'aide ont été envoyées à ${guild.owner.user}, mais elles sont également disponibles à l'aide de la commande *!infohelp*.`)
         .setThumbnail(guild.iconURL)
         .setTimestamp()
-        .setFooter(`${BOT.user.username} - Un bot multitâches crée par Mazz3015#5853`, BOT.user.avatarURL)
+        .setFooter(`${BOT.user.username} - Un bot multitâches crée par Mazz3015`, BOT.user.avatarURL)
         .setColor(Math.floor(Math.random() * 16777214) + 1)
     channel.send(richEmbedGC);
 
@@ -42,7 +42,7 @@ BOT.on('guildCreate', guild => {
         .setColor('#4782F9')
         .setDescription(`Retrouve les différentes commandes du bot crée par @Mazz3015#5853 avec *!infohelp* !`)
         .setTimestamp()
-        .setFooter(`${BOT.user.username} - Un bot multitâches crée par Mazz3015#5853.`, BOT.user.avatarURL)
+        .setFooter(`${BOT.user.username} - Un bot multitâches crée par Mazz3015.`, BOT.user.avatarURL)
     BOT.users.get(guild.owner.id).send(repoRICH);
 });
 
