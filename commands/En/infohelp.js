@@ -1,5 +1,7 @@
 const DISCORD = require("discord.js");
 
+// Help command
+
 exports.run = async (client, message, args, ops) => {
     helpMessage = new DISCORD.RichEmbed()
         .setTitle(`Help!`)
