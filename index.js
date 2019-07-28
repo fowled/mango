@@ -10,7 +10,7 @@ var date = new Date;
 BOT.login(TOKEN.token);
 
 BOT.on('ready', () => {
-    console.log('Bot is ready ' + date.toLocaleTimeString());
+    console.log('Bot is ready - ' + date.toLocaleTimeString());
     BOT.user.setPresence({
         game: {
             name: '!infohelp for commands',
