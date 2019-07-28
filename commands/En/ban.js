@@ -4,8 +4,9 @@ const DISCORD = require("discord.js");
 
 exports.run = (client, message, args, tools) => {
 
-    var reason = args[2].join(" ");
-
+    var reason = message.content.split(" ").slice(2).join(" ");
+    //reason = reason.join(" ");
+    
     if (reason == "") {
         reason = "No reason provided";
     }
@@ -17,18 +18,18 @@ exports.run = (client, message, args, tools) => {
         var banMessageAuthor = message.author.tag;
         var banGuildName = message.member.guild.name;
         var guildIcon = message.member.guild.iconURL;
-        var bannedUserId = user.id;
+        var bannedUserId = userBan.id;
         var date = new Date;
 
         if (memberBan.bannable && memberBan.id != "352158391038377984") {
-            reponse = new DISCORD.RichEmbed()
-                .setTitle(`Ban from the server **${banGuildName}**, on the date __${date.toLocaleTimeString()}__`)
-                .setDescription(`You have been banned from the server **${banGuildName}** by **${banMessageAuthor}** on the date __${date}__! Reason: *"${reason}"*`)
+            banMessageUser = new DISCORD.RichEmbed()
+                .setTitle(`Banned!`)
+                .setDescription(`You have been banned from the server **${banGuildName}** by *${banMessageAuthor}* on the date __${date.toLocaleTimeString()}__! Reason: *"${reason}"*`)
                 .setTimestamp()
                 .setThumbnail(guildIcon)
                 .setColor("#4292f4")
-                .setFooter(BOT.user.username, BOT.user.avatarURL)
-            BOT.users.get(bannedUserId).send(reponse);
+                .setFooter(client.user.username, client.user.avatarURL)
+            client.users.get(bannedUserId).send(banMessageUser);
         }
 
         setTimeout(function () {
@@ -42,30 +43,30 @@ exports.run = (client, message, args, tools) => {
                         .setDescription(`:white_check_mark: **${memberBan.user.tag}** is now banned (*${reason}*)!`)
                         .setTimestamp()
                         .setColor("#4292f4")
-                        .setFooter(BOT.user.username, BOT.user.avatarURL)
-                    message.channel.send(reponse2);
+                        .setFooter(client.user.username, client.user.avatarURL)
+                    message.channel.send(banMessageGuild);
 
                 }).catch(err => {
-                    reponse = new DISCORD.RichEmbed()
+                    banMessageError = new DISCORD.RichEmbed()
                         .setTitle(`Error`)
                         .setAuthor(message.author.username, message.author.avatarURL)
                         .setDescription(`An error has occured while banning **${memberBan.user.tag}**; missing permissions. Please, I am a serious bot, I can have admin rank!`)
                         .setTimestamp()
                         .setColor("#FF0000")
-                        .setFooter(BOT.user.username, BOT.user.avatarURL)
-                    message.channel.send(reponse);
+                        .setFooter(client.user.username, client.user.avatarURL)
+                    message.channel.send(banMessageError);
                     console.log(err);
                 });
             } else {
-                reponse = new DISCORD.RichEmbed()
+                banMessageCreator = new DISCORD.RichEmbed()
                     .setTitle(`Herm...`)
                     .setAuthor(message.author.username, message.author.avatarURL)
                     .setDescription(`You can't ban me, I'm the bot developer!`)
                     .setTimestamp()
                     .setThumbnail("")
                     .setColor("#FF0000")
-                    .setFooter(BOT.user.username, BOT.user.avatarURL)
-                message.channel.send(reponse);
+                    .setFooter(client.user.username, client.user.avatarURL)
+                message.channel.send(banMessageCreator);
             }
         }, 500);
     } else {
