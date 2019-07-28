@@ -4,8 +4,6 @@ const BOT = new DISCORD.Client();
 const TOKEN = require('./token.js');
 const active = new Map();
 const ownerID = '352158391038377984';
-const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-const { post } = require("request");
 
 var date = new Date;
 
