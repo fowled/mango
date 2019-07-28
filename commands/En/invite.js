@@ -1,9 +1,9 @@
-// Commande liée au serveur
+// Guild command
 
 exports.run = async (client, message, args, tools) => {
     message.guild.channels.get(message.channel.id).createInvite().then(invite =>
         message.channel.send(invite.url)
     ).catch(err => {
-        message.reply("Une erreur s'est produite, il se peut que je n'ai pas les permissions nécessaires pour créer l'invitation.");
+        message.reply("I don't have the right perms ;( Make sure I have admin rank :wink:");
     });
 }
