@@ -1,2 +1,2 @@
 # Mazz'Bot
-A useful Discord bot, written with Discord.js
+A useful Discord bot, written in Javascript with Discord.js
