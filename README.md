@@ -1,2 +1,2 @@
-# Mazz'Bot
-A useful Discord bot, written in Javascript with Discord.js
+# Mango
+A useful multilingual Discord bot, written in Javascript with Discord.js
