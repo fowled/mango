@@ -114,8 +114,11 @@ BOT.on('message', message => {
                 active: active
             }
 
-            let commandFile = require(`./commands/${cmd}.js`);
-            commandFile.run(BOT, message, args, ops);
+            FS.readFile(`languages/${message.author.id}.txt`, (err, data) => {
+                let commandFile = require(`./commands/${data}/${cmd}.js`);
+                commandFile.run(BOT, message, args, ops);
+            });
+
         } catch (e) {
             console.log(e.message);
         } finally {
