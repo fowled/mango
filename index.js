@@ -113,6 +113,8 @@ BOT.on('message', message => {
             FS.readFile(`languages/${message.author.id}`, (err, data) => {
                 if (err) {
                     FS.writeFile(`languages/${message.author.id}`, "En");
+                    let commandFile = require(`./commands/${data}/${cmd}.js`);
+                    commandFile.run(BOT, message, args, ops);
                 } else {
                     let commandFile = require(`./commands/${data}/${cmd}.js`);
                     commandFile.run(BOT, message, args, ops);
