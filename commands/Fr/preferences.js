@@ -20,7 +20,16 @@ exports.run = async (client, message, args, ops) => {
             }
 
         });
+
+    } else if (args[0] == "language" && args[1] == "set") {
+        if (args[2] != "En" && args[2] != "Fr") {
+            message.reply("Je suis désolé, mais ce langage n'est pas encore disponible - langues disponibles : `En`, `Fr`");
+        } else {
+            FS.writeFile(`languages/${message.author.id}`, args[2]);
+            message.reply(`La langue a été changée! \`${args[2]}\``);
+        }
     } else {
-        message.reply("Je n'ai pas compris... Veuillez retaper la commande.");
+        message.reply("Eh, je n'ai pas compris quel paramètre changer. Réessaye! `!preferences prefix see`, `!preferences prefix set [préfixe]`, `!preferences language set [En, Fr]`");
     }
+    
 }
