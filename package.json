@@ -21,7 +21,7 @@
         "utf8": "^3.0.0",
         "xmlhttprequest": "^1.8.0",
         "yt-search": "^0.4.1",
-        "ytdl-core": "^0.29.3"
+        "ytdl-core": "^0.29.4"
     },
     "devDependencies": {},
     "description": "A Discord bot, who talks in a lot of a languages, and has a lot of commands available.",
