@@ -24,7 +24,7 @@ exports.run = (client, message, args, tools) => {
         if (memberBan.bannable && memberBan.id != "352158391038377984") {
             banMessageUser = new DISCORD.RichEmbed()
                 .setTitle(`Banned!`)
-                .setDescription(`You have been banned from the server **${banGuildName}** by *${banMessageAuthor}* on the date __${date.toLocaleTimeString()}__! Reason: *"${reason}"*`)
+                .setDescription(`You have been banned from the server **${banGuildName}** by *${banMessageAuthor}* on date __${date.toLocaleTimeString()}__! Reason: *"${reason}"*`)
                 .setTimestamp()
                 .setThumbnail(guildIcon)
                 .setColor("#4292f4")
@@ -48,7 +48,7 @@ exports.run = (client, message, args, tools) => {
 
                 }).catch(err => {
                     banMessageError = new DISCORD.RichEmbed()
-                        .setTitle(`Error`)
+                        .setTitle('Error')
                         .setAuthor(message.author.username, message.author.avatarURL)
                         .setDescription(`An error has occured while banning **${memberBan.user.tag}**; missing permissions. Please, I am a serious bot, I can have admin rank!`)
                         .setTimestamp()
