@@ -125,7 +125,7 @@ BOT.on('message', message => {
         } catch (e) {
             console.log(e.message);
         } finally {
-            console.log(`${message.author.tag} just used ${cmd}.`);
+            console.log(`${message.author.tag} just used the ${cmd} power.`);
         }
 
     });
