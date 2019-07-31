@@ -19,7 +19,7 @@ exports.run = async (client, message, args, ops) => {
         .addField('Music asked by?', `*${fetched.queue[0].requester}*`)
         .addField('Music creator', fetched.queue[0].songAuthor)
         .addField('Music length', `${minutes} minute(s) et ${seconds} secondes.`)
-        .addField("Announcement channel", `Le channel <#${fetched.queue[0].announceChannel}>`)
+        .addField("Announcement channel", `Channel <#${fetched.queue[0].announceChannel}>`)
         .setURL(`https://youtube.com/${fetched.queue[0].url}`)
         .setThumbnail(`https://img.youtube.com/vi/${parseURL}/0.jpg`)
         .setFooter(client.user.username, client.user.avatarURL)
