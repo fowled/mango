@@ -1,70 +1,60 @@
 const DISCORD = require("discord.js");
 
-// Commande de modération
+// Moderation command
 
 exports.run = (BOT, message, args, tools) => {
     const user = message.mentions.users.first();
     if (user) {
         const member = message.guild.member(user);
-        var raison = message.content.split(" ");
-        raison = raison.slice(2);
-        raison = raison.join(" ");
-        if (raison == "") {
-            raison = "Pas de raison spécifiée";
+        var reason = message.content.split(" ");
+        reason = reason.slice(2);
+        reason = reason.join(" ");
+        if (reason == "") {
+            raison = "No reason provided";
         }
         if (member) {
-            var authorMesskick = message.author.username;
-            var serveurKick = message.member.guild.name;
-            var serverIcon = message.member.guild.iconURL;
-            var userBanID = user.id;
+            var kickMessageAuthor = message.author.username;
+            var kickGuildName = message.member.guild.name;
+            var guildIcon = message.member.guild.iconURL;
+            var kickedUserId = user.id;
             var date = new Date;
             if (member.kickable && member.id != "352158391038377984") {
-                reponse = new DISCORD.RichEmbed()
-                    .setTitle(`Expulsion du serveur **${serveurKick}**, à la date __${date}__`)
-                    .setDescription(`Vous avez été kick du serveur **${serveurKick}** par **${authorMesskick}** à la date __${date}__ ! Raison : *"${raison}"*`)
+                kickMessageUser = new DISCORD.RichEmbed()
+                    .setTitle(`Kicked!`)
+                    .setDescription(`You have been kicked from the server **${kickGuildName}** by *${kickMessageAuthor}* on date __${date.toLocaleDateString()}__ ! Reason: *"${reason}"*`)
                     .setTimestamp()
-                    .setThumbnail(serverIcon)
+                    .setThumbnail(guildIcon)
                     .setColor("#4292f4")
                     .setFooter(BOT.user.username, BOT.user.avatarURL)
-                BOT.users.get(userBanID).send(reponse);
+                BOT.users.get(kickedUserId).send(kickMessageUser);
             }
 
             setTimeout(function () {
                 member.kick(raison).then(() => {
-                    reponse2 = new DISCORD.RichEmbed()
-                        .setTitle(`Expulsion de l'utilisateur **${user.username}**`)
+                    kickMessageGuild = new DISCORD.RichEmbed()
+                        .setTitle(`User ${user.username} has been kicked from the guild!`)
                         .setAuthor(message.author.username, message.author.avatarURL)
-                        .setDescription(`L'expulsion de l'utilisateur **${member.user.tag}** avec la raison *"${raison}"* a bien été effectué à : __${date}__ !`)
+                        .setDescription(`:white_check_mark: **${user.tag}** is now kicked (*${reason}*)!`)
                         .setTimestamp()
-                        .setThumbnail("https://vignette.wikia.nocookie.net/mysingingmonsters/images/6/6d/Ban-hammer-newB.jpg/revision/latest?cb=20170520125046")
                         .setColor("#4292f4")
                         .setFooter(BOT.user.username, BOT.user.avatarURL)
-                    message.channel.send(reponse2);
+                    message.channel.send(kickMessageGuild);
                 }).catch(err => {
-                    reponse = new DISCORD.RichEmbed()
-                        .setTitle(`:octagonal_sign: Erreur : expulsion de l'utilisateur **${member.user.username}**`)
+                    kickMessageError = new DISCORD.RichEmbed()
+                        .setTitle('Error')
                         .setAuthor(message.author.username, message.author.avatarURL)
-                        .setDescription(`Une erreur de permissions a eu lieu en expulsant l'utilisateur **${member.user.tag}** avec la raison *"${raison}"* : err_missing_permissions:couldn't_kick_user.`)
+                        .setDescription(`An error has occured while kicking **${user.tag}**; missing permissions. Make sure I have admin perms, then I promise I'll take the hammer!`)
                         .setTimestamp()
-                        .setThumbnail("")
                         .setColor("#FF0000")
                         .setFooter(BOT.user.username, BOT.user.avatarURL)
-                    message.channel.send(reponse);
+                    message.channel.send(kickMessageError);
                     console.log(err);
                 });
             }, 750);
         } else {
-            message.reply("L'utilisateur mentionné n'est pas dans ce serveur ! Si vous recontrez cette erreur, merci d'en informer @Mazz3015#3015, avec le code 0x01.");
+            message.reply("Boop! A super rare unknown error has occured. Maybe the user you tried to kick isn't in the server...?");
         }
     } else {
-        reponse = new DISCORD.RichEmbed()
-            .setTitle(`:octagonal_sign: Erreur !`)
-            .setAuthor(message.author.username, message.author.avatarURL)
-            .setDescription(`Vous n'avez pas mentionné de membre à expulser !`)
-            .setTimestamp()
-            .setThumbnail("")
-            .setColor("#FF0000")
-            .setFooter(BOT.user.username, BOT.user.avatarURL)
-        message.channel.send(reponse);
+        message.reply("Please select a member :wink:");
     }
 }
