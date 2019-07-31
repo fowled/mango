@@ -1,7 +1,7 @@
-// Commande liée à Scratch
-
 const DISCORD = require("discord.js");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
+// Scratch command
 
 exports.run = async (client, message, args, ops) => {
     let user = args[0];
@@ -9,48 +9,48 @@ exports.run = async (client, message, args, ops) => {
     xhttp.onreadystatechange = function () {
 
         if (this.readyState == 4 && this.status == 200) {
-            obj = JSON.parse(xhttp.responseText);
+            let requestedUser = JSON.parse(xhttp.responseText);
             let scratchTeam;
-            let status = obj.profile.status;
-            let bio = obj.profile.bio;
-            let dateMois = obj.history.joined.split("T")[0];
-            let dateHeure = obj.history.joined.split("T")[1].split('.000')[0];
+            let status = requestedUser.profile.status;
+            let bio = requestedUser.profile.bio;
+            let monthDate = requestedUser.history.joined.split("T")[0];
+            let hourDate = requestedUser.history.joined.split("T")[1].split('.000')[0];
 
-            if (obj.scratchteam == false) {
-                scratchTeam = "Non.";
-            } else if (obj.scratchteam == true) {
-                scratchTeam = "Oui.";
+            if (requestedUser.scratchteam == false) {
+                scratchTeam = "No.";
+            } else if (requestedUser.scratchteam == true) {
+                scratchTeam = "Yep.";
             }
 
             if (obj.profile.status == "") {
-                status = "Aucun statut indiqué.";
+                status = "No status provided...";
             }
 
             if (obj.profile.bio == "") {
-                bio = "Aucune biographie indiquée.";
+                bio = "No bio provided...";
             }
 
             reponse = new DISCORD.RichEmbed()
                 .setAuthor(message.author.username, message.author.avatarURL)
                 .setColor("#FF8000")
-                .setTitle(`Informations à propos de l'utilisateur **${obj.username}**`)
+                .setTitle(`User information - **${requestedUser.username}**`)
                 .setURL(`https://scratch.mit.edu/users/${user}`)
                 .setThumbnail(`https://cdn2.scratch.mit.edu/get_image/user/${obj.id}_90x90.png?v=`)
-                .setDescription(`Retrouvez des informations sur l'utilisateur Scratch **${user}**.`)
-                .addField("Nom d'utilisateur", obj.username)
-                .addField("ID", obj.id)
-                .addField("Est-ce un membre de l'Equipe Scratch ?", scratchTeam)
-                .addField("Date d'arrivée sur Scratch", `A rejoint le ${dateMois} à ${dateHeure}.`)
-                .addField("Statut", status)
-                .addField("Biographie", bio)
-                .addField("Pays", obj.profile.country)
+                .setDescription(`Find things about **${user}** on Scratch in this message.`)
+                .addField("Username", requestedUser.username)
+                .addField("ID", requestedUser.id)
+                .addField("Scratch Team member?", scratchTeam)
+                .addField("Joined on?", `A rejoint le ${dateMois} à ${dateHeure}.`)
+                .addField("Status", status)
+                .addField("Bio", bio)
+                .addField("Country", requestedUser.profile.country)
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL)
             message.channel.send(reponse);
 
             //message.reply(`Username : **${username}** ; ID : **${idUser}** ; Membre de la ST : **${scratchTeam}** ; A rejoint le **${joinedDate}** à **${joinedHour}**`);
         } else if (this.readyState == 4 && this.responseText == "{\"code\":\"NotFound\",\"message\":\"\"}") {
-            message.reply("Utilisateur non trouvé.");
+            message.reply("I did not find the user you requested.");
         }
     };
     xhttp.open("GET", `https://api.scratch.mit.edu/users/${user}`, true);
