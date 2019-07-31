@@ -12,6 +12,6 @@ exports.run = async (client, message, args, tools) => {
                 message.channel.send("User is blocking DMs :frowning:");
             });
     } else {
-        message.reply("I don't know who to send this, select a user please!");
+        message.reply("I don't know who to send this, please select a user!");
     }
 }
