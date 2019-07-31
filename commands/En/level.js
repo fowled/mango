@@ -1,4 +1,7 @@
+const DISCORD = require("discord.js");
 const FS = require("file-system");
+
+// Fun command
 
 exports.run = async (client, message, args, ops) => {
 
@@ -15,10 +18,16 @@ exports.run = async (client, message, args, ops) => {
             function getExactLvl(lvl) {
                 let finalLvl = lvl.split(".")[0];
 
-                message.reply(`Votre niveau... XP: **${data}** Level: **${finalLvl}**.`);
+                levelEmbedMessage = new DISCORD.RichEmbed()
+                    .setTitle(`${message.author.tag} level`)
+                    .setAuthor(message.author.username, message.author.avatarURL)
+                    .setDescription(`Your level - :gem: XP: **${data}** | :large_orange_diamond: Level: **${finalLvl}** `)
+                    .setColor('#019FE9')
+                    .setFooter(client.user.username, client.user.avatarURL)
+                    .setTimestamp()
+                message.channel.send(levelEmbedMessage);
+
             }
-
-
 
         });
     }, 2000)
