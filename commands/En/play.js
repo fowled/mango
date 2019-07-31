@@ -1,10 +1,12 @@
 const ytdl = require('ytdl-core');
 var module = require("./leave.js");
 
-exports.run = async (client, message, args, ops) => {
-    if (!message.member.voiceChannel) return message.channel.send("Connecte-toi à un channel vocal et réessaye la commande");
+// Music command
 
-    if (!args[0]) return message.channel.send("Merci d'ajouter une url après la commande, pour savoir quelle musique je dois jouer.");
+exports.run = async (client, message, args, ops) => {
+    if (!message.member.voiceChannel) return message.channel.send("Please connect to a vocal channel and retry.");
+
+    if (!args[0]) return message.channel.send("Retry the command with a URL (YouTube, Soundcloud...)");
 
     let validate = await ytdl.validateURL(args[0]);
 
@@ -14,7 +16,7 @@ exports.run = async (client, message, args, ops) => {
         return commandFile.run(client, message, args, ops);
     }
 
-    message.channel.send("En train de chercher la musique...");
+    message.channel.send("Searching music :musical_note:");
 
     let info = await ytdl.getInfo(args[0]);
 
@@ -35,7 +37,7 @@ exports.run = async (client, message, args, ops) => {
 
     if (!data.dispatcher) play(client, ops, data);
     else {
-        message.channel.send(`Ajouté à la liste : **${info.title}** - Demandé par **${message.author.tag}**`);
+        message.channel.send(`Added to the list: **${info.title}** - Asked by**${message.author.tag}**`);
     }
     ops.active.set(message.guild.id, data);
 }
@@ -50,7 +52,7 @@ async function play(client, ops, data) {
     
     if (module.titleNotShown != true) {
         module.titleNotShown == false;
-        client.channels.get(data.queue[0].announceChannel).send(`En train de jouer : **${data.queue[0].songTitle}** - Demandé par **${data.queue[0].requester}**`);
+        client.channels.get(data.queue[0].announceChannel).send(`Now playing: **${data.queue[0].songTitle}** - Asked by **${data.queue[0].requester}**`);
     }
 }
 
