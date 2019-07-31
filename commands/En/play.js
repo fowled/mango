@@ -37,7 +37,7 @@ exports.run = async (client, message, args, ops) => {
 
     if (!data.dispatcher) play(client, ops, data);
     else {
-        message.channel.send(`Added to the list: **${info.title}** - Asked by**${message.author.tag}**`);
+        message.channel.send(`Added to the list: **${info.title}** - Asked by **${message.author.tag}**`);
     }
     ops.active.set(message.guild.id, data);
 }
