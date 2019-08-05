@@ -1,7 +1,7 @@
 {
     "name": "applitest",
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "out/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -23,7 +23,10 @@
         "yt-search": "^0.4.1",
         "ytdl-core": "^0.29.4"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "@types/node": "^12.6.9",
+        "typescript": "^3.5.3"
+    },
     "description": "A Discord bot, who talks in a lot of a languages, and has a lot of commands available.",
     "keywords": []
 }

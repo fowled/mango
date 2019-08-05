@@ -3,19 +3,20 @@ const DISCORD = require("discord.js");
 // Commande relative aux membres/serveur
 
 exports.run = async (client, message, args, ops) => {
+
     if (message.content.startsWith('!servinfo')) {
-        var afkOuPas;
-        var imageServer = message.member.guild.iconURL;
+        var afkChannel;
+        var guildPicture = message.member.guild.iconURL;
 
         if (message.member.guild.afkChannel) {
-            afkOuPas = `#<${message.member.guild.afkChannel}>`;
+            afkChannel = `#<${message.member.guild.afkChannel}>`;
         } else {
-            afkOuPas = "Non.";
+            afkChannel = "No AFK channel.";
         }
 
         reponse = new DISCORD.RichEmbed()
             .setTitle(`Informations serveur pour ${message.author.username}`)
-            .setThumbnail(imageServer)
+            .setThumbnail(guildPicture)
             .setAuthor(`${message.author.username}`, message.author.avatarURL)
             .setDescription(`Informations à propos du serveur Discord ${message.member.guild.name} :`)
             .setColor(Math.floor(Math.random() * 16777214) + 1)

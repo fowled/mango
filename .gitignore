@@ -1,5 +1,6 @@
-token.js
+src/token.js
 .git
+out/
 node_modules/
 ranks/
 languages/

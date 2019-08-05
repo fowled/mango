@@ -10,7 +10,7 @@ exports.run = (BOT, message, args, tools) => {
         reason = reason.slice(2);
         reason = reason.join(" ");
         if (reason == "") {
-            raison = "No reason provided";
+            reason = "No reason provided";
         }
         if (member) {
             var kickMessageAuthor = message.author.username;
