@@ -13,7 +13,7 @@ import * as Discord from "discord.js";
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
     message.guild.channels.get(message.channel.id).createInvite().then((invite: Discord.Invite) =>
         message.channel.send(invite.url)
-    ).catch(err => {
+    ).catch((err: Error) => {
         message.reply("I don't have the right perms ;( Make sure I have the admin rank :wink:");
     });
 }
