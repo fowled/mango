@@ -1,4 +1,4 @@
-const DISCORD = require("discord.js");
+import * as Discord from "discord.js";
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 // Scratch command

@@ -1,4 +1,4 @@
-const DISCORD = require("discord.js");
+import * as Discord from "discord.js";
 
 // Music command
 
@@ -11,7 +11,7 @@ exports.run = async (client, message, args, ops) => {
     var minutes = Math.floor(time / 60);
     var seconds = time - minutes * 60;
 
-    let musicInfoEmbed = new DISCORD.RichEmbed()
+    let musicInfoEmbed = new Discord.RichEmbed()
         .setAuthor(message.author.username, message.author.avatarURL)
         .setTitle(`Information for ${message.author.tag}`)
         .setColor('#f98257')

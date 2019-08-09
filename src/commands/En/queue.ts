@@ -1,4 +1,4 @@
-const DISCORD = require("discord.js");
+import * as Discord from "discord.js";
 
 // Music command
 
@@ -16,7 +16,7 @@ exports.run = async (client, message, args, ops) => {
     }
 
     if (listMessage == undefined) {
-        let noQueueMessage = new DISCORD.RichEmbed()
+        let noQueueMessage = new Discord.RichEmbed()
             .setTitle(`Queue command for ${message.author.tag}`)
             .addField(`Now playing`, `*${nowPlaying.songTitle}* - Asked by **${nowPlaying.requester}**`)
             .setColor("#f98257")
@@ -25,7 +25,7 @@ exports.run = async (client, message, args, ops) => {
             .setFooter(client.user.username, client.user.avatarURL)
         message.channel.send(noQueueMessage);
     } else {
-        let withQueueMessage = new DISCORD.RichEmbed()
+        let withQueueMessage = new Discord.RichEmbed()
             .setTitle(`Queue command ${message.author.tag}`)
             .addField(`Now playing`, `*${nowPlaying.songTitle}* - Asked by **${nowPlaying.requester}**`)
             .addField('Queue', listMessage)

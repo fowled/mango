@@ -1,4 +1,4 @@
-const DISCORD = require("discord.js");
+import * as Discord from "discord.js";
 
 // Commande relative aux membres/serveur
 
@@ -14,7 +14,7 @@ exports.run = async (client, message, args, ops) => {
             afkChannel = "No AFK channel.";
         }
 
-        reponse = new DISCORD.RichEmbed()
+        const reponse = new Discord.RichEmbed()
             .setTitle(`Informations serveur pour ${message.author.username}`)
             .setThumbnail(guildPicture)
             .setAuthor(`${message.author.username}`, message.author.avatarURL)
@@ -25,8 +25,8 @@ exports.run = async (client, message, args, ops) => {
             .addField('Propriétaire', message.member.guild.owner, true)
             .addField('Région', message.member.guild.region, true)
             .addField('Création', message.member.guild.createdAt.toLocaleString(), true)
-            .addField('Channel AFK', afkOuPas, true)
-            .setFooter(client.user.username, client.user.avatarURL, true)
+            .addField('Channel AFK', afkChannel, true)
+            .setFooter(client.user.username, client.user.avatarURL)
             .setTimestamp()
         message.channel.send(reponse);
     }

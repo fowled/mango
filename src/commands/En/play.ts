@@ -1,5 +1,5 @@
 const ytdl = require('ytdl-core');
-var module = require("./leave.js");
+const leave = require("./leave.js");
 
 // Music command
 
@@ -50,8 +50,8 @@ async function play(client, ops, data) {
         finish(client, ops, this);
     });
     
-    if (module.titleNotShown != true) {
-        module.titleNotShown == false;
+    if (leave.titleNotShown != true) {
+        leave.titleNotShown == false;
         client.channels.get(data.queue[0].announceChannel).send(`Now playing: **${data.queue[0].songTitle}** - Asked by **${data.queue[0].requester}**`);
     }
 }

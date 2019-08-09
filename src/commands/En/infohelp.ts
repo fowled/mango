@@ -9,7 +9,6 @@ import * as Discord from "discord.js";
  * @param {string[]} args les arguments de la commande
  * @param {any} options les options
  */
-
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
      var helpMessage: Discord.RichEmbed = new Discord.RichEmbed()
         .setTitle(`Help!`)

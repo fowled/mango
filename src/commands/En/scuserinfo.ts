@@ -1,4 +1,4 @@
-const DISCORD = require("discord.js");
+import * as Discord from "discord.js";
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 // Scratch command
@@ -22,25 +22,25 @@ exports.run = async (client, message, args, ops) => {
                 scratchTeam = "Yep.";
             }
 
-            if (obj.profile.status == "") {
+            if (requestedUser.profile.status == "") {
                 status = "No status provided...";
             }
 
-            if (obj.profile.bio == "") {
+            if (requestedUser.profile.bio == "") {
                 bio = "No bio provided...";
             }
 
-            reponse = new DISCORD.RichEmbed()
+            const reponse = new Discord.RichEmbed()
                 .setAuthor(message.author.username, message.author.avatarURL)
                 .setColor("#FF8000")
                 .setTitle(`User information - **${requestedUser.username}**`)
                 .setURL(`https://scratch.mit.edu/users/${user}`)
-                .setThumbnail(`https://cdn2.scratch.mit.edu/get_image/user/${obj.id}_90x90.png?v=`)
+                .setThumbnail(`https://cdn2.scratch.mit.edu/get_image/user/${requestedUser.id}_90x90.png?v=`)
                 .setDescription(`Find things about **${user}** on Scratch in this message.`)
                 .addField("Username", requestedUser.username)
                 .addField("ID", requestedUser.id)
                 .addField("Scratch Team member?", scratchTeam)
-                .addField("Joined on?", `A rejoint le ${dateMois} à ${dateHeure}.`)
+                .addField("Joined on?", `A rejoint le ${monthDate} à ${hourDate}.`)
                 .addField("Status", status)
                 .addField("Bio", bio)
                 .addField("Country", requestedUser.profile.country)

@@ -1,5 +1,5 @@
-const DISCORD = require("discord.js");
-const FS = require("file-system");
+import * as Discord from "discord.js";
+import * as FS from "fs";
 
 // Fun command
 
@@ -10,15 +10,14 @@ exports.run = async (client, message, args, ops) => {
     setTimeout(function () {
         FS.readFile(`ranks/${message.author.id}.txt`, (err, data) => {
 
-            let level = data / 50;
-            level = level.toFixed(0);
+            let level: number = Math.floor(parseInt(data.toString()) / 50);
 
             getExactLvl(level);
 
             function getExactLvl(lvl) {
                 let finalLvl = lvl.split(".")[0];
 
-                levelEmbedMessage = new DISCORD.RichEmbed()
+                const levelEmbedMessage = new DISCORD.RichEmbed()
                     .setTitle(`${message.author.tag} level`)
                     .setAuthor(message.author.username, message.author.avatarURL)
                     .setDescription(`Your level - :gem: XP: **${data}** | :large_orange_diamond: Level: **${finalLvl}** `)
