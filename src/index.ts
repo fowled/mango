@@ -120,10 +120,10 @@ Bot.on("message", (message: Discord.Message): void => {
                 FS.writeFileSync(`languages/${message.author.id}`, "En");
             }
             try {
-                require(`./commands/${data || "En"}/${cmd}.js`).run(Bot, message, args, ops);
+                require(`./out/commands/${data || "En"}/${cmd}.js`).run(Bot, message, args, ops);
                 Logger.log(`${message.author.tag} just used the ${cmd} power.`);
             } catch (error) {
-                message.reply("This command doesn't exist.").then((message: Discord.Message): Promise<Discord.Message> => message.delete(300));
+                message.reply("This command doesn't exist.").then((message: Discord.Message): Promise<Discord.Message> => message.delete(3000));
             }
         });
 
