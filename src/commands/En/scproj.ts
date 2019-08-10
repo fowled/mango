@@ -13,13 +13,13 @@ exports.run = async (client, message, args, ops) => {
             let sharedDate = this.responseText.split('"shared":"')[1].split(`T`)[0];
             let sharedHour = this.responseText.split(`"shared":"${sharedDate}T`)[1].split('.000Z"}')[0];
 
-            const requestedProject = new DISCORD.RichEmbed()
+            const requestedProject = new Discord.RichEmbed()
                 .setTitle(`Informations sur le projet ${parsedRequest.title}`)
                 .setAuthor(message.author.username, message.author.avatarURL)
                 .setURL(`https://scratch.mit.edu/projects/${project}/`)
                 .setThumbnail(message.author.avatarURL)
-                .setImage(obj.image)
-                .setDescription(`**${obj.title}** Information by **${parsedRequest.author.username}**.`)
+                //.setImage(obj.image)
+                //.setDescription(`**${obj.title}** Information by **${parsedRequest.author.username}**.`)
                 .addField("Number of :eye:", `**${parsedRequest.stats.views}** views.`)
                 .addField("Number of :heart:", `**${parsedRequest.stats.loves}** loves.`)
                 .addField("Number of :star:", `**${parsedRequest.stats.favorites}** stars.`)

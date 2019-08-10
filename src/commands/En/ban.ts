@@ -1,4 +1,4 @@
-const DISCORD = require("discord.js");
+import * as Discord from "discord.js";
 
 // Moderation command
 
@@ -22,7 +22,7 @@ exports.run = (client, message, args, tools) => {
         var date = new Date;
 
         if (memberBan.bannable && memberBan.id != "352158391038377984") {
-            banMessageUser = new DISCORD.RichEmbed()
+            const banMessageUser = new Discord.RichEmbed()
                 .setTitle(`Banned!`)
                 .setDescription(`You have been banned from the server **${banGuildName}** by *${banMessageAuthor}* on date __${date.toLocaleTimeString()}__! Reason: *"${reason}"*`)
                 .setTimestamp()
@@ -37,7 +37,7 @@ exports.run = (client, message, args, tools) => {
                 memberBan.ban({
                     reason: reason,
                 }).then(() => {
-                    banMessageGuild = new DISCORD.RichEmbed()
+                    const banMessageGuild = new Discord.RichEmbed()
                         .setTitle(`User **${userBan.username}** is now banned!`)
                         .setAuthor(message.author.username, message.author.avatarURL)
                         .setDescription(`:white_check_mark: **${memberBan.user.tag}** is now banned (*${reason}*)!`)
@@ -47,7 +47,7 @@ exports.run = (client, message, args, tools) => {
                     message.channel.send(banMessageGuild);
 
                 }).catch(err => {
-                    banMessageError = new DISCORD.RichEmbed()
+                    const banMessageError = new Discord.RichEmbed()
                         .setTitle('Error')
                         .setAuthor(message.author.username, message.author.avatarURL)
                         .setDescription(`An error has occured while banning **${memberBan.user.tag}**; missing permissions. Please, I am a serious bot, I can have admin rank!`)
@@ -58,7 +58,7 @@ exports.run = (client, message, args, tools) => {
                     console.log(err);
                 });
             } else {
-                banMessageCreator = new DISCORD.RichEmbed()
+                const banMessageCreator = new Discord.RichEmbed()
                     .setTitle(`Herm...`)
                     .setAuthor(message.author.username, message.author.avatarURL)
                     .setDescription(`You can't ban me, I'm the bot developer!`)

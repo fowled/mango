@@ -10,7 +10,7 @@ exports.run = async (client, message, args, tools) => {
 
         if (this.readyState == 4 && this.status == 200) {
             let parsedRequest = JSON.parse(this.responseText);
-            requestedMessages = new DISCORD.RichEmbed()
+            const requestedMessages = new Discord.RichEmbed()
                 .setAuthor(message.author.username, message.author.avatarURL)
                 .setColor("#FF8000")
                 .setTitle("Scratch messages information")
