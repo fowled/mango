@@ -49,7 +49,7 @@ Bot.on("guildCreate", (guild: Discord.Guild): void => {
 Bot.on("guildMemberAdd", (member: Discord.GuildMember): void => {
     try {
         FS.accessSync(`/ranks/${member.id}`, FS.constants.R_OK | FS.constants.W_OK);
-    } catch(e) {
+    } catch (e) {
         FS.writeFileSync(`/ranks/${member.id}`, "0");
     }
 
@@ -91,7 +91,7 @@ Bot.on("error", (error: Error): void => {
     Logger.error(error);
 });
 
-Bot.on("message", (message: Discord.Message): void => {    
+Bot.on("message", (message: Discord.Message): void => {
     if (message.author.bot) return;
     if (!message.guild) return;
 
@@ -122,11 +122,11 @@ Bot.on("message", (message: Discord.Message): void => {
             try {
                 require(`./commands/${data || "En"}/${cmd}.js`).run(Bot, message, args, ops);
                 Logger.log(`${message.author.tag} just used the ${cmd} power.`);
-            } catch(e) {
-                message.reply("This command doesn't exists.").then((message: Discord.Message): Promise<Discord.Message> => message.delete(3));
+            } catch (error) {
+                message.reply("This command doesn't exist.").then((message: Discord.Message): Promise<Discord.Message> => message.delete(300));
             }
         });
-        
+
     });
 
     /**
@@ -135,6 +135,10 @@ Bot.on("message", (message: Discord.Message): void => {
      * @param {string} userId le numéro de l'utilisateur (en string) à vérifier
      */
     function checkXP(userId: string): void {
+
+        Logger.log(FS.realpathSync(`ranks/${userId}`));
+
+
         let userXp: number;
         try {
             userXp = Number.parseInt(FS.readFileSync(`ranks/${userId}`).toString(), 10);
@@ -147,7 +151,7 @@ Bot.on("message", (message: Discord.Message): void => {
                 message.reply("Rank up! You are now level **" + Math.ceil(userXp / 50) + "**."); // message est pas accessible
             }
 
-        } catch(e) {
+        } catch (e) {
             FS.writeFileSync(`ranks/${userId}`, 0);
         }
     }
