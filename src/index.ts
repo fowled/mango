@@ -48,9 +48,9 @@ Bot.on("guildCreate", (guild: Discord.Guild): void => {
 
 Bot.on("guildMemberAdd", (member: Discord.GuildMember): void => {
     try {
-        FS.accessSync(`/ranks/${member.id}`, FS.constants.R_OK | FS.constants.W_OK);
+        FS.accessSync(`./ranks/${member.id}`, FS.constants.R_OK | FS.constants.W_OK);
     } catch (e) {
-        FS.writeFileSync(`/ranks/${member.id}`, "0");
+        FS.writeFileSync(`./ranks/${member.id}`, "0");
     }
 
     const channel: Discord.TextChannel = member.guild.channels.find(ch => ch.name === "welcome") as Discord.TextChannel;
@@ -99,11 +99,11 @@ Bot.on("message", (message: Discord.Message): void => {
 
     Logger.log("Test message");
 
-    FS.readFile(`prefixes/${message.author.id}`, (err: Error, data): void => {
+    FS.readFile(`./prefixes/${message.author.id}`, (err: Error, data): void => {
         Logger.log("Test prefix");
         let prefix: string = err ? "!" : data.toString();
 
-        let msg: string = message.content.toUpperCase(); // uppercase? tu es sur?
+        let msg: string = message.content;
         let args: string[] = message.content.slice(prefix.length).trim().split(" ");
         let cmd: string = args.shift().toLowerCase();
 
@@ -117,14 +117,14 @@ Bot.on("message", (message: Discord.Message): void => {
             active: active,
         };
 
-        FS.readFile(`languages/${message.author.id}`, (err, data) => {
+        FS.readFile(`./languages/${message.author.id}`, (err: NodeJS.ErrnoException, data) => {
             Logger.log("Test langue");
             if (err) {
                 Logger.error(err);
-                FS.writeFileSync(`languages/${message.author.id}`, "En");
+                FS.writeFileSync(`./languages/${message.author.id}`, "En");
             }
             try {
-                require(`../out/commands/${data || "En"}/${cmd}.js`).run(Bot, message, args, ops);
+                require(`./commands/${data || "En"}/${cmd}.js`).run(Bot, message, args, ops);
                 Logger.log(`${message.author.tag} just used the ${cmd} power.`);
             } catch (error) {
                 message.reply("This command doesn't exist.").then((message: Discord.Message): Promise<Discord.Message> => message.delete(3000));
@@ -141,22 +141,22 @@ Bot.on("message", (message: Discord.Message): void => {
      */
     function checkXP(userId: string): void {
 
-        Logger.log(FS.realpathSync(`ranks/${userId}`));
+        Logger.log(FS.realpathSync(`./ranks/${userId}`));
 
         let userXp: number;
         try {
-            userXp = Number.parseInt(FS.readFileSync(`ranks/${userId}`).toString(), 10);
+            userXp = Number.parseInt(FS.readFileSync(`./ranks/${userId}`).toString(), 10);
 
             userXp++;
 
-            FS.writeFileSync(`ranks/${userId}`, userXp);
+            FS.writeFileSync(`./ranks/${userId}`, userXp);
 
             if (userXp % 50 === 0 && userXp >= 50 && userXp <= 1000) {
                 message.reply("Rank up! You are now level **" + Math.ceil(userXp / 50) + "**."); // message est pas accessible
             }
 
         } catch (e) {
-            FS.writeFileSync(`ranks/${userId}`, 0);
+            FS.writeFileSync(`./ranks/${userId}`, 0);
         }
     }
 });
