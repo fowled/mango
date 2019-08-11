@@ -97,7 +97,10 @@ Bot.on("message", (message: Discord.Message): void => {
 
     checkXP(message.author.id);
 
+    Logger.log("Test message");
+
     FS.readFile(`prefixes/${message.author.id}`, (err: Error, data): void => {
+        Logger.log("Test prefix");
         let prefix: string = err ? "!" : data.toString();
 
         let msg: string = message.content.toUpperCase(); // uppercase? tu es sur?
@@ -115,6 +118,7 @@ Bot.on("message", (message: Discord.Message): void => {
         };
 
         FS.readFile(`languages/${message.author.id}`, (err, data) => {
+            Logger.log("Test langue");
             if (err) {
                 Logger.error(err);
                 FS.writeFileSync(`languages/${message.author.id}`, "En");
@@ -124,6 +128,7 @@ Bot.on("message", (message: Discord.Message): void => {
                 Logger.log(`${message.author.tag} just used the ${cmd} power.`);
             } catch (error) {
                 message.reply("This command doesn't exist.").then((message: Discord.Message): Promise<Discord.Message> => message.delete(3000));
+                Logger.error(error);
             }
         });
 
@@ -137,7 +142,6 @@ Bot.on("message", (message: Discord.Message): void => {
     function checkXP(userId: string): void {
 
         Logger.log(FS.realpathSync(`ranks/${userId}`));
-
 
         let userXp: number;
         try {
