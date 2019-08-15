@@ -26,12 +26,12 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 			return;
 		}
 
-		Logger.log(Fs.realpathSync(`./../languages/${message.author.id}`));
-		Fs.readFile(`./../languages/${message.author.id}`, (err: NodeJS.ErrnoException, data): void => {
+		Logger.log(Fs.realpathSync(`./languages/${message.author.id}`));
+		Fs.readFile(`././languages/${message.author.id}`, (err: NodeJS.ErrnoException, data): void => {
 			Logger.log("Test langue");
 			if (err) {
 				Logger.error(err);
-				Fs.writeFileSync(`./../languages/${message.author.id}`, "En");
+				Fs.writeFileSync(`././languages/${message.author.id}`, "En");
 			}
 			try {
 				require(`./../commands/${data || "En"}/${cmd}.js`).run(Client, message, args, null);
