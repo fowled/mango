@@ -9,13 +9,12 @@ import * as Discord from "discord.js";
  * @param {string[]} args les arguments de la commande
  * @param {any} options les options
  */
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
-    if (args[0] && !parseInt(args[0]) && isNaN(parseInt(args[0]))) {
-        message.reply("Please select a number of messages to delete.");
-    } else if (parseInt(args[0]) <= 99) {
-        var numberOfMessages: number = Number.parseInt(args[0]);
-        message.channel.bulkDelete(numberOfMessages);
-    } else {
-        message.reply("Please only provide numbers from 1 to 100.");
-    }
-}
+export default async (Client: Discord.Client, message: Discord.Message, args: string[], options: any) => {
+	if (args[0] && !parseInt(args[0], 10) && isNaN(parseInt(args[0], 10))) {
+		message.reply("Please select a number of messages to delete.");
+	} else if (parseInt(args[0], 10) <= 99) {
+		message.channel.bulkDelete(Number.parseInt(args[0], 10));
+	} else {
+		message.reply("Please only provide numbers from 1 to 100.");
+	}
+};

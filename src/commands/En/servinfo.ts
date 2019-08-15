@@ -2,7 +2,7 @@ import * as Discord from "discord.js";
 
 // Commande relative aux membres/serveur
 
-exports.run = async (client, message, args, ops) => {
+export async function run(client: Discord.Client, message: Discord.Message, args: string[]) {
 
     if (message.content.startsWith('!servinfo')) {
         var afkChannel;

@@ -1,9 +1,11 @@
+import * as Discord from "discord.js";
+
 // Moderation command
 
-exports.run = async (client, message, args, ops) => {
-    message.channel.fetchMessage(args[0])
-        .then(message => message.pin())
-        .catch(function () {
-            message.reply("An error occured, make sure I have the pin permission.");
-        });
+export async function run(client: Discord.Client, message: Discord.Message, args: string[]) {
+	message.channel.fetchMessage(args[0])
+		.then((message) => message.pin())
+		.catch(() => {
+			message.reply("An error occured, make sure I have the pin permission.");
+		});
 }

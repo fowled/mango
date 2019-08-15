@@ -1,9 +1,13 @@
+import * as Discord from "discord.js";
+
 // Music command
 
-exports.run = async (client, message, args, ops) => {
-    let fetched = ops.active.get(message.guild.id);
+export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
+	const fetched = ops.active.get(message.guild.id);
 
-    if (!fetched) return message.channel.send('No music is actually played.');
+	if (!fetched) {
+		return message.channel.send("No music is actually played.");
+	}
 
-    fetched.dispatcher.emit('end');
+	fetched.dispatcher.emit("end");
 }

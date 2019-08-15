@@ -1,15 +1,20 @@
-exports.run = async (client, message, args, ops) => {
-    
-    var titleNotShown = true;
-    exports.titleNotShown = titleNotShown;
+export let titleNotShown = true;
 
-    if (!message.member.voiceChannel) return message.channel.send("Hey, please connect to a voice channel.");
+export function run(client, message, args, ops) {
 
-    if (!message.guild.me.voiceChannel) return message.channel.send("The bot isn't connected to this channel.");
+	if (!message.member.voiceChannel) {
+		return message.channel.send("Hey, please connect to a voice channel.");
+	}
 
-    if (message.guild.me.voiceChannelID != message.member.voiceChannelID) return message.channel.send("We are not connected to the same vocal channel!");
+	if (!message.guild.me.voiceChannel) {
+		return message.channel.send("The bot isn't connected to this channel.");
+	}
 
-    message.member.voiceChannel.leave();
+	if (message.guild.me.voiceChannelID !== message.member.voiceChannelID) {
+		return message.channel.send("We are not connected to the same vocal channel!");
+	}
 
-    return message.react('👍');
+	message.member.voiceChannel.leave();
+
+	return message.react("👍");
 }

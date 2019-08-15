@@ -1,7 +1,8 @@
-src/token.js
+src/token.ts
 .git
 out/
 node_modules/
 ranks/
 languages/
 prefixes/
+.vsls.json
