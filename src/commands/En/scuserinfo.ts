@@ -1,14 +1,21 @@
 import * as Discord from "discord.js";
-const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+import * as xmlhttprequest from "xmlhttprequest";
 
 // Scratch command
 
+/**
+ * Shows information about a Scratch user.
+ * @param {Discord.Client} Client the client
+ * @param {Discord.Message} Message the message that contains the command name
+ * @param {string[]} args the command args
+ * @param {any} options some options
+ */
 export async function run(client: Discord.Client, message: Discord.Message, args: string[]) {
 	const user = args[0];
-	const xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
+	const xhttp = new xmlhttprequest();
+	xhttp.onreadystatechange = () => {
 
-		if (this.readyState == 4 && this.status == 200) {
+		if (this.readyState === 4 && this.status === 200) {
 			const requestedUser = JSON.parse(xhttp.responseText);
 			let scratchTeam;
 			let status = requestedUser.profile.status;
@@ -16,17 +23,17 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 			const monthDate = requestedUser.history.joined.split("T")[0];
 			const hourDate = requestedUser.history.joined.split("T")[1].split(".000")[0];
 
-			if (requestedUser.scratchteam == false) {
+			if (requestedUser.scratchteam === false) {
 				scratchTeam = "No.";
-			} else if (requestedUser.scratchteam == true) {
+			} else if (requestedUser.scratchteam === true) {
 				scratchTeam = "Yep.";
 			}
 
-			if (requestedUser.profile.status == "") {
+			if (requestedUser.profile.status === "") {
 				status = "No status provided...";
 			}
 
-			if (requestedUser.profile.bio == "") {
+			if (requestedUser.profile.bio === "") {
 				bio = "No bio provided...";
 			}
 
@@ -45,11 +52,11 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 				.addField("Bio", bio)
 				.addField("Country", requestedUser.profile.country)
 				.setTimestamp()
-				.setFooter(client.user.username, client.user.avatarURL)
+				.setFooter(client.user.username, client.user.avatarURL);
 			message.channel.send(reponse);
 
 			// message.reply(`Username : **${username}** ; ID : **${idUser}** ; Membre de la ST : **${scratchTeam}** ; A rejoint le **${joinedDate}** à **${joinedHour}**`);
-		} else if (this.readyState == 4 && this.responseText == "{\"code\":\"NotFound\",\"message\":\"\"}") {
+		} else if (this.readyState === 4 && this.responseText === "{\"code\":\"NotFound\",\"message\":\"\"}") {
 			message.reply("I did not find the user you requested.");
 		}
 	};

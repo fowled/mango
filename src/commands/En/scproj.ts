@@ -4,6 +4,13 @@ import * as ScratchAPI from "./../../interfaces/ScratchAPI";
 
 // Scratch command
 
+/**
+ * Shows information about a Scratch project.
+ * @param {Discord.Client} Client the client
+ * @param {Discord.Message} Message the message that contains the command name
+ * @param {string[]} args the command args
+ * @param {any} options some options
+ */
 export async function run(client: Discord.Client, message: Discord.Message, args: string[]) {
 	const project = args[0];
 	const xhttp = new XMLHttpRequest();
@@ -45,5 +52,4 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 
 	xhttp.open("GET", `https://api.scratch.mit.edu/projects/${project}/`, true);
 	xhttp.send();
-
 }

@@ -1,6 +1,15 @@
 import * as Discord from "discord.js";
 
-export async function run(client: Discord.Client, message: Discord.Message, args: string[]) {
+// Test command
+
+/**
+ * Tests the bot ping.
+ * @param {Discord.Client} Client the client
+ * @param {Discord.Message} Message the message that contains the command name
+ * @param {string[]} args the command args
+ * @param {any} options some options
+ */
+export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const ping = await message.channel.send("Ping?") as Discord.Message;
 
 	const pong = new Discord.RichEmbed()

@@ -2,6 +2,13 @@ import * as Discord from "discord.js";
 
 // Moderation command
 
+/**
+ * Kicks user.
+ * @param {Discord.Client} Client the client
+ * @param {Discord.Message} Message the message that contains the command name
+ * @param {string[]} args the command args
+ * @param {any} options some options
+ */
 export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const user = message.mentions.users.first();
 	if (user) {
@@ -11,6 +18,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 		if (reason === "") {
 			reason = "No reason provided";
 		}
+
 		if (member) {
 			const kickMessageAuthor = message.author.username;
 			const kickGuildName = message.member.guild.name;

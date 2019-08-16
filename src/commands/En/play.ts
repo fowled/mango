@@ -5,6 +5,13 @@ import * as leave from "./leave";
 
 // Music command
 
+/**
+ * Plays a song in a vocal channel that is on YouTube, SoundCloud...
+ * @param {Discord.Client} Client the client
+ * @param {Discord.Message} Message the message that contains the command name
+ * @param {string[]} args the command args
+ * @param {any} options some options
+ */
 export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	if (!message.member.voiceChannel) {
 		return message.channel.send("Please connect to a vocal channel and retry.");

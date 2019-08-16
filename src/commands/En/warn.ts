@@ -3,7 +3,7 @@ import * as Discord from "discord.js";
 // Mod command
 
 /**
- * Permet de warn un utilisateur
+ * Warns a user.
  * @param {Discord.Client} Client le client
  * @param {Discord.Message} Message le message contenant la commande
  * @param {string[]} args les arguments de la commande

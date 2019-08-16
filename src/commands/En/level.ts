@@ -3,8 +3,14 @@ import * as FS from "fs";
 
 // Fun command
 
+/**
+ * Shows XP/Level of the user.
+ * @param {Discord.Client} Client the client
+ * @param {Discord.Message} Message the message that contains the command name
+ * @param {string[]} args the command args
+ * @param {any} options some options
+ */
 export async function run(client: Discord.Client, message: Discord.Message, args: string[]) {
-
 	message.channel.startTyping();
 
 	setTimeout(() => {
@@ -32,5 +38,4 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 	}, 2000);
 
 	message.channel.stopTyping();
-
 }

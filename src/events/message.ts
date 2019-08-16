@@ -12,10 +12,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 	Xp.checkXP(message);
 
-	Logger.log("Test message");
-
 	Fs.readFile(`./prefixes/${message.author.id}`, (err: Error, data): void => {
-		Logger.log("Test prefix");
 		const prefix: string = err ? "!" : data.toString();
 
 		const msg: string = message.content;
@@ -28,7 +25,6 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 		Logger.log(Fs.realpathSync(`./languages/${message.author.id}`));
 		Fs.readFile(`././languages/${message.author.id}`, (err: NodeJS.ErrnoException, data): void => {
-			Logger.log("Test langue");
 			if (err) {
 				Logger.error(err);
 				Fs.writeFileSync(`././languages/${message.author.id}`, "En");

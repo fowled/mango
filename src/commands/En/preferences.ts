@@ -1,9 +1,16 @@
 import * as Discord from "discord.js";
 import * as FS from "fs";
 
-// Preferences command
+// Preferences/settings command
 
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[]) {
+/**
+ * Shows user preferences/settings.
+ * @param {Discord.Client} Client the client
+ * @param {Discord.Message} Message the message that contains the command name
+ * @param {string[]} args the command args
+ * @param {any} options some options
+ */
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	if (!args[0]) {
 		return message.channel.send("Preferences... what? !preferences prefix see`, `!preferences prefix set [prefix]`, `!preferences language set [En, Fr]`"); // menu des préférences
 	}

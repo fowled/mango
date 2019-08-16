@@ -4,11 +4,11 @@ import * as Logger from "../../utils/Logger";
 // Help command
 
 /**
- * Envoie l'aide en mp
- * @param {Discord.Client} Client le client
- * @param {Discord.Message} Message le message contenant la commande
- * @param {string[]} args les arguments de la commande
- * @param {any} options les options
+ * Answers with the infohelp message in dm.
+ * @param {Discord.Client} Client the client
+ * @param {Discord.Message} Message the message that contains the command name
+ * @param {string[]} args the command args
+ * @param {any} options some options
  */
 export default async (Client: Discord.Client, message: Discord.Message, args: string[], options: any) => {
 	const helpMessage: Discord.RichEmbed = new Discord.RichEmbed()

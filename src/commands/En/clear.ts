@@ -3,18 +3,20 @@ import * as Discord from "discord.js";
 // Mod command
 
 /**
- * Supprime plusieurs messages d'un coup
- * @param {Discord.Client} Client le client
- * @param {Discord.Message} Message le message contenant la commande
- * @param {string[]} args les arguments de la commande
- * @param {any} options les options
+ * Deletes several messages at once.
+ * @param {Discord.Client} Client the client
+ * @param {Discord.Message} Message the message that contains the command name
+ * @param {string[]} args the command args
+ * @param {any} options some options
  */
-export default async (Client: Discord.Client, message: Discord.Message, args: string[], options: any) => {
-	if (args[0] && !parseInt(args[0], 10) && isNaN(parseInt(args[0], 10))) {
-		message.reply("Please select a number of messages to delete.");
-	} else if (parseInt(args[0], 10) <= 99) {
-		message.channel.bulkDelete(Number.parseInt(args[0], 10));
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
+	if (args.length > 0) {
+		if (!isNaN(parseInt(args[0], 10)) && parseInt(args[0], 10) >= 1 && parseInt(args[0], 10) <= 100) {
+			message.channel.bulkDelete(parseInt(args[0], 10));
+		} else {
+			message.reply("Invlid number provided. Only provided number between 1 and 100");
+		}
 	} else {
-		message.reply("Please only provide numbers from 1 to 100.");
+		message.reply("Please enter the number of messages to delete!");
 	}
-};
+}
