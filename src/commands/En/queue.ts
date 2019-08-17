@@ -3,7 +3,7 @@ import * as Discord from "discord.js";
 // Music command
 
 /**
- * Shows the actual guild queue.
+ * Shows the actual guild music queue.
  * @param {Discord.Client} Client the client
  * @param {Discord.Message} Message the message that contains the command name
  * @param {string[]} args the command args
