@@ -3,7 +3,7 @@ import * as Logger from "./../../utils/Logger";
 
 // Moderation command
 
-export function run(client, message, args, tools) {
+export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	let reason = message.content.split(" ").slice(2).join(" ");
 
 	if (reason === "") {
@@ -27,8 +27,8 @@ export function run(client, message, args, tools) {
 				.setTimestamp()
 				.setThumbnail(guildIcon)
 				.setColor("#4292f4")
-				.setFooter(client.user.username, client.user.avatarURL);
-			client.users.get(bannedUserId).send(banMessageUser);
+				.setFooter(Client.user.username, Client.user.avatarURL);
+			Client.users.get(bannedUserId).send(banMessageUser);
 		}
 
 		setTimeout(() => {
@@ -42,7 +42,7 @@ export function run(client, message, args, tools) {
 						.setDescription(`:white_check_mark: **${memberBan.user.tag}** is now banned (*${reason}*)!`)
 						.setTimestamp()
 						.setColor("#4292f4")
-						.setFooter(client.user.username, client.user.avatarURL);
+						.setFooter(Client.user.username, Client.user.avatarURL);
 					message.channel.send(banMessageGuild);
 
 				}).catch((err: any) => {
@@ -52,7 +52,7 @@ export function run(client, message, args, tools) {
 						.setDescription(`An error has occured while banning **${memberBan.user.tag}**; missing permissions. Please, I am a serious bot, I can have admin rank!`)
 						.setTimestamp()
 						.setColor("#FF0000")
-						.setFooter(client.user.username, client.user.avatarURL);
+						.setFooter(Client.user.username, Client.user.avatarURL);
 					message.channel.send(banMessageError);
 					Logger.error(err);
 				});
@@ -64,7 +64,7 @@ export function run(client, message, args, tools) {
 					.setTimestamp()
 					.setThumbnail("")
 					.setColor("#FF0000")
-					.setFooter(client.user.username, client.user.avatarURL);
+					.setFooter(Client.user.username, Client.user.avatarURL);
 				message.channel.send(banMessageCreator);
 			}
 		}, 500);

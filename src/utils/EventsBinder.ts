@@ -5,7 +5,7 @@ import * as Logger from "./Logger";
 
 export async function bind(Client: Discord.Client): Promise<void> {
 	return new Promise<void>((resolve: (value?: void | PromiseLike<void>) => void, reject: (reason?: any) => void): void => {
-		Fs.readdir("out/events/", (error: Error, files: string[]): void => {
+		Fs.readdir("out/events/", (error: Error, files: string[]): void => { // lis les fichiers dans le dossier /out/events
 			if (error) {
 				Logger.error(error); // Marque dans la console s'il y a une erreur
 				reject(error);
