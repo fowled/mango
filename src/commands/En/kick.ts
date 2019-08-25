@@ -26,7 +26,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 			const kickedUserId = user.id;
 			const date = new Date();
 			if (member.kickable && member.id !== "352158391038377984") {
-				const kickMessageUser = new Discord.RichEmbed()
+				const kickMessageUser: Discord.RichEmbed = new Discord.RichEmbed()
 					.setTitle(`Kicked!`)
 					.setDescription(`You have been kicked from the server **${kickGuildName}** by *${kickMessageAuthor}* on date __${date.toLocaleDateString()}__ ! Reason: *"${reason}"*`)
 					.setTimestamp()
@@ -38,7 +38,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 
 			setTimeout(() => {
 				member.kick(reason).then(() => {
-					const kickMessageGuild = new Discord.RichEmbed()
+					const kickMessageGuild: Discord.RichEmbed = new Discord.RichEmbed()
 						.setTitle(`User ${user.username} has been kicked from the guild!`)
 						.setAuthor(message.author.username, message.author.avatarURL)
 						.setDescription(`:white_check_mark: **${user.tag}** is now kicked (*${reason}*)!`)
@@ -47,7 +47,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 						.setFooter(Client.user.username, Client.user.avatarURL);
 					message.channel.send(kickMessageGuild);
 				}).catch((err) => {
-					const kickMessageError = new Discord.RichEmbed()
+					const kickMessageError: Discord.RichEmbed = new Discord.RichEmbed()
 						.setTitle("Error")
 						.setAuthor(message.author.username, message.author.avatarURL)
 						.setDescription(`An error has occured while kicking **${user.tag}**; missing permissions. Make sure I have admin perms, then I promise I'll take the hammer!`)

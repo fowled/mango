@@ -4,7 +4,7 @@ export function create(Client: Discord.Client, {
 		color = Math.floor(Math.random() * (0xffffff + 1)),
 		description = `${Client.user.username} - A multitask and multilingual bot`,
 		fields = [],
-		footer = { text: `${Client.user.username} - A multitask and multilingual bot`, iconURL: Client.user.avatarURL,},
+		footer = { text: `${Client.user.username} - A multitask and multilingual bot`, iconURL: Client.user.avatarURL},
 		thumbnail,
 		timestamp = Date.now(),
 		title = Client.user.username,

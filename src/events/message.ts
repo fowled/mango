@@ -23,7 +23,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 			return;
 		}
 
-		Logger.log(Fs.realpathSync(`./languages/${message.author.id}`));
+		// Logger.log(Fs.realpathSync(`./languages/${message.author.id}`));
 		Fs.readFile(`././languages/${message.author.id}`, (err: NodeJS.ErrnoException, data): void => {
 			if (err) {
 				Logger.error(err);

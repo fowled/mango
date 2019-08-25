@@ -23,7 +23,7 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 			function getExactLvl(lvl) {
 				const finalLvl = lvl.split(".")[0];
 
-				const levelEmbedMessage = new Discord.RichEmbed()
+				const levelEmbedMessage: Discord.RichEmbed = new Discord.RichEmbed()
 					.setTitle(`${message.author.tag} level`)
 					.setAuthor(message.author.username, message.author.avatarURL)
 					.setDescription(`Your level - :gem: XP: **${data}** | :large_orange_diamond: Level: **${finalLvl}** `)

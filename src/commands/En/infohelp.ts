@@ -10,7 +10,7 @@ import * as Logger from "../../utils/Logger";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export default async (Client: Discord.Client, message: Discord.Message, args: string[], options: any) => {
+export function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
 	const helpMessage: Discord.RichEmbed = new Discord.RichEmbed()
 		.setTitle(`Help!`)
 		.setAuthor(message.author.username, message.author.avatarURL)
@@ -28,8 +28,8 @@ export default async (Client: Discord.Client, message: Discord.Message, args: st
 		.setFooter(Client.user.username, Client.user.avatarURL)
 		.setTimestamp();
 	Client.users.get(message.author.id)
-	.send(helpMessage)
-	.catch((error: Error) => {
-		Logger.error(error);
-	});
-};
+		.send(helpMessage)
+		.catch((error: Error) => {
+			Logger.error(error);
+		});
+}
