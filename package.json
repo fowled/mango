@@ -1,40 +1,42 @@
 {
-  "name": "mango-bot",
-  "version": "1.0.0",
-  "main": "out/index.js",
-  "scripts": {
-	"build": "tsc",
-	"test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Ma15fo43",
-  "license": "GPL-3.0",
-  "dependencies": {
-	"discord.js": "^11.5.1",
-	"ffbinaries": "^1.1.1",
-	"ffmpeg": "0.0.4",
-	"ffmpeg-binaries": "^4.0.0",
-	"file-system": "^2.2.2",
-	"opusscript": "0.0.6",
-	"request": "^2.88.0",
-	"require-reload": "^0.2.2",
-	"utf8": "^3.0.0",
-	"xmlhttprequest": "^1.8.0",
-	"yt-search": "^0.4.1",
-	"ytdl-core": "^0.29.4"
-  },
-  "devDependencies": {
-	"@types/node": "^12.7.1",
-	"tslint": "^5.18.0",
-	"typescript": "^3.5.3"
-  },
-  "description": "A Discord bot, who talks in a lot of a languages, and has a lot of commands available.",
-  "keywords": [],
-  "repository": {
-	"type": "git",
-	"url": "git+https://github.com/Ma15fo43/Mazz-Bot.git"
-  },
-  "bugs": {
-	"url": "https://github.com/Ma15fo43/Mazz-Bot/issues"
-  },
-  "homepage": "https://github.com/Ma15fo43/Mazz-Bot#readme"
+	"name": "mango-bot",
+	"version": "1.0.0",
+	"main": "out/index.js",
+	"scripts": {
+		"build": "tsc",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Ma15fo43",
+	"license": "GPL-3.0",
+	"dependencies": {
+		"bufferutil": "^4.0.1",
+		"discord.js": "^11.5.1",
+		"ffbinaries": "^1.1.1",
+		"ffmpeg": "0.0.4",
+		"ffmpeg-binaries": "^4.0.0",
+		"file-system": "^2.2.2",
+		"libsodium-wrappers": "^0.7.5",
+		"opusscript": "0.0.6",
+		"request": "^2.88.0",
+		"require-reload": "^0.2.2",
+		"utf8": "^3.0.0",
+		"xmlhttprequest": "^1.8.0",
+		"yt-search": "^0.4.1",
+		"ytdl-core": "^0.29.4"
+	},
+	"devDependencies": {
+		"@types/node": "^12.7.1",
+		"tslint": "^5.19.0",
+		"typescript": "^3.5.3"
+	},
+	"description": "A Discord bot, who talks in a lot of a languages, and has a lot of commands available.",
+	"keywords": [],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Ma15fo43/Mazz-Bot.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Ma15fo43/Mazz-Bot/issues"
+	},
+	"homepage": "https://github.com/Ma15fo43/Mazz-Bot#readme"
 }
