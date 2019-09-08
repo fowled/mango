@@ -1,6 +1,7 @@
 import * as Discord from "discord.js";
 import * as RichEmbed from "../../utils/Embed";
 import * as Logger from "../../utils/Logger";
+import { userInfo } from "os";
 
 // Fun command
 
@@ -50,49 +51,61 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 		message.reply("Enter a name for the giveaway, and I'll create it for you.");
 
 		const channel: Discord.TextChannel = message.channel as Discord.TextChannel;
-		const filter: Discord.CollectorFilter = (message) => message.content && !message.author.bot;
+		const filter: Discord.CollectorFilter = (message, user) => message.content && !message.author.bot && user.id === message.author.id;
+
+		let giveawayName: string;
 
 		const nameCollector = await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
-			.then(collected => {
-				const giveawayName = `${collected.first()}`;
+			.then((collected) => {
+				giveawayName = `${collected.first()}`;
 				message.reply(`Ok, I just created the **${giveawayName}** giveaway! Now, please enter the rewards :wink:`);
 			});
 
 		const rewardsCollector = await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
-			.then(collected => {
+			.then((collected) => {
 				const giveawayRewards = `${collected.last()}`;
 				return message.reply(`Ok, here are the rewards of your giveaway: **${giveawayRewards}**! Finally, please select the duration of the giveaway:\`[number]m\`, \`[number]d\`, or \`1w\``);
 			});
 
 		const durationCollector = async () => {
 			await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
-				.then(collected => {
+				.then((collected) => {
 					const collectedArray = collected.array()[0].content.split("");
 					const array = ["m", "d", "w"];
 
 					for (let n = 0; n < array.length; n++) {
 						if (collectedArray[collectedArray.length - 1] !== array[n]) {
 
-							if (n == collectedArray.length) {
+							if (n === collectedArray.length) {
 								message.reply("Please only provide minutes, days or 1 week.");
 								return durationCollector();
 							}
 
 						} else {
 							const durationArray: string[] = collected.array()[0].content.split("m");
-							const durationNumber: number = parseInt(durationArray[0]);
-							//const durationValue: string = collected.array()[0].content.split("").pop();
+							const durationNumber: number = parseInt(durationArray[0], 10);
+							const durationValue: string = collected.array()[0].content.split("").pop();
 
-							setTimeout(() => {
-								message.reply("It's burger time.");
-							}, (durationNumber * 60000));
+							switch (durationValue) {
+								case "m":
+									setTimeout(() => {
+										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner:`);
+									}, (durationNumber * 60000));
+									break;
+
+								case "d":
+									setTimeout(() => {
+										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner:`);
+									}, (durationNumber * 86400000));
+									break;
+							}
 
 							message.reply("Thank you! Your giveaway has been created.");
 							break;
 						}
 					}
 				});
-		}
+		};
 
 		await durationCollector();
 
@@ -106,11 +119,4 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 		// à faire
 	}
 
-	function msCalculator(duration) {
-		switch (duration) {
-			case "m":
-
-				break;
-		}
-	}
 }
