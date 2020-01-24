@@ -13,7 +13,6 @@ import ytdl from "ytdl-core";
 export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const voiceChannel: Discord.VoiceChannel = message.member.voiceChannel;
 	const permissions: Discord.PermissionResolvable = voiceChannel.permissionsFor(message.client.user);
-	let servers = {};
 
 	if (!voiceChannel) {
 		return message.channel.send("I'm sorry, but you need to be connected in a voice channel to start playing :musical_note:");
@@ -25,22 +24,22 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 		message.reply("Welp, it looks like I can't speak. Like, I can't play music. Add me the permission to!");
 	}
 
-	try {
+	/* try {
 		var connection = await voiceChannel.join();
 	} catch (error) {
 		console.error(`I couldn't join the voice channel, error: ${error}`);
 		return message.channel.send(`Unexpected error, please try again the command. \`\`\`${error}\`\`\``);
-	}
+	}*/
 
+	var connection = await voiceChannel.join();
 	const dispatcher = connection.playStream(ytdl(args[0]))
-		.on('end', () => {
-			console.log("Song ended.");
-			voiceChannel.leave();
-		})
-		.on('error', error => {
-			console.error(error);
-		});
+	/*.on('end', () => {
+		console.log("Song ended.");
+		voiceChannel.leave();
+	})
+	.on('error', error => {
+		console.error(error);
+	});*/
 
 	dispatcher.setVolumeLogarithmic(5 / 5);
-
 }
