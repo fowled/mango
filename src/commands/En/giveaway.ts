@@ -118,11 +118,11 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 	}
 
 	function closeGiveaway() {
-		// à faire
+		// TODO: faire la commande
 	}
 
 	function endGiveaway() {
-		// à faire
+		// TODO: faire la commande
 	}
 
 }
