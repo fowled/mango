@@ -9,7 +9,7 @@ export default async (Client: Discord.Client, guild: Discord.Guild) => {
 	channel.send(RichEmbed.create(Client, {
 		title: `Hi, I'm ${Client.user.username} and I'm pretty new in ${guild.name}!`,
 		description: `Help message has been sent to ${guild.owner.user}, but they are also available typing *!infohelp*.`,
-		thumbnail: {url: guild.iconURL,},
+		thumbnail: {url: guild.iconURL},
 		color: Math.floor(Math.random() * 16777214) + 1,
 	}));
 
