@@ -50,7 +50,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 		message.reply("Enter a name for the giveaway, and I'll create it for you.");
 
 		const channel: Discord.TextChannel = message.channel as Discord.TextChannel;
-		const filter: Discord.CollectorFilter = (message, user) => message.content && !message.author.bot && user.id === message.author.id;
+		const filter: Discord.CollectorFilter = (message, user) => message.content && !message.author.bot //&& user.id === message.author.id;
 
 		let giveawayName: string;
 
@@ -84,17 +84,24 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 							const durationArray: string[] = collected.array()[0].content.split("m");
 							const durationNumber: number = parseInt(durationArray[0], 10);
 							const durationValue: string = collected.array()[0].content.split("").pop();
+							let winner: Discord.GuildMember = message.guild.members.random();
+
+							if (winner.user.bot) {
+								while (winner.user.bot) {
+									winner = message.guild.members.random();
+								}
+							}
 
 							switch (durationValue) {
 								case "m":
 									setTimeout(() => {
-										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner:`);
+										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner: ${winner.user}`);
 									}, (durationNumber * 60000));
 									break;
 
 								case "d":
 									setTimeout(() => {
-										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner:`);
+										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner: ${winner.user}`);
 									}, (durationNumber * 86400000));
 									break;
 							}
