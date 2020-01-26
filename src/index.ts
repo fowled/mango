@@ -6,6 +6,9 @@ import { Token } from "./token";
 
 const Client: Discord.Client = new Discord.Client();
 
+Client.on('debug', console.warn);
+Client.on('error', console.error);
+
 (async () => {
 	await Binder.bind(Client);
 	Client.login(Token);

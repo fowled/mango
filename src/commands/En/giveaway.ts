@@ -13,6 +13,7 @@ import * as Logger from "../../utils/Logger";
  */
 export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const filter: Discord.CollectorFilter = (reaction, user) => ["🇦", "🇧", "🇨"].includes(reaction.emoji.name) && user.id === message.author.id;
+	const messageAuthor = message.author.avatarURL;
 
 	const giveawayEmbed: Discord.RichEmbed = new Discord.RichEmbed()
 		.setAuthor(message.author.username, message.author.avatarURL)
@@ -51,6 +52,9 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 
 		const channel: Discord.TextChannel = message.channel as Discord.TextChannel;
 		const filter: Discord.CollectorFilter = (message, user) => message.content && !message.author.bot //&& user.id === message.author.id;
+
+		if (giveawayEmbed.author.icon_url !== messageAuthor) return;
+		Logger.log(giveawayEmbed.author.icon_url);
 
 		let giveawayName: string;
 
@@ -95,13 +99,13 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 							switch (durationValue) {
 								case "m":
 									setTimeout(() => {
-										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner: ${winner.user}`);
+										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner: ${winner.user.tag}`);
 									}, (durationNumber * 60000));
 									break;
 
 								case "d":
 									setTimeout(() => {
-										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner: ${winner.user}`);
+										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner: ${winner.user.tag}`);
 									}, (durationNumber * 86400000));
 									break;
 							}
