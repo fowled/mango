@@ -27,7 +27,7 @@
     "utf8": "^3.0.0",
     "xmlhttprequest": "^1.8.0",
     "yt-search": "^0.4.5",
-    "ytdl-core": "^0.29.7",
+    "ytdl-core": "^1.0.7",
     "ytdl-core-discord": "^1.0.3"
   },
   "devDependencies": {
