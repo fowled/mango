@@ -51,15 +51,16 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 		message.reply("Enter a name for the giveaway, and I'll create it for you.");
 
 		const channel: Discord.TextChannel = message.channel as Discord.TextChannel;
-		const filter: Discord.CollectorFilter = (message, user) => message.content && !message.author.bot //&& user.id === message.author.id;
+		const filter: Discord.CollectorFilter = (message, user) => message.content && !message.author.bot && user.id === message.author.id;
 
-		if (giveawayEmbed.author.icon_url !== messageAuthor) return;
 		Logger.log(giveawayEmbed.author.icon_url);
+		Logger.log(messageAuthor);
 
 		let giveawayName: string;
 
 		const nameCollector = await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
 			.then((collected) => {
+				if (giveawayEmbed.author.icon_url !== messageAuthor) return;
 				giveawayName = `${collected.first()}`;
 				message.reply(`Ok, I just created the **${giveawayName}** giveaway! Now, please enter the rewards :wink:`);
 			});
