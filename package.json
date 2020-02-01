@@ -9,12 +9,12 @@
   "author": "Ma15fo43",
   "license": "GPL-3.0",
   "dependencies": {
+    "@discordjs/uws": "^10.149.0",
     "bufferutil": "^4.0.1",
     "cron": "^1.8.2",
     "discord.js": "^11.5.1",
     "ffbinaries": "^1.1.4",
     "ffmpeg": "0.0.4",
-    "ffmpeg-binaries": "^4.0.0",
     "file-system": "^2.2.2",
     "libsodium-wrappers": "^0.7.6",
     "ms": "^2.1.2",
