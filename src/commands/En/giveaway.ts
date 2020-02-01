@@ -13,7 +13,7 @@ import * as Logger from "../../utils/Logger";
  */
 export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const filter: Discord.CollectorFilter = (reaction, user) => ["🇦", "🇧", "🇨"].includes(reaction.emoji.name) && user.id === message.author.id;
-	const messageAuthor = message.author.avatarURL;
+	const messageAuthor: string = message.author.avatarURL;
 
 	const giveawayEmbed: Discord.RichEmbed = new Discord.RichEmbed()
 		.setAuthor(message.author.username, message.author.avatarURL)
@@ -58,26 +58,26 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 
 		let giveawayName: string;
 
-		const nameCollector = await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
+		const nameCollector: void = await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
 			.then((collected) => {
 				if (giveawayEmbed.author.icon_url !== messageAuthor) return;
 				giveawayName = `${collected.first()}`;
 				message.reply(`Ok, I just created the **${giveawayName}** giveaway! Now, please enter the rewards :wink:`);
 			});
 
-		const rewardsCollector = await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
+		const rewardsCollector: Discord.Message | Discord.Message[] = await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
 			.then((collected) => {
 				const giveawayRewards = `${collected.last()}`;
 				return message.reply(`Ok, here are the rewards of your giveaway: **${giveawayRewards}**! Finally, please select the duration of the giveaway:\`[number]m\`, \`[number]d\`, or \`1w\``);
 			});
 
-		const durationCollector = async () => {
+		const durationCollector: () => Promise<void> = async () => {
 			await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
 				.then((collected) => {
-					const collectedArray = collected.array()[0].content.split("");
-					const array = ["m", "d", "w"];
+					const collectedArray: string[] = collected.array()[0].content.split("");
+					const array: string[] = ["m", "d", "w"];
 
-					for (let n = 0; n < array.length; n++) {
+					for (let n: number = 0; n < array.length; n++) {
 						if (collectedArray[collectedArray.length - 1] !== array[n]) {
 
 							if (n === collectedArray.length) {

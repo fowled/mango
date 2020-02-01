@@ -10,21 +10,21 @@ import * as Discord from "discord.js";
  * @param {any} options some options
  */
 export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	const user = message.mentions.users.first();
+	const user: Discord.User = message.mentions.users.first();
 	if (user) {
-		const member = message.guild.member(user);
-		let reason = message.content.split(" ").slice(2).join(" ");
+		const member: Discord.GuildMember = message.guild.member(user);
+		let reason: string = message.content.split(" ").slice(2).join(" ");
 
 		if (reason === "") {
 			reason = "No reason provided";
 		}
 
 		if (member) {
-			const kickMessageAuthor = message.author.username;
-			const kickGuildName = message.member.guild.name;
-			const guildIcon = message.member.guild.iconURL;
-			const kickedUserId = user.id;
-			const date = new Date();
+			const kickMessageAuthor: string = message.author.username;
+			const kickGuildName: string = message.member.guild.name;
+			const guildIcon: string = message.member.guild.iconURL;
+			const kickedUserId: string = user.id;
+			const date: Date = new Date();
 			if (member.kickable && member.id !== "352158391038377984") {
 				const kickMessageUser: Discord.RichEmbed = new Discord.RichEmbed()
 					.setTitle(`Kicked!`)
@@ -46,7 +46,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 						.setColor("#4292f4")
 						.setFooter(Client.user.username, Client.user.avatarURL);
 					message.channel.send(kickMessageGuild);
-				}).catch((err) => {
+				}).catch((err: any) => {
 					const kickMessageError: Discord.RichEmbed = new Discord.RichEmbed()
 						.setTitle("Error")
 						.setAuthor(message.author.username, message.author.avatarURL)

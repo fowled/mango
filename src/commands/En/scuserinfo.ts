@@ -11,17 +11,17 @@ import * as xmlhttprequest from "xmlhttprequest";
  * @param {any} options some options
  */
 export async function run(client: Discord.Client, message: Discord.Message, args: string[]) {
-	const user = args[0];
-	const xhttp = new xmlhttprequest();
+	const user: string = args[0];
+	const xhttp: any = new xmlhttprequest();
 	xhttp.onreadystatechange = () => {
 
 		if (this.readyState === 4 && this.status === 200) {
 			const requestedUser = JSON.parse(xhttp.responseText);
-			let scratchTeam;
-			let status = requestedUser.profile.status;
-			let bio = requestedUser.profile.bio;
-			const monthDate = requestedUser.history.joined.split("T")[0];
-			const hourDate = requestedUser.history.joined.split("T")[1].split(".000")[0];
+			let scratchTeam: any;
+			let status: any = requestedUser.profile.status;
+			let bio: any = requestedUser.profile.bio;
+			const monthDate: any = requestedUser.history.joined.split("T")[0];
+			const hourDate: any = requestedUser.history.joined.split("T")[1].split(".000")[0];
 
 			if (requestedUser.scratchteam === false) {
 				scratchTeam = "No.";
@@ -37,7 +37,7 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 				bio = "No bio provided...";
 			}
 
-			const reponse = new Discord.RichEmbed()
+			const reponse: Discord.RichEmbed = new Discord.RichEmbed()
 				.setAuthor(message.author.username, message.author.avatarURL)
 				.setColor("#FF8000")
 				.setTitle(`User information - **${requestedUser.username}**`)

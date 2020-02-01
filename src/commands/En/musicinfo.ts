@@ -10,15 +10,15 @@ import * as Discord from "discord.js";
  * @param {any} options some options
  */
 export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	const fetched = ops.active.get(message.guild.id);
+	const fetched: any = ops.active.get(message.guild.id);
 
-	const parseURL = fetched.queue[0].url.split("watch?v=")[1];
+	const parseURL: any = fetched.queue[0].url.split("watch?v=")[1];
 
-	const time = fetched.queue[0].songLength;
-	const minutes = Math.floor(time / 60);
-	const seconds = time - minutes * 60;
+	const time: any = fetched.queue[0].songLength;
+	const minutes: number = Math.floor(time / 60);
+	const seconds: number = time - minutes * 60;
 
-	const musicInfoEmbed = new Discord.RichEmbed()
+	const musicInfoEmbed: Discord.RichEmbed = new Discord.RichEmbed()
 		.setAuthor(message.author.username, message.author.avatarURL)
 		.setTitle(`Information for ${message.author.tag}`)
 		.setColor("#f98257")

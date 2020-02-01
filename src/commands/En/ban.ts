@@ -4,24 +4,24 @@ import * as Logger from "./../../utils/Logger";
 // Moderation command
 
 export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	let reason = message.content.split(" ").slice(2).join(" ");
+	let reason: string = message.content.split(" ").slice(2).join(" ");
 
 	if (reason === "") {
 		reason = "No reason provided";
 	}
 
-	const userBan = message.mentions.users.first();
-	const memberBan = message.guild.member(userBan);
+	const userBan: Discord.User = message.mentions.users.first();
+	const memberBan: Discord.GuildMember = message.guild.member(userBan);
 
 	if (memberBan) {
-		const banMessageAuthor = message.author.tag;
-		const banGuildName = message.member.guild.name;
-		const guildIcon = message.member.guild.iconURL;
-		const bannedUserId = userBan.id;
-		const date = new Date();
+		const banMessageAuthor: string = message.author.tag;
+		const banGuildName: string = message.member.guild.name;
+		const guildIcon: string = message.member.guild.iconURL;
+		const bannedUserId: string = userBan.id;
+		const date: Date = new Date();
 
 		if (memberBan.bannable && memberBan.id !== "352158391038377984") {
-			const banMessageUser = new Discord.RichEmbed()
+			const banMessageUser: any = new Discord.RichEmbed()
 				.setTitle(`Banned!`)
 				.setDescription(`You have been banned from the server **${banGuildName}** by *${banMessageAuthor}* on date __${date.toLocaleTimeString()}__! Reason: *"${reason}"*`)
 				.setTimestamp()
@@ -36,7 +36,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 				memberBan.ban({
 					reason,
 				}).then(() => {
-					const banMessageGuild = new Discord.RichEmbed()
+					const banMessageGuild: Discord.RichEmbed = new Discord.RichEmbed()
 						.setTitle(`User **${userBan.username}** is now banned!`)
 						.setAuthor(message.author.username, message.author.avatarURL)
 						.setDescription(`:white_check_mark: **${memberBan.user.tag}** is now banned (*${reason}*)!`)
@@ -46,7 +46,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 					message.channel.send(banMessageGuild);
 
 				}).catch((err: any) => {
-					const banMessageError = new Discord.RichEmbed()
+					const banMessageError: Discord.RichEmbed = new Discord.RichEmbed()
 						.setTitle("Error")
 						.setAuthor(message.author.username, message.author.avatarURL)
 						.setDescription(`An error has occured while banning **${memberBan.user.tag}**; missing permissions. Please, I am a serious bot, I can have admin rank!`)
@@ -57,7 +57,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 					Logger.error(err);
 				});
 			} else {
-				const banMessageCreator = new Discord.RichEmbed()
+				const banMessageCreator: Discord.RichEmbed = new Discord.RichEmbed()
 					.setTitle("Herm...")
 					.setAuthor(message.author.username, message.author.avatarURL)
 					.setDescription("You can't ban me, I'm the bot developer!")

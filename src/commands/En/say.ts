@@ -10,10 +10,10 @@ import * as Discord from "discord.js";
  * @param {any} options some options
  */
 export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	let messageToSay = message.content.split(" ");
+	let messageToSay: string[] = message.content.split(" ");
 	messageToSay = messageToSay.slice(1, messageToSay.length - 2);
-	const taggedUser = message.mentions.users.first();
-	const date = new Date();
+	const taggedUser: Discord.User = message.mentions.users.first();
+	const date: Date = new Date();
 	if (taggedUser) {
 		message.channel.send("Message is sending :postbox:");
 		Client.users.get(taggedUser.id).send(`*${message.author.username} sent you: \`${messageToSay.join(" ")}\` at ${date.toLocaleString()}*.`)

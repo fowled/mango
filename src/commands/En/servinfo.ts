@@ -10,8 +10,8 @@ import * as Discord from "discord.js";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[]) {
-	let afkChannel;
-	const guildPicture = message.member.guild.iconURL;
+	let afkChannel: any;
+	const guildPicture: string = message.member.guild.iconURL;
 
 	if (message.member.guild.afkChannel) {
 		afkChannel = `#<${message.member.guild.afkChannel}>`;
@@ -19,7 +19,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		afkChannel = "No AFK channel.";
 	}
 
-	const reponse = new Discord.RichEmbed()
+	const reponse: Discord.RichEmbed = new Discord.RichEmbed()
 		.setTitle(`Informations serveur pour ${message.author.username}`)
 		.setThumbnail(guildPicture)
 		.setAuthor(`${message.author.username}`, message.author.avatarURL)

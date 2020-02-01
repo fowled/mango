@@ -16,8 +16,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 			return message.reply("An error occured, please retry...");
 		}
 
-		const videos = res.videos.slice(0, 1);
-		const commandFile = require("./play.js");
+		const videos: any = res.videos.slice(0, 1);
+		const commandFile: any = require("./play.js");
 
 		commandFile.run(Client, message, [videos[0].url], ops);
 	});

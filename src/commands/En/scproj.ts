@@ -25,7 +25,7 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 				}
 			} else {
 				parsedRequest = parsedRequest as ScratchAPI.ScratchProject;
-				const requestedProject = new Discord.RichEmbed()
+				const requestedProject: Discord.RichEmbed = new Discord.RichEmbed()
 					.setTitle(`Informations sur le projet ${parsedRequest.title}`)
 					.setAuthor(message.author.username, message.author.avatarURL)
 					.setURL(`https://scratch.mit.edu/projects/${parsedRequest.id}/`)

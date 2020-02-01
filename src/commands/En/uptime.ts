@@ -10,12 +10,12 @@ import * as Discord from "discord.js";
  * @param {any} options some options
  */
 export async function run(client: Discord.Client, message: Discord.Message, args: string[]) {
-	let totalSeconds = (client.uptime / 1000);
+	let totalSeconds: number = (client.uptime / 1000);
 	const days: number = Math.floor(totalSeconds / 86400);
-	const hours = Math.floor(totalSeconds / 3600);
+	const hours: number = Math.floor(totalSeconds / 3600);
 	totalSeconds %= 3600;
-	const minutes = Math.floor(totalSeconds / 60);
-	const seconds = totalSeconds % 60;
+	const minutes: number = Math.floor(totalSeconds / 60);
+	const seconds: number = totalSeconds % 60;
 
 	if (days === 0) {
 		message.reply(`Bot is online since **${Math.round(hours)}** hours, **${Math.round(minutes)}** minutes and **${Math.round(seconds)}** seconds.`);

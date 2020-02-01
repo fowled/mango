@@ -11,13 +11,13 @@ import * as xmlhttprequest from "xmlhttprequest";
  * @param {any} options some options
  */
 async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	const user = args[0];
-	const xhttp = new xmlhttprequest();
+	const user: string = args[0];
+	const xhttp: any = new xmlhttprequest();
 	xhttp.onreadystatechange = () => {
 
 		if (this.readyState === 4 && this.status === 200) {
-			const parsedRequest = JSON.parse(this.responseText);
-			const requestedMessages = new Discord.RichEmbed()
+			const parsedRequest: any = JSON.parse(this.responseText);
+			const requestedMessages: Discord.RichEmbed = new Discord.RichEmbed()
 				.setAuthor(message.author.username, message.author.avatarURL)
 				.setColor("#FF8000")
 				.setTitle("Scratch messages information")

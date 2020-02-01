@@ -11,11 +11,11 @@ import * as xmlhttprequest from "xmlhttprequest";
  * @param {any} options some options
  */
 async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	const xhttp = new xmlhttprequest();
+	const xhttp: any = new xmlhttprequest();
 	xhttp.onreadystatechange = () => {
 
 		if (this.readyState === 4 && this.status === 200) {
-			const parsedRequest = JSON.parse(xhttp.responseText);
+			const parsedRequest: any = JSON.parse(xhttp.responseText);
 			message.channel.send(`**${parsedRequest.count}** projects are actually shared on the Scratch website. Meow!`);
 		}
 	};

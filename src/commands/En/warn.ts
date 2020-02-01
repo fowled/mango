@@ -10,18 +10,18 @@ import * as Discord from "discord.js";
  * @param {any} options les options
  */
 export default async (Client: Discord.Client, message: Discord.Message, args: string[], ops: void) => {
-	const taggedUser = message.mentions.users.first();
-	const member = message.guild.member(taggedUser);
+	const taggedUser: Discord.User = message.mentions.users.first();
+	const member: Discord.GuildMember = message.guild.member(taggedUser);
 
 	if (member && member.kickable) {
-		let commande = message.content.split(" ").slice(2).join(" ");
+		let commande: string = message.content.split(" ").slice(2).join(" ");
 
 		if (commande === "") {
 			commande = "Pas de raison spécifiée"; // on a les args pour ça, verrai après
 		}
 
 		const date = new Date();
-		const warnGuildRichEmbed = new Discord.RichEmbed()
+		const warnGuildRichEmbed: Discord.RichEmbed = new Discord.RichEmbed()
 			.setTitle(`Warn`)
 			.setDescription(`**${taggedUser.tag}** has been warned by *${message.author.tag}* on __${date.toLocaleDateString()}__: *"${commande}"*.`)
 			.setAuthor(message.author.username, message.author.avatarURL)
@@ -30,7 +30,7 @@ export default async (Client: Discord.Client, message: Discord.Message, args: st
 			.setTimestamp();
 		message.channel.send(warnGuildRichEmbed);
 
-		const warnUserRichEmbed = new Discord.RichEmbed()
+		const warnUserRichEmbed: Discord.RichEmbed = new Discord.RichEmbed()
 			.setTitle(`Warn`)
 			.setDescription(`You have been warned by **${message.author.username}**  __${date.toLocaleString()}__ avec la raison *"${commande}"*.`)
 			.setAuthor(message.author.username, message.author.avatarURL)
