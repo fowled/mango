@@ -15,7 +15,10 @@
     "discord.js": "^11.5.1",
     "ffbinaries": "^1.1.4",
     "ffmpeg": "0.0.4",
+    "ffmpeg-binaries": "^3.2.2",
+    "ffmpeg-static": "^4.0.0",
     "file-system": "^2.2.2",
+    "fs": "0.0.1-security",
     "libsodium-wrappers": "^0.7.6",
     "ms": "^2.1.2",
     "node-cron": "^2.0.3",
@@ -31,7 +34,7 @@
     "ytdl-core-discord": "^1.0.3"
   },
   "devDependencies": {
-    "@types/node": "^12.12.25",
+    "@types/node": "^12.12.26",
     "tslint": "^5.20.1",
     "typescript": "^3.7.5"
   },
