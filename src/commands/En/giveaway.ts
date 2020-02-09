@@ -13,17 +13,18 @@ import * as Logger from "../../utils/Logger";
  */
 export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const filter: Discord.CollectorFilter = (reaction, user) => ["🇦", "🇧", "🇨"].includes(reaction.emoji.name) && user.id === message.author.id;
-	const messageAuthor: string = message.author.avatarURL;
+	const messageAuthor: string = message.author.avatarURL.toString();
 
 	const giveawayEmbed: Discord.RichEmbed = new Discord.RichEmbed()
 		.setAuthor(message.author.username, message.author.avatarURL)
-		.setDescription("What would you like to do? \n\n:regional_indicator_a: - Create a giveaway \n:regional_indicator_b: - Close a giveaway \n:regional_indicator_c: - End a giveaway")
-		.setColor("#0089FF");
+		.setDescription("What would you like to do? \n\n:regional_indicator_a: - Create a giveaway \n:regional_indicator_b: - Help about this command")
+		.setColor("#0089FF")
+		.setTimestamp()
+		.setFooter(message.author.username, message.author.avatarURL);
 	message.channel.send(giveawayEmbed).then(async (msg: Discord.Message) => {
 
 		await msg.react("🇦");
 		await msg.react("🇧");
-		await msg.react("🇨");
 
 		msg.awaitReactions(filter, {
 			max: 1,
@@ -36,11 +37,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 					break;
 
 				case "🇧":
-					closeGiveaway();
-					break;
-
-				case "🇨":
-					endGiveaway();
+					helpMessage();
 					break;
 			}
 		});
@@ -51,7 +48,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 		message.reply("Enter a name for the giveaway, and I'll create it for you.");
 
 		const channel: Discord.TextChannel = message.channel as Discord.TextChannel;
-		const filter: Discord.CollectorFilter = (message, user) => message.content && !message.author.bot && user.id === message.author.id;
+		const filter: Discord.CollectorFilter = (message, user) => message.content && !message.author.bot;
 
 		Logger.log(giveawayEmbed.author.icon_url);
 		Logger.log(messageAuthor);
@@ -60,7 +57,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 
 		const nameCollector: void = await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
 			.then((collected) => {
-				if (giveawayEmbed.author.icon_url !== messageAuthor) return;
+				if (giveawayEmbed.author.icon_url.toString() !== messageAuthor) return;
 				giveawayName = `${collected.first()}`;
 				message.reply(`Ok, I just created the **${giveawayName}** giveaway! Now, please enter the rewards :wink:`);
 			});
@@ -100,13 +97,13 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 							switch (durationValue) {
 								case "m":
 									setTimeout(() => {
-										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner: ${winner.user.tag}`);
+										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner: *${winner.user.tag} (${winner.user.id})*`);
 									}, (durationNumber * 60000));
 									break;
 
 								case "d":
 									setTimeout(() => {
-										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner: ${winner.user.tag}`);
+										message.reply(`It's giveaway time! **${giveawayName}** giveaway has now finished, and here is the winner: *${winner.user.tag} (${winner.user.id})*`);
 									}, (durationNumber * 86400000));
 									break;
 							}
@@ -119,15 +116,17 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 		};
 
 		await durationCollector();
-
 	}
 
-	function closeGiveaway() {
-		// TODO: faire la commande
-	}
-
-	function endGiveaway() {
-		// TODO: faire la commande
+	function helpMessage() {
+		const helpMessage: Discord.RichEmbed = new Discord.RichEmbed()
+			.setAuthor(message.author.username, message.author.avatarURL)
+			.setTitle("Help on the giveaway command")
+			.setDescription("With this command you can create a giveaway that will pick a winner who's going to obtain a reward. Try it!")
+			.setTimestamp()
+			.setFooter(message.author.username, message.author.avatarURL)
+			.setColor("#0089FF");
+		message.channel.send(helpMessage);
 	}
 
 }
