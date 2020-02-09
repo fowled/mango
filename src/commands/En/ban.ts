@@ -21,7 +21,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 		const date: Date = new Date();
 
 		if (memberBan.bannable && memberBan.id !== "352158391038377984") {
-			const banMessageUser: any = new Discord.RichEmbed()
+			const banMessageUser: Discord.RichEmbed = new Discord.RichEmbed()
 				.setTitle(`Banned!`)
 				.setDescription(`You have been banned from the server **${banGuildName}** by *${banMessageAuthor}* on date __${date.toLocaleTimeString()}__! Reason: *"${reason}"*`)
 				.setTimestamp()
