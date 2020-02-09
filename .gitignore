@@ -2,9 +2,7 @@ src/token.ts
 .git
 out/
 node_modules/
+build/
 ranks/
 languages/
 prefixes/
-.vsls.json
-encore.mp3
-build/
