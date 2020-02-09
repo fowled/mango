@@ -21,7 +21,7 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 			getExactLvl(level);
 
 			function getExactLvl(lvl) {
-				const finalLvl: any = lvl.split(".")[0];
+				const finalLvl: any = level.toString().split(".")[0];
 
 				const levelEmbedMessage: Discord.RichEmbed = new Discord.RichEmbed()
 					.setTitle(`${message.author.tag} level`)
