@@ -1,5 +1,5 @@
 import * as Discord from "discord.js";
-import * as xmlhttprequest from "xmlhttprequest";
+import { XMLHttpRequest } from "xmlhttprequest-ts";
 
 // Scratch command
 
@@ -10,11 +10,11 @@ import * as xmlhttprequest from "xmlhttprequest";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const user: string = args[0];
-	const xhttp: any = new xmlhttprequest();
-	xhttp.onreadystatechange = () => {
+	const xhttp: any = new XMLHttpRequest();
 
+	xhttp.onreadystatechange = function () {
 		if (this.readyState === 4 && this.status === 200) {
 			const parsedRequest: any = JSON.parse(this.responseText);
 			const requestedMessages: Discord.RichEmbed = new Discord.RichEmbed()

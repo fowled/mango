@@ -1,5 +1,5 @@
 import * as Discord from "discord.js";
-import * as xmlhttprequest from "xmlhttprequest";
+import { XMLHttpRequest } from "xmlhttprequest-ts";
 
 // Scratch command
 
@@ -10,11 +10,11 @@ import * as xmlhttprequest from "xmlhttprequest";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(client: Discord.Client, message: Discord.Message, args: string[]) {
+export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const user: string = args[0];
-	const xhttp: any = new xmlhttprequest();
-	xhttp.onreadystatechange = () => {
+	const xhttp: any = new XMLHttpRequest();
 
+	xhttp.onreadystatechange = function() {
 		if (this.readyState === 4 && this.status === 200) {
 			const requestedUser = JSON.parse(xhttp.responseText);
 			let scratchTeam: any;
@@ -54,8 +54,6 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 				.setTimestamp()
 				.setFooter(client.user.username, client.user.avatarURL);
 			message.channel.send(reponse);
-
-			// message.reply(`Username : **${username}** ; ID : **${idUser}** ; Membre de la ST : **${scratchTeam}** ; A rejoint le **${joinedDate}** à **${joinedHour}**`);
 		} else if (this.readyState === 4 && this.responseText === "{\"code\":\"NotFound\",\"message\":\"\"}") {
 			message.reply("I did not find the user you requested.");
 		}
