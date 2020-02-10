@@ -20,9 +20,9 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 			.setTimestamp()
 			.addField("Username", selectedUser.username, true)
 			.addField("Tag", selectedUser.discriminator, true)
-			.addField("ID", selectedUser.id, true)
 			.addField("Status", selectedUser.presence.status, true)
-			.addField("Game status", selectedUser.presence.game ? selectedUser.presence.game.name : "Not currently playing any game", true);
+			.addField("Game status", selectedUser.presence.game ? selectedUser.presence.game.name : "Not currently playing any game", true)
+			.addField("ID", selectedUser.id, true);
 		if (message.guild.member(message.mentions.users.first())) {
 			userinfoRichEmbed.addField("Arrival date", message.guild.member(selectedUser).joinedAt.toLocaleString())
 				.addField("Roles owned in the server", message.guild.member(selectedUser).roles.array().splice(1).map((role: Discord.Role) => role.name).length === 0 ? "This user has no role" : message.guild.member(selectedUser).roles.array().splice(1).map((role: Discord.Role) => role.name).join(", "));
