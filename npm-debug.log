@@ -1,0 +1,95 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'i', '@types/xmlhttprequest' ]
+2 info using npm@3.5.2
+3 info using node@v8.10.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData @types/xmlhttprequest
+8 silly fetchNamedPackageData @types/xmlhttprequest
+9 silly mapToRegistry name @types/xmlhttprequest
+10 silly mapToRegistry scope (from package name) @types
+11 verbose mapToRegistry no registry URL found in name for scope @types
+12 silly mapToRegistry using default registry
+13 silly mapToRegistry registry https://registry.npmjs.org/
+14 silly mapToRegistry uri https://registry.npmjs.org/@types%2fxmlhttprequest
+15 verbose request uri https://registry.npmjs.org/@types%2fxmlhttprequest
+16 verbose request no auth needed
+17 info attempt registry request try #1 at 11:29:24
+18 verbose request id 50f15eb594c77087
+19 http request GET https://registry.npmjs.org/@types%2fxmlhttprequest
+20 http 404 https://registry.npmjs.org/@types%2fxmlhttprequest
+21 verbose headers { date: 'Mon, 10 Feb 2020 10:29:25 GMT',
+21 verbose headers   'content-type': 'application/json',
+21 verbose headers   'content-length': '21',
+21 verbose headers   connection: 'keep-alive',
+21 verbose headers   'set-cookie':
+21 verbose headers    [ '__cfduid=d9a49f6cefd7f0074a598baeb4ef0df941581330564; expires=Wed, 11-Mar-20 10:29:24 GMT; path=/; domain=.npmjs.org; HttpOnly; SameSite=Lax' ],
+21 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+21 verbose headers   vary: 'Accept-Encoding',
+21 verbose headers   server: 'cloudflare',
+21 verbose headers   'cf-ray': '562d66df0cbc3bdf-CDG' }
+22 silly get cb [ 404,
+22 silly get   { date: 'Mon, 10 Feb 2020 10:29:25 GMT',
+22 silly get     'content-type': 'application/json',
+22 silly get     'content-length': '21',
+22 silly get     connection: 'keep-alive',
+22 silly get     'set-cookie':
+22 silly get      [ '__cfduid=d9a49f6cefd7f0074a598baeb4ef0df941581330564; expires=Wed, 11-Mar-20 10:29:24 GMT; path=/; domain=.npmjs.org; HttpOnly; SameSite=Lax' ],
+22 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+22 silly get     vary: 'Accept-Encoding',
+22 silly get     server: 'cloudflare',
+22 silly get     'cf-ray': '562d66df0cbc3bdf-CDG' } ]
+23 silly fetchPackageMetaData Error: Not found : @types/xmlhttprequest
+23 silly fetchPackageMetaData     at makeError (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+23 silly fetchPackageMetaData     at CachingRegistryClient.<anonymous> (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+23 silly fetchPackageMetaData     at Request._callback (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+23 silly fetchPackageMetaData     at Request.self.callback (/usr/share/npm/node_modules/request/request.js:198:22)
+23 silly fetchPackageMetaData     at emitTwo (events.js:126:13)
+23 silly fetchPackageMetaData     at Request.emit (events.js:214:7)
+23 silly fetchPackageMetaData     at Request.<anonymous> (/usr/share/npm/node_modules/request/request.js:1082:10)
+23 silly fetchPackageMetaData     at emitOne (events.js:121:20)
+23 silly fetchPackageMetaData     at Request.emit (events.js:211:7)
+23 silly fetchPackageMetaData     at IncomingMessage.<anonymous> (/usr/share/npm/node_modules/request/request.js:1009:12)
+23 silly fetchPackageMetaData  error for @types/xmlhttprequest { Error: Not found : @types/xmlhttprequest
+23 silly fetchPackageMetaData     at makeError (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+23 silly fetchPackageMetaData     at CachingRegistryClient.<anonymous> (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+23 silly fetchPackageMetaData     at Request._callback (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+23 silly fetchPackageMetaData     at Request.self.callback (/usr/share/npm/node_modules/request/request.js:198:22)
+23 silly fetchPackageMetaData     at emitTwo (events.js:126:13)
+23 silly fetchPackageMetaData     at Request.emit (events.js:214:7)
+23 silly fetchPackageMetaData     at Request.<anonymous> (/usr/share/npm/node_modules/request/request.js:1082:10)
+23 silly fetchPackageMetaData     at emitOne (events.js:121:20)
+23 silly fetchPackageMetaData     at Request.emit (events.js:211:7)
+23 silly fetchPackageMetaData     at IncomingMessage.<anonymous> (/usr/share/npm/node_modules/request/request.js:1009:12) pkgid: '@types/xmlhttprequest', statusCode: 404, code: 'E404' }
+24 silly rollbackFailedOptional Starting
+25 silly rollbackFailedOptional Finishing
+26 silly runTopLevelLifecycles Starting
+27 silly runTopLevelLifecycles Finishing
+28 silly install printInstalled
+29 verbose stack Error: Not found : @types/xmlhttprequest
+29 verbose stack     at makeError (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+29 verbose stack     at CachingRegistryClient.<anonymous> (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+29 verbose stack     at Request._callback (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+29 verbose stack     at Request.self.callback (/usr/share/npm/node_modules/request/request.js:198:22)
+29 verbose stack     at emitTwo (events.js:126:13)
+29 verbose stack     at Request.emit (events.js:214:7)
+29 verbose stack     at Request.<anonymous> (/usr/share/npm/node_modules/request/request.js:1082:10)
+29 verbose stack     at emitOne (events.js:121:20)
+29 verbose stack     at Request.emit (events.js:211:7)
+29 verbose stack     at IncomingMessage.<anonymous> (/usr/share/npm/node_modules/request/request.js:1009:12)
+30 verbose statusCode 404
+31 verbose pkgid @types/xmlhttprequest
+32 verbose cwd /home/maxan/Documents/Autre/Code/JS-TS/Mango
+33 error Linux 5.3.0-26-generic
+34 error argv "/usr/bin/node" "/usr/bin/npm" "i" "@types/xmlhttprequest"
+35 error node v8.10.0
+36 error npm  v3.5.2
+37 error code E404
+38 error 404 Not found : @types/xmlhttprequest
+39 error 404
+40 error 404 '@types/xmlhttprequest' is not in the npm registry.
+41 error 404 You should bug the author to publish it (or use the name yourself!)
+42 error 404 Note that you can also install from a
+43 error 404 tarball, folder, http url, or git url.
+44 verbose exit [ 1, true ]
