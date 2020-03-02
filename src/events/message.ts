@@ -24,20 +24,5 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 		require(`./../commands/${cmd}.js`).run(Client, message, args, null);
 		Logger.log(`${message.author.tag} just used the ${cmd} power in ${message.guild.name}.`);
-
-	/*	Fs.readFile(`././languages/${message.author.id}`, (err: NodeJS.ErrnoException, data): void => {
-			if (err) {
-				Logger.error(err);
-				Fs.writeFileSync(`././languages/${message.author.id}`, "En");
-			}
-			try {
-				require(`./../commands/${data || "En"}/${cmd}.js`).run(Client, message, args, null);
-				Logger.log(`${message.author.tag} just used the ${cmd} power.`);
-			} catch (error) {
-				message.reply("This command doesn't exist.").then((message: Discord.Message): Promise<Discord.Message> => message.delete(3000));
-				Logger.error(error);
-			}
-		}); */
-
 	});
 };
