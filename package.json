@@ -22,7 +22,7 @@
     "xmlhttprequest": "^1.8.0",
     "xmlhttprequest-ts": "^1.0.1",
     "yt-search": "^1.1.2",
-    "ytdl-core": "^1.0.7"
+    "ytdl-core": "^2.0.0"
   },
   "devDependencies": {},
   "scripts": {
