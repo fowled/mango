@@ -1,4 +1,3 @@
-src/token.ts
 .git
 out/
 node_modules/
@@ -7,3 +6,4 @@ ranks/
 languages/
 prefixes/
 nohup.out
+.env

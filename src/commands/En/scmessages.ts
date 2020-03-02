@@ -12,7 +12,7 @@ import { XMLHttpRequest } from "xmlhttprequest-ts";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const user: string = args[0];
-	const xhttp: any = new XMLHttpRequest();
+	const xhttp: XMLHttpRequest = new XMLHttpRequest();
 
 	xhttp.onreadystatechange = function () {
 		if (this.readyState === 4 && this.status === 200) {

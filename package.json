@@ -4,21 +4,29 @@
   "description": "A useful multilingual Discord bot, written in JavaScript/TypeScript with Discord.js",
   "main": "out/index.js",
   "dependencies": {
+    "@types/node": "^13.7.1",
     "discord.js": "^11.5.1",
+    "dom-parser": "^0.1.6",
+    "dotenv": "^8.2.0",
+    "eslint": "^6.8.0",
     "ffmpeg": "^0.0.4",
     "ffmpeg-binaries": "^4.0.0",
     "file-system": "^2.2.2",
-    "fs": "^0.0.1-security",
+    "fs": "0.0.1-security",
+    "node-gyp": "^6.1.0",
+    "node-opus": "^0.3.3",
+    "rebuild": "^0.1.2",
     "tsc": "^1.20150623.0",
     "tslint": "^6.0.0",
     "typescript": "^3.7.5",
     "xmlhttprequest": "^1.8.0",
+    "xmlhttprequest-ts": "^1.0.1",
+    "yt-search": "^1.1.2",
     "ytdl-core": "^1.0.7"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "node-gyp rebuild"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "MIT",
