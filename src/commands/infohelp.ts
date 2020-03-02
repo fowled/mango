@@ -1,5 +1,5 @@
 import * as Discord from "discord.js";
-import * as Logger from "../../utils/Logger";
+import * as Logger from ".././utils/Logger";
 
 // Help command
 

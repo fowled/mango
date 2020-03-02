@@ -1,6 +1,6 @@
 import * as Discord from "discord.js";
 import ytdl from "ytdl-core";
-import * as Logger from "../../utils/Logger";
+import * as Logger from ".././utils/Logger";
 
 // Music command
 

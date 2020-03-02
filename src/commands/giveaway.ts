@@ -1,6 +1,6 @@
 import * as Discord from "discord.js";
-import * as RichEmbed from "../../utils/Embed";
-import * as Logger from "../../utils/Logger";
+import * as RichEmbed from ".././utils/Embed";
+import * as Logger from ".././utils/Logger";
 
 // Fun command
 
