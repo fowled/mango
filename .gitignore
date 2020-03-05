@@ -7,3 +7,6 @@ languages/
 prefixes/
 nohup.out
 .env
+credentials.json
+src/commands/upload.ts
+out/commands/upload.js
