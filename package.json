@@ -4,6 +4,7 @@
   "description": "A useful multilingual Discord bot, written in JavaScript/TypeScript with Discord.js",
   "main": "out/index.js",
   "dependencies": {
+    "@types/ms": "^0.7.31",
     "@types/node": "^13.7.1",
     "basic-ftp": "^4.5.3",
     "discord.js": "^11.5.1",
@@ -15,6 +16,7 @@
     "file-system": "^2.2.2",
     "fs": "0.0.1-security",
     "googleapis": "^39.2.0",
+    "ms": "^2.1.2",
     "node-gyp": "^6.1.0",
     "node-opus": "^0.3.3",
     "rebuild": "^0.1.2",
