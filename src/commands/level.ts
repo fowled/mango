@@ -14,7 +14,11 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 	message.channel.startTyping();
 
 	setTimeout(() => {
-		FS.readFile(`ranks/${message.author.id}.txt`, (err, data) => {
+		FS.readFile(`ranks/${message.author.id}`, (err, data) => {
+
+			if (err) {
+				return message.reply("Sorry, but I got a problem fetching your level data. Please retry later and send this error to `@Mazz3015#2003`. " + `\`\`\`${err.message}\`\`\``);
+			}
 
 			const level: number = Math.floor(parseInt(data.toString(), 10) / 50);
 
