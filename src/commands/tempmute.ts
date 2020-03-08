@@ -1,4 +1,5 @@
 import * as Discord from "discord.js";
+import * as LogChecker from "../utils/LogChecker";
 import ms from "ms";
 
 // Moderation command
@@ -49,6 +50,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     await memberMute.addRole(muteRole);
     message.reply(`**${memberMute.user.tag}** has been muted for *${ms(ms(mutetime))}*. :white_check_mark:`);
+    LogChecker.insertLog(Client, message.author, userMute, message.guild.id, "temporarily muted", "no particular reason", ms(ms(mutetime)));
 
     setTimeout(function () {
         memberMute.removeRole(muteRole);

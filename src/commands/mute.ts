@@ -1,4 +1,5 @@
 import * as Discord from "discord.js";
+import * as LogChecker from "../utils/LogChecker";
 
 // Moderation command
 
@@ -42,4 +43,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     memberMute.addRole(muteRole);
     message.reply(`**${memberMute.user.tag}** has been muted. :white_check_mark:`);
+
+    LogChecker.insertLog(Client, message.author, userMute, message.guild.id, "muted", "no particular reason", "infinite");
 }

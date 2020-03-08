@@ -1,4 +1,5 @@
 import * as Discord from "discord.js";
+import * as LogChecker from "../utils/LogChecker";
 
 // Moderation command
 
@@ -13,7 +14,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const userUnmute: Discord.User = message.mentions.users.first();
     const memberUnmute: Discord.GuildMember = message.guild.member(userUnmute);
 
-    if (memberUnmute.hasPermissions(["ADMINISTRATOR", "MANAGE_MESSAGES"])) {
+    if (memberUnmute.hasPermission(["ADMINISTRATOR", "MANAGE_MESSAGES"])) {
         return message.reply("Sorry, but I can't unmute the user you specified, because he has one of the following perms: `ADMINISTATOR` or `MANAGE_MESSAGES`.");
     }
 
@@ -30,6 +31,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     try {
         memberUnmute.removeRole(muteRole);
         message.reply(`**${memberUnmute.user.tag}** has been successfully unmuted. :white_check_mark:`);
+        LogChecker.insertLog(Client, message.author, userUnmute, message.guild.id, "unmuted", "no particular reason", "infinite");
     } catch (error) {
         message.reply("Sorry, but I got an unexcepted error while unmuting this user. " + + `\`\`\`${error.message}\`\`\``);
     }
