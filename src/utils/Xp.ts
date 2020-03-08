@@ -8,17 +8,17 @@ import * as Fs from "fs";
 export function checkXP(message: Discord.Message): void {
 	let userXp: number;
 	try {
-		userXp = Number.parseInt(Fs.readFileSync(`./ranks/${message.author.id}`).toString(), 10);
+		userXp = Number.parseInt(Fs.readFileSync(`./database/ranks/${message.author.id}`).toString(), 10);
 
 		userXp++;
 
-		Fs.writeFileSync(`./ranks/${message.author.id}`, userXp);
+		Fs.writeFileSync(`./database/ranks/${message.author.id}`, userXp);
 
 		if (userXp % 50 === 0 && userXp >= 50 && userXp <= 1000) {
 			message.reply("Rank up! You are now level **" + Math.ceil(userXp / 50) + "**.");
 		}
 
 	} catch (e) {
-		Fs.writeFileSync(`./ranks/${message.author.id}`, 0);
+		Fs.writeFileSync(`./database/ranks/${message.author.id}`, 0);
 	}
 }
