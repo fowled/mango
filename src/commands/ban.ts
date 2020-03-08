@@ -1,4 +1,5 @@
 import * as Discord from "discord.js";
+import * as LogChecker from "../utils/LogChecker";
 import * as Logger from "././../utils/Logger";
 
 // Moderation command
@@ -44,6 +45,8 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 						.setColor("#4292f4")
 						.setFooter(Client.user.username, Client.user.avatarURL);
 					message.channel.send(banMessageGuild);
+					
+					LogChecker.insertLog(Client, message.author, userBan, message.guild.id, "banned", reason, "infinite");
 
 				}).catch((err: any) => {
 					const banMessageError: Discord.RichEmbed = new Discord.RichEmbed()

@@ -1,4 +1,5 @@
 import * as Discord from "discord.js";
+import * as LogChecker from "../utils/LogChecker";
 
 // Moderation command
 
@@ -46,6 +47,8 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 						.setColor("#4292f4")
 						.setFooter(Client.user.username, Client.user.avatarURL);
 					message.channel.send(kickMessageGuild);
+
+					LogChecker.insertLog(Client, message.author, user, message.guild.id, "kicked", reason, "infinite");
 				}).catch((err: any) => {
 					const kickMessageError: Discord.RichEmbed = new Discord.RichEmbed()
 						.setTitle("Error")
@@ -55,7 +58,6 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 						.setColor("#FF0000")
 						.setFooter(Client.user.username, Client.user.avatarURL);
 					message.channel.send(kickMessageError);
-					// il faut require le logger en haut du fichier, et aussi changer la fonction "exports"
 				});
 			}, 750);
 		} else {
