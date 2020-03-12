@@ -11,7 +11,7 @@ import * as Logger from ".././utils/Logger";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const filter: Discord.CollectorFilter = (reaction, user) => ["🇦", "🇧", "🇨"].includes(reaction.emoji.name) && user.id === message.author.id;
 	const messageAuthor: string = message.author.avatarURL.toString();
 
