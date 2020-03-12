@@ -10,7 +10,7 @@ import * as LogChecker from "../utils/LogChecker";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const user: Discord.User = message.mentions.users.first();
 	if (user) {
 		const member: Discord.GuildMember = message.guild.member(user);
