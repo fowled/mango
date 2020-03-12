@@ -41,8 +41,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         })
     });
 
-    memberMute.addRole(muteRole);
-    message.reply(`**${memberMute.user.tag}** has been muted. :white_check_mark:`);
+    memberMute.addRole(muteRole); 
 
-    LogChecker.insertLog(Client, message.author, userMute, message.guild.id, "muted", "no particular reason", "infinite");
+    let reason = args[1] == undefined ? "no reason specified." : message.content.split(args[0])[1].trim();
+
+    message.reply(`**${memberMute.user.tag}** has been muted for: *${reason}*. :white_check_mark:`);
+
+    LogChecker.insertLog(Client, message.author, userMute, message.guild.id, "muted", reason, "infinite");
 }

@@ -15,6 +15,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const userMute: Discord.User = message.mentions.users.first();
     const memberMute: Discord.GuildMember = message.guild.member(userMute);
 
+    if (!memberMute) {
+        return message.reply("You specified an invalid user to mute. Please tag him in order to mute them.");
+    }
+
     if (memberMute.hasPermission(["ADMINISTRATOR"])) {
        return  message.reply("Sorry, but I can't mute the user you specified, because he has the Administrator permission.");
     }
@@ -48,9 +52,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply("You didn't specify a time to mute the discordian! :confused:");
     }
 
+    let reason = args[2] == undefined ? "no reason specified." : message.content.split(args[1])[1].trim();
+
     await memberMute.addRole(muteRole);
     message.reply(`**${memberMute.user.tag}** has been muted for *${ms(ms(mutetime))}*. :white_check_mark:`);
-    LogChecker.insertLog(Client, message.author, userMute, message.guild.id, "temporarily muted", "no particular reason", ms(ms(mutetime)));
+    LogChecker.insertLog(Client, message.author, userMute, message.guild.id, "temporarily muted", reason, ms(ms(mutetime)));
 
     setTimeout(function () {
         memberMute.removeRole(muteRole);
