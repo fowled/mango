@@ -11,8 +11,7 @@ import { XMLHttpRequest } from "xmlhttprequest-ts";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	let project = args[0];
-	console.log(project);
+	let project: string = args[0];
 	const xhttp: any = new XMLHttpRequest();
 
 	if (project.startsWith("https://")) {
