@@ -8,3 +8,5 @@ prefixes/
 nohup.out
 .env
 log/
+database/
+ideas.md
