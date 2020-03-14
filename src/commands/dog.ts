@@ -12,19 +12,19 @@ import { XMLHttpRequest } from "xmlhttprequest";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     const xhttp = new XMLHttpRequest();
-    let emojiList: string[] = [":confused:", ":confounded:", ":disappointed_relieved:", ":frowning:"];
+    let emojiList: string[] = [":confused:", "confounded", ":disappointed_relieved:", ":frowning:"];
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             const parsedRequest = JSON.parse(xhttp.responseText);
-            const catPicture = parsedRequest[0].url;
+            const dogPicture = parsedRequest[0].url;
             let breeds;
 
             breeds = new Discord.RichEmbed()
                 .setAuthor(message.author.tag, message.author.avatarURL)
-                .attachFile(catPicture)
+                .attachFile(dogPicture)
                 .setColor("0FB1FB")
-                .setDescription("Here is some info about your cat.")
+                .setDescription("Here is some info about your doggo.")
                 .addField("Breed", getSafe(() => parsedRequest[0].breeds[0].name), true)
                 .addField("Life span", getSafe(() => parsedRequest[0].breeds[0].life_span), true)
                 .addField("Temperament", getSafe(() => parsedRequest[0].breeds[0].temperament))
@@ -35,7 +35,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         }
     };
 
-    xhttp.open("GET", "https://api.thecatapi.com/v1/images/search", true);
+    xhttp.open("GET", "https://api.thedogapi.com/v1/images/search", true);
     xhttp.send();
 
     function getSafe(fn: any) {

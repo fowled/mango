@@ -15,7 +15,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		if (!isNaN(parseInt(args[0], 10)) && parseInt(args[0], 10) >= 1 && parseInt(args[0], 10) <= 100) {
 			message.channel.bulkDelete(parseInt(args[0], 10))
 				.then(function () {
-					LogChecker.insertLog(Client, message.author, message.author, message.guild.id, "clear", message.channel as unknown as string, args[0])
+					LogChecker.insertLog(Client, message.author, message.guild.id, "clear", args[0])
 				})
 				.catch((error: Error) => message.reply("I don't have the permission to delete messages."));
 		} else {
