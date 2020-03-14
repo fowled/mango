@@ -20,7 +20,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
     if (memberMute.hasPermission(["ADMINISTRATOR"])) {
-       return  message.reply("Sorry, but I can't mute the user you specified, because he has the Administrator permission.");
+        return message.reply("Sorry, but I can't mute the user you specified, because he has the Administrator permission.");
     }
 
     let muteRole: Discord.Role = message.guild.roles.find(role => role.name === "muted");
@@ -56,7 +56,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     await memberMute.addRole(muteRole);
     message.reply(`**${memberMute.user.tag}** has been muted for *${ms(ms(mutetime))}*. :white_check_mark:`);
-    LogChecker.insertLog(Client, message.author, userMute, message.guild.id, "temporarily muted", reason, ms(ms(mutetime)));
+    LogChecker.insertLog(Client, message.author, message.guild.id, "temporarily muted", userMute,  reason, ms(ms(mutetime)));
 
     setTimeout(function () {
         memberMute.removeRole(muteRole);

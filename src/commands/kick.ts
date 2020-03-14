@@ -48,7 +48,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 						.setFooter(Client.user.username, Client.user.avatarURL);
 					message.channel.send(kickMessageGuild);
 
-					LogChecker.insertLog(Client, message.author, user, message.guild.id, "kicked", reason, "infinite");
+					LogChecker.insertLog(Client, message.author, message.guild.id, "kicked", user, reason, "infinite");
 				}).catch((err: any) => {
 					const kickMessageError: Discord.RichEmbed = new Discord.RichEmbed()
 						.setTitle("Error")

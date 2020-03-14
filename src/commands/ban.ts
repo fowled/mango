@@ -45,8 +45,8 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 						.setColor("#4292f4")
 						.setFooter(Client.user.username, Client.user.avatarURL);
 					message.channel.send(banMessageGuild);
-					
-					LogChecker.insertLog(Client, message.author, userBan, message.guild.id, "banned", reason, "infinite");
+
+					LogChecker.insertLog(Client, message.author, message.guild.id, "banned", userBan, reason, "infinite");
 
 				}).catch((err: any) => {
 					const banMessageError: Discord.RichEmbed = new Discord.RichEmbed()

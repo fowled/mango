@@ -2,7 +2,7 @@ import * as Discord from "discord.js";
 import * as Logger from "./Logger";
 import * as fs from "fs";
 
-export function insertLog(Client: Discord.Client, author: Discord.User, caughtUser: Discord.User, guildID: string, commandName: string, reason: string, duration: string) {
+export function insertLog(Client: Discord.Client, author: Discord.User, guildID: string, commandName?: string, caughtUser?, reason?: string, duration?: string) {
     let channelID: any;
     try {
         fs.readFile(`./database/log/${guildID}`, (err, data) => {

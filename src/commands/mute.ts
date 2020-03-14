@@ -28,7 +28,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 permissions: [],
                 color: "#524F4F"
             });
-            
+
         } catch (error) {
             message.reply("Sorry, but I got an unexcepted error while creating the role. " + + `\`\`\`${error.message}\`\`\``);
         }
@@ -41,11 +41,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         })
     });
 
-    memberMute.addRole(muteRole); 
+    memberMute.addRole(muteRole);
 
     let reason = args[1] == undefined ? "no reason specified." : message.content.split(args[0])[1].trim();
 
     message.reply(`**${memberMute.user.tag}** has been muted for: *${reason}*. :white_check_mark:`);
 
-    LogChecker.insertLog(Client, message.author, userMute, message.guild.id, "muted", reason, "infinite");
+    LogChecker.insertLog(Client, message.author, message.guild.id, "muted", userMute, reason, "infinite");
 }
