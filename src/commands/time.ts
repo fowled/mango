@@ -12,8 +12,8 @@ import { XMLHttpRequest } from "xmlhttprequest";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     const xhttp: XMLHttpRequest = new XMLHttpRequest();
-    let area = args[0].toLowerCase();
-    let country = args[1];
+    let area;
+    let country;
     let completedArea: any;
     let url: string;
 
@@ -22,12 +22,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
     if (!args[1]) {
-        country = args[0];
+        country = args[0].toLowerCase();
         const xhttp: XMLHttpRequest = new XMLHttpRequest();
 
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                let requestArray = xhttp.responseText.split(args[0])[0];
+                let requestArray = xhttp.responseText.toLowerCase().split(args[0])[0];
                 requestArray = requestArray.split("/");
 
                 completedArea = requestArray[Object.keys(requestArray)[Object.keys(requestArray).length - 2]].split("\n")[1];
@@ -40,6 +40,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         xhttp.send();
 
     } else {
+        area = args[0].toLowerCase();
+        country = args[1].toLowerCase();
         url = `http://worldtimeapi.org/api/timezone/${area}/${country}.json`
     }
 
