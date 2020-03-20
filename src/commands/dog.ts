@@ -12,7 +12,7 @@ import { XMLHttpRequest } from "xmlhttprequest";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     const xhttp = new XMLHttpRequest();
-    let emojiList: string[] = [":confused:", "confounded", ":disappointed_relieved:", ":frowning:"];
+    let emojiList: string[] = [":confused:", ":confounded:", ":disappointed_relieved:", ":frowning:"];
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {

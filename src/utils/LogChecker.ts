@@ -2,7 +2,7 @@ import * as Discord from "discord.js";
 import * as Logger from "./Logger";
 import * as fs from "fs";
 
-export function insertLog(Client: Discord.Client, author: Discord.User, guildID: string, commandName?: string, caughtUser?, reason?: string, duration?: string) {
+export function insertLog(Client: Discord.Client, author: Discord.User, guildID: any, commandName?: string, caughtUser?, reason?: any, duration?: string) {
     let channelID: any;
     try {
         fs.readFile(`./database/log/${guildID}`, (err, data) => {
@@ -11,7 +11,7 @@ export function insertLog(Client: Discord.Client, author: Discord.User, guildID:
             }
 
             channelID = data;
-            let typeOfMessage = commandName == "clear" ? `**${author.tag}** just cleared *${duration}* messages in the ${reason} channel.` : `**${caughtUser.tag}** has been __${commandName}__ by ${author.tag} for the reason: *${reason}*. \nDuration of the punishment: **${duration}**.`;
+            let typeOfMessage = commandName == "clear" ? `**${author.tag}** just cleared *${caughtUser}* messages in the ${reason} channel.` : `**${caughtUser.tag}** has been __${commandName}__ by ${author.tag} for the reason: *${reason}*. \nDuration of the punishment: **${duration}**.`;
 
             const logRichEmbed = new Discord.RichEmbed()
                 .setAuthor(author.tag, author.avatarURL)

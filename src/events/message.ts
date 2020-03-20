@@ -25,7 +25,9 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 		try {
 			require(`./../commands/${cmd}.js`).run(Client, message, args, null);
 		} catch (err) {
-			message.reply("I'm sorry, but the command you're looking for doesen't exist... :eyes:");
+			message.reply("I'm sorry, but the command you're looking for doesen't exist... :eyes:").then((msg: Discord.Message) => {
+				msg.delete(3000);
+			});
 		}
 
 		Logger.log(`${message.author.tag} just used the ${cmd} power in ${message.guild.name}.`);
