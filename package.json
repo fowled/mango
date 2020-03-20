@@ -10,6 +10,8 @@
     "discord.js": "^11.5.1",
     "dom-parser": "^0.1.6",
     "dotenv": "^8.2.0",
+    "emoji-name-map": "^1.2.8",
+    "emoji-to-short-name": "^1.0.1",
     "eslint": "^6.8.0",
     "ffmpeg": "^0.0.4",
     "ffmpeg-binaries": "^4.0.0",
