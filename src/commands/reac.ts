@@ -9,34 +9,61 @@ import * as Discord from "discord.js";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(Client: Discord.Client, message: Discord.Message, args: any, options: any) {
-    if (args[0].startsWith("<")) {
+export async function run(Client: Discord.Client, message: Discord.Message, args: string, options: any) {
+    const id: string = args[1];
+
+    switch (args[0].charAt(0)) {
+        case "<":
+            emojiOfGuild();
+            break;
+
+        case ":":
+            emojiWithoutNitro();
+            break;
+
+        default:
+            reactToMsg(args[0]);
+    }
+
+    function emojiOfGuild() {
         const emoji: Object = args[0].split(":");
         let emojiID: any = Object.values(emoji)[Object.keys(emoji).length - 1];
         emojiID = emojiID.split(">")[0];
         const grabEmoji: Discord.Emoji = message.guild.emojis.get(emojiID.toString());
         reactToMsg(grabEmoji);
-    } else if (args[0].startsWith(":")) {
+    }
+
+    function emojiWithoutNitro() {
         const emoji: Object = args[0].split(":");
         let emojiID: string[] = Object.values(emoji)[1];
         const grabEmoji: Discord.Emoji = message.guild.emojis.find(emj => emj.name == emojiID.toString());
         reactToMsg(grabEmoji);
-    } else {
-        reactToMsg(args[0]);
     }
 
-    function reactToMsg(givenEmoji) {
+    function reactToMsg(givenEmoji: any) {
         message.delete().catch(err => {
             message.reply("I don't have the perms to delete that message. Ask an admin!").then((msg: Discord.Message) => {
                 msg.delete(3000);
             });
         });
-        message.channel.fetchMessages({ limit: 2 }).then(msg => {
-            const lastMessage = msg.last().react(givenEmoji).catch(err => {
-                message.reply("Sorry, I was unable to fetch the lastest message of this channel.").then((msg: Discord.Message) => {
-                    msg.delete(3000);
+
+        if (id) {
+            message.channel.fetchMessage(id).then(msg => {
+                msg.react(givenEmoji).catch(err => {
+                    message.reply("Sorry, an unknown error happened. Please retry the command.").then((msg: Discord.Message) => {
+                        msg.delete(3000);
+                    });
                 });
             });
-        });
+        } else {
+            message.channel.fetchMessages({ limit: 2 }).then(msg => {
+                const lastMessage = msg.last().react(givenEmoji).catch(err => {
+                    message.reply("Sorry, an unknown error happened. Please retry the command.").then((msg: Discord.Message) => {
+                        msg.delete(3000);
+                    });
+                });
+            });
+        }
+
     }
 }
