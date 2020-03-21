@@ -29,19 +29,19 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         const emoji: Object = args[0].split(":");
         let emojiID: any = Object.values(emoji)[Object.keys(emoji).length - 1];
         emojiID = emojiID.split(">")[0];
-        const grabEmoji: Discord.Emoji = message.guild.emojis.get(emojiID.toString());
+        const grabEmoji: Discord.Emoji = Client.emojis.get(emojiID.toString());
         reactToMsg(grabEmoji);
     }
 
     function emojiWithoutNitro() {
         const emoji: Object = args[0].split(":");
         let emojiID: string[] = Object.values(emoji)[1];
-        const grabEmoji: Discord.Emoji = message.guild.emojis.find(emj => emj.name == emojiID.toString());
+        const grabEmoji: Discord.Emoji = Client.emojis.find(emj => emj.name == emojiID.toString());
         reactToMsg(grabEmoji);
     }
 
     function reactToMsg(givenEmoji: any) {
-        message.delete().catch(err => {
+        message.delete(500).catch(err => {
             message.reply("I don't have the perms to delete that message. Ask an admin!").then((msg: Discord.Message) => {
                 msg.delete(3000);
             });
@@ -57,7 +57,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             });
         } else {
             message.channel.fetchMessages({ limit: 2 }).then(msg => {
-                const lastMessage = msg.last().react(givenEmoji).catch(err => {
+                msg.last().react(givenEmoji).catch(err => {
                     message.reply("Sorry, an unknown error happened. Please retry the command.").then((msg: Discord.Message) => {
                         msg.delete(3000);
                     });
