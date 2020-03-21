@@ -1,4 +1,5 @@
 import * as Discord from "discord.js";
+import * as Logger from "../utils/Logger";
 
 // Fun command
 
@@ -9,21 +10,26 @@ import * as Discord from "discord.js";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-    if (message.author.id != "352158391038377984") {
-        return;
-    }
-
-	let messageToSay: string[] = message.content.split(" ");
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
+    let messageToSay: any = message.content.split(" ");
     messageToSay = messageToSay.slice(1, messageToSay.length);
+    detectEmojis(messageToSay);
 
-    let emojiarray = [];
-    let guild = Client.guilds.get("510564701919510549");
-    
-    let everyemojis = guild.emojis.forEach(emj => emojiarray.push(emj));
-    
-    const messageToSend = emojiarray.join("");
+    message.delete().catch(err => Logger.error(err));
+    const richMessage: Discord.RichEmbed = new Discord.RichEmbed()
+        .setTitle(`Message by ${message.author.tag}`)
+        .setAuthor(message.author.username, message.author.avatarURL)
+        .setDescription(messageToSay.join(" "))
+        .setTimestamp()
+        .setFooter(Client.user.username, Client.user.avatarURL);
+    message.channel.send(richMessage);
 
-    message.delete();
-    message.channel.send(messageToSend);
+    function detectEmojis(msg: string | any[]) {
+        for (let index: number = 0; index < msg.length; index++) {
+            if (msg[index].startsWith(":") && msg[index].endsWith(":")) {
+                const emoji = Client.emojis.find(emj => emj.name == msg[index].split(":")[1]);
+                messageToSay.splice(index, 1, emoji);
+            }
+        }
+    }
 }
