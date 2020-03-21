@@ -1,5 +1,5 @@
 import * as Discord from "discord.js";
-import { XMLHttpRequest } from "xmlhttprequest-ts";
+import { XMLHttpRequest } from "xmlhttprequest";
 
 // Scratch command
 
@@ -29,11 +29,11 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 				scratchTeam = "Yep.";
 			}
 
-			if (requestedUser.profile.status === "") {
+			if (requestedUser.profile.status === "" || checkLines(requestedUser.profile.status.toString())) {
 				status = "No status provided...";
 			}
 
-			if (requestedUser.profile.bio === "") {
+			if (requestedUser.profile.bio === "" || checkLines(requestedUser.profile.bio.toString())) {
 				bio = "No bio provided...";
 			}
 
@@ -60,4 +60,14 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 	};
 	xhttp.open("GET", `https://api.scratch.mit.edu/users/${user}`, true);
 	xhttp.send();
+
+	function checkLines(status: string) {
+		let splittedArray: string[] = status.split("\n");
+		for (let i: number = 0; i < splittedArray.length; i++) {
+			if (splittedArray[i] != "") {
+				return false;
+			}
+		}
+		return true;
+	}
 }

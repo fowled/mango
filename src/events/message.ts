@@ -11,7 +11,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 	Xp.checkXP(message);
 
-	Fs.readFile(`./prefixes/${message.author.id}`, (err: Error, data): void => {
+	Fs.readFile(`./custom/prefixes/${message.author.id}.txt`, (err: Error, data): void => {
 		const prefix: string = err ? "!" : data.toString();
 
 		const msg: string = message.content;
@@ -24,12 +24,10 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 		try {
 			require(`./../commands/${cmd}.js`).run(Client, message, args, null);
+			Logger.log(`${message.author.tag} just used the ${cmd} power in ${message.guild.name}.`);
 		} catch (err) {
-			message.reply("I'm sorry, but the command you're looking for doesen't exist... :eyes:").then((msg: Discord.Message) => {
-				msg.delete(3000);
-			});
+			Logger.log(`The command ${message.author.tag} tried to call in ${message.guild.name} doesen't seem to exist.`);
 		}
 
-		Logger.log(`${message.author.tag} just used the ${cmd} power in ${message.guild.name}.`);
 	});
 };

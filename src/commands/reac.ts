@@ -48,8 +48,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         });
 
         if (id) {
-            message.channel.fetchMessage(id).then(msg => {
-                msg.react(givenEmoji).catch(err => {
+            message.channel.fetchMessage(id).then((msg: Discord.Message) => {
+                msg.react(givenEmoji).then(msg => {
+                    setTimeout(function () {
+                        msg.remove();
+                    }, 15000);
+                }).catch(err => {
                     message.reply("Sorry, an unknown error happened. Please retry the command.").then((msg: Discord.Message) => {
                         msg.delete(3000);
                     });
@@ -57,7 +61,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             });
         } else {
             message.channel.fetchMessages({ limit: 2 }).then(msg => {
-                msg.last().react(givenEmoji).catch(err => {
+                msg.last().react(givenEmoji).then(msg => {
+                    setTimeout(function () {
+                        msg.remove();
+                    }, 15000);
+                }).catch(err => {
                     message.reply("Sorry, an unknown error happened. Please retry the command.").then((msg: Discord.Message) => {
                         msg.delete(3000);
                     });

@@ -11,7 +11,7 @@ export function insertLog(Client: Discord.Client, author: Discord.User, guildID:
             }
 
             channelID = data;
-            let typeOfMessage = commandName == "clear" ? `**${author.tag}** just cleared *${caughtUser}* messages in the ${reason} channel.` : `**${caughtUser.tag}** has been __${commandName}__ by ${author.tag} for the reason: *${reason}*. \nDuration of the punishment: **${duration}**.`;
+            let typeOfMessage = `**${caughtUser.tag}** has been __${commandName}__ by ${author.tag} for the reason: *${reason}*. \nDuration of the punishment: **${duration}**.`;
 
             const logRichEmbed = new Discord.RichEmbed()
                 .setAuthor(author.tag, author.avatarURL)

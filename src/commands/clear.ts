@@ -14,9 +14,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	if (args.length > 0) {
 		if (!isNaN(parseInt(args[0], 10)) && parseInt(args[0], 10) >= 1 && parseInt(args[0], 10) <= 100) {
 			message.channel.bulkDelete(parseInt(args[0], 10))
-				.then(function () {
-					LogChecker.insertLog(Client, message.author, message.guild.id, "clear", args[0], message.channel);
-				})
 				.catch((error: Error) => message.reply("I don't have the permission to delete messages."));
 		} else {
 			message.reply("Invlid number provided. Only provided number between 1 and 100");
