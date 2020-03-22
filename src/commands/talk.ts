@@ -20,6 +20,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         .setTitle(`Message by ${message.author.tag}`)
         .setAuthor(message.author.username, message.author.avatarURL)
         .setDescription(`> ${messageToSay.join(" ")}`)
+        .addField("Sent on server...", message.guild.name)
         .setTimestamp()
         .setFooter(Client.user.username, Client.user.avatarURL);
     //@ts-ignore
