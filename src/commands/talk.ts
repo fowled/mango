@@ -19,7 +19,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const richMessage: Discord.RichEmbed = new Discord.RichEmbed()
         .setTitle(`Message by ${message.author.tag}`)
         .setAuthor(message.author.username, message.author.avatarURL)
-        .setDescription(messageToSay.join(" "))
+        .setDescription(`> ${messageToSay.join(" ")}`)
         .setTimestamp()
         .setFooter(Client.user.username, Client.user.avatarURL);
     message.channel.send(richMessage);
