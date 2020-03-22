@@ -17,13 +17,13 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 		.setColor(Math.floor(Math.random() * 16777214) + 1)
 		.setDescription(
 			"**__Moderation commands:__**\n" +
-			"`ban, kick, warn, clear, pin`\n\n" +
+			"`ban, kick, mute, tempmute, warn, clear, pin`\n\n" +
 			"**__Guild commands:__**\n" +
-			"`userinfo, guildinfo, invite`\n\n" +
+			"`userinfo, servinfo, invit`\n\n" +
 			"**__Other commands:__**\n" +
-			"`say, infoping, uptime, play, leave, musicinfo`\n\n" +
+			"`dog, cat, hastebin, say, pp, preferences, queue, reac, talk, skip, time, weather, pin, level, ping, uptime, play, leave, musicinfo`\n\n" +
 			"**__Scratch commands:__**\n" +
-			"`scratchcount, scmessages, scproj, scuser`")
+			"`scmessages, scproj, scuserinfo`")
 		.setThumbnail(Client.user.avatarURL)
 		.setFooter(Client.user.username, Client.user.avatarURL)
 		.setTimestamp();

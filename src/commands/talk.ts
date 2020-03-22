@@ -17,7 +17,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     let attachment;
 
     if (message.attachments.size > 0) {
-        attachment = message.attachments.first().url;
+        attachment = message.attachments.forEach(file => attachment = file.url);
         Logger.log(attachment);
     }
 
