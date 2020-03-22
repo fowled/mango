@@ -6,7 +6,7 @@ export default async (Client: Discord.Client) => {
 	Logger.log("Client is ready");
 	Client.user.setPresence({
 		game: {
-			name: "!infohelp for commands",
+			name: `${Client.users.size} users owo`,
 			type: "WATCHING",
 		},
 		status: "online",
