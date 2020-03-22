@@ -11,7 +11,6 @@ import * as Logger from "../utils/Logger";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-    const interchatChannel: Discord.GuildChannel = message.guild.channels.find(chan => chan.name == "mango-interchat");
     let messageToSay: any = message.content.split(" ");
     messageToSay = messageToSay.slice(1, messageToSay.length);
     detectEmojis(messageToSay);
@@ -24,7 +23,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         .setTimestamp()
         .setFooter(Client.user.username, Client.user.avatarURL);
     //@ts-ignore
-    interchatChannel.send(richMessage);
+    const interchatChannel: Discord.Channel = Client.channels.findAll("name", "mango-interchat").forEach(chan => chan.send(richMessage));
     message.delete().catch(error => Logger.log(error));
 
     function detectEmojis(msg: string | any[]) {
