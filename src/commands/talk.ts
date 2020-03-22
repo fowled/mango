@@ -20,13 +20,17 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         attachment = message.attachments.first().url;
     }
 
+    if (messageToSay == "") {
+        messageToSay = ["No ", "message"];
+    }
+
     message.delete().catch(err => Logger.error(err));
     const richMessage: Discord.RichEmbed = new Discord.RichEmbed()
         .setTitle(`Message by ${message.author.tag}`)
         .setAuthor(message.author.username, message.author.avatarURL)
         .setDescription(`> ${messageToSay.join(" ")}`)
         .addField("Sent on server...", message.guild.name)
-        .attachFile(attachment)
+        .setImage(attachment)
         .setTimestamp()
         .setFooter(Client.user.username, Client.user.avatarURL);
 
