@@ -23,7 +23,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         .setTimestamp()
         .setFooter(Client.user.username, Client.user.avatarURL);
     //@ts-ignore
-    const interchatChannel: Discord.Channel = Client.channels.findAll("name", "mango-interchat").forEach(chan => chan.send(richMessage));
+    const interchatChannel: Discord.Channel = Client.channels.findAll("name", "mango-interchat").map(chan => chan.send(richMessage));
     message.delete().catch(error => Logger.log(error));
 
     function detectEmojis(msg: string | any[]) {
