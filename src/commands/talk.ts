@@ -17,8 +17,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     let attachment;
 
     if (message.attachments.size > 0) {
-        attachment = message.attachments.forEach(file => attachment = file.url);
-        Logger.log(attachment);
+        attachment = message.attachments.first().url;
     }
 
     if (messageToSay == "") {
@@ -26,17 +25,19 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
     const richMessage: Discord.RichEmbed = new Discord.RichEmbed()
-    .setTitle(`Message by ${message.author.tag}`)
-    .setAuthor(message.author.username, message.author.avatarURL)
-    .setDescription(`> ${messageToSay.join(" ")}`)
-    .addField("Sent on server...", message.guild.name)
-    .setImage(attachment)
-    .setTimestamp()
-    .setFooter(Client.user.username, Client.user.avatarURL);
-    
+        .setTitle(`Message by ${message.author.tag}`)
+        .setAuthor(message.author.username, message.author.avatarURL)
+        .setDescription(`> ${messageToSay.join(" ")}`)
+        .addField("Sent on server...", message.guild.name)
+        .setImage(attachment)
+        .setTimestamp()
+        .setFooter(Client.user.username, Client.user.avatarURL);
+
     //@ts-ignore
     const interchatChannel: Discord.Channel = Client.channels.findAll("name", "mango-interchat").map(chan => chan.send(richMessage));
-    message.delete().catch(err => Logger.error(err));
+    setTimeout(function () {
+        message.delete().catch(err => Logger.error(err));
+    }, 500);
 
     function detectEmojis(msg: string | any[]) {
         for (let index: number = 0; index < msg.length; index++) {
