@@ -7,7 +7,7 @@ export function insertLog(Client: Discord.Client, author: Discord.User, guildID:
     try {
         fs.readFile(`./database/log/${guildID}`, (err, data) => {
             if (err) {
-                return Logger.error("Didn't find the file containing the guild's log channel.");
+                return Logger.log("Didn't find the file containing the guild's log channel.");
             }
 
             channelID = data;
