@@ -18,10 +18,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     let HPLostEachRoundForP1: number[] = [];
     let HPLostEachRoundForP2: number[] = [];
 
-    const sentences: string[] = [`s'est fait taper dessus par`, "a reçu le poing dans sa figure de la part de", "a été mordu par", "s'est fait agresser par", "s'est fait enculer par", "s'est fait chier dessus par", "a été converti à l'islam par", "est devenu membre de Daesh à cause de"];
-    const randomEmoji: string[] = [":crossed_swords:", ":gun:", ":axe:", ":dagger:"];
+    const sentences: string[] = [`was backstabbed by`, "got rekt by", "took the L to", "was fucked up by", "was ALT+F4'd by", "was rm -rf by", "was thrown into a ravine", "was crusaded by the knight"];
+    const randomEmoji: string[] = [":crossed_swords:", ":gun:", ":axe:", ":dagger:", "<:gunz:693042886031179826>", "<a:whatthesword:693042890477404170>"];
 
-    const messageID: Discord.Message = (await message.channel.send("Octogone en cours..."));
+    const messageID: Discord.Message = (await message.channel.send("1v1 in progress... <:monkaStab:690915494995296340>"));
 
     function sleep(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -41,21 +41,21 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         const reducer = (accumulator: any, currentValue: any) => accumulator + currentValue;
 
         for (let value of Object.values(HPLostEachRoundForP1)) {
-            scenario.push(`${randomEmoji[Math.floor(Math.random() * randomEmoji.length)]} **${P1.tag}** ${sentences[Math.floor(Math.random() * sentences.length) + 0]} **${P2.tag}** et a perdu *${value}* HP.`);
+            scenario.push(`${randomEmoji[Math.floor(Math.random() * randomEmoji.length)]} **${P1.tag}** ${sentences[Math.floor(Math.random() * sentences.length) + 0]} **${P2.tag}** and lost *${value}* HP.`);
         }
 
-        scenario.push(`:bomb: Dégâts reçus: ${HPLostEachRoundForP1.reduce(reducer)}`);
-        scenario.push("`========= Passons maintenant à l'adversaire ! =========`");
+        scenario.push(`:bomb: Damage received: ${HPLostEachRoundForP1.reduce(reducer)}`);
+        scenario.push("> **Opponent's turn!**");
 
         for (let value of Object.values(HPLostEachRoundForP2)) {
-            scenario.push(`${randomEmoji[Math.floor(Math.random() * randomEmoji.length)]} **${P2.tag}** ${sentences[Math.floor(Math.random() * sentences.length) + 0]} **${P1.tag}** et a perdu *${value}* HP.`);
+            scenario.push(`${randomEmoji[Math.floor(Math.random() * randomEmoji.length)]} **${P2.tag}** ${sentences[Math.floor(Math.random() * sentences.length) + 0]} **${P1.tag}** and lost *${value}* HP.`);
         }
 
-        scenario.push(`:bomb: Dégâts reçus: ${HPLostEachRoundForP2.reduce(reducer)}`);
+        scenario.push(`:bomb: Damage received: ${HPLostEachRoundForP2.reduce(reducer)}`);
 
         const winner = Math.sign(HPLostEachRoundForP1.reduce(reducer) - HPLostEachRoundForP2.reduce(reducer)) == parseInt("-1") ? P1 : P2;
 
-        scenario.push(`:medal: Le gagnant est... ${winner}`);
+        scenario.push(`:medal: The winner is... **${winner.tag}**!`);
 
         return scenario;
     }
