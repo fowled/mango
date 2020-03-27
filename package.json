@@ -13,8 +13,7 @@
     "emoji-name-map": "^1.2.8",
     "emoji-to-short-name": "^1.0.1",
     "eslint": "^6.8.0",
-    "ffmpeg": "^0.0.4",
-    "ffmpeg-binaries": "^4.0.0",
+    "ffmpeg": "0.0.4",
     "file-system": "^2.2.2",
     "fs": "0.0.1-security",
     "googleapis": "^39.2.0",
@@ -30,7 +29,7 @@
     "xmlhttprequest": "^1.8.0",
     "xmlhttprequest-ts": "^1.0.1",
     "yt-search": "^1.1.2",
-    "ytdl-core": "^2.0.0"
+    "ytdl-core": "^2.0.1"
   },
   "devDependencies": {},
   "scripts": {
