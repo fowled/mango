@@ -29,7 +29,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     });
 
     let compareRanks: any[] = [];
-    let fetchedUser: string;
     let users: string[] = [];
 
     IDsArray.forEach((file, index) => {

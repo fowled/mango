@@ -19,12 +19,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		if (args[2].length > 1) {
 			message.reply("Prefix length cannot be longer than 1 character. Please retry.");
 		} else {
-			FS.writeFileSync(`custom/prefixes/${message.author.id}.txt`, args[2]);
+			FS.writeFileSync(`database/prefixes/${message.author.id}.txt`, args[2]);
 			message.reply(`Your prefix has been edited : \`${args[2]}\``);
 		}
 
 	} else if (args[0] === "prefix" && args[1] === "see") {
-		FS.readFile(`custom/prefixes/${message.author.id}.txt`, (err, data) => {
+		FS.readFile(`database/prefixes/${message.author.id}.txt`, (err, data) => {
 			if (!data) {
 				message.reply("You have the default prefix - change it by entering `!preferences prefix set [prefix]`");
 			} else {
