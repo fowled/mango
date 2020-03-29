@@ -9,10 +9,15 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 		return;
 	}
 
+	if (message.content == `<@!${Client.user.id}>`) {
+		let prefix = Fs.readFileSync(`./database/prefixes/${message.author.id}.txt`);
+		message.reply(`Hey, I'm Mango! Your current prefix is \`${prefix}\`  \n→ help message: \`${prefix}infohelp\` <a:check:690888185084903475>`);
+	}
+
 	Xp.checkXP(message);
 
-	Fs.readFile(`./custom/prefixes/${message.author.id}.txt`, (err: Error, data): void => {
-		const prefix: string = err ? "!" : data.toString();
+	Fs.readFile(`./database/prefixes/${message.author.id}.txt`, (err: Error, data): void => {
+		const prefix: string = err ? "?" : data.toString();
 
 		const msg: string = message.content;
 		const args: string[] = message.content.slice(prefix.length).trim().split(" ");
