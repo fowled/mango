@@ -40,13 +40,13 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 					const banMessageGuild: Discord.RichEmbed = new Discord.RichEmbed()
 						.setTitle(`User **${userBan.username}** is now banned!`)
 						.setAuthor(message.author.username, message.author.avatarURL)
-						.setDescription(`:white_check_mark: **${memberBan.user.tag}** is now banned (*${reason}*)!`)
+						.setDescription(`<a:check:690888185084903475> **${memberBan.user.tag}** is now banned (*${reason}*)!`)
 						.setTimestamp()
 						.setColor("#4292f4")
 						.setFooter(Client.user.username, Client.user.avatarURL);
 					message.channel.send(banMessageGuild);
 
-					LogChecker.insertLog(Client, message.author, message.guild.id, "banned", userBan, reason, "infinite");
+					LogChecker.insertLog(Client, message.guild.id, message.author, `**${memberBan.user.tag}** has been __banned__ by ${message.author.tag} for: *${reason}* \nDuration of the punishment: infinite`);
 
 				}).catch((err: any) => {
 					const banMessageError: Discord.RichEmbed = new Discord.RichEmbed()

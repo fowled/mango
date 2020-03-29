@@ -42,13 +42,13 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 					const kickMessageGuild: Discord.RichEmbed = new Discord.RichEmbed()
 						.setTitle(`User ${user.username} has been kicked from the guild!`)
 						.setAuthor(message.author.username, message.author.avatarURL)
-						.setDescription(`:white_check_mark: **${user.tag}** is now kicked (*${reason}*)!`)
+						.setDescription(`<a:check:690888185084903475> **${user.tag}** is now kicked (*${reason}*)!`)
 						.setTimestamp()
 						.setColor("#4292f4")
 						.setFooter(Client.user.username, Client.user.avatarURL);
 					message.channel.send(kickMessageGuild);
 
-					LogChecker.insertLog(Client, message.author, message.guild.id, "kicked", user, reason, "infinite");
+					LogChecker.insertLog(Client, message.guild.id, message.author, `**${member.user.tag}** has been __kicked__ by ${message.author.tag} for: *${reason}* \nDuration of the punishment: infinite`);
 				}).catch((err: any) => {
 					const kickMessageError: Discord.RichEmbed = new Discord.RichEmbed()
 						.setTitle("Error")

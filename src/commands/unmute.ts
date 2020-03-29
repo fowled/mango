@@ -30,8 +30,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     try {
         memberUnmute.removeRole(muteRole);
-        message.reply(`**${memberUnmute.user.tag}** has been successfully unmuted. :white_check_mark:`);
-        LogChecker.insertLog(Client, message.author, message.guild.id, "unmuted", userUnmute, "no particular reason", "infinite");
+        message.reply(`**${memberUnmute.user.tag}** has been successfully unmuted. <a:check:690888185084903475>`);
+        LogChecker.insertLog(Client, message.guild.id, message.author, `**${memberUnmute.user.tag}** has been __unmuted__ by ${message.author.tag}.`);
     } catch (error) {
         message.reply("Sorry, but I got an unexcepted error while unmuting this user. " + + `\`\`\`${error.message}\`\`\``);
     }
