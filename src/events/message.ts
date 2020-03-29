@@ -3,7 +3,7 @@ import * as Fs from "fs";
 
 import * as Logger from "./../utils/Logger";
 import * as Xp from "./../utils/Xp";
-
+ 
 export default async (Client: Discord.Client, message: Discord.Message) => {
 	if (message.author.bot || !message.guild) {
 		return;
