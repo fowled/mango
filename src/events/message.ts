@@ -3,14 +3,20 @@ import * as Fs from "fs";
 
 import * as Logger from "./../utils/Logger";
 import * as Xp from "./../utils/Xp";
- 
+
 export default async (Client: Discord.Client, message: Discord.Message) => {
 	if (message.author.bot || !message.guild) {
 		return;
 	}
 
+	let prefix;
+
 	if (message.content == `<@!${Client.user.id}>`) {
-		let prefix = Fs.readFileSync(`./database/prefixes/${message.author.id}.txt`);
+		try {
+			prefix = Fs.readFileSync(`./database/prefixes/${message.author.id}.txt`);
+		} catch (err) {
+			prefix = "!";
+		}
 		message.reply(`Hey, I'm Mango! Your current prefix is \`${prefix}\`  \n→ help message: \`${prefix}infohelp\` <a:check:690888185084903475>`);
 	}
 
