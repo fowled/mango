@@ -2,7 +2,7 @@ import * as Discord from "discord.js";
 import * as Logger from "./Logger";
 import * as fs from "fs";
 
-export function insertLog(Client: Discord.Client, author: Discord.User, guildID: any, commandName?: string, caughtUser?, reason?: any, duration?: string) {
+export function insertLog(Client: Discord.Client, guildID: string, author, msg: string) {
     let channelID: any;
     try {
         fs.readFile(`./database/log/${guildID}`, (err, data) => {
@@ -11,12 +11,11 @@ export function insertLog(Client: Discord.Client, author: Discord.User, guildID:
             }
 
             channelID = data;
-            let typeOfMessage = `**${caughtUser.tag}** has been __${commandName}__ by ${author.tag} for the reason: *${reason}*. \nDuration of the punishment: **${duration}**.`;
 
             const logRichEmbed = new Discord.RichEmbed()
                 .setAuthor(author.tag, author.avatarURL)
                 .setColor("#2D2B2B")
-                .setDescription(typeOfMessage)
+                .setDescription(msg)
                 .setFooter(Client.user.username, Client.user.avatarURL)
                 .setTimestamp();
 
