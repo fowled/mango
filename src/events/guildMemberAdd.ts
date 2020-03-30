@@ -1,22 +1,29 @@
 import * as Discord from "discord.js";
-
-import * as RichEmbed from "./../utils/Embed";
+import * as fs from "fs";
 
 export default async (Client: Discord.Client, member: Discord.GuildMember) => {
-	const welcomeChannel: Discord.TextChannel = member.guild.channels.find((ch) => ch.name === "welcome") as Discord.TextChannel;
+	let savedWelcChan = fs.readFileSync("database/welcome/channels.json", "utf-8");
+	savedWelcChan = JSON.parse(savedWelcChan);
+	const welcomeChannel: Discord.GuildChannel = savedWelcChan[member.guild.id] == undefined ? member.guild.channels.find((ch) => ch.name === "welcome") : member.guild.channels.get(savedWelcChan[member.guild.id]);
+
 	if (!welcomeChannel) {
 		return;
 	}
 
-	welcomeChannel.send(RichEmbed.create(Client, {
-		title: `A member just joined the guild :inbox_tray:`,
-		description: `Welcome ${member}! We wish you to have fun in **${member.guild.name}**. Help message: type *!infohelp* in server!`,
-		color: "#83FF00",
-	}));
+	const welcomeRichEmbed = new Discord.RichEmbed()
+		.setTitle("A member just joined the guild :inbox_tray:")
+		.setDescription(`Welcome ${member}! We wish you to have fun in **${member.guild.name}**. Help message: type *!infohelp* in server!`)
+		.setAuthor(member.user.username, member.user.avatarURL)
+		.setFooter(Client.user.username, Client.user.avatarURL)
+		.setColor("0FB1FB")
+	// @ts-ignore
+	welcomeChannel.send(welcomeRichEmbed);
 
-	Client.users.get(member.id).send(RichEmbed.create(Client, {
-		title: `Welcome!`,
-		description: `Welcome ${member!}! We wish you to have fun in **${member.guild.name}**. Help message: type *!infohelp* in server!`,
-		color: "#83FF00",
-	}));
+	const welcUserRichEmbed = new Discord.RichEmbed()
+		.setTitle("Welcome!")
+		.setDescription(`Welcome ${member}! We wish you to have fun in **${member.guild.name}**. Help message: type *!infohelp* in server!`)
+		.setAuthor(member.user.username, member.user.avatarURL)
+		.setFooter(Client.user.username, Client.user.avatarURL)
+		.setColor("0FB1FB")
+	Client.users.get(member.id).send(welcUserRichEmbed);
 };

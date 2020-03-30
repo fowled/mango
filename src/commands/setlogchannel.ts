@@ -12,6 +12,10 @@ import * as Logger from "../utils/Logger";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[]) {
+    if (!message.member.hasPermission("ADMINISTRATOR")) {
+        return message.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
+    }
+
     let logChannelID = args[0].toString().split("<#")[1].split(">")[0];
 
     if (!logChannelID) {
@@ -26,7 +30,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 return message.reply("Sorry but an unexcepted error happened while saving data file. The error has been sent to the devloper, and we're trying to correct it. :ok_hand:");
             }
             // @ts-ignore
-            logChannel.send("Success! This channel is now the default logging channel of this guild. :white_check_mark:");
+            logChannel.send("Success! This channel is now the default logging channel of this guild. <a:check:690888185084903475>");
         });
     } catch (err) {
         Logger.error(err);
