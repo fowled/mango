@@ -7,18 +7,24 @@ import * as Fs from "fs";
  */
 export function checkXP(message: Discord.Message): void {
 	let userXp: number;
-	try {
-		userXp = Number.parseInt(Fs.readFileSync(`./database/ranks/${message.author.id}`).toString(), 10);
 
-		userXp++;
+	let data = Fs.readFileSync(`./database/ranks/ranks.json`, "utf8");
+	data = JSON.parse(data);
 
-		Fs.writeFileSync(`./database/ranks/${message.author.id}`, userXp);
+	if (!data.hasOwnProperty(message.author.id)) {
+		data[message.author.id] = 0;
+		return Fs.writeFileSync(`./database/ranks/ranks.json`, JSON.stringify(data));
+	}
 
-		if (userXp % 50 === 0 && userXp >= 50 && userXp <= 1000) {
-			message.channel.send(`**${message.author.tag}** Rank up! You are now level *${Math.ceil(userXp / 50)}*.`);
-		}
+	userXp = parseInt(data[message.author.id]);
 
-	} catch (e) {
-		Fs.writeFileSync(`./database/ranks/${message.author.id}`, 0);
+	userXp++;
+
+	data[message.author.id] = userXp;
+
+	Fs.writeFileSync(`./database/ranks/ranks.json`, JSON.stringify(data));
+
+	if (userXp % 50 === 0 && userXp >= 50 && userXp <= 1000) {
+		message.channel.send(`**${message.author.tag}** Rank up! You are now level *${Math.ceil(userXp / 50)}*.`);
 	}
 }

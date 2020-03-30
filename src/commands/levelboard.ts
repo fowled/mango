@@ -13,36 +13,27 @@ import * as Fs from "fs";
 export async function run(Client: Discord.Client, message: Discord.Message, args: string, options: any) {
     let levels: string[] = [];
 
-    Fs.readdirSync("database/ranks/").forEach(file => {
-        levels.push(file);
-    });
-
     let memberIDs: string[] = [];
     message.guild.members.forEach(member => memberIDs.push(member.id));
 
-    let IDsArray: any[] = [];
+    let data = Fs.readFileSync("database/ranks/ranks.json", "utf8");
+    data = JSON.parse(data);
 
-    Object.values(levels).forEach((file, index) => {
-        if (Object.values(memberIDs).includes(file)) {
-            IDsArray.push(file);
+    Object.keys(data).forEach((key) => {
+        if (memberIDs.includes(key)) {
+            levels.push(`*${data[key]}* XP / Level **${Math.ceil(parseInt(data[key]) / 50)}** - [${Client.users.get(key).tag}]`);
         }
     });
 
-    let compareRanks: any[] = [];
-    let users: string[] = [];
-
-    IDsArray.forEach((file, index) => {
-        let data = Fs.readFileSync(`database/ranks/${file}`);
-        compareRanks.push(`- ${data} XP => Lvl. ${Math.ceil(parseInt(data as unknown as string) / 50)} - "${message.guild.members.get(file).user.tag}"`);
-        users.push(message.guild.members.get(file).user.tag);
+    levels.forEach(() => {
         sortArray();
     });
 
-    message.channel.send(`\`\`\`js\n${compareRanks.join("\n")}\`\`\``);
+    message.channel.send(`\`\`\`markdown\n# Levelboard of the server \n${levels.join("\n")}\`\`\``);
 
     function sortArray() {
-        compareRanks.sort(function (a, b) {
-            return b.split("- ")[1].split(" XP")[0] - a.split("- ")[1].split(" XP")[0];
+        levels.sort(function (a, b) {
+            return <any>b.split("*")[1] - <any>a.split("*")[1];
         });
     }
 

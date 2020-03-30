@@ -14,22 +14,22 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 	message.channel.startTyping();
 
 	setTimeout(() => {
-		FS.readFile(`database/ranks/${message.author.id}`, (err, data) => {
+		FS.readFile(`database/ranks/ranks.json`, (err, data) => {
 			if (err) {
 				return message.reply("Sorry, but I got a problem fetching your level data. Please retry later and send this error to `@Mazz3015#2003`. " + `\`\`\`${err.message}\`\`\``);
 			}
 
-			const level: number = Math.floor(parseInt(data.toString(), 10) / 50);
+			let parsedData = JSON.parse(data as unknown as string);
+
+			const level: number = Math.floor(parseInt(parsedData[message.author.id], 10) / 50);
 
 			getExactLvl(level);
 
 			function getExactLvl(lvl) {
-				const finalLvl: any = level.toString().split(".")[0];
-
 				const levelEmbedMessage: Discord.RichEmbed = new Discord.RichEmbed()
 					.setTitle(`${message.author.tag} level`)
 					.setAuthor(message.author.username, message.author.avatarURL)
-					.setDescription(`Your level - :gem: XP: **${data}** | :large_orange_diamond: Level: **${finalLvl}** `)
+					.setDescription(`Your level - :gem: XP: **${parsedData[message.author.id]}** | :large_orange_diamond: Level: **${level}** `)
 					.setColor("#019FE9")
 					.setFooter(client.user.username, client.user.avatarURL)
 					.setTimestamp()
