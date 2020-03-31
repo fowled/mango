@@ -21,7 +21,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     Object.keys(data).forEach((key) => {
         if (memberIDs.includes(key)) {
-            levels.push(`*${data[key]}* XP / Level **${Math.ceil(parseInt(data[key]) / 50)}** - [${Client.users.get(key).tag}]`);
+            levels.push(`- *${data[key]}* XP / Level **${Math.ceil(parseInt(data[key]) / 50)}** - [${Client.users.get(key).tag}]`);
         }
     });
 

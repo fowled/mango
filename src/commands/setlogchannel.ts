@@ -24,7 +24,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     try {
         let logChannel = Client.channels.find("id", logChannelID);
-        fs.writeFile(`database/log/${message.guild.id}`, logChannelID, function (err) {
+        let content = JSON.parse(fs.readFileSync('database/log/channels.json', 'utf8'));
+
+        content[message.guild.id] = logChannelID;
+
+        fs.writeFile(`database/log/channels.json`, JSON.stringify(content), function (err) {
             if (err) {
                 Logger.error(err);
                 return message.reply("Sorry but an unexcepted error happened while saving data file. The error has been sent to the devloper, and we're trying to correct it. :ok_hand:");

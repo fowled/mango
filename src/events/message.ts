@@ -9,21 +9,22 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 		return;
 	}
 
-	let prefix;
+	let prefix = JSON.parse(Fs.readFileSync(`./database/prefixes/prefixes.json`, "utf8"));
 
 	if (message.content == `<@!${Client.user.id}>`) {
-		try {
-			prefix = Fs.readFileSync(`./database/prefixes/${message.author.id}.txt`);
-		} catch (err) {
+		if (prefix[message.author.id] == undefined) {
 			prefix = "!";
+		} else {
+			prefix = prefix[message.author.id];
 		}
-		message.reply(`Hey, I'm Mango! Your current prefix is \`${prefix}\`  \n→ help message: \`${prefix}infohelp\` <a:check:690888185084903475>`);
+		message.reply(`Hey, I'm Mango! Your current prefix is \`${prefix}\` \n→ help message: \`${prefix}infohelp\` <a:check:690888185084903475>`);
 	}
 
 	Xp.checkXP(message);
 
-	Fs.readFile(`./database/prefixes/${message.author.id}.txt`, (err: Error, data): void => {
-		const prefix: string = err ? "?" : data.toString();
+	Fs.readFile(`./database/prefixes/prefixes.json`, "utf8", (err: Error, data): void => {
+		data = JSON.parse(data);
+		const prefix: string = data[message.author.id] == undefined ? "?" : data[message.author.id];
 
 		const msg: string = message.content;
 		const args: string[] = message.content.slice(prefix.length).trim().split(" ");

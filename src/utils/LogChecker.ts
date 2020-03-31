@@ -5,12 +5,14 @@ import * as fs from "fs";
 export function insertLog(Client: Discord.Client, guildID: string, author, msg: string) {
     let channelID: any;
     try {
-        fs.readFile(`./database/log/${guildID}`, (err, data) => {
-            if (err) {
-                return Logger.log("Didn't find the file containing the guild's log channel.");
+        fs.readFile(`./database/log/channels.json`, "utf8", (err, data) => {
+            data = JSON.parse(data);
+
+            if (data[guildID] == undefined) {
+                return;
             }
 
-            channelID = data;
+            channelID = data[guildID];
 
             const logRichEmbed = new Discord.RichEmbed()
                 .setAuthor(author.tag, author.avatarURL)
@@ -20,7 +22,7 @@ export function insertLog(Client: Discord.Client, guildID: string, author, msg: 
                 .setTimestamp();
 
             // @ts-ignore
-            Client.channels.get(channelID.toString()).send(logRichEmbed);
+            Client.channels.get(channelID).send(logRichEmbed);
         });
     } catch (error) {
         Logger.error(error);
