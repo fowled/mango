@@ -12,7 +12,7 @@ import * as FS from "fs";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	if (!args[0]) {
-		return message.channel.send("Preferences... what? !preferences prefix see`, `!preferences prefix set [prefix]`, `!preferences language set [En, Fr]`"); // menu des préférences
+		return message.channel.send("Preferences... what? !preferences prefix see`, `!preferences prefix set [prefix]`");
 	}
 
 	if (args[0] === "prefix" && args[1] === "set") {

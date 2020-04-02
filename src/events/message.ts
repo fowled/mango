@@ -24,14 +24,14 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 	Fs.readFile(`./database/prefixes/prefixes.json`, "utf8", (err: Error, data): void => {
 		data = JSON.parse(data);
-		const prefix: string = data[message.author.id] == undefined ? "?" : data[message.author.id];
+		const prefix: string = data[message.author.id] == undefined ? "!" : data[message.author.id];
 
 		const msg: string = message.content;
 		const args: string[] = message.content.slice(prefix.length).trim().split(" ");
 		const cmd: string = args.shift().toLowerCase();
 
 		if (!msg.startsWith(prefix)) {
-			return;
+			checkCustomCommands();
 		}
 
 		try {
@@ -42,4 +42,17 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 		}
 
 	});
+
+	async function checkCustomCommands() {
+		let content = JSON.parse(Fs.readFileSync('./database/commands/commands.json', 'utf8'));
+		try {
+			if (content[message.guild.id][message.content] == undefined) {
+				return;
+			} else {
+				message.reply(content[message.guild.id][message.content]);
+			}
+		} catch (err) {
+			return;
+		}
+	}
 };
