@@ -2,11 +2,7 @@
 out/
 node_modules/
 build/
-ranks/
-languages/
-prefixes/
 nohup.out
 .env
-log/
-database/
 ideas.md
+languages/
