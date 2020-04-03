@@ -31,7 +31,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 		const cmd: string = args.shift().toLowerCase();
 
 		if (!msg.startsWith(prefix)) {
-			checkCustomCommands();
+			return checkCustomCommands();
 		}
 
 		try {
@@ -43,7 +43,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 	});
 
-	async function checkCustomCommands() {
+	function checkCustomCommands() {
 		let content = JSON.parse(Fs.readFileSync('./database/commands/commands.json', 'utf8'));
 		try {
 			if (content[message.guild.id][message.content] == undefined) {

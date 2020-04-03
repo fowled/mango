@@ -15,19 +15,18 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		const userinfoRichEmbed: Discord.RichEmbed = new Discord.RichEmbed()
 			.setTitle(`User information for ${selectedUser.username}`)
 			.setAuthor(selectedUser.username, selectedUser.avatarURL)
-			.setDescription("User information")
+			.setDescription(`User information [${selectedUser.id}]`)
 			.setThumbnail(selectedUser.avatarURL)
 			.setTimestamp()
 			.addField("Username", selectedUser.username, true)
 			.addField("Tag", selectedUser.discriminator, true)
 			.addField("Status", selectedUser.presence.status, true)
-			.addField("Game status", selectedUser.presence.game ? selectedUser.presence.game.name : "Not currently playing any game", true)
-			.addField("ID", selectedUser.id, true);
+			.addField("Game", selectedUser.presence.game ? selectedUser.presence.game.name : "None", true)
 		if (message.guild.member(message.mentions.users.first())) {
-			userinfoRichEmbed.addField("Arrival date", message.guild.member(selectedUser).joinedAt.toLocaleString())
-				.addField("Roles owned in the server", message.guild.member(selectedUser).roles.array().splice(1).map((role: Discord.Role) => role.name).length === 0 ? "This user has no role" : message.guild.member(selectedUser).roles.array().splice(1).map((role: Discord.Role) => role.name).join(", "));
+			userinfoRichEmbed.addField("Joined on", message.guild.member(selectedUser).joinedAt.toLocaleDateString(), true)
+				.addField("Roles", message.guild.member(selectedUser).roles.array().splice(1).map((role: Discord.Role) => role.name).length === 0 ? "No role" : message.guild.member(selectedUser).roles.array().splice(1).map((role: Discord.Role) => role.name).join(", "));
 		}
-		userinfoRichEmbed.addField("The date the account was created", selectedUser.createdAt.toLocaleString())
+		userinfoRichEmbed.addField("Created on:", selectedUser.createdAt.toLocaleDateString(), true)
 			.setColor(Math.floor(Math.random() * 16777214) + 1)
 			.setFooter(Client.user.username, Client.user.avatarURL);
 
