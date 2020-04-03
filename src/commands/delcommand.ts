@@ -12,25 +12,22 @@ import * as Logger from "../utils/Logger";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
-    if (args[0] == undefined && args[1] == undefined) {
-        return message.reply("Sorry but the command needs the following args to work: `!custom [name of the command] [text of the command]`");
-    }
-
-    args[1] = message.content.split(" ").slice(2, message.content.length).join(" ").trim();
-
     let content = JSON.parse(fs.readFileSync('database/commands/commands.json', 'utf8'));
 
-    if (content[message.guild.id] == undefined) {
-        content[message.guild.id] = {};
+    if (!message.member.hasPermission("ADMINISTRATOR") && message.author.id == "352158391038377984") {
+        return message.reply("You don't have permission to do that. <a:nocheck:691001377459142718>");
     }
 
-    content[message.guild.id][args[0]] = args[1];
+    if (content[message.guild.id][args[0]] == undefined) {
+        return message.reply(`I didn't find the \`${args[0]}\` command. <a:nocheck:691001377459142718>`);
+    }
 
+    delete content[message.guild.id][args[0]];
     fs.writeFile("database/commands/commands.json", JSON.stringify(content), function (err) {
         if (err) {
             Logger.error(err);
+            return message.reply("Sorry, but an unknown error occured while saving the database file. Error has been logged and will be fixed asap. <a:nocheck:691001377459142718>");
         }
-
-        message.reply(`Command \`${args[0]}\` successfully added to database. <a:check:690888185084903475>`);
+        return message.reply(`Successfully deleted \`${args[0]}\` command. <a:check:690888185084903475>`);
     });
 }

@@ -14,7 +14,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const userMute: Discord.User = message.mentions.users.first();
     const memberMute: Discord.GuildMember = message.guild.member(userMute);
 
-    if (memberMute.hasPermission(["ADMINISTRATOR", "MANAGE_MESSAGES"])) {
+    if (!memberMute.hasPermission(["ADMINISTRATOR"])) {
         return message.reply("Sorry, but I can't mute the user you specified, because he has one of the following perms: `ADMINISTATOR`");
     }
 
