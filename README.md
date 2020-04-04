@@ -2,7 +2,6 @@
 ![build](https://github.com/Ma15fo43/Mango/workflows/build/badge.svg)
 ![Node.js CI](https://github.com/Ma15fo43/Mango/workflows/Node.js%20CI/badge.svg)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/tree/master/src)
-[![Discord](https://img.shields.io/discord/510564701919510549)](https://discordapp.com/)
 [![GitHub](https://img.shields.io/github/license/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/blob/master/LICENSE)
 [![GitHub top language](https://img.shields.io/github/languages/top/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/search?l=typescript)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/commit/master) 
