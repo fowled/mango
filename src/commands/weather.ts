@@ -24,7 +24,16 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         if (this.readyState == 4 && this.status == 200) {
             let parsedRequest = JSON.parse(this.responseText);
             let temperature = parsedRequest.main.temp;
-            message.reply(`Current temperature in *${country}*: **${Math.round(temperature - 273.5)}**°C.\n`);
+            let icon = `https://openweathermap.org/img/wn/${parsedRequest.weather[0].icon}@2x.png`;
+
+            let richembed = new Discord.RichEmbed()
+                .setTitle(`Weather in ${country}`)
+                .setThumbnail(icon)
+                .setDescription(`Weather info about a country`)
+                .addField("Temperature", `${Math.round(temperature - 273.5)}°C`)
+                .addField("Humidity", `${parsedRequest.main.humidity}`)
+
+            message.channel.send(richembed);
         } else if (this.readyState == 4 && this.status == 404) {
             return message.reply("I'm sorry but I didn't find the country you requested.");
         }
