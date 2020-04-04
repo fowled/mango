@@ -37,6 +37,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 .addField("Wind", `${Math.round(wind * 3.5)} km/h`)
                 .addField("Description", `${parsedRequest.weather[0].description}`)
                 .setFooter(Client.user.username, Client.user.avatarURL)
+                .setTimestamp()
 
             message.channel.send(richembed);
         } else if (this.readyState == 4 && this.status == 404) {
