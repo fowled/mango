@@ -7,3 +7,4 @@ nohup.out
 ideas.md
 languages/
 database/
+src/events/message.ts
