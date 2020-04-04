@@ -4,7 +4,7 @@ import { XMLHttpRequest } from "xmlhttprequest";
 // Informative command
 
 /**
- * Replies with stats about the COVID-19 epidemy
+ * Replies with stats about the COVID-19 epidemic
  * @param {Discord.Client} Client the client
  * @param {Discord.Message} Message the message that contains the command name
  * @param {string[]} args the command args

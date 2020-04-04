@@ -4,7 +4,14 @@ import * as Logger from "././../utils/Logger";
 
 // Moderation command
 
-export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
+/**
+ * Bans a user.
+ * @param {Discord.Client} Client the client
+ * @param {Discord.Message} Message the message that contains the command name
+ * @param {string[]} args the command args
+ * @param {any} options some options
+ */
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	let reason: string = message.content.split(" ").slice(2).join(" ");
 
 	if (reason === "") {
