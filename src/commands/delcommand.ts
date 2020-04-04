@@ -5,7 +5,7 @@ import * as Logger from "../utils/Logger";
 // Fun command
 
 /**
- * Creates a custom command
+ * Deletes a custom command
  * @param {Discord.Client} Client the client
  * @param {Discord.Message} Message the message that contains the command name
  * @param {string[]} args the command args

@@ -9,7 +9,7 @@ import * as Discord from "discord.js";
  * @param {string[]} args les arguments de la commande
  * @param {any} options les options
  */
-export default async (Client: Discord.Client, message: Discord.Message, args: string[], ops: void) => {
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: void) {
 	const taggedUser: Discord.User = message.mentions.users.first();
 	const member: Discord.GuildMember = message.guild.member(taggedUser);
 
@@ -44,4 +44,4 @@ export default async (Client: Discord.Client, message: Discord.Message, args: st
 		message.reply("Vous n'avez pas les droits d'avertir cet utilisateur !");
 	}
 
-};
+}

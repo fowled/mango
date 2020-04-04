@@ -4,7 +4,7 @@ import { XMLHttpRequest } from "xmlhttprequest";
 // Fun command
 
 /**
- * Replies with a funny or cutie picture of a cat :3
+ * Replies with a funny or cutie picture of a dog :3
  * @param {Discord.Client} Client the client
  * @param {Discord.Message} Message the message that contains the command name
  * @param {string[]} args the command args

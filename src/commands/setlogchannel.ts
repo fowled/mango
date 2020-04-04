@@ -5,7 +5,7 @@ import * as Logger from "../utils/Logger";
 // Fun command
 
 /**
- * Shows XP/Level of the user.
+ * Saves the ID of the channel you want logs in.
  * @param {Discord.Client} Client the client
  * @param {Discord.Message} Message the message that contains the command name
  * @param {string[]} args the command args

@@ -34,7 +34,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         .setFooter(Client.user.username, Client.user.avatarURL);
 
     //@ts-ignore
-    const interchatChannel: Discord.Channel = Client.channels.findAll("name", "mango-interchat").map(chan => chan.send(richMessage));
+    const interchatChannel: Discord.Channel = Client.channels.findAll("name", "mango-interchat").map((chan: { send: (arg0: Discord.RichEmbed) => any; }) => chan.send(richMessage));
     setTimeout(function () {
         message.delete().catch(err => Logger.error(err));
     }, 500);
