@@ -24,6 +24,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         if (this.readyState == 4 && this.status == 200) {
             let parsedRequest = JSON.parse(this.responseText);
             let temperature = parsedRequest.main.temp;
+            let wind = parsedRequest.wind.speed;
             let icon = `https://openweathermap.org/img/wn/${parsedRequest.weather[0].icon}@2x.png`;
 
             let richembed = new Discord.RichEmbed()
@@ -33,6 +34,9 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 .setDescription(`Weather info about a country`)
                 .addField("Temperature", `${Math.round(temperature - 273.5)}°C`)
                 .addField("Humidity", `${parsedRequest.main.humidity}%`)
+                .addField("Wind", `${Math.round(wind * 3.5)} km/h`)
+                .addField("Description", `${parsedRequest.weather[0].description}`)
+                .setFooter(Client.user.username, Client.user.avatarURL)
 
             message.channel.send(richembed);
         } else if (this.readyState == 4 && this.status == 404) {
