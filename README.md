@@ -10,4 +10,3 @@ A useful Discord bot, written in JavaScript/TypeScript with Discord.js. Still in
 - API
 - Guild
 - Music commands.
-Containing mod, fun, guild and music commands. 
