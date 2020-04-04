@@ -19,4 +19,4 @@ A useful Discord bot, written in JavaScript/TypeScript with Discord.js. Still in
 - Music commands.
 
 ## Help! 
-https://github.com/Ma15fo43/Mango/wiki/Commands!
+[If you want help about the commands, click here.](https://github.com/Ma15fo43/Mango/wiki/Commands!)
