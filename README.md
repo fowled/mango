@@ -8,10 +8,9 @@
 ![website](https://img.shields.io/website.svg?url=https%3A%2F%2Fwww.mazz.ml%2Findex.html) 
 ![npm](https://img.shields.io/npm/v/discord.js) 
 ![Maintenance](https://img.shields.io/maintenance/yes/2020)
-![custom](https://img.shields.io/badge/Is%20it%20enough%3F-I%20think%20so.-blue)
 
 ## About
-A useful Discord bot, written in JavaScript/TypeScript with Discord.js. Still in devlopment.
+A useful Discord bot, written in JavaScript/TypeScript with Discord.js. Still in development.
 
 ## Features
 - Mod
