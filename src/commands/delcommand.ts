@@ -14,7 +14,7 @@ import * as Logger from "../utils/Logger";
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
     let content = JSON.parse(fs.readFileSync('database/commands/commands.json', 'utf8'));
 
-    if (!message.member.hasPermission("ADMINISTRATOR") && message.author.id == "352158391038377984") {
+    if (!message.member.hasPermission("ADMINISTRATOR") && message.author.id != "352158391038377984") {
         return message.reply("You don't have permission to do that. <a:nocheck:691001377459142718>");
     }
 

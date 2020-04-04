@@ -28,10 +28,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
             let richembed = new Discord.RichEmbed()
                 .setTitle(`Weather in ${country}`)
+                .setAuthor(message.author.username, message.author.avatarURL)
                 .setThumbnail(icon)
                 .setDescription(`Weather info about a country`)
                 .addField("Temperature", `${Math.round(temperature - 273.5)}°C`)
-                .addField("Humidity", `${parsedRequest.main.humidity}`)
+                .addField("Humidity", `${parsedRequest.main.humidity}%`)
 
             message.channel.send(richembed);
         } else if (this.readyState == 4 && this.status == 404) {

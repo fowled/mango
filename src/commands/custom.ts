@@ -1,6 +1,7 @@
 import * as Discord from "discord.js";
 import * as fs from "fs";
 import * as Logger from "../utils/Logger";
+import { talkedRecently } from "../index";
 
 // Fun command
 
@@ -16,21 +17,32 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply("Sorry but the command needs the following args to work: `!custom [name of the command] [text of the command]`");
     }
 
-    args[1] = message.content.split(" ").slice(2, message.content.length).join(" ").trim();
+    if (talkedRecently.has(message.author.id)) {
+        message.reply("I'm sorry, but this command is in cooldown. Try again later. <a:nocheck:691001377459142718>");
+    } else {
+        args[1] = message.content.split(" ").slice(2, message.content.length).join(" ").trim();
 
-    let content = JSON.parse(fs.readFileSync('database/commands/commands.json', 'utf8'));
+        let content = JSON.parse(fs.readFileSync('database/commands/commands.json', 'utf8'));
 
-    if (content[message.guild.id] == undefined) {
-        content[message.guild.id] = {};
-    }
-
-    content[message.guild.id][args[0]] = args[1];
-
-    fs.writeFile("database/commands/commands.json", JSON.stringify(content), function (err) {
-        if (err) {
-            Logger.error(err);
+        if (content[message.guild.id] == undefined) {
+            content[message.guild.id] = {};
         }
 
-        message.reply(`Command \`${args[0]}\` successfully added to database. <a:check:690888185084903475>`);
-    });
+        content[message.guild.id][args[0]] = args[1];
+
+        fs.writeFile("database/commands/commands.json", JSON.stringify(content), function (err) {
+            if (err) {
+                Logger.error(err);
+            }
+
+            message.reply(`Command \`${args[0]}\` successfully added to database. <a:check:690888185084903475>`);
+        });
+        
+        talkedRecently.add(message.author.id);
+        
+        setTimeout(() => {
+            talkedRecently.delete(message.author.id);
+        }, 3600000);
+    }
 }
+
