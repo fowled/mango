@@ -1,5 +1,5 @@
 # Mango 
-![build](https://github.com/Ma15fo43/Mango/workflows/build/badge.svg)
+[![Build Status](https://travis-ci.com/Ma15fo43/Mango.svg?branch=master)](https://travis-ci.com/Ma15fo43/Mango)
 ![Node.js CI](https://github.com/Ma15fo43/Mango/workflows/Node.js%20CI/badge.svg)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/tree/master/src)
 [![GitHub](https://img.shields.io/github/license/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/blob/master/LICENSE)
