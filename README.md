@@ -20,3 +20,6 @@ A useful Discord bot, written in JavaScript/TypeScript with Discord.js. Still in
 
 ## Help! 
 [If you want help about the commands, click here.](https://github.com/Ma15fo43/Mango/wiki/Commands!)
+
+## Installing the release
+[If you want help about downloading the release, click here.](https://github.com/Ma15fo43/Mango/wiki/Release)
