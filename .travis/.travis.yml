@@ -1,0 +1,10 @@
+{
+  "language": "node_js",
+  "os": [
+    "linux"
+  ],
+  "dist": "xenial",
+  "node_js": [
+    "7"
+  ]
+}

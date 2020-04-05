@@ -33,7 +33,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo test"
+    "test": "echo Mango is a useful multilingual Discord bot, written in JavaScript/TypeScript with Discord.js"
   },
   "author": "",
   "license": "MIT",
