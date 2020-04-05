@@ -10,7 +10,7 @@ import * as Logger from ".././utils/Logger";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
 	const helpMessage: Discord.RichEmbed = new Discord.RichEmbed()
 		.setTitle(`Help!`)
 		.setURL("https://github.com/Ma15fo43/Mango/wiki/Commands!")
