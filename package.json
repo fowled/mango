@@ -7,6 +7,7 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^13.7.1",
     "basic-ftp": "^4.5.3",
+    "canvas": "^2.6.1",
     "discord.js": "^11.5.1",
     "dom-parser": "^0.1.6",
     "dotenv": "^8.2.0",
