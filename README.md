@@ -6,7 +6,7 @@
 [![GitHub top language](https://img.shields.io/github/languages/top/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/search?l=typescript)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/commit/master) 
 [![website](https://img.shields.io/website.svg?url=https%3A%2F%2Fwww.mazz.ml%2Findex.html)](https://mazz.ml/Pages/Mango/index.html)
-[![npm](https://img.shields.io/npm/v/discord.js)](https://www.npmjs.com/package/discord.js?source=post_page-----7b5fe27cb6fa----------------------) 
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/releases/latest)
 
 ## About
 A useful Discord bot, written in JavaScript/TypeScript with Discord.js. Still in development.
