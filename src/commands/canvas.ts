@@ -25,9 +25,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     ctx.beginPath(); // rounded profile pic
     ctx.arc(85, 85, 60, 0, Math.PI * 2, true);
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 10;
-    ctx.stroke();
     ctx.closePath();
     ctx.clip();
 
