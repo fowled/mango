@@ -11,7 +11,6 @@ import * as canvaslib from "canvas";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-    const member = message.mentions.members.first();
     const canvas = canvaslib.createCanvas(700, 250);
     const ctx = canvas.getContext("2d");
 
@@ -20,16 +19,21 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     ctx.font = "35px Caviar Dreams"; // displays on the picture the member tag
     ctx.fillStyle = '#ffffff';
-    ctx.textAlign = "center";
-    ctx.fillText(args.join(" "), canvas.width / 2, canvas.height / 2);
+    ctx.textAlign = "left";
+    ctx.fillText(`"${args.join(" ")}"`, 10, canvas.height / 1.5);
+
+    ctx.font = "35px Caviar Dreams"; // displays on the picture the member tag
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = "left";
+    ctx.fillText(`${message.author.username} said:`, 10, canvas.height / 2);
 
     ctx.beginPath(); // rounded profile pic
-    ctx.arc(85, 85, 60, 0, Math.PI * 2, true);
+    ctx.arc(630, 75, 60, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.clip();
 
     const avatar = await canvaslib.loadImage(message.member.user.displayAvatarURL);
-    ctx.drawImage(avatar, 25, 25, 120, 120);
+    ctx.drawImage(avatar, 570, 15, 120, 120);
 
     const attachment = new Discord.Attachment(canvas.toBuffer(), 'canvas.png');
 
