@@ -38,9 +38,6 @@ export default async (Client: Discord.Client, member: Discord.GuildMember) => {
 
     ctx.beginPath(); // rounded profile pic
     ctx.arc(85, 85, 60, 0, Math.PI * 2, true);
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 10;
-    ctx.stroke();
     ctx.closePath();
     ctx.clip();
 
