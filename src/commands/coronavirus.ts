@@ -21,6 +21,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                     .setAuthor(message.author.username, message.author.avatarURL)
                     .setTitle("Coronavirus stats :chart_with_upwards_trend:")
                     .setDescription("Find here COVID-19 related information")
+                    .setColor("#08ABF9")
                     .setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f637.png")
                     .addField("Cases", parsedRequest.cases)
                     .addField("Today cases", parsedRequest.todayCases)
