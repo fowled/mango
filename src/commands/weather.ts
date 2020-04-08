@@ -31,6 +31,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 .setTitle(`Weather in ${country}`)
                 .setAuthor(message.author.username, message.author.avatarURL)
                 .setThumbnail(icon)
+                .setColor("#08ABF9")
                 .setDescription(`Weather info about a country`)
                 .addField("Temperature", `${Math.round(temperature - 273.5)}°C`)
                 .addField("Humidity", `${parsedRequest.main.humidity}%`)
