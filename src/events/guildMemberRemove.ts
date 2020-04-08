@@ -23,7 +23,7 @@ export default async (Client: Discord.Client, member: Discord.GuildMember) => {
 	const canvas = canvaslib.createCanvas(700, 250);
     const ctx = canvas.getContext("2d");
 
-    const background = await canvaslib.loadImage("./leave_background.png");
+    const background = await canvaslib.loadImage("./assets/leave_background.png");
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
     ctx.font = "35px Caviar Dreams"; // displays on the picture the member tag
