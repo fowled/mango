@@ -23,10 +23,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     const currentID = content["curID"] += 1;
 
-    content["curID"] += 1;
     content[currentID] = {};
     content[currentID]["price"] = price;
     content[currentID]["name"] = item;
+    content[currentID]["seller"] = message.author.tag;
+    content[currentID]["sellerID"] = message.author.id;
 
     fs.writeFile(`database/market/items.json`, JSON.stringify(content), function (err) {
         if (err) {
@@ -34,6 +35,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             return message.reply("Sorry but an unexcepted error happened while saving data file. The error has been sent to the devloper, and we're trying to correct it. :ok_hand:");
         }
 
-        message.reply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. <a:check:690888185084903475>`);
+        message.reply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${content["curID"]}** <a:check:690888185084903475>`);
     });
 }
