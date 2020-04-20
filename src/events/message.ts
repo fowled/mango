@@ -35,7 +35,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 		}
 
 		try {
-			require(`./../commands/${cmd}.js`).run(Client, message, args, null);
+			require(`./../commands/${cmd}.js`).run(Client, message, args, null).catch(err => console.log(err));
 			Logger.log(`${message.author.tag} just used the ${cmd} power in ${message.guild.name}.`);
 		} catch (err) {
 			Logger.log(`The command ${message.author.tag} tried to call in ${message.guild.name} doesen't seem to exist.`);
