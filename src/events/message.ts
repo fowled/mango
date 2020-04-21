@@ -35,7 +35,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 		}
 
 		try {
-			require(`./../commands/${cmd}.js`).run(Client, message, args, null).catch(err => console.log(err));
+			require(`./../commands/${cmd}.js`).run(Client, message, args, null);
 			Logger.log(`${message.author.tag} just used the ${cmd} power in ${message.guild.name}.`);
 		} catch (err) {
 			Logger.log(`The command ${message.author.tag} tried to call in ${message.guild.name} doesen't seem to exist.`);
@@ -49,7 +49,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 			if (content[message.guild.id][message.content] == undefined) {
 				return;
 			} else {
-				message.reply(content[message.guild.id][message.content]);
+				message.channel.send(content[message.guild.id][message.content]);
 			}
 		} catch (err) {
 			return;
