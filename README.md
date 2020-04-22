@@ -11,6 +11,10 @@
   [![GitHub release (latest by date)](https://img.shields.io/github/v/release/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/releases/latest)
 </div>
 
+<div id="logo" align="center">
+<img src="https://user-images.githubusercontent.com/37367577/79960880-3ea97b00-8486-11ea-96f9-c367eb2859aa.png" width="150" alt="Mango logo" />
+</div>
+
 ## Features
 - Mod
 - Fun
