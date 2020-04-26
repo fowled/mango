@@ -1,5 +1,6 @@
 import * as Discord from "discord.js";
 import * as Fs from "fs";
+import * as hastebin from "../utils/PostToHastebin";
 
 // Fun command
 
@@ -11,7 +12,7 @@ import * as Fs from "fs";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string, options: any) {
-    let levels: string[] = [];
+    let levels: string[] = ["# Levelboard of the server"];
 
     let memberIDs: string[] = [];
     message.guild.members.forEach(member => memberIDs.push(member.id));
@@ -29,7 +30,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         sortArray();
     });
 
-    message.channel.send(`\`\`\`markdown\n# Levelboard of the server \n${levels.join("\n")}\`\`\``);
+    hastebin.postText(levels.join("\n")).then(res => {
+        message.reply("The server **levelboard** is available here: " + res);
+    }).catch(err => {
+        console.error(err);
+    });
 
     function sortArray() {
         levels.sort(function (a, b) {
