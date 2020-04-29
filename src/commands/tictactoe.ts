@@ -54,7 +54,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
             numbers = ["1️⃣", "2️⃣", "3️⃣", "\n4️⃣", "5️⃣", "6️⃣", "\n7️⃣", "8️⃣", "9️⃣"];
 
-            msg.edit(numbers.join(" "));
+            await msg.edit(numbers.join(" "));
             setTimeout(function () {
                 createReactionCollector(msg);
             }, 300)
