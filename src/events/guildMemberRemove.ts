@@ -11,15 +11,6 @@ export default async (Client: Discord.Client, member: Discord.GuildMember) => {
 		return;
 	}
 
-	const welcomeRichEmbed = new Discord.RichEmbed()
-		.setTitle("A member just left the guild :outbox_tray:")
-		.setDescription(`Goodbye ${member.user.username}. We hope you'll come back :confused:`)
-		.setAuthor(member.user.username, member.user.avatarURL)
-		.setFooter(Client.user.username, Client.user.avatarURL)
-		.setColor("4F6A77")
-	// @ts-ignore
-	channel.send(welcomeRichEmbed);
-
 	const canvas = canvaslib.createCanvas(700, 250);
     const ctx = canvas.getContext("2d");
 
