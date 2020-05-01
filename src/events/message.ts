@@ -24,7 +24,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 	Fs.readFile(`./database/prefixes/prefixes.json`, "utf8", (err: Error, data): void => {
 		data = JSON.parse(data);
-		const prefix: string = data[message.author.id] == undefined ? "?" : data[message.author.id];
+		const prefix: string = data[message.author.id] == undefined ? "!" : data[message.author.id];
 
 		const msg: string = message.content;
 		const args: string[] = message.content.slice(prefix.length).trim().split(" ");

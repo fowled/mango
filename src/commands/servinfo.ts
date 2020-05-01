@@ -16,21 +16,21 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	if (message.member.guild.afkChannel) {
 		afkChannel = `#<${message.member.guild.afkChannel}>`;
 	} else {
-		afkChannel = "No AFK channel.";
+		afkChannel = "None.";
 	}
 
 	const reponse: Discord.RichEmbed = new Discord.RichEmbed()
-		.setTitle(`Informations serveur pour ${message.author.username}`)
+		.setTitle(`Server info for ${message.author.username}`)
 		.setThumbnail(guildPicture)
 		.setAuthor(`${message.author.username}`, message.author.avatarURL)
-		.setDescription(`Informations à propos du serveur Discord ${message.member.guild.name} :`)
+		.setDescription(`Serv info (${message.member.guild.name}):`)
 		.setColor(Math.floor(Math.random() * 16777214) + 1)
-		.addField("Membres", `${message.member.guild.members.filter((member: Discord.GuildMember) => !member.user.bot).size} humains et ${message.member.guild.members.filter((member: Discord.GuildMember) => member.user.bot).size} bots`, true)
-		.addField("Channels", `${message.member.guild.channels.filter((channel: Discord.TextChannel) => channel.type === "text").size} textuels et ${message.member.guild.channels.filter((channel: Discord.VoiceChannel) => channel.type === "voice").size} vocaux`, true)
-		.addField("Propriétaire", message.member.guild.owner, true)
-		.addField("Région", message.member.guild.region, true)
-		.addField("Création", message.member.guild.createdAt.toLocaleString(), true)
-		.addField("Channel AFK", afkChannel, true)
+		.addField("Members", `${message.member.guild.members.filter((member: Discord.GuildMember) => !member.user.bot).size} humans and ${message.member.guild.members.filter((member: Discord.GuildMember) => member.user.bot).size} bots`, true)
+		.addField("Channels", `${message.member.guild.channels.filter((channel: Discord.TextChannel) => channel.type === "text").size} textual and ${message.member.guild.channels.filter((channel: Discord.VoiceChannel) => channel.type === "voice").size} vocal`, true)
+		.addField("Owner", message.member.guild.owner, true)
+		.addField("Region", message.member.guild.region, true)
+		.addField("Created on", message.member.guild.createdAt.toLocaleString(), true)
+		.addField("AFK channel", afkChannel, true)
 		.setFooter(Client.user.username, Client.user.avatarURL)
 		.setTimestamp();
 	message.channel.send(reponse);
