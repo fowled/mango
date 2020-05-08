@@ -1,6 +1,5 @@
 <div id="div1" align="center">
   <h1>Mango</h1>
-  <h3>A useful Discord bot, written in JavaScript/TypeScript with Discord.js. Still in development.</h3>
  </div>
  
 <div id="badges" align="center">
@@ -15,12 +14,15 @@
 <img src="https://user-images.githubusercontent.com/37367577/79960880-3ea97b00-8486-11ea-96f9-c367eb2859aa.png" width="150" alt="Mango logo" />
 </div>
 
+## About
+A useful Discord bot, written in JavaScript/TypeScript with Discord.js. Still in development.
+
 ## Features
-[x] Mod
-[x] Fun
-[x] API
-[x] Guild
-[x] Music commands.
+- [x] Mod
+- [x] Fun
+- [x] API
+- [x] Guild
+- [x] Music commands.
 
 ## Help! 
 [If you want help about the commands, click here.](https://github.com/Ma15fo43/Mango/wiki/Commands!)
