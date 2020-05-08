@@ -6,8 +6,8 @@
   
   [![Build Status](https://travis-ci.com/Ma15fo43/Mango.svg?branch=master)](https://travis-ci.com/Ma15fo43/Mango)
   [![GitHub](https://img.shields.io/github/license/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/blob/master/LICENSE)
-  [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Ma15fo43/Mango)]
-  [![GitHub top language](https://img.shields.io/github/languages/top/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/search?l=typescript)
+  [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/tree/master/src)
+  ![GitHub top language](https://img.shields.io/github/languages/top/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/search?l=typescript)
   [![GitHub last commit](https://img.shields.io/github/last-commit/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/commit/master) 
   [![website](https://img.shields.io/website.svg?url=https%3A%2F%2Fwww.mazz.ml%2Findex.html)](https://mazz.ml/Pages/Mango/index.html)
   [![GitHub release (latest by date)](https://img.shields.io/github/v/release/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/releases/latest)
