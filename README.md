@@ -16,11 +16,11 @@
 </div>
 
 ## Features
-- Mod
-- Fun
-- API
-- Guild
-- Music commands.
+[x] Mod
+[x] Fun
+[x] API
+[x] Guild
+[x] Music commands.
 
 ## Help! 
 [If you want help about the commands, click here.](https://github.com/Ma15fo43/Mango/wiki/Commands!)
