@@ -13,7 +13,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 	if (message.isMemberMentioned(Client.user) && message.content.split(" ").length == 1) {
 		if (prefix[message.author.id] == undefined) {
-			prefix = "!";
+			prefix = "ma!";
 		} else {
 			prefix = prefix[message.author.id];
 		}
@@ -24,7 +24,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 	Fs.readFile(`./database/prefixes/prefixes.json`, "utf8", (err: Error, data): void => {
 		data = JSON.parse(data);
-		const prefix: string = data[message.author.id] == undefined ? "!" : data[message.author.id];
+		const prefix: string = data[message.author.id] == undefined ? "ma!" : data[message.author.id];
 
 		const msg: string = message.content;
 		const args: string[] = message.content.slice(prefix.length).trim().split(" ");

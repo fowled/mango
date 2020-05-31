@@ -17,7 +17,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		let commande: string = message.content.split(" ").slice(2).join(" ");
 
 		if (commande === "") {
-			commande = "Pas de raison spécifiée"; // on a les args pour ça, verrai après
+			commande = "No reason";
 		}
 
 		const date = new Date();
@@ -38,10 +38,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 			.setColor("#4292f4")
 			.setTimestamp();
 		Client.users.get(taggedUser.id).send(warnUserRichEmbed).catch((error: Error) => {
-			message.channel.send(`Information : l'utilisateur **${taggedUser.tag}** n'accepte pas les dm venant de serveurs, et le message warn n'a pas pu être envoyé.`);
+			message.channel.send(`**${taggedUser.tag}** doesen't accept DMs from servers.`);
 		});
 	} else {
-		message.reply("Vous n'avez pas les droits d'avertir cet utilisateur !");
+		message.reply("You can't warn this user.");
 	}
 
 }

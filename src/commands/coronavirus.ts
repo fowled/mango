@@ -37,7 +37,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             }
         }
 
-        xhttp.open("GET", "https://corona.lmao.ninja/all", true);
+        xhttp.open("GET", "https://corona.lmao.ninja/v2/all", true);
         xhttp.send();
     } else {
         const xhttp: XMLHttpRequest = new XMLHttpRequest();
@@ -65,7 +65,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             }
         }
 
-        xhttp.open("GET", `https://corona.lmao.ninja/countries/${args[0]}`, true);
+        xhttp.open("GET", `https://corona.lmao.ninja/v2/countries/${args[0]}`, true);
         xhttp.send();
     }
 }

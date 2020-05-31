@@ -23,8 +23,4 @@ export function checkXP(message: Discord.Message): void {
 	data[message.author.id] = userXp;
 
 	Fs.writeFileSync(`./database/ranks/ranks.json`, JSON.stringify(data));
-
-	if (userXp % 50 === 0 && userXp >= 50 && userXp <= 1000) {
-		message.channel.send(`**${message.author.tag}** Rank up! You are now level *${Math.ceil(userXp / 50)}*.`);
-	}
 }
