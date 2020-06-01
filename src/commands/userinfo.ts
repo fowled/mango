@@ -12,25 +12,25 @@ import * as Discord from "discord.js";
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any): Promise<void> {
 	const selectedUser: Discord.User = message.mentions.users.size > 0 ? (message.guild.member(message.mentions.users.first()) ? message.mentions.users.first() : null) : message.author;
 	if (selectedUser) { // In the same server
-		const userinfoRichEmbed: Discord.RichEmbed = new Discord.RichEmbed()
+		const userinfoMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle(`User information for ${selectedUser.username}`)
-			.setAuthor(selectedUser.username, selectedUser.avatarURL)
+			.setAuthor(selectedUser.username, selectedUser.avatar)
 			.setDescription(`User information [${selectedUser.id}]`)
-			.setThumbnail(selectedUser.avatarURL)
+			.setThumbnail(selectedUser.avatar)
 			.setTimestamp()
 			.addField("Username", selectedUser.username, true)
 			.addField("Tag", selectedUser.discriminator, true)
 			.addField("Status", selectedUser.presence.status, true)
 			.addField("Game", selectedUser.presence.game ? selectedUser.presence.game.name : "None", true)
 		if (message.guild.member(message.mentions.users.first())) {
-			userinfoRichEmbed.addField("Joined on", message.guild.member(selectedUser).joinedAt.toLocaleDateString(), true)
+			userinfoMessageEmbed.addField("Joined on", message.guild.member(selectedUser).joinedAt.toLocaleDateString(), true)
 				.addField("Roles", message.guild.member(selectedUser).roles.array().splice(1).map((role: Discord.Role) => role.name).length === 0 ? "No role" : message.guild.member(selectedUser).roles.array().splice(1).map((role: Discord.Role) => role.name).join(", "));
 		}
-		userinfoRichEmbed.addField("Created on:", selectedUser.createdAt.toLocaleDateString(), true)
+		userinfoMessageEmbed.addField("Created on:", selectedUser.createdAt.toLocaleDateString(), true)
 			.setColor(Math.floor(Math.random() * 16777214) + 1)
-			.setFooter(Client.user.username, Client.user.avatarURL);
+			.setFooter(Client.user.username, Client.user.avatar);
 
-		message.channel.send(userinfoRichEmbed);
+		message.channel.send(userinfoMessageEmbed);
 	} else {
 		message.channel.send("Tagged user is not in the server :frowning:");
 	}

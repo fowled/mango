@@ -12,14 +12,13 @@ import * as Discord from "discord.js";
 export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const ping: Discord.Message = await message.channel.send("Ping?") as Discord.Message;
 
-	const pong: Discord.RichEmbed = new Discord.RichEmbed()
+	const pong: Discord.MessageEmbed = new Discord.MessageEmbed()
 		.setTitle(`Latency information for ${message.author.tag}`)
-		.setAuthor(message.author.username, message.author.avatarURL)
+		.setAuthor(message.author.username, message.author.avatar)
 		.setColor(Math.floor(Math.random() * 16777214) + 1)
 		.setDescription("Latency information")
-		.addField("Host latency", `**${message.createdTimestamp - message.createdTimestamp}** ms.`, true)
-		.addField("API latency", `**${Math.round(client.ping)}** ms.`, true)
-		.setFooter(client.user.username, client.user.avatarURL)
+		.addField("API latency", `**${Math.round(client.ws.ping)}** ms.`, true)
+		.setFooter(client.user.username, client.user.avatar)
 		.setTimestamp();
 
 	ping.edit(pong);

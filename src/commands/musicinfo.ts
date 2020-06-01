@@ -18,8 +18,8 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 	const minutes: number = Math.floor(time / 60);
 	const seconds: number = time - minutes * 60;
 
-	const musicInfoEmbed: Discord.RichEmbed = new Discord.RichEmbed()
-		.setAuthor(message.author.username, message.author.avatarURL)
+	const musicInfoEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
+		.setAuthor(message.author.username, message.author.avatar)
 		.setTitle(`Information for ${message.author.tag}`)
 		.setColor("#f98257")
 		.addField("Music name", `:musical_note: - **${fetched.queue[0].songTitle}**`)
@@ -29,7 +29,7 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 		.addField("Announcement channel", `Channel <#${fetched.queue[0].announceChannel}>`)
 		.setURL(`https://youtube.com/${fetched.queue[0].url}`)
 		.setThumbnail(`https://img.youtube.com/vi/${parseURL}/0.jpg`)
-		.setFooter(client.user.username, client.user.avatarURL)
+		.setFooter(client.user.username, client.user.avatar)
 		.setTimestamp();
 	message.channel.send(musicInfoEmbed);
 }

@@ -25,23 +25,23 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 	}
 
 	if (listMessage === undefined) {
-		const noQueueMessage: Discord.RichEmbed = new Discord.RichEmbed()
+		const noQueueMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle(`Queue command for ${message.author.tag}`)
 			.addField(`Now playing`, `*${nowPlaying.songTitle}* - Asked by **${nowPlaying.requester}**`)
 			.setColor("#f98257")
 			.setTimestamp()
-			.setAuthor(message.author.username, message.author.avatarURL)
-			.setFooter(client.user.username, client.user.avatarURL);
+			.setAuthor(message.author.username, message.author.avatar)
+			.setFooter(client.user.username, client.user.avatar);
 		message.channel.send(noQueueMessage);
 	} else {
-		const withQueueMessage: Discord.RichEmbed = new Discord.RichEmbed()
+		const withQueueMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle(`Queue command ${message.author.tag}`)
 			.addField(`Now playing`, `*${nowPlaying.songTitle}* - Asked by **${nowPlaying.requester}**`)
 			.addField("Queue", listMessage)
 			.setColor("#f98257")
 			.setTimestamp()
-			.setAuthor(message.author.username, message.author.avatarURL)
-			.setFooter(client.user.username, client.user.avatarURL);
+			.setAuthor(message.author.username, message.author.avatar)
+			.setFooter(client.user.username, client.user.avatar);
 		message.channel.send(withQueueMessage);
 	}
 

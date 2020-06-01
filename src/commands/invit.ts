@@ -10,7 +10,7 @@ import * as Discord from "discord.js";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	message.guild.channels.get(message.channel.id).createInvite()
+	message.guild.channels.cache.get(message.channel.id).createInvite()
 	.then((invite: Discord.Invite) => {
 		message.channel.send(invite.url);
 	})

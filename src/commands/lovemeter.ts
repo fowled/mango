@@ -23,12 +23,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         messageContent += ":black_large_square:";
     }
 
-    const lovemeter = new Discord.RichEmbed()
+    const lovemeter = new Discord.MessageEmbed()
         .setTitle("Lovemeter :heart:")
-        .setAuthor(message.author.tag, message.author.avatarURL)
+        .setAuthor(message.author.tag, message.author.avatar)
         .setColor("#08ABF9")
         .setDescription(`Current __lovemeter__ between you and *${member.user.tag}*: ${messageContent} \n→ **${randomNumber * 10}**% of love`)
-        .setFooter(Client.user.username, Client.user.avatarURL)
+        .setFooter(Client.user.username, Client.user.avatar)
         .setTimestamp()
 
     message.channel.send(lovemeter);

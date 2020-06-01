@@ -18,9 +18,9 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply("Sorry, but I can't unmute the user you specified, because he has one of the following perms: `ADMINISTATOR` or `MANAGE_MESSAGES`.");
     }
 
-    let muteRole: Discord.Role = message.guild.roles.find(role => role.name === "muted");
+    let muteRole: Discord.Role = message.guild.roles.cache.find(role => role.name === "muted");
 
-    if (!muteRole && !memberUnmute.roles.has("muteRole")) {
+    if (!muteRole && !memberUnmute.roles.cache.has("muteRole")) {
         return message.reply(`It looks like that **${memberUnmute.user.tag}** isn't muted :eyes:`);
     }
 
@@ -29,7 +29,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
     try {
-        memberUnmute.removeRole(muteRole);
+        memberUnmute.roles.remove(muteRole);
         message.reply(`**${memberUnmute.user.tag}** has been successfully unmuted. <a:check:690888185084903475>`);
         LogChecker.insertLog(Client, message.guild.id, message.author, `**${memberUnmute.user.tag}** has been __unmuted__ by ${message.author.tag}.`);
     } catch (error) {

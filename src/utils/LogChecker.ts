@@ -14,15 +14,15 @@ export function insertLog(Client: Discord.Client, guildID: string, author, msg: 
 
             channelID = data[guildID];
 
-            const logRichEmbed = new Discord.RichEmbed()
-                .setAuthor(author.tag, author.avatarURL)
+            const logMessageEmbed = new Discord.MessageEmbed()
+                .setAuthor(author.tag, author.avatar)
                 .setColor("#2D2B2B")
                 .setDescription(msg)
-                .setFooter(Client.user.username, Client.user.avatarURL)
+                .setFooter(Client.user.username, Client.user.avatar)
                 .setTimestamp();
 
             // @ts-ignore
-            Client.channels.get(channelID).send(logRichEmbed);
+            Client.channels.get(channelID).send(logMessageEmbed);
         });
     } catch (error) {
         Logger.error(error);

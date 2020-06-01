@@ -23,7 +23,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
     try {
-        let welcomeChannel = Client.channels.find("id", welcomeChannelID);
+        let welcomeChannel = Client.channels.fetch(welcomeChannelID);
         let content = JSON.parse(fs.readFileSync('database/welcome/channels.json', 'utf8'));
 
         content[message.guild.id] = welcomeChannelID;

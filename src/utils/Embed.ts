@@ -4,7 +4,7 @@ export function create(Client: Discord.Client, {
 		color = Math.floor(Math.random() * (0xffffff + 1)),
 		description = `${Client.user.username} - A multitask and multilingual bot`,
 		fields = [],
-		footer = { text: `${Client.user.username} - A multitask and multilingual bot`, iconURL: Client.user.avatarURL},
+		footer = { text: `${Client.user.username} - A multitask and multilingual bot`, iconURL: Client.user.avatar},
 		thumbnail,
 		timestamp = Date.now(),
 		title = Client.user.username,
@@ -18,23 +18,23 @@ export function create(Client: Discord.Client, {
 		timestamp?: number,
 		title: string,
 		url?: string,
-	}): Discord.RichEmbed {
-		return new Discord.RichEmbed({
+	}): Discord.MessageEmbed {
+		return new Discord.MessageEmbed({
 			author: {
 				name: Client.user.username,
-				iconURL: Client.user.avatarURL,
-				icon_url: Client.user.avatarURL,
+				iconURL: Client.user.avatar,
+				icon_url: Client.user.avatar,
 			},
 			color: color instanceof Array ? color[0] : color,
 			description: description ? description : undefined,
 			fields,
 			title: title || Client.user.username,
 			thumbnail: thumbnail || {
-				url: Client.user.avatarURL,
+				url: Client.user.avatar,
 			},
 			footer: footer || {
 				text: `${Client.user.username} - A multitask and multilingual bot`,
-				iconURL: Client.user.avatarURL,
+				iconURL: Client.user.avatar,
 			},
 		});
 }

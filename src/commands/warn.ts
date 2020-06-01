@@ -21,23 +21,23 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		}
 
 		const date = new Date();
-		const warnGuildRichEmbed: Discord.RichEmbed = new Discord.RichEmbed()
+		const warnGuildMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle(`Warn`)
 			.setDescription(`**${taggedUser.tag}** has been warned by *${message.author.tag}* on __${date.toLocaleDateString()}__: *"${commande}"*.`)
-			.setAuthor(message.author.username, message.author.avatarURL)
-			.setFooter(Client.user.username, Client.user.avatarURL)
+			.setAuthor(message.author.username, message.author.avatar)
+			.setFooter(Client.user.username, Client.user.avatar)
 			.setColor("#4292f4")
 			.setTimestamp();
-		message.channel.send(warnGuildRichEmbed);
+		message.channel.send(warnGuildMessageEmbed);
 
-		const warnUserRichEmbed: Discord.RichEmbed = new Discord.RichEmbed()
+		const warnUserMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle(`Warn`)
 			.setDescription(`You have been warned by **${message.author.username}**  __${date.toLocaleString()}__ avec la raison *"${commande}"*.`)
-			.setAuthor(message.author.username, message.author.avatarURL)
-			.setFooter(Client.user.username, Client.user.avatarURL)
+			.setAuthor(message.author.username, message.author.avatar)
+			.setFooter(Client.user.username, Client.user.avatar)
 			.setColor("#4292f4")
 			.setTimestamp();
-		Client.users.get(taggedUser.id).send(warnUserRichEmbed).catch((error: Error) => {
+		Client.users.cache.get(taggedUser.id).send(warnUserMessageEmbed).catch((error: Error) => {
 			message.channel.send(`**${taggedUser.tag}** doesen't accept DMs from servers.`);
 		});
 	} else {

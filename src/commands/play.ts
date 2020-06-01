@@ -12,7 +12,7 @@ import * as Logger from ".././utils/Logger";
  * @param {any} options some options
  */
 export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any): Promise<void> {
-	const voiceChannel: Discord.VoiceChannel = message.member.voiceChannel;
+	const voiceChannel: Discord.VoiceChannel = message.member.voice.channel;
 
 	if (!voiceChannel) {
 		message.channel.send("I'm sorry, but you need to be connected in a voice channel to start playing :musical_note:");
@@ -43,8 +43,8 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 	}
 
 	const info: ytdl.videoInfo = await ytdl.getInfo(args[0]);
-	const connection: Discord.VoiceConnection = await message.member.voiceChannel.join();
-	const dispatcher: Discord.StreamDispatcher = await connection.playStream(ytdl(args[0], { filter: "audioonly" }));
+	const connection: Discord.VoiceConnection = await message.member.voice.channel.join();
+	const dispatcher: Discord.StreamDispatcher = await connection.play(ytdl(args[0], { filter: "audioonly" }));
 
 	message.channel.send(`Now playing: **${info.title}**`);
 	Logger.log(`Playing ${info.title} on guild: ${message.member.guild.name}`)

@@ -10,6 +10,6 @@ import * as Discord from "discord.js";
  * @param {any} options some options
  */
 export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any): Promise<void> {
-    const profilePic = message.author.avatarURL;
+    const profilePic = message.author.avatar;
     message.reply(`Here is the link to your profile picture: **${profilePic}**`);
 }

@@ -17,8 +17,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             if (this.readyState == 4 && this.status == 200) {
                 let parsedRequest = JSON.parse(this.responseText);
 
-                let richembed = new Discord.RichEmbed()
-                    .setAuthor(message.author.username, message.author.avatarURL)
+                let MessageEmbed = new Discord.MessageEmbed()
+                    .setAuthor(message.author.username, message.author.avatar)
                     .setTitle("Coronavirus stats :chart_with_upwards_trend:")
                     .setDescription("Find here COVID-19 related information")
                     .setColor("#08ABF9")
@@ -30,10 +30,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                     .addField("Recovered", parsedRequest.recovered)
                     .addField("Critical", parsedRequest.critical)
                     .addField("Affected countries", parsedRequest.affectedCountries)
-                    .setFooter(Client.user.username, Client.user.avatarURL)
+                    .setFooter(Client.user.username, Client.user.avatar)
                     .setTimestamp()
 
-                message.channel.send(richembed);
+                message.channel.send(MessageEmbed);
             }
         }
 
@@ -45,8 +45,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             if (this.readyState == 4 && this.status == 200) {
                 let parsedRequest = JSON.parse(this.responseText);
 
-                let richembed = new Discord.RichEmbed()
-                    .setAuthor(message.author.username, message.author.avatarURL)
+                let MessageEmbed = new Discord.MessageEmbed()
+                    .setAuthor(message.author.username, message.author.avatar)
                     .setTitle("Coronavirus stats :chart_with_upwards_trend:")
                     .setDescription("Find here COVID-19 related information")
                     .setThumbnail(parsedRequest.countryInfo.flag)
@@ -56,10 +56,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                     .addField("Today deaths", parsedRequest.todayDeaths)
                     .addField("Recovered", parsedRequest.recovered)
                     .addField("Critical", parsedRequest.critical)
-                    .setFooter(Client.user.username, Client.user.avatarURL)
+                    .setFooter(Client.user.username, Client.user.avatar)
                     .setTimestamp()
 
-                message.channel.send(richembed);
+                message.channel.send(MessageEmbed);
             } else if (this.readyState == 4 && this.status == 404) {
                 message.reply("I didn't find that country. <a:nocheck:691001377459142718>");
             }

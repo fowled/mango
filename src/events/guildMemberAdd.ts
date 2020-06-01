@@ -5,19 +5,19 @@ import * as canvaslib from "canvas";
 export default async (Client: Discord.Client, member: Discord.GuildMember) => {
 	let savedWelcChan = fs.readFileSync("database/welcome/channels.json", "utf-8");
 	savedWelcChan = JSON.parse(savedWelcChan);
-	const welcomeChannel: Discord.GuildChannel = savedWelcChan[member.guild.id] == undefined ? member.guild.channels.find((ch) => ch.name === "welcome") : member.guild.channels.get(savedWelcChan[member.guild.id]);
+	const welcomeChannel: Discord.GuildChannelResolvable = savedWelcChan[member.guild.id] == undefined ? member.guild.channels.resolve("welcome") : member.guild.channels.resolveID(savedWelcChan[member.guild.id]);
 
 	if (!welcomeChannel) {
 		return;
 	}
 
-	const welcUserRichEmbed = new Discord.RichEmbed()
+	const welcUserMessageEmbed = new Discord.MessageEmbed()
 		.setTitle("Welcome!")
 		.setDescription(`Welcome ${member}! We wish you to have fun in **${member.guild.name}**. Help message: type *!infohelp* in server!`)
-		.setAuthor(member.user.username, member.user.avatarURL)
-		.setFooter(Client.user.username, Client.user.avatarURL)
+		.setAuthor(member.user.username, member.user.avatar)
+		.setFooter(Client.user.username, Client.user.avatar)
 		.setColor("0FB1FB")
-	Client.users.get(member.id).send(welcUserRichEmbed);
+	member.send(welcUserMessageEmbed);
 
     const canvas = canvaslib.createCanvas(700, 250);
     const ctx = canvas.getContext("2d");
@@ -33,17 +33,17 @@ export default async (Client: Discord.Client, member: Discord.GuildMember) => {
     ctx.font = "25px Caviar Dreams"; // displays on the picture the member tag
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = "center";
-    ctx.fillText(`Member #${member.guild.members.size}`, canvas.width - 200, canvas.height / 1.30);
+    ctx.fillText(`Member #${member.guild.members.cache.size}`, canvas.width - 200, canvas.height / 1.30);
 
     ctx.beginPath(); // rounded profile pic
     ctx.arc(75, 75, 50, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.clip();
 
-    const avatar = await canvaslib.loadImage(member.user.displayAvatarURL);
+    const avatar = await canvaslib.loadImage(member.user.avatar);
     ctx.drawImage(avatar, 25, 25, 100, 100);
 
-    const attachment = new Discord.Attachment(canvas.toBuffer(), 'welcome-image.png');
+    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
 
 	// @ts-ignore
 	welcomeChannel.send(attachment);

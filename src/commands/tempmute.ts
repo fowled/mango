@@ -23,22 +23,24 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply("Sorry, but I can't mute the user you specified, because he has the Administrator permission.");
     }
 
-    let muteRole: Discord.Role = message.guild.roles.find(role => role.name === "muted");
+    let muteRole: Discord.Role = message.guild.roles.cache.find(role => role.name === "muted");
 
     if (!muteRole) {
         try {
-            muteRole = await message.guild.createRole({
-                name: "muted",
-                mentionable: false,
-                permissions: [],
-                color: "#524F4F"
+            muteRole = await message.guild.roles.create({
+                data: {
+                    name: "muted",
+                    mentionable: false,
+                    permissions: [],
+                    color: "#524F4F"
+                }
             });
 
-            message.guild.channels.forEach(async (channel, id) => {
-                await channel.overwritePermissions(muteRole, {
-                    SEND_MESSAGES: false,
-                    ADD_REACTIONS: false
-                })
+            message.guild.channels.cache.forEach(async (channel, id) => {
+                await channel.overwritePermissions([{
+                    id: muteRole.id,
+                    deny: ["SEND_MESSAGES", "ADD_REACTIONS"],
+                }])
             });
 
         } catch (error) {
@@ -54,12 +56,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     let reason = args[2] == undefined ? "no reason specified." : message.content.split(args[1])[1].trim();
 
-    await memberMute.addRole(muteRole);
+    await memberMute.roles.add(muteRole);
     message.reply(`**${memberMute.user.tag}** has been muted for *${ms(ms(mutetime))}*. <a:check:690888185084903475>`);
     LogChecker.insertLog(Client, message.guild.id, message.author, `**${memberMute.user.tag}** has been __tempmuted__ by ${message.author.tag} for: *${reason}* \nDuration of the punishment: ${ms(ms(mutetime))}`);
 
     setTimeout(function () {
-        memberMute.removeRole(muteRole);
+        memberMute.roles.remove(muteRole);
     }, ms(mutetime));
 
 }

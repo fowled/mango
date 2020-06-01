@@ -37,8 +37,8 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 				bio = "No bio provided...";
 			}
 
-			const reponse: Discord.RichEmbed = new Discord.RichEmbed()
-				.setAuthor(message.author.username, message.author.avatarURL)
+			const reponse: Discord.MessageEmbed = new Discord.MessageEmbed()
+				.setAuthor(message.author.username, message.author.avatar)
 				.setColor("#FF8000")
 				.setTitle(`User information - **${requestedUser.username}**`)
 				.setURL(`https://scratch.mit.edu/users/${user}`)
@@ -52,7 +52,7 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 				.addField("Bio", bio)
 				.addField("Country", requestedUser.profile.country)
 				.setTimestamp()
-				.setFooter(client.user.username, client.user.avatarURL);
+				.setFooter(client.user.username, client.user.avatar);
 			message.channel.send(reponse);
 		} else if (this.readyState === 4 && this.responseText === "{\"code\":\"NotFound\",\"message\":\"\"}") {
 			message.reply("I did not find the user you requested.");

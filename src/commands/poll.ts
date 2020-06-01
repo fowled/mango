@@ -26,12 +26,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         choices.push(`${reactions[i]} - ${splitMessage[i]}`);
     }
 
-    const poll = new Discord.RichEmbed()
-        .setAuthor(message.author.username, message.author.avatarURL)
+    const poll = new Discord.MessageEmbed()
+        .setAuthor(message.author.username, message.author.avatar)
         .setTitle(`Poll by **${message.author.tag}**`)
         .setDescription(choices.join("\n"))
         .setColor("#00BFFF")
-        .setFooter(Client.user.username, Client.user.avatarURL)
+        .setFooter(Client.user.username, Client.user.avatar)
 
     message.channel.send(poll).then(async msg => {
         for (let i = 0; i < splitMessage.length; i++) {
@@ -56,22 +56,22 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 let msg = "";
                 let numberOfReactions = 0;
 
-                message.channel.fetchMessage(msgID).then(mess => {
-                    mess.reactions.forEach(function (reac, i) {
-                        numberOfReactions += reac.users.size;
+                message.channel.messages.fetch(msgID).then(mess => {
+                    mess.reactions.cache.forEach(function (reac, i) {
+                        numberOfReactions += reac.users.cache.size;
                     });
 
-                    mess.reactions.forEach(function (reac, i) {
-                        msg += `${reactions[parseInt(emojiToLetter(i)) - 1]} - ${splitMessage[parseInt(emojiToLetter(i)) - 1]} - ${reac.count - 1} votes **[${Math.round((reac.count - 1) / (numberOfReactions - mess.reactions.size) * 100)}%]** \n`;
+                    mess.reactions.cache.forEach(function (reac, i) {
+                        msg += `${reactions[parseInt(emojiToLetter(i)) - 1]} - ${splitMessage[parseInt(emojiToLetter(i)) - 1]} - ${reac.count - 1} votes **[${Math.round((reac.count - 1) / (numberOfReactions - mess.reactions.cache.size) * 100)}%]** \n`;
                     });
 
-                    const votes = new Discord.RichEmbed()
-                        .setAuthor(message.author.username, message.author.avatarURL)
+                    const votes = new Discord.MessageEmbed()
+                        .setAuthor(message.author.username, message.author.avatar)
                         .setTitle("Results of the poll")
                         .setURL(`https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${msgID}`)
                         .setDescription(msg)
                         .setColor("#00BFFF")
-                        .setFooter(Client.user.username, Client.user.avatarURL)
+                        .setFooter(Client.user.username, Client.user.avatar)
 
                     message.channel.send(votes);
                 });

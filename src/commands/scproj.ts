@@ -25,11 +25,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 			let sharedDate = this.responseText.split('"shared":"')[1].split(`T`)[0];
 			let sharedHour = this.responseText.split(`"shared":"${sharedDate}T`)[1].split('.000Z"}')[0];
 
-			const requestedProject: Discord.RichEmbed = new Discord.RichEmbed()
+			const requestedProject: Discord.MessageEmbed = new Discord.MessageEmbed()
 				.setTitle(`Information about ${parsedRequest.title}`)
-				.setAuthor(message.author.username, message.author.avatarURL)
+				.setAuthor(message.author.username, message.author.avatar)
 				.setURL(`https://scratch.mit.edu/projects/${project}/`)
-				.setThumbnail(message.author.avatarURL)
+				.setThumbnail(message.author.avatar)
 				.setImage(parsedRequest.image)
 				.setDescription(`**${parsedRequest.title}** by *${parsedRequest.author.username}*`)
 				.addField("Number of :eye:", `**${parsedRequest.stats.views}** views.`)
@@ -40,7 +40,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 				.addField("Sharing date", "Project shared on **" + `${new Date(parsedRequest.history.shared).toLocaleDateString()}` + "** at **" + `${new Date(parsedRequest.history.shared).toLocaleTimeString()}` + "**.")
 				.setTimestamp()
 				.setColor("#FF8000")
-				.setFooter(Client.user.username, Client.user.avatarURL);
+				.setFooter(Client.user.username, Client.user.avatar);
 			message.channel.send(requestedProject);
 		} else if (this.readyState == 4 && this.responseText == "{\"code\":\"NotFound\",\"message\":\"\"}") {
 			message.reply("I did not find the project you requested.");
