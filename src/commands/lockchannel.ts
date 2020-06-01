@@ -22,9 +22,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply("I didn't find the role you specified. <a:nocheck:691001377459142718>");
     }
 
-    messageChannel.overwritePermissions(role, {
-        SEND_MESSAGES: false
-    }).catch(err => {
+    messageChannel.overwritePermissions([{
+        id: role.id,
+        deny: ["SEND_MESSAGES"]
+    }]).catch(err => {
         Logger.error(err)
         message.reply("An error occured. <a:nocheck:691001377459142718>");
     });

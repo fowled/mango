@@ -18,13 +18,14 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 			.setDescription(`User information [${selectedUser.id}]`)
 			.setThumbnail(selectedUser.avatar)
 			.setTimestamp()
-			.addField("Username", selectedUser.username, true)
-			.addField("Tag", selectedUser.discriminator, true)
-			.addField("Status", selectedUser.presence.status, true)
-			.addField("Game", selectedUser.presence.game ? selectedUser.presence.game.name : "None", true)
+			.addField("✏️ Username", selectedUser.username, true)
+			.addField("📝 Tag", selectedUser.discriminator, true)
+			.addField("🔴 Status", selectedUser.presence.status, true)
+			.addField("🎮 Game", selectedUser.presence.activities ? !selectedUser.presence.activities : "None", true)
+			.addField("🖥 Surface", selectedUser.presence.clientStatus)
 		if (message.guild.member(message.mentions.users.first())) {
 			userinfoMessageEmbed.addField("Joined on", message.guild.member(selectedUser).joinedAt.toLocaleDateString(), true)
-				.addField("Roles", message.guild.member(selectedUser).roles.array().splice(1).map((role: Discord.Role) => role.name).length === 0 ? "No role" : message.guild.member(selectedUser).roles.array().splice(1).map((role: Discord.Role) => role.name).join(", "));
+				.addField("Roles", message.guild.member(selectedUser).roles.cache.array().splice(1).map((role: Discord.Role) => role.name).length === 0 ? "No role" : message.guild.member(selectedUser).roles.cache.array().splice(1).map((role: Discord.Role) => role.name).join(", "));
 		}
 		userinfoMessageEmbed.addField("Created on:", selectedUser.createdAt.toLocaleDateString(), true)
 			.setColor(Math.floor(Math.random() * 16777214) + 1)

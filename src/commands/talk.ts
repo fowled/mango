@@ -42,7 +42,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     function detectEmojis(msg: string | any[]) {
         for (let index: number = 0; index < msg.length; index++) {
             if (msg[index].startsWith(":") && msg[index].endsWith(":")) {
-                const emoji = Client.emojis.find(emj => emj.name == msg[index].split(":")[1]);
+                const emoji = Client.emojis.cache.find(emj => emj.name == msg[index].split(":")[1]);
                 messageToSay.splice(index, 1, emoji);
             }
         }
