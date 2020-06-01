@@ -9,7 +9,7 @@
     "@types/node": "^13.7.1",
     "basic-ftp": "^4.5.3",
     "canvas": "^2.6.1",
-    "discord.js": "^11.6.4",
+    "discord.js": "^12.2.0",
     "dom-parser": "^0.1.6",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.2",
