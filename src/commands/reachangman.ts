@@ -58,7 +58,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 if (checkLetter(emojiToLetter(collected.first().emoji.name))) {
                     replaceWithStars(emojiToLetter(collected.first().emoji.name));
                     const correctLetter = new Discord.MessageEmbed()
-                        .setAuthor(message.author.username, message.author.avatar)
+                        .setAuthor(message.author.username, message.author.avatarURL())
                         .setDescription(`<a:check:690888185084903475> Good job - you just found the \`${emojiToLetter(collected.first().emoji.name)}\` letter!`)
                         .setColor("#3AD919")
                     message.channel.messages.fetch(firstMessageID).then(m => m.edit(correctLetter));
@@ -70,7 +70,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 } else if (checkLetter(emojiToLetter(collected.first().emoji.name)) == false) {
                     guessesNumber++;
                     const incorrectLetter = new Discord.MessageEmbed()
-                        .setAuthor(message.author.username, message.author.avatar)
+                        .setAuthor(message.author.username, message.author.avatarURL())
                         .setDescription(`<a:nocheck:691001377459142718> Wrong letter \`${emojiToLetter(collected.first().emoji.name)}\`. Remaining attempts: **${10 - guessesNumber}**.`)
                         .setColor("#ff0000")
                     message.channel.messages.fetch(firstMessageID).then(m => m.edit(incorrectLetter));
@@ -79,13 +79,13 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
                 if (checkIfWin()) {
                     const youWon = new Discord.MessageEmbed()
-                        .setAuthor(message.author.username, message.author.avatar)
+                        .setAuthor(message.author.username, message.author.avatarURL())
                         .setDescription(`GG - you won the game with *${10 - guessesNumber} attempts* left!`)
                         .setColor("#ffff00")
                     return message.channel.messages.fetch(firstMessageID).then(m => m.edit(youWon));
                 } else if (guessesNumber >= 10) {
                     const youLost = new Discord.MessageEmbed()
-                        .setAuthor(message.author.username, message.author.avatar)
+                        .setAuthor(message.author.username, message.author.avatarURL())
                         .setDescription(`You lost! Word was \`${thatOneWord}\`.`)
                         .setColor("#ff0000")
                     return message.channel.messages.fetch(firstMessageID).then(m => m.edit(youLost));

@@ -84,7 +84,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
                 if (isCaseOccupied(emojiToLetter(collected.first().emoji.name))) {
                     const status = new Discord.MessageEmbed()
-                        .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatar)
+                        .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatarURL())
                         .setColor("#1E90FF")
                         .setDescription(`**${collected.first().users.cache.last().tag}** tried to react with the ${collected.first().emoji.name} emoji, but this case is already occupied by a player...`);
 
@@ -95,7 +95,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 }
 
                 const status = new Discord.MessageEmbed()
-                    .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatar)
+                    .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatarURL())
                     .setColor("#1E90FF")
                     .setDescription(`**${collected.first().users.cache.last().tag}** reacted with the ${collected.first().emoji.name} emoji.`);
 
@@ -105,7 +105,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
                 if (checkIfWin(turn)) {
                     const status = new Discord.MessageEmbed()
-                        .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatar)
+                        .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatarURL())
                         .setColor("#ffff00")
                         .setDescription(`**${collected.first().users.cache.last().tag}** won the game. GG!`);
 
@@ -113,7 +113,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                     return;
                 } else if (checkIfEgality()) {
                     const status = new Discord.MessageEmbed()
-                        .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatar)
+                        .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatarURL())
                         .setColor("#1E90FF")
                         .setDescription(`:crossed_swords: Nobody won... That's a draw!`);
 

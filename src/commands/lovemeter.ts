@@ -25,10 +25,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     const lovemeter = new Discord.MessageEmbed()
         .setTitle("Lovemeter :heart:")
-        .setAuthor(message.author.tag, message.author.avatar)
+        .setAuthor(message.author.tag, message.author.avatarURL())
         .setColor("#08ABF9")
         .setDescription(`Current __lovemeter__ between you and *${member.user.tag}*: ${messageContent} \n→ **${randomNumber * 10}**% of love`)
-        .setFooter(Client.user.username, Client.user.avatar)
+        .setFooter(Client.user.username, Client.user.avatarURL())
         .setTimestamp()
 
     message.channel.send(lovemeter);

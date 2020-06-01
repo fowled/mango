@@ -24,8 +24,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		const warnGuildMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle(`Warn`)
 			.setDescription(`**${taggedUser.tag}** has been warned by *${message.author.tag}* on __${date.toLocaleDateString()}__: *"${commande}"*.`)
-			.setAuthor(message.author.username, message.author.avatar)
-			.setFooter(Client.user.username, Client.user.avatar)
+			.setAuthor(message.author.username, message.author.avatarURL())
+			.setFooter(Client.user.username, Client.user.avatarURL())
 			.setColor("#4292f4")
 			.setTimestamp();
 		message.channel.send(warnGuildMessageEmbed);
@@ -33,8 +33,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		const warnUserMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle(`Warn`)
 			.setDescription(`You have been warned by **${message.author.username}**  __${date.toLocaleString()}__ avec la raison *"${commande}"*.`)
-			.setAuthor(message.author.username, message.author.avatar)
-			.setFooter(Client.user.username, Client.user.avatar)
+			.setAuthor(message.author.username, message.author.avatarURL())
+			.setFooter(Client.user.username, Client.user.avatarURL())
 			.setColor("#4292f4")
 			.setTimestamp();
 		Client.users.cache.get(taggedUser.id).send(warnUserMessageEmbed).catch((error: Error) => {

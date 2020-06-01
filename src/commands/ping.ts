@@ -14,11 +14,11 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 
 	const pong: Discord.MessageEmbed = new Discord.MessageEmbed()
 		.setTitle(`Latency information for ${message.author.tag}`)
-		.setAuthor(message.author.username, message.author.avatar)
+		.setAuthor(message.author.username, message.author.avatarURL())
 		.setColor(Math.floor(Math.random() * 16777214) + 1)
 		.setDescription("Latency information")
 		.addField("API latency", `**${Math.round(client.ws.ping)}** ms.`, true)
-		.setFooter(client.user.username, client.user.avatar)
+		.setFooter(client.user.username, client.user.avatarURL())
 		.setTimestamp();
 
 	ping.edit(pong);

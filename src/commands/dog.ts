@@ -21,7 +21,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             let breeds;
 
             breeds = new Discord.MessageEmbed()
-                .setAuthor(message.author.tag, message.author.avatar)
+                .setAuthor(message.author.tag, message.author.avatarURL())
                 .attachFiles(dogPicture)
                 .setColor("0FB1FB")
                 .setDescription("Here is some info about your doggo.")
@@ -29,7 +29,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 .addField("Life span", getSafe(() => parsedRequest[0].breeds[0].life_span), true)
                 .addField("Temperament", getSafe(() => parsedRequest[0].breeds[0].temperament))
                 .setTimestamp()
-                .setFooter(Client.user.username, Client.user.avatar);
+                .setFooter(Client.user.username, Client.user.avatarURL());
 
             message.channel.send(breeds);
         }

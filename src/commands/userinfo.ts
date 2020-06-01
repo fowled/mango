@@ -10,26 +10,24 @@ import * as Discord from "discord.js";
  * @param {any} options les options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any): Promise<void> {
-	const selectedUser: Discord.User = message.mentions.users.size > 0 ? (message.guild.member(message.mentions.users.first()) ? message.mentions.users.first() : null) : message.author;
+	const selectedUser: Discord.GuildMember = message.mentions.users.size > 0 ? (message.guild.member(message.mentions.members.first()) ? message.mentions.members.first() : null) : message.member;
 	if (selectedUser) { // In the same server
 		const userinfoMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
-			.setTitle(`User information for ${selectedUser.username}`)
-			.setAuthor(selectedUser.username, selectedUser.avatar)
-			.setDescription(`User information [${selectedUser.id}]`)
-			.setThumbnail(selectedUser.avatar)
+			.setTitle(`User information for ${selectedUser.user.username}`)
+			.setAuthor(selectedUser.user.username, selectedUser.user.avatarURL())
+			.setThumbnail(selectedUser.user.avatarURL())
 			.setTimestamp()
-			.addField("✏️ Username", selectedUser.username, true)
-			.addField("📝 Tag", selectedUser.discriminator, true)
-			.addField("🔴 Status", selectedUser.presence.status, true)
-			.addField("🎮 Game", selectedUser.presence.activities ? !selectedUser.presence.activities : "None", true)
-			.addField("🖥 Surface", selectedUser.presence.clientStatus)
-		if (message.guild.member(message.mentions.users.first())) {
-			userinfoMessageEmbed.addField("Joined on", message.guild.member(selectedUser).joinedAt.toLocaleDateString(), true)
-				.addField("Roles", message.guild.member(selectedUser).roles.cache.array().splice(1).map((role: Discord.Role) => role.name).length === 0 ? "No role" : message.guild.member(selectedUser).roles.cache.array().splice(1).map((role: Discord.Role) => role.name).join(", "));
-		}
-		userinfoMessageEmbed.addField("Created on:", selectedUser.createdAt.toLocaleDateString(), true)
+			.addField("Username", selectedUser.user.username, true)
+			.addField("Tag", selectedUser.user.discriminator, true)
+			.addField("Status", selectedUser.presence.status, true)
+			.addField("Game", selectedUser.presence.activities.join(" ; ") ? !selectedUser.presence.activities.join("") : "None", true)
+			.addField("Joined on", message.guild.member(selectedUser).joinedAt.toLocaleDateString(), true)
+			.addField("Roles", message.guild.member(selectedUser).roles.cache.array().splice(1).map((role: Discord.Role) => role.name).length === 0 ? "No role" : message.guild.member(selectedUser).roles.cache.array().splice(1).map((role: Discord.Role) => role.name).join(", "), true)
+			.addField("Created on", selectedUser.user.createdAt.toLocaleDateString(), true)
+			.addField("Nickname", selectedUser.nickname ? selectedUser.nickname : "No", true)
+			.addField("Boost", selectedUser.premiumSince ? selectedUser.premiumSince.toLocaleString() : "No", true)
 			.setColor(Math.floor(Math.random() * 16777214) + 1)
-			.setFooter(Client.user.username, Client.user.avatar);
+			.setFooter(Client.user.username, Client.user.avatarURL());
 
 		message.channel.send(userinfoMessageEmbed);
 	} else {

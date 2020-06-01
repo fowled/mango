@@ -29,7 +29,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
             let MessageEmbed = new Discord.MessageEmbed()
                 .setTitle(`Weather in ${country}`)
-                .setAuthor(message.author.username, message.author.avatar)
+                .setAuthor(message.author.username, message.author.avatarURL())
                 .setThumbnail(icon)
                 .setColor("#08ABF9")
                 .setDescription(`Weather info about a country`)
@@ -37,7 +37,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 .addField("Humidity", `${parsedRequest.main.humidity}%`)
                 .addField("Wind", `${Math.round(wind * 3.5)} km/h`)
                 .addField("Description", `${parsedRequest.weather[0].description}`)
-                .setFooter(Client.user.username, Client.user.avatar)
+                .setFooter(Client.user.username, Client.user.avatarURL())
                 .setTimestamp()
 
             message.channel.send(MessageEmbed);

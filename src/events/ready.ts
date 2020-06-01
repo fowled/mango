@@ -10,7 +10,8 @@ export default async (Client: Discord.Client) => {
 		Client.user.setPresence({
 			activity: {
 				name: activitiesList[Math.floor(Math.random() * activitiesList.length)],
-				type: "WATCHING"
+				type: "WATCHING",
+				
 			},
 			status: "online",
 		});

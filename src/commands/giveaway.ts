@@ -13,14 +13,14 @@ import * as Logger from ".././utils/Logger";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const filter: Discord.CollectorFilter = (reaction, user) => ["🇦", "🇧", "🇨"].includes(reaction.emoji.name) && user.id === message.author.id;
-	const messageAuthor: string = message.author.avatar.toString();
+	const messageAuthor: string = message.author.avatarURL().toString();
 
 	const giveawayEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
-		.setAuthor(message.author.username, message.author.avatar)
+		.setAuthor(message.author.username, message.author.avatarURL())
 		.setDescription("What would you like to do? \n\n:regional_indicator_a: - Create a giveaway \n:regional_indicator_b: - Help about this command")
 		.setColor("#0089FF")
 		.setTimestamp()
-		.setFooter(message.author.username, message.author.avatar);
+		.setFooter(message.author.username, message.author.avatarURL());
 	message.channel.send(giveawayEmbed).then(async (msg: Discord.Message) => {
 
 		await msg.react("🇦");
@@ -120,11 +120,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
 	function helpMessage() {
 		const helpMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
-			.setAuthor(message.author.username, message.author.avatar)
+			.setAuthor(message.author.username, message.author.avatarURL())
 			.setTitle("Help on the giveaway command")
 			.setDescription("With this command you can create a giveaway that will pick a winner who's going to obtain a reward. Try it!")
 			.setTimestamp()
-			.setFooter(message.author.username, message.author.avatar)
+			.setFooter(message.author.username, message.author.avatarURL())
 			.setColor("#0089FF");
 		message.channel.send(helpMessage);
 	}

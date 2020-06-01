@@ -27,9 +27,9 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
 			const requestedProject: Discord.MessageEmbed = new Discord.MessageEmbed()
 				.setTitle(`Information about ${parsedRequest.title}`)
-				.setAuthor(message.author.username, message.author.avatar)
+				.setAuthor(message.author.username, message.author.avatarURL())
 				.setURL(`https://scratch.mit.edu/projects/${project}/`)
-				.setThumbnail(message.author.avatar)
+				.setThumbnail(message.author.avatarURL())
 				.setImage(parsedRequest.image)
 				.setDescription(`**${parsedRequest.title}** by *${parsedRequest.author.username}*`)
 				.addField("Number of :eye:", `**${parsedRequest.stats.views}** views.`)
@@ -40,7 +40,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 				.addField("Sharing date", "Project shared on **" + `${new Date(parsedRequest.history.shared).toLocaleDateString()}` + "** at **" + `${new Date(parsedRequest.history.shared).toLocaleTimeString()}` + "**.")
 				.setTimestamp()
 				.setColor("#FF8000")
-				.setFooter(Client.user.username, Client.user.avatar);
+				.setFooter(Client.user.username, Client.user.avatarURL());
 			message.channel.send(requestedProject);
 		} else if (this.readyState == 4 && this.responseText == "{\"code\":\"NotFound\",\"message\":\"\"}") {
 			message.reply("I did not find the project you requested.");

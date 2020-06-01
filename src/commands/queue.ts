@@ -30,8 +30,8 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 			.addField(`Now playing`, `*${nowPlaying.songTitle}* - Asked by **${nowPlaying.requester}**`)
 			.setColor("#f98257")
 			.setTimestamp()
-			.setAuthor(message.author.username, message.author.avatar)
-			.setFooter(client.user.username, client.user.avatar);
+			.setAuthor(message.author.username, message.author.avatarURL())
+			.setFooter(client.user.username, client.user.avatarURL());
 		message.channel.send(noQueueMessage);
 	} else {
 		const withQueueMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
@@ -40,8 +40,8 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 			.addField("Queue", listMessage)
 			.setColor("#f98257")
 			.setTimestamp()
-			.setAuthor(message.author.username, message.author.avatar)
-			.setFooter(client.user.username, client.user.avatar);
+			.setAuthor(message.author.username, message.author.avatarURL())
+			.setFooter(client.user.username, client.user.avatarURL());
 		message.channel.send(withQueueMessage);
 	}
 

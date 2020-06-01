@@ -27,11 +27,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
     const poll = new Discord.MessageEmbed()
-        .setAuthor(message.author.username, message.author.avatar)
+        .setAuthor(message.author.username, message.author.avatarURL())
         .setTitle(`Poll by **${message.author.tag}**`)
         .setDescription(choices.join("\n"))
         .setColor("#00BFFF")
-        .setFooter(Client.user.username, Client.user.avatar)
+        .setFooter(Client.user.username, Client.user.avatarURL())
 
     message.channel.send(poll).then(async msg => {
         for (let i = 0; i < splitMessage.length; i++) {
@@ -66,12 +66,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                     });
 
                     const votes = new Discord.MessageEmbed()
-                        .setAuthor(message.author.username, message.author.avatar)
+                        .setAuthor(message.author.username, message.author.avatarURL())
                         .setTitle("Results of the poll")
                         .setURL(`https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${msgID}`)
                         .setDescription(msg)
                         .setColor("#00BFFF")
-                        .setFooter(Client.user.username, Client.user.avatar)
+                        .setFooter(Client.user.username, Client.user.avatarURL())
 
                     message.channel.send(votes);
                 });

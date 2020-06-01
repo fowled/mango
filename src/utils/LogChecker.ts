@@ -15,10 +15,10 @@ export function insertLog(Client: Discord.Client, guildID: string, author, msg: 
             channelID = data[guildID];
 
             const logMessageEmbed = new Discord.MessageEmbed()
-                .setAuthor(author.tag, author.avatar)
+                .setAuthor(author.tag, author.avatarURL())
                 .setColor("#2D2B2B")
                 .setDescription(msg)
-                .setFooter(Client.user.username, Client.user.avatar)
+                .setFooter(Client.user.username, Client.user.avatarURL())
                 .setTimestamp();
 
             // @ts-ignore

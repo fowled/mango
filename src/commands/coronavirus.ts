@@ -18,7 +18,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 let parsedRequest = JSON.parse(this.responseText);
 
                 let MessageEmbed = new Discord.MessageEmbed()
-                    .setAuthor(message.author.username, message.author.avatar)
+                    .setAuthor(message.author.username, message.author.avatarURL())
                     .setTitle("Coronavirus stats :chart_with_upwards_trend:")
                     .setDescription("Find here COVID-19 related information")
                     .setColor("#08ABF9")
@@ -30,7 +30,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                     .addField("Recovered", parsedRequest.recovered)
                     .addField("Critical", parsedRequest.critical)
                     .addField("Affected countries", parsedRequest.affectedCountries)
-                    .setFooter(Client.user.username, Client.user.avatar)
+                    .setFooter(Client.user.username, Client.user.avatarURL())
                     .setTimestamp()
 
                 message.channel.send(MessageEmbed);
@@ -46,7 +46,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 let parsedRequest = JSON.parse(this.responseText);
 
                 let MessageEmbed = new Discord.MessageEmbed()
-                    .setAuthor(message.author.username, message.author.avatar)
+                    .setAuthor(message.author.username, message.author.avatarURL())
                     .setTitle("Coronavirus stats :chart_with_upwards_trend:")
                     .setDescription("Find here COVID-19 related information")
                     .setThumbnail(parsedRequest.countryInfo.flag)
@@ -56,7 +56,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                     .addField("Today deaths", parsedRequest.todayDeaths)
                     .addField("Recovered", parsedRequest.recovered)
                     .addField("Critical", parsedRequest.critical)
-                    .setFooter(Client.user.username, Client.user.avatar)
+                    .setFooter(Client.user.username, Client.user.avatarURL())
                     .setTimestamp()
 
                 message.channel.send(MessageEmbed);
