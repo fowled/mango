@@ -90,7 +90,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
                     msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit(status));
 
-                    collected.last().remove();
+                    collected.last().users.remove(collected.first().users.cache.last().id);
                     return createReactionCollector(msg);
                 }
 
@@ -121,7 +121,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 }
 
                 detectPlayer(); // changes turn
-                collected.last().remove(); // removes user reaction
+                collected.last().users.remove(collected.first().users.cache.last().id); // removes user reaction
                 createReactionCollector(msg); // wait for reaction once the turn is finished
             }).catch(err => {
                 createReactionCollector(msg);
