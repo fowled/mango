@@ -11,7 +11,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 	let prefix = JSON.parse(Fs.readFileSync(`./database/prefixes/prefixes.json`, "utf8"));
 
-	if (message.mentions.has(Client.user, { ignoreDirect: false, ignoreEveryone: true, ignoreRoles: true })) {
+	if (message.mentions.has(Client.user, { ignoreDirect: false, ignoreEveryone: true, ignoreRoles: true }) && message.content.split(" ").length == 1) {
 		if (prefix[message.author.id] == undefined) {
 			prefix = "ma!";
 		} else {
