@@ -17,7 +17,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 		} else {
 			prefix = prefix[message.author.id];
 		}
-		message.reply(`Hey, I'm Mango! Your current prefix is \`${prefix}\` \n→ help message: \`${prefix}infohelp\` <a:check:690888185084903475>`);
+		message.reply(`Hey, I'm Mango! Your current prefix is \`${prefix}\` \n→ help message: \`${prefix}help\` <a:check:690888185084903475>`);
 	}
 
 	Xp.checkXP(message);
