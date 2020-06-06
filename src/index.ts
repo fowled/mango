@@ -7,6 +7,7 @@ import { Token } from "./token";
 const Client: Discord.Client = new Discord.Client();
 
 export const talkedRecently = new Set();
+export const queue = new Map();
 
 Client.on('error', console.error);
 
