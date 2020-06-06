@@ -10,11 +10,21 @@ import * as Discord from "discord.js";
  * @param {any} options some options
  */
 export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	const fetched: any = ops.active.get(message.guild.id);
+    const serverQueue = ops.queue.get(message.guild.id);
+    
+    if (!message.member.voice.channel) {
+        return message.channel.send("You aren't in a voice channel!");
+    } 
 
-	if (!fetched) {
-		return message.channel.send("No music is actually played.");
-	}
+    if (!serverQueue) {
+        return message.channel.send("Nothing is currently playing.");
+    }
 
-	fetched.dispatcher.emit("end");
+    serverQueue.connection.dispatcher.end();
+
+    if (serverQueue.songs.length == 1) {
+        return message.channel.send("Automatically left the channel, because there isn't any song left in this server queue. If you believe this is an error, please use the `ma!play` command again.");
+    } else {
+        return message.channel.send("Song has been skipped. Moving on to the next one...");
+    }
 }
