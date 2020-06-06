@@ -33,14 +33,15 @@
     "request": "^2.88.2",
     "tsc": "^1.20150623.0",
     "tslint": "^6.1.0",
-    "typescript": "^3.7.5",
     "unidecode": "^0.1.8",
     "xmlhttprequest": "^1.8.0",
     "xmlhttprequest-ts": "^1.0.1",
     "yt-search": "^1.1.2",
     "ytdl-core": "^2.1.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "typescript": "^3.9.5"
+  },
   "scripts": {
     "test": "tsc",
     "start": "node server/server.js"
