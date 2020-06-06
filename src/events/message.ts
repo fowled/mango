@@ -4,6 +4,8 @@ import * as Fs from "fs";
 import * as Logger from "./../utils/Logger";
 import * as Xp from "./../utils/Xp";
 
+import { queue } from "../index";
+
 export default async (Client: Discord.Client, message: Discord.Message) => {
 	if (message.author.bot || !message.guild) {
 		return;
@@ -34,8 +36,12 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 			return checkCustomCommands();
 		}
 
+		let ops: {} = {
+			queue: queue
+		}
+
 		try {
-			require(`./../commands/${cmd}.js`).run(Client, message, args, null);
+			require(`./../commands/${cmd}.js`).run(Client, message, args, ops);
 			Logger.log(`${message.author.tag} just used the ${cmd} power in ${message.guild.name}.`);
 		} catch (err) {
 			Logger.log(`The command ${message.author.tag} tried to call in ${message.guild.name} doesen't seem to exist.`);
