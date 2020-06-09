@@ -48,7 +48,7 @@
     "typescript": "^3.9.5"
   },
   "scripts": {
-    "test": "tsc",
+    "test": "tsc --version",
     "start": "node server/server.js"
   },
   "author": "",
