@@ -37,6 +37,7 @@
     "rebuild": "^0.1.2",
     "request": "^2.88.2",
     "tsc": "^1.20150623.0",
+    "typescript": "^3.9.5",
     "tslint": "^6.1.0",
     "unidecode": "^0.1.8",
     "xmlhttprequest": "^1.8.0",
