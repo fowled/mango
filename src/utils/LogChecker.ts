@@ -22,7 +22,7 @@ export function insertLog(Client: Discord.Client, guildID: string, author, msg: 
                 .setTimestamp();
 
             // @ts-ignore
-            Client.channels.get(channelID).send(logMessageEmbed);
+            Client.channels.cache.get(channelID).fetch().then(chan => chan.send(logMessageEmbed));
         });
     } catch (error) {
         Logger.error(error);

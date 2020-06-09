@@ -1,11 +1,12 @@
 import * as Discord from "discord.js";
 import * as fs from "fs";
 import * as canvaslib from "canvas";
+import * as Logger from "../utils/Logger";
 
 export default async (Client: Discord.Client, member: Discord.GuildMember) => {
 	let savedWelcChan = fs.readFileSync("database/welcome/channels.json", "utf-8");
 	savedWelcChan = JSON.parse(savedWelcChan);
-	const channel: Discord.GuildChannelResolvable = savedWelcChan[member.guild.id] == undefined ? member.guild.channels.resolve("welcome") : member.guild.channels.resolveID(savedWelcChan[member.guild.id]);
+	const channel = savedWelcChan[member.guild.id] == undefined ? member.guild.channels.cache.get("welcome").id : savedWelcChan[member.guild.id];
 
 	if (!channel) {
 		return;
@@ -37,7 +38,10 @@ export default async (Client: Discord.Client, member: Discord.GuildMember) => {
 
 	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
 	
-	// @ts-ignore
-	channel.send(attachment);
+    try {
+        Client.channels.fetch(channel).then((channel: Discord.TextChannel) => channel.send(attachment));
+    } catch (err) {
+        Logger.error("Didn't find the channel to post attachment [guildMemberAdd]");
+    }
 };
 

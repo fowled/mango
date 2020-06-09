@@ -1,11 +1,12 @@
 import * as Discord from "discord.js";
 import * as fs from "fs";
 import * as canvaslib from "canvas";
+import * as Logger from "../utils/Logger";
 
 export default async (Client: Discord.Client, member: Discord.GuildMember) => {
 	let savedWelcChan = fs.readFileSync("database/welcome/channels.json", "utf-8");
 	savedWelcChan = JSON.parse(savedWelcChan);
-	const welcomeChannel: Discord.GuildChannelResolvable = savedWelcChan[member.guild.id] == undefined ? member.guild.channels.resolve("welcome") : member.guild.channels.resolveID(savedWelcChan[member.guild.id]);
+	const welcomeChannel = savedWelcChan[member.guild.id] == undefined ? member.guild.channels.cache.get("welcome").id : savedWelcChan[member.guild.id];
 
 	if (!welcomeChannel) {
 		return;
@@ -13,7 +14,7 @@ export default async (Client: Discord.Client, member: Discord.GuildMember) => {
 
 	const welcUserMessageEmbed = new Discord.MessageEmbed()
 		.setTitle("Welcome!")
-		.setDescription(`Welcome ${member}! We wish you to have fun in **${member.guild.name}**. Help message: type *!infohelp* in server!`)
+		.setDescription(`Welcome ${member}! We wish you to have fun in **${member.guild.name}**. Help message: type *ma!help* in server!`)
 		.setAuthor(member.user.username, member.user.avatar)
 		.setFooter(Client.user.username, Client.user.avatar)
 		.setColor("0FB1FB")
@@ -45,6 +46,9 @@ export default async (Client: Discord.Client, member: Discord.GuildMember) => {
 
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
 
-	// @ts-ignore
-	welcomeChannel.send(attachment);
+    try {
+        Client.channels.fetch(welcomeChannel).then((channel: Discord.TextChannel) => channel.send(attachment));
+    } catch (err) {
+        Logger.error("Didn't find the channel to post attachment [guildMemberAdd]");
+    }
 };
