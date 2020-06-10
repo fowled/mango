@@ -46,11 +46,8 @@
     "yt-search": "^1.1.2",
     "ytdl-core": "^2.1.7"
   },
-  "devDependencies": {
-    "typescript": "^3.9.5"
-  },
   "scripts": {
-    "test": "npm-run-all --parallel --continue-on-error npm i typescript@latest tsc",
+    "test": "tsc",
     "start": "node server/server.js"
   },
   "author": "",
