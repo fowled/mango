@@ -34,11 +34,12 @@
     "node-emoji": "^1.10.0",
     "node-gyp": "^6.1.0",
     "node-opus": "^0.3.3",
+    "npm-run-all": "^4.1.5",
     "rebuild": "^0.1.2",
     "request": "^2.88.2",
     "tsc": "^1.20150623.0",
-    "typescript": "^3.9.5",
     "tslint": "^6.1.0",
+    "typescript": "^3.9.5",
     "unidecode": "^0.1.8",
     "xmlhttprequest": "^1.8.0",
     "xmlhttprequest-ts": "^1.0.1",
@@ -49,7 +50,7 @@
     "typescript": "^3.9.5"
   },
   "scripts": {
-    "test": "tsc --version",
+    "test": "npm-run-all --parallel --continue-on-error npm i typescript@latest tsc",
     "start": "node server/server.js"
   },
   "author": "",
