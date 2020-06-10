@@ -3,11 +3,11 @@ import * as fs from "fs";
 import * as canvaslib from "canvas";
 import * as Logger from "../utils/Logger";
 
-export default async (Client: Discord.Client, member: Discord.GuildMember) => {
+export default async(Client: Discord.Client, member: Discord.GuildMember) => {
 	let savedWelcChan = fs.readFileSync("database/welcome/channels.json", "utf-8");
 	savedWelcChan = JSON.parse(savedWelcChan);
-	const channel = savedWelcChan[member.guild.id] == undefined ? member.guild.channels.cache.get("welcome").id : savedWelcChan[member.guild.id];
-
+    const channel: Discord.GuildChannel = member.guild.channels.cache.find(ch => ch.id === savedWelcChan[member.guild.id]);
+    
 	if (!channel) {
 		return;
 	}
@@ -33,13 +33,14 @@ export default async (Client: Discord.Client, member: Discord.GuildMember) => {
     ctx.closePath();
     ctx.clip();
 
-    const avatar = await canvaslib.loadImage(member.user.avatar);
+    const avatar = await canvaslib.loadImage(member.user.displayAvatarURL({ format: "jpg" }));
     ctx.drawImage(avatar, 25, 25, 120, 120);
 
 	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
 	
     try {
-        Client.channels.fetch(channel).then((channel: Discord.TextChannel) => channel.send(attachment));
+        // @ts-ignore
+        channel.send(`**${member.user.tag}** just left the server.`, attachment);
     } catch (err) {
         Logger.error("Didn't find the channel to post attachment [guildMemberAdd]");
     }
