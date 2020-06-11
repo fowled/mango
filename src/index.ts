@@ -4,7 +4,7 @@ import * as Binder from "./utils/EventsBinder";
 
 import { Token } from "./token";
 
-const Client: Discord.Client = new Discord.Client();
+const Client: Discord.Client = new Discord.Client({ fetchAllMembers: true });
 
 export const talkedRecently = new Set();
 export const queue = new Map();
