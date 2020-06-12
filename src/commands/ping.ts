@@ -17,6 +17,7 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 		.setAuthor(message.author.username, message.author.avatarURL())
 		.setColor(Math.floor(Math.random() * 16777214) + 1)
 		.setDescription("Latency information")
+		.addField("Host latency", `**${Math.floor(ping.createdTimestamp - message.createdTimestamp)}** ms.`)
 		.addField("API latency", `**${Math.round(client.ws.ping)}** ms.`, true)
 		.setFooter(client.user.username, client.user.avatarURL())
 		.setTimestamp();
