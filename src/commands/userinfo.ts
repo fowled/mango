@@ -11,6 +11,7 @@ import * as Discord from "discord.js";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any): Promise<void> {
 	const selectedUser: Discord.GuildMember = message.mentions.users.size > 0 ? (message.guild.member(message.mentions.members.first()) ? message.mentions.members.first() : null) : message.member;
+	let presence;
 
 	let statuses = {
 		"online": "<:online:720998984646262834> Online",
@@ -19,9 +20,19 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		"offline": "<:offline:720998984465907883> Offline",
 	}
 
+	if (selectedUser.presence.clientStatus.desktop) {
+		presence = ":desktop: Desktop";
+	} else if (selectedUser.presence.clientStatus.mobile) {
+		presence = ":iphone: Phone";
+	} else if (selectedUser.presence.clientStatus.web) {
+		presence = ":computer: Web";
+	} else if (selectedUser.presence.status == "offline") {
+		presence = "Offline";
+	}
+
 	if (selectedUser) { // In the same server
 		const userinfoMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
-			.setTitle(`User information for ${selectedUser.user.username}`)
+			.setTitle(`${selectedUser.user.username} - ${selectedUser.user.id}`)
 			.setAuthor(selectedUser.user.username, selectedUser.user.avatarURL())
 			.setThumbnail(selectedUser.user.avatarURL())
 			.setTimestamp()
@@ -33,7 +44,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 			.addField("Roles", message.guild.member(selectedUser).roles.cache.array().splice(1).map((role: Discord.Role) => role.name).length === 0 ? "No role" : message.guild.member(selectedUser).roles.cache.array().splice(1).map((role: Discord.Role) => role.name).join(", "), true)
 			.addField("Created on", selectedUser.user.createdAt.toLocaleDateString(), true)
 			.addField("Nickname", selectedUser.nickname ? selectedUser.nickname : "No", true)
-			.addField("Boost", selectedUser.premiumSince ? selectedUser.premiumSince.toLocaleString() : "No", true)
+			.addField("Boosting", selectedUser.premiumSince ? selectedUser.premiumSince.toLocaleString() : "No", true)
+			.addField("Surface", presence)
 			.setColor(Math.floor(Math.random() * 16777214) + 1)
 			.setFooter(Client.user.username, Client.user.avatarURL());
 
