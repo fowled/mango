@@ -41,10 +41,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		.addField("Owner", message.member.guild.owner, true)
 		.addField("Region", region[message.member.guild.region], true)
 		.addField("Created on", message.member.guild.createdAt.toLocaleDateString(), true)
-		.addField("Boosts", `**${message.member.guild.premiumSubscriptionCount}**`, true)
 		.addField("Verification", message.member.guild.verificationLevel, true)
-		.addField("Presence", `• <:online:720998984646262834> Online - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "online").size}** \n• <:idle:720998984402993162> Idle - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "idle").size}**\n• <:dnd:720998984188952577> DND - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "dnd").size}**`)
-		.addField("Roles", message.member.guild.roles.cache.array().join(", "))
+		.addField("Boosts", `**${message.member.guild.premiumSubscriptionCount}**`, true)
+		.addField("Roles", `**${message.guild.roles.cache.size}**`)
+		.addField("Presence", `• <:online:720998984646262834> Online - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "online").size}** users \n• <:idle:720998984402993162> Idle - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "idle").size}** users \n• <:dnd:720998984188952577> DND - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "dnd").size}** users \n• <:offline:720998984465907883> Offline - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "offline").size}** users`)
 		.setFooter(Client.user.username, Client.user.avatarURL())
 		.setTimestamp();
 
