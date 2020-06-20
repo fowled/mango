@@ -71,8 +71,6 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 	async function getInfoConstructQueue(music) {
 		const songInfo: ytdl.videoInfo = await ytdl.getInfo(music);
 
-		message.channel.send(`Currently getting info from **${song.title}**...`);
-
 		const song = {
 			title: songInfo.title,
 			url: songInfo.video_url,
@@ -81,6 +79,8 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 			length: songInfo.length_seconds,
 			id: songInfo.video_id,
 		}
+
+		message.channel.send(`Currently getting info from **${song.title}**...`);
 
 		if (!serverQueue) {
 			const queueConstruct = {
