@@ -1,6 +1,7 @@
 import * as Discord from "discord.js";
 import ytdl from "ytdl-core";
 import * as Logger from ".././utils/Logger";
+import { search } from "yt-search";
 
 // Music command
 
@@ -11,10 +12,11 @@ import * as Logger from ".././utils/Logger";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any): Promise<void> {
+export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const queue = ops.queue;
 	const serverQueue = queue.get(message.guild.id);
 	const voiceChannel: Discord.VoiceChannel = message.member.voice.channel;
+	let vidToPlay: any, vids: any, validate: boolean;
 
 	if (!voiceChannel) {
 		message.channel.send("I'm sorry, but you need to be connected in a voice channel to start playing :musical_note:");
@@ -38,50 +40,74 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 		return;
 	}
 
-	const validate: boolean = await ytdl.validateURL(args[0]);
+	if (!args[0].startsWith("https://")) {
+		search(args.join(" "), (err, res) => {
+			if (err) {
+				return message.channel.send(`I didn't find any result matching **${args.join(" ")}**.`);
+			}
 
-	if (!validate) {
-		message.reply("Hmm, the URL isn't valid... please try again.");
-	}
+			vids = res.videos.slice(0, 1);
+			vidToPlay = vids[0].url;
 
-	const songInfo: ytdl.videoInfo = await ytdl.getInfo(args[0]);
+			message.channel.send(`Searching **${args.join(" ")}**...`);
 
-	const song = {
-		title: songInfo.title,
-		url: songInfo.video_url,
-		requester: message.author.tag,
-		author: songInfo.author,
-		length: songInfo.length_seconds,
-		id: songInfo.video_id,
-	}
-
-	if (!serverQueue) {
-		const queueConstruct = {
-			textChannel: message.channel,
-			voiceChannel: voiceChannel,
-			connection: null,
-			songs: [],
-			volume: 5,
-			playing: true
-		};
-
-		queue.set(message.guild.id, queueConstruct);
-		queueConstruct.songs.push(song);
-
-		message.channel.send(`Currently getting info from **${songInfo.title}**...`);
-
-		try {
-			var connection: Discord.VoiceConnection = await message.member.voice.channel.join();
-			queueConstruct.connection = connection;
-			play(message.guild, queueConstruct.songs[0]);
-		} catch (err) {
-			Logger.error(err);
-			queue.delete(message.guild.id);
-			message.channel.send("Couldn't join the voice channel.");
-		}
+			validateSong(vidToPlay);
+		});
 	} else {
-		serverQueue.songs.push(song);
-		message.channel.send(`**${song.title}** has been added to the queue.`);
+		vidToPlay = args[0];
+		validateSong(vidToPlay);
+	}
+
+	function validateSong(song) {
+		validate = ytdl.validateURL(song);
+
+		if (!validate) {
+			return message.channel.send("Looks like the song you submitted isn't valid. Please try another one.");
+		}
+
+		getInfoConstructQueue(song);
+	}
+
+	async function getInfoConstructQueue(music) {
+		const songInfo: ytdl.videoInfo = await ytdl.getInfo(music);
+
+		message.channel.send(`Currently getting info from **${song.title}**...`);
+
+		const song = {
+			title: songInfo.title,
+			url: songInfo.video_url,
+			requester: message.author.tag,
+			author: songInfo.author,
+			length: songInfo.length_seconds,
+			id: songInfo.video_id,
+		}
+
+		if (!serverQueue) {
+			const queueConstruct = {
+				textChannel: message.channel,
+				voiceChannel: voiceChannel,
+				connection: null,
+				songs: [],
+				volume: 5,
+				playing: true
+			};
+
+			queue.set(message.guild.id, queueConstruct);
+			queueConstruct.songs.push(song);
+
+			try {
+				var connection: Discord.VoiceConnection = await message.member.voice.channel.join();
+				queueConstruct.connection = connection;
+				play(message.guild, queueConstruct.songs[0]);
+			} catch (err) {
+				Logger.error(err);
+				queue.delete(message.guild.id);
+				message.channel.send("Couldn't join the voice channel.");
+			}
+		} else {
+			serverQueue.songs.push(song);
+			message.channel.send(`**${song.title}** has been added to the queue.`);
+		}
 	}
 
 	function play(guild: Discord.Guild, song) {
@@ -95,17 +121,15 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 
 		const dispatcher: Discord.StreamDispatcher = serverQueue.connection.play(ytdl(song.url), { filter: "audioonly" })
 			.on("finish", () => {
-				Logger.log(`Finished playing song "${args[0]}"`);
 				serverQueue.songs.shift();
 				play(guild, serverQueue.songs[0]);
 			})
 			.on("error", error => {
 				Logger.error(error);
+				message.channel.send("A super rare unknown error just happened. Oops.");
 			});
 
 		dispatcher.setVolumeLogarithmic(5 / 5);
-
-		message.channel.send(`Now playing: **${songInfo.title}**`);
-		Logger.log(`Playing ${songInfo.title} on guild: ${message.member.guild.name}`);
+		message.channel.send(`Now playing: **${song.title}**`);
 	}
 }
