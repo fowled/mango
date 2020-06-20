@@ -9,40 +9,24 @@ import * as Discord from "discord.js";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	const fetched: any = ops.active.get(message.guild.id);
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
+	const serverQueue = await ops.queue.get(message.guild.id);
 
-	if (!fetched) {
+	if (!serverQueue) {
 		return message.channel.send("No music is currently played! Come join and add some!");
 	}
 
-	const queue: any = fetched.queue;
-	const nowPlaying: any = queue[0];
-	let listMessage: string = "";
+	let queue = "";
 
-	for (let i = 1; i < queue.length; i++) {
-		listMessage += `${i}- *${queue[i].songTitle}* - Demandé par **${queue[i].requester}**\n`;
+	for (let i = 0; i < serverQueue.songs.length; i++) {
+	    queue += `${i + 1}. [${serverQueue.songs[i].title}](${serverQueue.songs[i].url}) \n`;
 	}
 
-	if (listMessage === undefined) {
-		const noQueueMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
-			.setTitle(`Queue command for ${message.author.tag}`)
-			.addField(`Now playing`, `*${nowPlaying.songTitle}* - Asked by **${nowPlaying.requester}**`)
-			.setColor("#f98257")
-			.setTimestamp()
-			.setAuthor(message.author.username, message.author.avatarURL())
-			.setFooter(client.user.username, client.user.avatarURL());
-		message.channel.send(noQueueMessage);
-	} else {
-		const withQueueMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
-			.setTitle(`Queue command ${message.author.tag}`)
-			.addField(`Now playing`, `*${nowPlaying.songTitle}* - Asked by **${nowPlaying.requester}**`)
-			.addField("Queue", listMessage)
-			.setColor("#f98257")
-			.setTimestamp()
-			.setAuthor(message.author.username, message.author.avatarURL())
-			.setFooter(client.user.username, client.user.avatarURL());
-		message.channel.send(withQueueMessage);
-	}
-
+	const embed = new Discord.MessageEmbed()
+		.setAuthor(message.author.username, message.author.avatarURL())
+		.addField("Queue", queue)
+		.setColor("#06A8F9")
+		.setTimestamp()
+		.setFooter(Client.user.username, Client.user.avatarURL())
+	message.channel.send(embed);
 }
