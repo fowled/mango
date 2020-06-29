@@ -20,16 +20,16 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             const catPicture = parsedRequest[0].url;
             let breeds;
 
-            breeds = new Discord.RichEmbed()
-                .setAuthor(message.author.tag, message.author.avatarURL)
-                .attachFile(catPicture)
+            breeds = new Discord.MessageEmbed()
+                .setAuthor(message.author.tag, message.author.avatarURL())
+                .attachFiles(catPicture)
                 .setColor("0FB1FB")
                 .setDescription("Here is some info about your cat.")
                 .addField("Breed", getSafe(() => parsedRequest[0].breeds[0].name), true)
                 .addField("Life span", getSafe(() => parsedRequest[0].breeds[0].life_span), true)
                 .addField("Temperament", getSafe(() => parsedRequest[0].breeds[0].temperament))
                 .setTimestamp()
-                .setFooter(Client.user.username, Client.user.avatarURL);
+                .setFooter(Client.user.username, Client.user.avatarURL());
 
             message.channel.send(breeds);
         }

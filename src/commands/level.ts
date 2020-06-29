@@ -26,12 +26,12 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 			getExactLvl(level);
 
 			function getExactLvl(lvl) {
-				const levelEmbedMessage: Discord.RichEmbed = new Discord.RichEmbed()
+				const levelEmbedMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
 					.setTitle(`${message.author.tag} level`)
-					.setAuthor(message.author.username, message.author.avatarURL)
+					.setAuthor(message.author.username, message.author.avatarURL())
 					.setDescription(`Your level - :gem: XP: **${parsedData[message.author.id]}** | :large_orange_diamond: Level: **${level}** `)
 					.setColor("#019FE9")
-					.setFooter(client.user.username, client.user.avatarURL)
+					.setFooter(client.user.username, client.user.avatarURL())
 					.setTimestamp()
 				message.channel.send(levelEmbedMessage);
 

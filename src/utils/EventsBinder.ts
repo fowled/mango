@@ -16,6 +16,7 @@ export async function bind(Client: Discord.Client): Promise<void> {
 				const eventName: string = file.substring(0, file.length - 3); // le nom de l'event, en retirant l'extension du fichier
 				try {
 					const eventModule: NodeModule = require(Fs.realpathSync(`./out/events/${file}`).toString()); // demande le module correspondant au nom
+					if (file)
 					// @ts-ignore
 					Client.on(eventName, eventModule.default.bind(null, Client)); // relie l'évent au module
 					delete require.cache[require.resolve(Fs.realpathSync(`./out/events/${file}`).toString())];

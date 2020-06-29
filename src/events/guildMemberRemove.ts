@@ -1,12 +1,13 @@
 import * as Discord from "discord.js";
 import * as fs from "fs";
 import * as canvaslib from "canvas";
+import * as Logger from "../utils/Logger";
 
-export default async (Client: Discord.Client, member: Discord.GuildMember) => {
+export default async(Client: Discord.Client, member: Discord.GuildMember) => {
 	let savedWelcChan = fs.readFileSync("database/welcome/channels.json", "utf-8");
 	savedWelcChan = JSON.parse(savedWelcChan);
-	const channel: Discord.GuildChannel = savedWelcChan[member.guild.id] == undefined ? member.guild.channels.find((ch) => ch.name === "welcome") : member.guild.channels.get(savedWelcChan[member.guild.id]);
-
+    const channel: Discord.GuildChannel = member.guild.channels.cache.find(ch => ch.id === savedWelcChan[member.guild.id]);
+    
 	if (!channel) {
 		return;
 	}
@@ -25,19 +26,23 @@ export default async (Client: Discord.Client, member: Discord.GuildMember) => {
     ctx.font = "25px Caviar Dreams"; // displays on the picture the member tag
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = "center";
-    ctx.fillText(`Members: ${member.guild.members.size}`, canvas.width - 200, canvas.height / 1.30);
+    ctx.fillText(`Members: ${member.guild.members.cache.size}`, canvas.width - 200, canvas.height / 1.30);
 
     ctx.beginPath(); // rounded profile pic
     ctx.arc(85, 85, 60, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.clip();
 
-    const avatar = await canvaslib.loadImage(member.user.displayAvatarURL);
+    const avatar = await canvaslib.loadImage(member.user.displayAvatarURL({ format: "jpg" }));
     ctx.drawImage(avatar, 25, 25, 120, 120);
 
-	const attachment = new Discord.Attachment(canvas.toBuffer(), 'welcome-image.png');
+	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
 	
-	// @ts-ignore
-	channel.send(attachment);
+    try {
+        // @ts-ignore
+        channel.send(`**${member.user.tag}** just left the server.`, attachment);
+    } catch (err) {
+        Logger.error("Didn't find the channel to post attachment [guildMemberAdd]");
+    }
 };
 

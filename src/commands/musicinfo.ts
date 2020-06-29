@@ -10,26 +10,23 @@ import * as Discord from "discord.js";
  * @param {any} options some options
  */
 export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	const fetched: any = ops.active.get(message.guild.id);
+	const queue: any = ops.queue.get(message.guild.id);
 
-	const parseURL: any = fetched.queue[0].url.split("watch?v=")[1];
-
-	const time: any = fetched.queue[0].songLength;
+	const time: any = queue.songs[0].length;
 	const minutes: number = Math.floor(time / 60);
 	const seconds: number = time - minutes * 60;
 
-	const musicInfoEmbed: Discord.RichEmbed = new Discord.RichEmbed()
-		.setAuthor(message.author.username, message.author.avatarURL)
-		.setTitle(`Information for ${message.author.tag}`)
+	const musicInfoEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
+		.setAuthor(message.author.username, message.author.avatarURL())
 		.setColor("#f98257")
-		.addField("Music name", `:musical_note: - **${fetched.queue[0].songTitle}**`)
-		.addField("Music asked by?", `*${fetched.queue[0].requester}*`)
-		.addField("Music creator", fetched.queue[0].songAuthor)
-		.addField("Music length", `${minutes} minute(s) et ${seconds} secondes.`)
-		.addField("Announcement channel", `Channel <#${fetched.queue[0].announceChannel}>`)
-		.setURL(`https://youtube.com/${fetched.queue[0].url}`)
-		.setThumbnail(`https://img.youtube.com/vi/${parseURL}/0.jpg`)
-		.setFooter(client.user.username, client.user.avatarURL)
+		.addField("Music name", `:musical_note: - **${queue.songs[0].title}**`)
+		.addField("Music asked by?", queue.songs[0].requester)
+		.addField("Music creator", `[${queue.songs[0].author.name}](${queue.songs[0].author.channel_url})`)
+		.addField("Music length", `${minutes}:${seconds}`)
+		.setURL(queue.songs[0].url)
+		.setThumbnail(queue.songs[0].author.avatar)
+		.setImage(`https://img.youtube.com/vi/${queue.songs[0].id}/hqdefault.jpg`)
+		.setFooter(client.user.username, client.user.avatarURL())
 		.setTimestamp();
 	message.channel.send(musicInfoEmbed);
 }

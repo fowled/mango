@@ -31,11 +31,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             setTimeout(function () {
                 msg.awaitReactions(filter, { max: 1 })
                     .then(collected => {
-                        secondPlayer = collected.first().users.last();
-                        message.channel.fetchMessage(msgid).then(msg => msg.edit(`2nd player is **${secondPlayer.tag}**. Init...`));
+                        secondPlayer = collected.first().users.cache.last();
+                        message.channel.messages.fetch(msgid).then(msg => msg.edit(`2nd player is **${secondPlayer.tag}**. Init...`));
                         generateGrid();
                     }).catch(err => {
-                        message.channel.fetchMessage(msgid).then(msg => msg.edit("Nobody has clicked the reaction for 30 seconds. Game cancelled."));
+                        message.channel.messages.fetch(msgid).then(msg => msg.edit("Nobody has clicked the reaction for 30 seconds. Game cancelled."));
                     });
             }, 200);
         });
@@ -82,51 +82,51 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
         msg.awaitReactions(filter, { max: 1 })
             .then(collected => {
-                if (secondPlayer == collected.first().users.last() && turn != "J2" || message.author == collected.first().users.last() && turn != "J1") {
-                    collected.last().remove(collected.first().users.last().id);
+                if (secondPlayer == collected.first().users.cache.last() && turn != "J2" || message.author == collected.first().users.cache.last() && turn != "J1") {
+                    collected.last().remove();
                     return createReactionCollector(msg);
                 }
 
                 if (isCaseOccupied(emojiToLetter(collected.first().emoji.name))) {
-                    const status = new Discord.RichEmbed()
-                        .setAuthor(collected.first().users.last().tag, collected.first().users.last().avatarURL)
+                    const status = new Discord.MessageEmbed()
+                        .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatarURL())
                         .setColor("#1E90FF")
-                        .setDescription(`**${collected.first().users.last().tag}** tried to react with the ${collected.first().emoji.name} emoji, but this case is already occupied by a player...`);
+                        .setDescription(`**${collected.first().users.cache.last().tag}** tried to react with the ${collected.first().emoji.name} emoji, but this case is already occupied by a player...`);
 
-                    msg.channel.fetchMessage(firstMessageID).then(msg => msg.edit(status));
+                    msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit(status));
 
-                    collected.last().remove(collected.first().users.last().id);
+                    collected.last().remove();
                     return createReactionCollector(msg);
                 }
 
-                const status = new Discord.RichEmbed()
-                    .setAuthor(collected.first().users.last().tag, collected.first().users.last().avatarURL)
+                const status = new Discord.MessageEmbed()
+                    .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatarURL())
                     .setColor("#1E90FF")
-                    .setDescription(`**${collected.first().users.last().tag}** reacted with the ${collected.first().emoji.name} emoji.`);
+                    .setDescription(`**${collected.first().users.cache.last().tag}** reacted with the ${collected.first().emoji.name} emoji.`);
 
-                msg.channel.fetchMessage(firstMessageID).then(msg => msg.edit(status));
+                msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit(status));
 
                 editGrid(msg, collected.first().emoji.name);
 
                 if (checkIfWin(turn)) {
-                    const status = new Discord.RichEmbed()
-                        .setAuthor(collected.first().users.last().tag, collected.first().users.last().avatarURL)
+                    const status = new Discord.MessageEmbed()
+                        .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatarURL())
                         .setColor("#ffff00")
-                        .setDescription(`**${collected.first().users.last().tag}** won the game. GG!`);
+                        .setDescription(`**${collected.first().users.cache.last().tag}** won the game. GG!`);
 
-                    msg.channel.fetchMessage(firstMessageID).then(msg => msg.edit(status));
+                    msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit(status));
                     return;
                 } else if (checkIfEgality()) {
-                    const status = new Discord.RichEmbed()
-                        .setAuthor(collected.first().users.last().tag, collected.first().users.last().avatarURL)
+                    const status = new Discord.MessageEmbed()
+                        .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatarURL())
                         .setColor("#1E90FF")
                         .setDescription(`:crossed_swords: Nobody won... That's a draw!`);
 
-                    msg.channel.fetchMessage(firstMessageID).then(msg => msg.edit(status));
+                    msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit(status));
                 }
 
                 detectPlayer(); // changes turn
-                collected.last().remove(collected.first().users.last().id); // removes user reaction
+                collected.last().remove(); // removes user reaction
                 createReactionCollector(msg); // wait for reaction once the turn is finished
             }).catch(err => {
                 createReactionCollector(msg);

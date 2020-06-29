@@ -28,11 +28,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     replaceWithStars();
 
-    const startEmbed = new Discord.RichEmbed()
-        .setAuthor(message.author.username, message.author.avatarURL)
+    const startEmbed = new Discord.MessageEmbed()
+        .setAuthor(message.author.username, message.author.avatarURL())
         .setColor("#1E90FF")
         .setDescription(`Hangman game generated. Try to guess the word. You have 10 guesses. \nWord to find: \`${stars}\``)
-        .setFooter(Client.user.username, Client.user.avatarURL)
+        .setFooter(Client.user.username, Client.user.avatarURL())
 
     await message.channel.send(startEmbed).then(m => {
         messageID = m.id;
@@ -44,47 +44,47 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         message.channel.awaitMessages(filter, { max: 1 }).then((collected) => {
             if (checkLetter(collected.first().content)) {
                 replaceWithStars(collected.first().content);
-                const correctLetter = new Discord.RichEmbed()
-                    .setAuthor(message.author.username, message.author.avatarURL)
+                const correctLetter = new Discord.MessageEmbed()
+                    .setAuthor(message.author.username, message.author.avatarURL())
                     .setColor("#1E90FF")
                     .setDescription(`Congrats, you found a letter. \`${stars}\``)
-                    .setFooter(Client.user.username, Client.user.avatarURL)
-                message.channel.fetchMessage(messageID).then(m => m.edit(correctLetter));
+                    .setFooter(Client.user.username, Client.user.avatarURL())
+                message.channel.messages.fetch(messageID).then(m => m.edit(correctLetter));
             } else if (checkLetter(collected.first().content) == false) {
                 guessesNumber++;
-                const incorrectLetter = new Discord.RichEmbed()
-                    .setAuthor(message.author.username, message.author.avatarURL)
+                const incorrectLetter = new Discord.MessageEmbed()
+                    .setAuthor(message.author.username, message.author.avatarURL())
                     .setColor("#ff0000")
                     .setDescription(`Nope, wrong letter. You have ${10 - guessesNumber} guesses left. \`${stars}\``)
-                    .setFooter(Client.user.username, Client.user.avatarURL)
-                message.channel.fetchMessage(messageID).then(m => m.edit(incorrectLetter));
+                    .setFooter(Client.user.username, Client.user.avatarURL())
+                message.channel.messages.fetch(messageID).then(m => m.edit(incorrectLetter));
                 guessedLetters.push(collected.first().content);
             } else if (checkLetter(collected.first().content) == null) {
                 guessesNumber++;
-                const alreadyFound = new Discord.RichEmbed()
-                    .setAuthor(message.author.username, message.author.avatarURL)
+                const alreadyFound = new Discord.MessageEmbed()
+                    .setAuthor(message.author.username, message.author.avatarURL())
                     .setColor("#1E90FF")
                     .setDescription(`You already found that letter! \`${stars}\``)
-                    .setFooter(Client.user.username, Client.user.avatarURL)
-                message.channel.fetchMessage(messageID).then(m => m.edit(alreadyFound));
+                    .setFooter(Client.user.username, Client.user.avatarURL())
+                message.channel.messages.fetch(messageID).then(m => m.edit(alreadyFound));
             }
 
             if (checkIfWin()) {
                 collected.first().delete();
-                const youWon = new Discord.RichEmbed()
-                    .setAuthor(message.author.username, message.author.avatarURL)
+                const youWon = new Discord.MessageEmbed()
+                    .setAuthor(message.author.username, message.author.avatarURL())
                     .setColor("#ffff00")
                     .setDescription(`**${message.author.tag}** You won! Congratulations. :clap: \nAttempts left: *${10 - guessesNumber}* - word found: \`${thatOneWord}\`.`)
-                    .setFooter(Client.user.username, Client.user.avatarURL)
-                return message.channel.fetchMessage(messageID).then(m => m.edit(youWon));
+                    .setFooter(Client.user.username, Client.user.avatarURL())
+                return message.channel.messages.fetch(messageID).then(m => m.edit(youWon));
             } else if (guessesNumber >= 10) {
                 collected.first().delete();
-                const youLost = new Discord.RichEmbed()
-                    .setAuthor(message.author.username, message.author.avatarURL)
+                const youLost = new Discord.MessageEmbed()
+                    .setAuthor(message.author.username, message.author.avatarURL())
                     .setColor("#ff0000")
                     .setDescription(`**${message.author.tag}** I'm sorry, but you lost. \nWord to guess was: \`${thatOneWord}\`.`)
-                    .setFooter(Client.user.username, Client.user.avatarURL)
-                return message.channel.fetchMessage(messageID).then(m => m.edit(youLost));
+                    .setFooter(Client.user.username, Client.user.avatarURL())
+                return message.channel.messages.fetch(messageID).then(m => m.edit(youLost));
             } else {
                 collected.first().delete();
                 createMessageCollector();

@@ -15,14 +15,14 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     let levels: string[] = ["# Levelboard of the server"];
 
     let memberIDs: string[] = [];
-    message.guild.members.forEach(member => memberIDs.push(member.id));
+    message.guild.members.cache.forEach(member => memberIDs.push(member.id));
 
     let data = Fs.readFileSync("database/ranks/ranks.json", "utf8");
     data = JSON.parse(data);
 
     Object.keys(data).forEach((key) => {
         if (memberIDs.includes(key)) {
-            levels.push(`- *${data[key]}* XP / Level **${Math.ceil(parseInt(data[key]) / 50)}** - [${Client.users.get(key).tag}]`);
+            levels.push(`- *${data[key]}* XP / Level **${Math.ceil(parseInt(data[key]) / 50)}** - [${Client.users.cache.get(key).tag}]`);
         }
     });
 

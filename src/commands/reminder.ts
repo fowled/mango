@@ -15,23 +15,23 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const content = args.slice(1, args.length).join(" ");
     const date = new Date();
 
-    const reminderEmbed = new Discord.RichEmbed()
+    const reminderEmbed = new Discord.MessageEmbed()
         .setTitle("Reminder")
-        .setAuthor(message.author.tag, message.author.avatarURL)
+        .setAuthor(message.author.tag, message.author.avatarURL())
         .setDescription(`Reminder **${content}** successfully saved - we'll send you a dm in ${ms(ms(time))} <a:check:690888185084903475>`)
         .setColor("#08ABF9")
-        .setFooter(Client.user.username, Client.user.avatarURL)
+        .setFooter(Client.user.username, Client.user.avatarURL())
         .setTimestamp()
 
     message.channel.send(reminderEmbed);
 
     setTimeout(function () {
-        const reminderAuthor = new Discord.RichEmbed()
+        const reminderAuthor = new Discord.MessageEmbed()
         .setTitle("Ding dong...")
-        .setAuthor(message.author.tag, message.author.avatarURL)
+        .setAuthor(message.author.tag, message.author.avatarURL())
         .setDescription(`It's time to **${content}** - *reminder saved at ${date.toLocaleString()}.*`)
         .setColor("#08ABF9")
-        .setFooter(Client.user.username, Client.user.avatarURL)
+        .setFooter(Client.user.username, Client.user.avatarURL())
         .setTimestamp()
 
         message.author.send(reminderAuthor);

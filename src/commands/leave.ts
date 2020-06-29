@@ -12,19 +12,19 @@ export let titleNotShown = true;
  * @param {any} options some options
  */
 export function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	if (!message.member.voiceChannel) {
+	if (!message.member.voice.channel) {
 		return message.channel.send("Hey, please connect to a voice channel.");
 	}
 
-	if (!message.guild.me.voiceChannel) {
+	if (!message.guild.me.voice.channel) {
 		return message.channel.send("The bot isn't connected to this channel.");
 	}
 
-	if (message.guild.me.voiceChannelID !== message.member.voiceChannelID) {
+	if (message.guild.me.voice.channelID !== message.member.voice.channelID) {
 		return message.channel.send("We are not connected to the same vocal channel!");
 	}
 
-	message.member.voiceChannel.leave();
+	message.member.voice.channel.leave();
 
 	return message.react("👍");
 }

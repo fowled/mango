@@ -14,19 +14,25 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const userMute: Discord.User = message.mentions.users.first();
     const memberMute: Discord.GuildMember = message.guild.member(userMute);
 
-    if (!memberMute.hasPermission(["ADMINISTRATOR"])) {
-        return message.reply("Sorry, but I can't mute the user you specified, because he has one of the following perms: `ADMINISTATOR`");
+    if (memberMute.hasPermission(["ADMINISTRATOR"])) {
+        return message.reply("Sorry, but I can't mute the user you specified, because he has one of the following perms: `ADMINISTRATOR`");
     }
 
-    let muteRole: Discord.Role = message.guild.roles.find(role => role.name === "muted");
+    if (!message.member.hasPermission(["ADMINISTRATOR"])) {
+        return message.reply("Sorry, but you don't have the permission to mute this user.");
+    }
+
+    let muteRole: Discord.Role = message.guild.roles.cache.find(role => role.name === "muted");
 
     if (!muteRole) {
         try {
-            muteRole = await message.guild.createRole({
-                name: "muted",
-                mentionable: false,
-                permissions: [],
-                color: "#524F4F"
+            muteRole = await message.guild.roles.create({
+                data: {
+                    name: "muted",
+                    mentionable: false,
+                    permissions: [],
+                    color: "#524F4F"
+                }
             });
 
         } catch (error) {
@@ -34,14 +40,14 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         }
     }
 
-    message.guild.channels.forEach(async (channel, id) => {
-        await channel.overwritePermissions(muteRole, {
-            SEND_MESSAGES: false,
-            ADD_REACTIONS: false
-        })
+    message.guild.channels.cache.forEach(async (channel, id) => {
+        await channel.overwritePermissions([{
+            id: muteRole.id,
+            deny: ["SEND_MESSAGES", "ADD_REACTIONS"],
+        }])
     });
 
-    memberMute.addRole(muteRole);
+    memberMute.roles.add(muteRole);
 
     let reason = args[1] == undefined ? "no reason specified." : message.content.split(args[0])[1].trim();
 

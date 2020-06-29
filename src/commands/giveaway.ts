@@ -1,5 +1,5 @@
 import * as Discord from "discord.js";
-import * as RichEmbed from ".././utils/Embed";
+import * as MessageEmbed from ".././utils/Embed";
 import * as Logger from ".././utils/Logger";
 
 // Fun command
@@ -13,14 +13,14 @@ import * as Logger from ".././utils/Logger";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	const filter: Discord.CollectorFilter = (reaction, user) => ["🇦", "🇧", "🇨"].includes(reaction.emoji.name) && user.id === message.author.id;
-	const messageAuthor: string = message.author.avatarURL.toString();
+	const messageAuthor: string = message.author.avatarURL().toString();
 
-	const giveawayEmbed: Discord.RichEmbed = new Discord.RichEmbed()
-		.setAuthor(message.author.username, message.author.avatarURL)
+	const giveawayEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
+		.setAuthor(message.author.username, message.author.avatarURL())
 		.setDescription("What would you like to do? \n\n:regional_indicator_a: - Create a giveaway \n:regional_indicator_b: - Help about this command")
 		.setColor("#0089FF")
 		.setTimestamp()
-		.setFooter(message.author.username, message.author.avatarURL);
+		.setFooter(message.author.username, message.author.avatarURL());
 	message.channel.send(giveawayEmbed).then(async (msg: Discord.Message) => {
 
 		await msg.react("🇦");
@@ -50,26 +50,26 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		const channel: Discord.TextChannel = message.channel as Discord.TextChannel;
 		const filter: Discord.CollectorFilter = (message, user) => message.content && !message.author.bot;
 
-		Logger.log(giveawayEmbed.author.icon_url);
+		Logger.log(giveawayEmbed.author.iconURL);
 		Logger.log(messageAuthor);
 
 		let giveawayName: string;
 
-		const nameCollector: void = await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
+		const nameCollector: void = await channel.awaitMessages(filter, { max: 1, errors: ["time"] })
 			.then((collected) => {
-				if (giveawayEmbed.author.icon_url.toString() !== messageAuthor) return;
+				if (giveawayEmbed.author.iconURL.toString() !== messageAuthor) return;
 				giveawayName = `${collected.first()}`;
 				message.reply(`Ok, I just created the **${giveawayName}** giveaway! Now, please enter the rewards :wink:`);
 			});
 
-		const rewardsCollector: Discord.Message | Discord.Message[] = await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
+		const rewardsCollector: Discord.Message | Discord.Message[] = await channel.awaitMessages(filter, { max: 1, errors: ["time"] })
 			.then((collected) => {
 				const giveawayRewards = `${collected.last()}`;
 				return message.reply(`Ok, here are the rewards of your giveaway: **${giveawayRewards}**! Finally, please select the duration of the giveaway:\`[number]m\`, \`[number]d\`, or \`1w\``);
 			});
 
 		const durationCollector: () => Promise<void> = async () => {
-			await channel.awaitMessages(filter, { max: 1, maxMatches: 1, errors: ["time"] })
+			await channel.awaitMessages(filter, { max: 1, errors: ["time"] })
 				.then((collected) => {
 					const collectedArray: string[] = collected.array()[0].content.split("");
 					const array: string[] = ["m", "d", "w"];
@@ -86,11 +86,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 							const durationArray: string[] = collected.array()[0].content.split("m");
 							const durationNumber: number = parseInt(durationArray[0], 10);
 							const durationValue: string = collected.array()[0].content.split("").pop();
-							let winner: Discord.GuildMember = message.guild.members.random();
+							let winner: Discord.GuildMember = message.guild.members.cache.random();
 
 							if (winner.user.bot) {
 								while (winner.user.bot) {
-									winner = message.guild.members.random();
+									winner = message.guild.members.cache.random();
 								}
 							}
 
@@ -119,12 +119,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	}
 
 	function helpMessage() {
-		const helpMessage: Discord.RichEmbed = new Discord.RichEmbed()
-			.setAuthor(message.author.username, message.author.avatarURL)
+		const helpMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
+			.setAuthor(message.author.username, message.author.avatarURL())
 			.setTitle("Help on the giveaway command")
 			.setDescription("With this command you can create a giveaway that will pick a winner who's going to obtain a reward. Try it!")
 			.setTimestamp()
-			.setFooter(message.author.username, message.author.avatarURL)
+			.setFooter(message.author.username, message.author.avatarURL())
 			.setColor("#0089FF");
 		message.channel.send(helpMessage);
 	}

@@ -24,17 +24,17 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         messageToSay = ["No ", "message"];
     }
 
-    const richMessage: Discord.RichEmbed = new Discord.RichEmbed()
+    const richMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
         .setTitle(`Message by ${message.author.tag}`)
-        .setAuthor(message.author.username, message.author.avatarURL)
+        .setAuthor(message.author.username, message.author.avatarURL())
         .setDescription(`> ${messageToSay.join(" ")}`)
         .addField("Sent on server...", message.guild.name)
         .setImage(attachment)
         .setTimestamp()
-        .setFooter(Client.user.username, Client.user.avatarURL);
+        .setFooter(Client.user.username, Client.user.avatarURL());
 
     //@ts-ignore
-    const interchatChannel: Discord.Channel = Client.channels.findAll("name", "mango-interchat").map((chan: { send: (arg0: Discord.RichEmbed) => any; }) => chan.send(richMessage));
+    const interchatChannel: Discord.Channel = Client.channels.findAll("name", "mango-interchat").map((chan: { send: (arg0: Discord.MessageEmbed) => any; }) => chan.send(richMessage));
     setTimeout(function () {
         message.delete().catch(err => Logger.error(err));
     }, 500);
@@ -42,7 +42,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     function detectEmojis(msg: string | any[]) {
         for (let index: number = 0; index < msg.length; index++) {
             if (msg[index].startsWith(":") && msg[index].endsWith(":")) {
-                const emoji = Client.emojis.find(emj => emj.name == msg[index].split(":")[1]);
+                const emoji = Client.emojis.cache.find(emj => emj.name == msg[index].split(":")[1]);
                 messageToSay.splice(index, 1, emoji);
             }
         }

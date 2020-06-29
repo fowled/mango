@@ -11,7 +11,7 @@ import * as Discord from "discord.js";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[]) {
 	let afkChannel: any;
-	const guildPicture: string = message.member.guild.iconURL;
+	const guildPicture: string = message.member.guild.iconURL();
 
 	if (message.member.guild.afkChannel) {
 		afkChannel = `#<${message.member.guild.afkChannel}>`;
@@ -19,19 +19,45 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		afkChannel = "None.";
 	}
 
-	const reponse: Discord.RichEmbed = new Discord.RichEmbed()
-		.setTitle(`Server info for ${message.author.username}`)
+	let region = {
+		"brazil": ":flag_br:",
+		"eu-central": ":flag_eu:",
+		"singapore": ":flag_sg:",
+		"us-central": ":flag_us:",
+		"sydney": ":flag_au:",
+		"us-east": ":flag_us:",
+		"us-south": ":flag_us:",
+		"us-west": ":flag_us:",
+		"eu-west": ":flag_eu:",
+		"vip-us-east": ":flag_us:",
+		"london": ":flag_gb:",
+		"amsterdam": ":flag_nl:",
+		"hongkong": ":flag_hk:",
+		"russia": ":flag_ru:",
+		"southafrica": ":flag_za:"
+	};
+
+	const reponse: Discord.MessageEmbed = new Discord.MessageEmbed()
+		.setTitle(`${message.guild.name} - ${message.guild.id}`)
 		.setThumbnail(guildPicture)
-		.setAuthor(`${message.author.username}`, message.author.avatarURL)
-		.setDescription(`Serv info (${message.member.guild.name}):`)
+		.setAuthor(`${message.author.username}`, message.author.avatarURL())
 		.setColor(Math.floor(Math.random() * 16777214) + 1)
-		.addField("Members", `${message.member.guild.members.filter((member: Discord.GuildMember) => !member.user.bot).size} humans and ${message.member.guild.members.filter((member: Discord.GuildMember) => member.user.bot).size} bots`, true)
-		.addField("Channels", `${message.member.guild.channels.filter((channel: Discord.TextChannel) => channel.type === "text").size} textual and ${message.member.guild.channels.filter((channel: Discord.VoiceChannel) => channel.type === "voice").size} vocal`, true)
+		.addField(`**${message.member.guild.members.cache.size}** members`, `• Humans: **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => !member.user.bot).size}** \n• Bots: **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.bot).size}**`, true)
+		.addField(`**${message.member.guild.channels.cache.size}** channels`, `• Text: **${message.member.guild.channels.cache.filter((channel: Discord.TextChannel) => channel.type === "text").size}** \n• Voice: **${message.member.guild.channels.cache.filter((channel: Discord.VoiceChannel) => channel.type === "voice").size}**`, true)
 		.addField("Owner", message.member.guild.owner, true)
-		.addField("Region", message.member.guild.region, true)
-		.addField("Created on", message.member.guild.createdAt.toLocaleString(), true)
-		.addField("AFK channel", afkChannel, true)
-		.setFooter(Client.user.username, Client.user.avatarURL)
+		.addField("Region", region[message.member.guild.region], true)
+		.addField("Created on", message.member.guild.createdAt.toLocaleDateString(), true)
+		.addField("Verification", message.member.guild.verificationLevel, true)
+		.addField("Boosts", `**${message.member.guild.premiumSubscriptionCount}**`, true)
+		.addField("Roles", `**${message.guild.roles.cache.size}**`, true)
+		.addField("AFK", afkChannel, true)
+		.addField("Presence", `• <:online:720998984646262834> Online - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "online").size}** users \n• <:idle:720998984402993162> Idle - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "idle").size}** users \n• <:dnd:720998984188952577> DND - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "dnd").size}** users \n• <:offline:720998984465907883> Offline - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "offline").size}** users`)
+		.setFooter(Client.user.username, Client.user.avatarURL())
 		.setTimestamp();
+
+		if (message.guild.banner) {
+			reponse.setImage(message.guild.bannerURL());
+		}
+
 	message.channel.send(reponse);
 }

@@ -11,17 +11,17 @@ import * as Logger from ".././utils/Logger";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
-	const helpMessage: Discord.RichEmbed = new Discord.RichEmbed()
+	const helpMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
 		.setTitle(`Help!`)
 		.setURL("https://github.com/Ma15fo43/Mango/wiki/Commands!")
-		.setAuthor(message.author.username, message.author.avatarURL)
+		.setAuthor(message.author.username, message.author.avatarURL())
 		.setColor(Math.floor(Math.random() * 16777214) + 1)
 		.setDescription("https://github.com/Ma15fo43/Mango/wiki/Commands!")
-		.setThumbnail(Client.user.avatarURL)
-		.setFooter(Client.user.username, Client.user.avatarURL)
+		.setThumbnail(Client.user.avatarURL())
+		.setFooter(Client.user.username, Client.user.avatarURL())
 		.setTimestamp();
-	Client.users.get(message.author.id)
-		.send(helpMessage)
+	
+		message.author.send(helpMessage)
 		.catch((error: Error) => {
 			Logger.error(error);
 		});

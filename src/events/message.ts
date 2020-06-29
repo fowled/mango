@@ -4,6 +4,8 @@ import * as Fs from "fs";
 import * as Logger from "./../utils/Logger";
 import * as Xp from "./../utils/Xp";
 
+import { queue } from "../index";
+
 export default async (Client: Discord.Client, message: Discord.Message) => {
 	if (message.author.bot || !message.guild) {
 		return;
@@ -11,20 +13,20 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 	let prefix = JSON.parse(Fs.readFileSync(`./database/prefixes/prefixes.json`, "utf8"));
 
-	if (message.isMemberMentioned(Client.user) && message.content.split(" ").length == 1) {
+	if (message.mentions.has(Client.user, { ignoreDirect: false, ignoreEveryone: true, ignoreRoles: true }) && message.content.split(" ").length == 1) {
 		if (prefix[message.author.id] == undefined) {
-			prefix = "!";
+			prefix = "ma!";
 		} else {
 			prefix = prefix[message.author.id];
 		}
-		message.reply(`Hey, I'm Mango! Your current prefix is \`${prefix}\` \n→ help message: \`${prefix}infohelp\` <a:check:690888185084903475>`);
+		message.reply(`Hey, I'm Mango! Your current prefix is \`${prefix}\` \n→ help message: \`${prefix}help\` <a:check:690888185084903475>`);
 	}
 
 	Xp.checkXP(message);
 
 	Fs.readFile(`./database/prefixes/prefixes.json`, "utf8", (err: Error, data): void => {
 		data = JSON.parse(data);
-		const prefix: string = data[message.author.id] == undefined ? "!" : data[message.author.id];
+		const prefix: string = data[message.author.id] == undefined ? "ma!" : data[message.author.id];
 
 		const msg: string = message.content;
 		const args: string[] = message.content.slice(prefix.length).trim().split(" ");
@@ -34,8 +36,12 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 			return checkCustomCommands();
 		}
 
+		let ops: {} = {
+			queue: queue
+		}
+
 		try {
-			require(`./../commands/${cmd}.js`).run(Client, message, args, null);
+			require(`./../commands/${cmd}.js`).run(Client, message, args, ops);
 			Logger.log(`${message.author.tag} just used the ${cmd} power in ${message.guild.name}.`);
 		} catch (err) {
 			Logger.log(`The command ${message.author.tag} tried to call in ${message.guild.name} doesen't seem to exist.`);

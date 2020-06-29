@@ -23,7 +23,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
     try {
-        let welcomeChannel = Client.channels.find("id", welcomeChannelID);
+        let welcomeChannel = Client.channels.cache.get(welcomeChannelID);
         let content = JSON.parse(fs.readFileSync('database/welcome/channels.json', 'utf8'));
 
         content[message.guild.id] = welcomeChannelID;
@@ -33,6 +33,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 Logger.error(err);
                 return message.reply("Sorry but an unexcepted error happened while saving data file. The error has been sent to the devloper, and we're trying to correct it. :ok_hand:");
             }
+
             // @ts-ignore
             welcomeChannel.send("Success! This channel is now the default welcoming messages channel of this guild. <a:check:690888185084903475>");
         });

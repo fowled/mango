@@ -5,4 +5,4 @@
 "sources": [ "build/Release/binding.node" ]
 }
 ]
-}
+} 

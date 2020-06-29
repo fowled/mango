@@ -16,7 +16,7 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 	const date: Date = new Date();
 	if (taggedUser) {
 		message.channel.send("Message is sending :postbox:");
-		Client.users.get(taggedUser.id).send(`*${message.author.username} sent you: \`${messageToSay.join(" ")}\` at ${date.toLocaleString()}*.`)
+		Client.users.cache.get(taggedUser.id).send(`*${message.author.username} sent you: \`${messageToSay.join(" ")}\` at ${date.toLocaleString()}*.`)
 			.catch((err: Error) => {
 				message.channel.send("User is blocking DMs :frowning:");
 			});
