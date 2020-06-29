@@ -43,18 +43,21 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     function generateGrid() {
         initGrid();
-        let numbers = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
+        let cases = [":blue_square:•:blue_square:•:blue_square:•:blue_square:•:blue_square:•:blue_square:•:blue_square: \n"];
+        let columns = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣"];
 
         message.channel.send("> Status: init :eyes:").then(msg => firstMessageID = msg.id);
 
         message.channel.send("> I am currently generating the grid. Please wait a bit..").then(async msg => {
-            for (let number of numbers) {
+            for (let number of columns) {
                 await msg.react(number);
             }
 
-            numbers = ["1️⃣", "2️⃣", "3️⃣", "\n4️⃣", "5️⃣", "6️⃣", "\n7️⃣", "8️⃣", "9️⃣"];
+            for (let i = 0; i < 5; i++) {
+                cases.push(":blue_square:•:blue_square:•:blue_square:•:blue_square:•:blue_square:•:blue_square:•:blue_square: \n");
+            }
 
-            await msg.edit(numbers.join(" "));
+            await msg.edit(cases.join("\n"));
             setTimeout(function () {
                 createReactionCollector(msg);
             }, 300)
@@ -62,12 +65,14 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
     function initGrid() { // init the grid with a JSON object
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 8; i++) {
             grid[i] = {};
-            grid[i]["occupied"] = false;
-            grid[i]["player"] = null;
+            for (let x = 0; x < 7; x++) {
+                grid[i][x] = {};
+                grid[i][x]["occupied"] = false;
+                grid[i][x]["player"] = null;
+            }
         }
-
     }
 
     function createReactionCollector(msg: Discord.Message) {
