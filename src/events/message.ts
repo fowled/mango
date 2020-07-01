@@ -40,8 +40,10 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 			queue: queue
 		}
 
+		checkFolders(cmd);
+
 		try {
-			require(`./../commands/${cmd}.js`).run(Client, message, args, ops);
+			require(checkFolders(cmd)).run(Client, message, args, ops);
 			Logger.log(`${message.author.tag} just used the ${cmd} power in ${message.guild.name}.`);
 		} catch (err) {
 			Logger.log(`The command ${message.author.tag} tried to call in ${message.guild.name} doesen't seem to exist.`);
@@ -51,6 +53,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 
 	function checkCustomCommands() {
 		let content = JSON.parse(Fs.readFileSync('./database/commands/commands.json', 'utf8'));
+
 		try {
 			if (content[message.guild.id][message.content] == undefined) {
 				return;
@@ -60,5 +63,23 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 		} catch (err) {
 			return;
 		}
+	}
+
+	function checkFolders(command) {
+		let folders = ["moderation", "fun", "music", "info"];
+		var files: string[];
+		var finalPath: string;
+
+		folders.forEach(folder => {
+			files = Fs.readdirSync(`./src/commands/${folder}`);
+			
+			files.forEach(file => {
+				if (file.split(".")[0] == command) {
+					return finalPath = `./../commands/${folder}/${file.split(".")[0]}.js`;
+				}
+			});
+		});
+
+		return finalPath;
 	}
 };
