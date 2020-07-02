@@ -66,7 +66,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 	}
 
 	function checkFolders(command) {
-		let folders = ["moderation", "fun", "music", "info"];
+		let folders = ["moderation", "fun", "music", "info", "game"];
 		var files: string[];
 		var finalPath: string;
 
