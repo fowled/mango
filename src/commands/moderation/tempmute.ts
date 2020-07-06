@@ -37,10 +37,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             });
 
             message.guild.channels.cache.forEach(async (channel, id) => {
-                await channel.overwritePermissions([{
-                    id: muteRole.id,
-                    deny: ["SEND_MESSAGES", "ADD_REACTIONS"],
-                }])
+                await channel.updateOverwrite(muteRole, {
+                    SEND_MESSAGES: false,
+                    ADD_REACTIONS: false
+                });
             });
 
         } catch (error) {
