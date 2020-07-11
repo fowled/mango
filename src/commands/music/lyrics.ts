@@ -62,3 +62,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.channel.send("No song is currently playing.");
     }
 }
+
+const info = {
+    name: "lyrics",
+    description: "Try to get lyrics from the song currently playing",
+    category: "music",
+    args: "none"
+}
+
+export { info };

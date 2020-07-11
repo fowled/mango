@@ -41,7 +41,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		.setTitle(`${message.guild.name} - ${message.guild.id}`)
 		.setThumbnail(guildPicture)
 		.setAuthor(`${message.author.username}`, message.author.avatarURL())
-		.setColor(Math.floor(Math.random() * 16777214) + 1)
+		.setColor("RANDOM")
 		.addField(`**${message.member.guild.members.cache.size}** members`, `• Humans: **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => !member.user.bot).size}** \n• Bots: **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.bot).size}**`, true)
 		.addField(`**${message.member.guild.channels.cache.size}** channels`, `• Text: **${message.member.guild.channels.cache.filter((channel: Discord.TextChannel) => channel.type === "text").size}** \n• Voice: **${message.member.guild.channels.cache.filter((channel: Discord.VoiceChannel) => channel.type === "voice").size}**`, true)
 		.addField("Owner", message.member.guild.owner, true)

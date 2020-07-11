@@ -46,7 +46,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 			.addField("Nickname", selectedUser.nickname ? selectedUser.nickname : "No", true)
 			.addField("Boosting", selectedUser.premiumSince ? selectedUser.premiumSince.toLocaleString() : "No", true)
 			.addField("Surface", presence)
-			.setColor(Math.floor(Math.random() * 16777214) + 1)
+			.setColor("RANDOM")
 			.setFooter(Client.user.username, Client.user.avatarURL());
 
 		message.channel.send(userinfoMessageEmbed);

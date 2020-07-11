@@ -72,3 +72,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		message.reply("Whoops, please select a member. Ban hammer is waiting!");
 	}
 }
+
+const info = {
+    name: "ban",
+    description: "Ban a member",
+    category: "moderation",
+    args: "[@user] (reason)"
+}
+
+export { info };

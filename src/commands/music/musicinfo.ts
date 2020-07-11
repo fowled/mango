@@ -30,3 +30,12 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 		.setTimestamp();
 	message.channel.send(musicInfoEmbed);
 }
+
+const info = {
+    name: "musicinfo",
+    description: "Get the currently played music info",
+    category: "music",
+    args: "none"
+}
+
+export { info };

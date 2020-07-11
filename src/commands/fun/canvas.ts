@@ -39,3 +39,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     message.channel.send(attachment);
 }
+
+const info = {
+    name: "canvas",
+    description: "Write something on a beautiful picture",
+    category: "fun",
+    args: "none"
+}
+
+export { info };

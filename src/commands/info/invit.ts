@@ -18,3 +18,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		message.reply("I don't have the right perms ;( Make sure I have the admin rank :wink:");
 	});
 }
+
+const info = {
+    name: "invit",
+    description: "Create an invitation link",
+    category: "info",
+    args: "none"
+}
+
+export { info };

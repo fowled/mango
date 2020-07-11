@@ -40,8 +40,6 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 			queue: queue
 		}
 
-		checkFolders(cmd);
-
 		try {
 			require(checkFolders(cmd)).run(Client, message, args, ops);
 			Logger.log(`${message.author.tag} just used the ${cmd} power in ${message.guild.name}.`);

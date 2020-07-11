@@ -67,3 +67,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	}
 
 }
+
+const info = {
+    name: "kick",
+    description: "Kick a member",
+    category: "moderation",
+    args: "[@user] (reason)"
+}
+
+export { info };

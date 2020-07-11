@@ -49,3 +49,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     xhttp.open("GET", `https://api.openweathermap.org/data/2.5/weather?q=${country}&appid=${process.env.API_KEY}`, true);
     xhttp.send();
 }
+
+const info = {
+    name: "weather",
+    description: "Get weather for a given country",
+    category: "info",
+    args: "[country]"
+}
+
+export { info };

@@ -30,3 +30,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		.setFooter(Client.user.username, Client.user.avatarURL())
 	message.channel.send(embed);
 }
+
+const info = {
+    name: "leave",
+    description: "Show the current server's music queue",
+    category: "music",
+    args: "none"
+}
+
+export { info };

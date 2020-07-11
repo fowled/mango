@@ -30,3 +30,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         message.reply("An error occured. <a:nocheck:691001377459142718>");
     });
 }
+
+const info = {
+    name: "unlockchannel",
+    description: "Unlock a channel previously locked",
+    category: "moderation",
+    args: "[@role]"
+}
+
+export { info };

@@ -49,3 +49,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         }
     });
 }
+
+const info = {
+    name: "buy",
+    description: "Buy something of the market",
+    category: "fun",
+    args: "none"
+}
+
+export { info };

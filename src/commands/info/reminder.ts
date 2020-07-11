@@ -37,3 +37,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         message.author.send(reminderAuthor);
     }, ms(time));
 }
+
+const info = {
+    name: "reminder",
+    description: "Set a reminder with Mango",
+    category: "info",
+    args: "[how long]"
+}
+
+export { info };

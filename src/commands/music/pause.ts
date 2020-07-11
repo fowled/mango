@@ -20,3 +20,12 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 
     return message.channel.send("No song is currently playing.");
 }
+
+const info = {
+    name: "leave",
+    description: "Tell Mango to pause the song that is currently playing",
+    category: "music",
+    args: "none"
+}
+
+export { info };

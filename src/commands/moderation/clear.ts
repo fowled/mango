@@ -24,3 +24,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		message.reply("Please enter the number of messages to delete!");
 	}
 }
+
+const info = {
+    name: "clear",
+    description: "Clear messages",
+    category: "moderation",
+    args: "[number of messages to clear]"
+}
+
+export { info };

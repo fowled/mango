@@ -133,3 +133,12 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 		message.channel.send(`Now playing: **${song.title}**`);
 	}
 }
+
+const info = {
+    name: "play",
+    description: "Tell Mango to play a song",
+    category: "music",
+    args: "[URL of the song, or search by keyword]"
+}
+
+export { info };

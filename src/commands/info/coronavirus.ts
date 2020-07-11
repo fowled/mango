@@ -69,3 +69,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         xhttp.send();
     }
 }
+
+const info = {
+    name: "coronavirus",
+    description: "Get COVID-19 latest information",
+    category: "info",
+    args: "(country)"
+}
+
+export { info };

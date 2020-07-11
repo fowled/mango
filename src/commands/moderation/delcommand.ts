@@ -31,3 +31,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply(`Successfully deleted \`${args[0]}\` command. <a:check:690888185084903475>`);
     });
 }
+
+const info = {
+    name: "delcommand",
+    description: "Delete a guild's custom command",
+    category: "moderation",
+    args: "[name of the command]"
+}
+
+export { info };

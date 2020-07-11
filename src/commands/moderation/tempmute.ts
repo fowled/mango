@@ -66,3 +66,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
 }
 
+const info = {
+    name: "tempmute",
+    description: "Tempmute a member",
+    category: "moderation",
+    args: "[duration] [@user] (reason)"
+}
+
+export { info };

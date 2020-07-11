@@ -28,3 +28,12 @@ export async function run(client: Discord.Client, message: Discord.Message, args
         return message.channel.send("Song has been skipped. Moving on to the next one...");
     }
 }
+
+const info = {
+    name: "leave",
+    description: "Tell Mango to leave the vocal channel you're in",
+    category: "music",
+    args: "none"
+}
+
+export { info };

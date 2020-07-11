@@ -12,17 +12,17 @@ import * as Discord from "discord.js";
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     let grid = {};
     let turn = "J1";
-    let firstMessageID;
-    let secondPlayer;
+    let firstMessageID: string;
+    let secondPlayer: Discord.User;
 
     waitForSecondPlayer();
 
     function waitForSecondPlayer() {
-        const filter = (reaction, user) => {
+        const filter = (reaction: any, user: { id: string; }) => {
             return user.id != message.author.id;
         };
 
-        let msgid;
+        let msgid: string;
 
         message.channel.send("> Waiting for the 2nd player to approve... (click on the reaction to begin the game)").then(async msg => {
             msgid = msg.id;
@@ -78,7 +78,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         msg.awaitReactions(filter, { max: 1 })
             .then(collected => {
                 if (secondPlayer == collected.first().users.cache.last() && turn != "J2" || message.author == collected.first().users.cache.last() && turn != "J1") {
-                    collected.last().remove();
+                    collected.last().users.remove(collected.first().users.cache.last().id);
                     return createReactionCollector(msg);
                 }
 
@@ -128,7 +128,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             });
     }
 
-    function isCaseOccupied(coords) {
+    function isCaseOccupied(coords: string) {
         if (grid[coords].occupied) {
             return true;
         } else {
@@ -136,7 +136,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         }
     }
 
-    async function editGrid(msg: Discord.Message, emoji) {
+    async function editGrid(msg: Discord.Message, emoji: string) {
         let getGrid = msg.content.split(" ");
         let gridToObject = Object.values(getGrid);
         let selectEmoji = turn == "J1" ? ":x:" : ":o:";
@@ -149,6 +149,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         gridToObject.splice((letterToNumber - 1), 1, selectEmoji);
         grid[parseInt(emojiToLetter(emoji))].occupied = true;
         grid[parseInt(emojiToLetter(emoji))].player = turn;
+        
         await msg.edit(gridToObject.join(" "));
     }
 
@@ -160,12 +161,14 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         }
     }
 
-    function checkIfWin(turn) {
+    function checkIfWin(turn: string) {
         let casesToCheck = ["1,2,3", "3,6,9", "9,8,7", "7,4,1", "2,5,8", "7,5,3", "1,5,9", "4,5,6"];
+
         for (let i = 0; i < casesToCheck.length; i++) {
             let firstCase = casesToCheck[i].split(",")[0];
             let secondCase = casesToCheck[i].split(",")[1];
             let thirdCase = casesToCheck[i].split(",")[2];
+
             if (checkGridCases(firstCase, secondCase, thirdCase, turn)) {
                 return true;
             }
@@ -176,14 +179,23 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         if (grid[1].occupied == true && grid[2].occupied == true && grid[3].occupied == true && grid[4].occupied == true && grid[5].occupied == true && grid[6].occupied == true && grid[7].occupied == true && grid[8].occupied == true && grid[9].occupied == true) return true;
     }
 
-    function checkGridCases(a, b, c, turn) {
+    function checkGridCases(a: string, b: string, c: string, turn: any) {
         if (grid[a].player == turn && grid[b].player == turn && grid[c].player == turn) return true;
     }
 
-    function emojiToLetter(emoji) { // transforms emoji (reaction) to text
+    function emojiToLetter(emoji: string) { // transforms emoji (reaction) to text
         var unicodeChars = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
         var chars = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
         let index = unicodeChars.indexOf(emoji);
         return chars[index];
     }
 }
+
+const info = {
+    name: "tictactoe",
+    description: "Play tictactoe with a friend, thanks to Mango!",
+    category: "game",
+    args: "none"
+}
+
+export { info };

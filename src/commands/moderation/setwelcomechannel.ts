@@ -42,3 +42,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply("I couldn't find the channel you specified. Please check my permissions to view that channel, or verify the channel's spelling.");
     }
 }
+
+const info = {
+    name: "setwelcomechannel",
+    description: "Set guild's welcome channel for Mango",
+    category: "moderation",
+    args: "[#channel]"
+}
+
+export { info };

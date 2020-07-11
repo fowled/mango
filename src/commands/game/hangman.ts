@@ -132,3 +132,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         }
     }
 }
+
+const info = {
+    name: "hangman",
+    description: "Guess a word, with text",
+    category: "game",
+    args: "none"
+}
+
+export { info };

@@ -32,7 +32,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
 		const warnUserMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle(`Warn`)
-			.setDescription(`You have been warned by **${message.author.username}**  __${date.toLocaleString()}__ avec la raison *"${commande}"*.`)
+			.setDescription(`You have been warned by **${message.author.username}**  __${date.toLocaleString()}__. Reason: *"${commande}"*.`)
 			.setAuthor(message.author.username, message.author.avatarURL())
 			.setFooter(Client.user.username, Client.user.avatarURL())
 			.setColor("#4292f4")
@@ -45,3 +45,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	}
 
 }
+
+const info = {
+    name: "warn",
+    description: "Warn a member",
+    category: "moderation",
+    args: "[@user] (reason)"
+}
+
+export { info };

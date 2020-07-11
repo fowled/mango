@@ -15,7 +15,7 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 	const pong: Discord.MessageEmbed = new Discord.MessageEmbed()
 		.setTitle(`Latency information for ${message.author.tag}`)
 		.setAuthor(message.author.username, message.author.avatarURL())
-		.setColor(Math.floor(Math.random() * 16777214) + 1)
+		.setColor("RANDOM")
 		.setDescription("Latency information")
 		.addField("Host latency", `**${Math.floor(ping.createdTimestamp - message.createdTimestamp)}** ms.`)
 		.addField("API latency", `**${Math.round(client.ws.ping)}** ms.`, true)
@@ -24,3 +24,12 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 
 	ping.edit(pong);
 }
+
+const info = {
+    name: "ping",
+    description: "Get info on Mango's latency",
+    category: "info",
+    args: "none"
+}
+
+export { info };

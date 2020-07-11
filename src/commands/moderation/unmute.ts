@@ -24,7 +24,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply(`It looks like that **${memberUnmute.user.tag}** isn't muted :eyes:`);
     }
 
-    if (!message.member.hasPermission(["ADMINISTRATOR", "MANAGE_MESSAGES"])) {
+    if (!message.member.hasPermission(["ADMINISTRATOR"])) {
         return message.reply("You don't have the permission to unmute this person.");
     }
 
@@ -36,3 +36,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         message.reply("Sorry, but I got an unexcepted error while unmuting this user. " + + `\`\`\`${error.message}\`\`\``);
     }
 }
+
+const info = {
+    name: "unmute",
+    description: "Unmute a member",
+    category: "moderation",
+    args: "[@user]"
+}
+
+export { info };

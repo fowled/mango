@@ -40,3 +40,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		message.reply("Somehow my brain didn't understand your command... Please retry!");
 	}
 }
+
+const info = {
+    name: "preferences",
+    description: "Create an invitation link",
+    category: "info",
+    args: "[prefix] [see/set] (new prefix)"
+}
+
+export { info };

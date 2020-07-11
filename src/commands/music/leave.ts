@@ -28,3 +28,12 @@ export function run(Client: Discord.Client, message: Discord.Message, args: stri
 
 	return message.react("👍");
 }
+
+const info = {
+    name: "leave",
+    description: "Tell Mango to leave the vocal channel you're in",
+    category: "music",
+    args: "none"
+}
+
+export { info };

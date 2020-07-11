@@ -16,3 +16,12 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 			message.reply("An error occured, make sure I have the pin permission.");
 		});
 }
+
+const info = {
+    name: "pin",
+    description: "Pin a message",
+    category: "moderation",
+    args: "[ID of the message]"
+}
+
+export { info };

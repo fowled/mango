@@ -143,3 +143,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
 }
+
+const info = {
+    name: "reachangman",
+    description: "Guess a word with reactions",
+    category: "game",
+    args: "none"
+}
+
+export { info };

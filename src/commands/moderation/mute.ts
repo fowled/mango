@@ -55,3 +55,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     LogChecker.insertLog(Client, message.guild.id, message.author, `**${memberMute.user.tag}** has been __muted__ by ${message.author.tag} for: *${reason}* \nDuration of the punishment: infinite`);
 }
+
+const info = {
+    name: "mute",
+    description: "Mute a member",
+    category: "moderation",
+    args: "[@user] (reason)"
+}
+
+export { info };
