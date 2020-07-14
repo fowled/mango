@@ -17,6 +17,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply("Sorry but the command needs the following args to work: `!custom [name of the command] [text of the command]`");
     }
 
+    if (!message.member.hasPermission("MANAGE_GUILD")) {
+        return message.channel.send("You don't have the `MANAGE_GUILD` permission. <a:nocheck:691001377459142718>");
+    }
+
     if (talkedRecently.has(message.author.id)) {
         message.reply("I'm sorry, but this command is in cooldown. Try again later. <a:nocheck:691001377459142718>");
     } else {
