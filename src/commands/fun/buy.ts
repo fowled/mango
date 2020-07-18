@@ -20,27 +20,20 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     let content = JSON.parse(fs.readFileSync('database/market/items.json', 'utf8'));
     let money = JSON.parse(fs.readFileSync('database/money/data.json', 'utf8'));
-
-    if (money[message.author.id] == undefined) {
-        money[message.author.id] = 500;
-        fs.writeFileSync("database/money/data.json", JSON.stringify(money));
-    }
-
-    let refreshedMoney = JSON.parse(fs.readFileSync('database/money/data.json', 'utf8'));
     let seller = content[ID]["sellerID"];
 
-    if (refreshedMoney[message.author.id] < content[ID]["price"]) {
-        return message.reply(`You must have \`${content[ID]["price"] - refreshedMoney[message.author.id]}\` more dollars to get this item. :frowning:`);
+    if (money[message.author.id] < content[ID]["price"]) {
+        return message.reply(`You must have \`${content[ID]["price"] - money[message.author.id]}\` more dollars to get this item. :frowning:`);
     } else if (message.author.id == seller) {
         return message.reply("You can't buy your own item...");
     } else {
-        refreshedMoney[message.author.id] -= content[ID]["price"];
-        refreshedMoney[seller] += content[ID]["price"];
+        money[message.author.id] -= content[ID]["price"];
+        money[seller] += content[ID]["price"];
         message.reply(`Item **${content[ID]["name"]}** successfully bought for *${content[ID]["price"]}$*.`);
         delete (content[ID]);
     }
 
-    fs.writeFileSync("database/money/data.json", JSON.stringify(refreshedMoney));
+    fs.writeFileSync("database/money/data.json", JSON.stringify(money));
 
     fs.writeFile(`database/market/items.json`, JSON.stringify(content), function (err) {
         if (err) {

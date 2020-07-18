@@ -26,7 +26,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const currentID = content["curID"] += 1;
 
     content[currentID] = {};
-    content[currentID]["price"] = price;
+    content[currentID]["price"] = parseInt(price);
     content[currentID]["name"] = item;
     content[currentID]["seller"] = message.author.tag;
     content[currentID]["sellerID"] = message.author.id;

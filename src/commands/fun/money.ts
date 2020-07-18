@@ -14,7 +14,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     let money = JSON.parse(fs.readFileSync('database/money/data.json', 'utf8'));
 
     if (money[message.author.id] == undefined) {
-        return message.reply("You have no money. :money_with_wings:");
+        money[message.author.id] = 500;
+        fs.writeFileSync("database/money/data.json", JSON.stringify(money));
+        
+        return message.reply("Since you are new here, I just created you an account with `500$`. Enjoy :wink:");
     }
 
     message.reply(`Your account currently has **${money[message.author.id]}**$.`);
