@@ -23,6 +23,10 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 	const args: string[] = message.content.slice(prefix.length).trim().split(" ");
 	const cmd: string = args.shift().toLowerCase();
 
+	if (!msg.startsWith(prefix)) {
+		return;
+	}
+
 	let ops: {} = {
 		queue: queue
 	}
