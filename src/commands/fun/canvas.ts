@@ -44,7 +44,7 @@ const info = {
     name: "canvas",
     description: "Write something on a beautiful picture",
     category: "fun",
-    args: "none"
+    args: "[your message]"
 }
 
 export { info };

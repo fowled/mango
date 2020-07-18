@@ -30,3 +30,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     message.channel.send(attachment);
 }
+
+const info = {
+    name: "mug",
+    description: "Replies with a beautiful mug of the tagged user pfp, or your own if you don't tag any user!",
+    category: "fun",
+    args: "(@user)"
+}
+
+export { info };

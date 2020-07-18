@@ -50,3 +50,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	xhttp.open("GET", `https://api.scratch.mit.edu/projects/${project}/`, true);
 	xhttp.send();
 }
+
+const info = {
+    name: "scproj",
+    description: "Shows information about a Scratch project.",
+    category: "fun",
+    args: "[project ID]"
+}
+
+export { info };

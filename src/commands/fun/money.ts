@@ -19,3 +19,13 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     message.reply(`Your account currently has **${money[message.author.id]}**$.`);
 }
+
+const info = {
+    name: "money",
+    description: "Replies with your account's money",
+    category: "fun",
+    args: "none"
+}
+
+export { info };
+

@@ -54,7 +54,7 @@ const info = {
     name: "buy",
     description: "Buy something of the market",
     category: "fun",
-    args: "none"
+    args: "[ID of the item you want to buy]"
 }
 
 export { info };

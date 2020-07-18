@@ -71,3 +71,12 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 		return true;
 	}
 }
+
+const info = {
+    name: "scuserinfo",
+    description: "Shows information about a Scratch user",
+    category: "fun",
+    args: "[user name]"
+}
+
+export { info };

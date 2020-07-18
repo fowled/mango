@@ -42,3 +42,13 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 
 	message.channel.stopTyping();
 }
+
+const info = {
+    name: "level",
+    description: "Replies with your Mango level and XP",
+    category: "fun",
+    args: "none"
+}
+
+export { info };
+

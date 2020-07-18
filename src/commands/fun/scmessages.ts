@@ -35,3 +35,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	xhttp.open("GET", `https://api.scratch.mit.edu/users/${user}/messages/count`, true);
 	xhttp.send();
 }
+
+const info = {
+    name: "scmessages",
+    description: "Replies with user's message count",
+    category: "fun",
+    args: "[user]"
+}
+
+export { info };

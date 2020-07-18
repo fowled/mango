@@ -43,3 +43,13 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
 }
+
+const info = {
+    name: "levelboard",
+    description: "Replies with a hastebin link of the server's XP leaderboard",
+    category: "fun",
+    args: "none"
+}
+
+export { info };
+

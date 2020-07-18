@@ -33,3 +33,13 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     message.channel.send(lovemeter);
 }
+
+const info = {
+    name: "lovemeter",
+    description: "Calculates love % between two users",
+    category: "fun",
+    args: "[@user]"
+}
+
+export { info };
+

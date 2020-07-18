@@ -69,3 +69,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     }
 }
+
+const info = {
+    name: "reac",
+    description: "React to a certain message with a emoji (even animated ones!)",
+    category: "fun",
+    args: "[emoji]"
+}
+
+export { info };

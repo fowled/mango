@@ -65,5 +65,13 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     } catch (err) {
         message.reply("An unknown error happened. I'm sorry. Please retry the command <a:nocheck:691001377459142718>");
     }
-
 }
+
+const info = {
+    name: "time",
+    description: "Replies with the hour of the specified country",
+    category: "fun",
+    args: "[country]"
+}
+
+export { info };

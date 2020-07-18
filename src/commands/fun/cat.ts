@@ -46,3 +46,13 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         }
     }
 }
+
+const info = {
+    name: "cat",
+    description: "Replies with a picture of a cat",
+    category: "fun",
+    args: "none"
+}
+
+export { info };
+

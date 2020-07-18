@@ -28,3 +28,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         Logger.error(err);
     });
 }
+
+const info = {
+    name: "market",
+    description: "Replies with a hastebin link of the current mango's (black) market",
+    category: "fun",
+    args: "none"
+}
+
+export { info };

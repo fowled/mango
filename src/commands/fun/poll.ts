@@ -86,3 +86,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
 }
+
+const info = {
+    name: "poll",
+    description: "Create a poll",
+    category: "fun",
+    args: "[duration] | [Option 1] | [Up to 5 options]"
+}
+
+export { info };

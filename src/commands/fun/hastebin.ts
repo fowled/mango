@@ -20,3 +20,13 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         message.reply("An error happened. Please retry the command.");
     })
 }
+
+const info = {
+    name: "hastebin",
+    description: "Write something on a beautiful picture",
+    category: "fun",
+    args: "[your text]"
+}
+
+export { info };
+

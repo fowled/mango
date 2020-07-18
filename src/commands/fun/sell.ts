@@ -38,3 +38,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         message.reply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${content["curID"]}** <a:check:690888185084903475>`);
     });
 }
+
+const info = {
+    name: "sell",
+    description: "Sell something to the black market",
+    category: "fun",
+    args: "[price] [item]"
+}
+
+export { info };
