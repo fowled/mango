@@ -17,7 +17,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     
     if (item == "" || price == undefined) {
         return message.reply("You can't sell an empty item! `sell [price] [item]`");
-    } else if (typeof(price) != "number") {
+    } else if (isNaN(price as unknown as number)) {
         return message.reply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
     }
     
