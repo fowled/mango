@@ -23,7 +23,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     ctx.closePath();
     ctx.clip();
 
-    const avatar = await canvaslib.loadImage(user.avatar);
+    const avatar = await canvaslib.loadImage(user.displayAvatarURL({ format: "jpg" }));
     ctx.drawImage(avatar, 60, 60, 120, 120);
 
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png');
