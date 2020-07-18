@@ -17,6 +17,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     
     if (item == "" || price == undefined) {
         return message.reply("You can't sell an empty item! `sell [price] [item]`");
+    } else if (typeof(args) != "number") {
+        return message.reply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
     }
     
     let content = JSON.parse(fs.readFileSync('database/market/items.json', 'utf8'));
@@ -32,7 +34,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     fs.writeFile(`database/market/items.json`, JSON.stringify(content), function (err) {
         if (err) {
             Logger.error(err);
-            return message.reply("Sorry but an unexcepted error happened while saving data file. The error has been sent to the devloper, and we're trying to correct it. :ok_hand:");
+            return message.reply("Sorry but an unexcepted error happened while saving data file. The error has been sent to the developer, and we're trying to correct it. :ok_hand:");
         }
 
         message.reply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${content["curID"]}** <a:check:690888185084903475>`);
