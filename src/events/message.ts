@@ -23,10 +23,6 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 	const args: string[] = message.content.slice(prefix.length).trim().split(" ");
 	const cmd: string = args.shift().toLowerCase();
 
-	if (!msg.startsWith(prefix)) {
-		return checkCustomCommands();
-	}
-
 	let ops: {} = {
 		queue: queue
 	}
@@ -36,21 +32,6 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 		Logger.log(`${message.author.tag} just used the ${cmd} power in ${message.guild.name}.`);
 	} catch (err) {
 		Logger.log(`The command ${message.author.tag} tried to call in ${message.guild.name} doesen't seem to exist.`);
-	}
-
-
-	function checkCustomCommands() {
-		let content = JSON.parse(Fs.readFileSync('./database/commands/commands.json', 'utf8'));
-
-		try {
-			if (content[message.guild.id][message.content] == undefined) {
-				return;
-			} else {
-				message.channel.send(content[message.guild.id][message.content]);
-			}
-		} catch (err) {
-			return;
-		}
 	}
 
 	function checkFolders(command) {
