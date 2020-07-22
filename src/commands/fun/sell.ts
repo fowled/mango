@@ -14,11 +14,16 @@ import * as Logger from "../../utils/Logger";
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     const item: string = args.slice(1, args.length).join(" ");
     const price: string = args[0];
+    let money = JSON.parse(fs.readFileSync('database/money/data.json', 'utf8'));
     
     if (item == "" || price == undefined) {
         return message.reply("You can't sell an empty item! `sell [price] [item]`");
     } else if (isNaN(price as unknown as number)) {
         return message.reply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
+    } else if (item.includes("@")) {
+        return message.reply("I can't add this item to the market because it contains a mention. Be sure to remove it.");
+    } else if () {
+
     }
     
     let content = JSON.parse(fs.readFileSync('database/market/items.json', 'utf8'));
