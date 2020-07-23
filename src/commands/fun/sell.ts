@@ -22,8 +22,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
     } else if (item.includes("@")) {
         return message.reply("I can't add this item to the market because it contains a mention. Be sure to remove it.");
-    } else if () {
-
+    } else if (money[message.author.id] < price) {
+        return message.reply(`You can't sell this item at **${price}** because you only have **${money[message.author.id]}**$.`);
     }
     
     let content = JSON.parse(fs.readFileSync('database/market/items.json', 'utf8'));

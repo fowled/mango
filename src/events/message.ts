@@ -11,7 +11,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 		return;
 	}
 
-	const prefix = "ma!";
+	const prefix = "!";
 
 	if (message.mentions.has(Client.user, { ignoreDirect: false, ignoreEveryone: true, ignoreRoles: true }) && message.content.split(" ").length == 1) {
 		message.reply(`Hey, I'm Mango! Your current prefix is \`${prefix}\` \n→ help message: \`${prefix}help\` <a:check:690888185084903475>`);
