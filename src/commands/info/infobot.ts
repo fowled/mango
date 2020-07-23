@@ -28,7 +28,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         .addField("Node version", process.version)
         .addField("Discord.js version", discordVersion)
         .addField("OS", os.distro)
-        .addField("CPU", cpuInfo.brand)
         .addField("Memory", `${(ramInfo.total / 104853.2055).toFixed()} mb`)
         .addField("Uptime", moment.duration(Client.uptime).humanize())
         .setColor("RANDOM")
