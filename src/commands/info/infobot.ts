@@ -16,8 +16,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     var cpuInfo, ramInfo, os, msgID;
     const discordVersion = require("discord.js/package.json").version;
 
-    message.channel.send("Please wait up to 5 seconds, gathering information... Results will appear all at once.").then(msg => msgID = msg.id);
-
     await si.cpu().then(data => cpuInfo = data);
     await si.mem().then(data => ramInfo = data);
     await si.osInfo().then(data => os = data);
@@ -34,7 +32,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         .setTimestamp()
         .setFooter(Client.user.username, Client.user.displayAvatarURL())
 
-    message.channel.messages.fetch(msgID).then(msg => msg.edit(info));
+    message.channel.send(info);
 }
 
 const info = {
