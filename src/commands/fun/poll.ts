@@ -57,13 +57,13 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 let numberOfReactions = 0;
 
                 message.channel.messages.fetch(msgID).then(mess => {
-                    mess.reactions.cache.forEach(function (reac, i) {
-                        numberOfReactions += reac.users.cache.size;
-                    });
+                    for (var i = 0; i < splitMessage.length; i++) {
+                        numberOfReactions += (mess.reactions.cache.array()[i].users.cache.size - 1);
+                    }
 
-                    mess.reactions.cache.forEach(function (reac, i) {
-                        msg += `${reactions[parseInt(emojiToLetter(i)) - 1]} - ${splitMessage[parseInt(emojiToLetter(i)) - 1]} - ${reac.count - 1} votes **[${Math.round((reac.count - 1) / (numberOfReactions - mess.reactions.cache.size) * 100)}%]** \n`;
-                    });
+                    for (var x = 0; x < splitMessage.length; x++) {
+                        msg += `${reactions[x]} - ${splitMessage[x]} - ${mess.reactions.cache.array()[x].count - 1} votes **[${Math.round((mess.reactions.cache.array()[x].count - 1) / numberOfReactions * 100)}%]** \n`;
+                    }
 
                     const votes = new Discord.MessageEmbed()
                         .setAuthor(message.author.username, message.author.avatarURL())
