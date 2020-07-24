@@ -24,7 +24,7 @@ You can get the help message by typing ```ma!help```.
 Mango will welcome your members with a nice-looking picture with their avatar and the server member count, automatically. You don't have to do anything ;)
 
 ### Screenshots
-The welcome message | A tic-tac-toe game
+The welcome message | The canvas command
 ------------------- | ------------------
 <img src="https://i.imgur.com/BWYHFlh.png" alt="welcome" width=450> | <img src="https://i.imgur.com/uldNvl9.png" alt="tictactoe" width=450>
 
