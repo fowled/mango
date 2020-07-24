@@ -1,5 +1,5 @@
 # Mango
-Mango is a Discord bot made in JavaScript that will help you manage your server very easily. It has a lot of commands...
+Mango is a **verified Discord bot** made in JavaScript that will help you manage your server very easily. It has a lot of commands, listed below.
 
 ## Table of contents
 - [Intro](#Introduction)
@@ -14,9 +14,10 @@ I started this bot around June 2019 as a summer project to learn how to code. I 
 
 ## Features
 - [x] Moderation
-- [x] Games & fun (=> tictactoe, hangman...)
-- [x] APIs
+- [x] Games
+- [x] Info & API
 - [x] Music 
+- [x] Economy
 
 You can get the help message by typing ```ma!help```.
 
@@ -25,7 +26,7 @@ Mango will welcome your members with a nice-looking picture with their avatar an
 ### Screenshots
 The welcome message | A tic-tac-toe game
 ------------------- | ------------------
-<img src="https://i.imgur.com/4bHzTKQ.png" alt="welcome" width=450> | <img src="https://i.imgur.com/krE0rOa.png" alt="tictactoe" width=450>
+<img src="https://i.imgur.com/BWYHFlh.png" alt="welcome" width=450> | <img src="https://i.imgur.com/uldNvl9.png" alt="tictactoe" width=450>
 
 You can also customize your prefix, by doing ```ma!preferences prefix set [1-char length prefix]```. <br>
 If help is needed, contact ```Mazz#0270``` on Discord.
