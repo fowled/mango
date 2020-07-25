@@ -23,6 +23,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply("Sorry, but I can't mute the user you specified, because he has the Administrator permission.");
     }
 
+    if (!message.member.hasPermission(["ADMINISTRATOR"])) {
+        return message.reply("Sorry, but you don't have the permission to mute this user.");
+    } 
+
     let muteRole: Discord.Role = message.guild.roles.cache.find(role => role.name === "muted");
 
     if (!muteRole) {
