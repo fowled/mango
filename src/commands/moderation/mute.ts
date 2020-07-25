@@ -18,7 +18,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply("Sorry, but I can't mute the user you specified, because he has one of the following perms: `ADMINISTRATOR`");
     }
 
-    if (!message.member.hasPermission(["ADMINISTRATOR"])) {
+    if (!message.member.hasPermission(["MANAGE_MESSAGES"])) {
         return message.reply("Sorry, but you don't have the permission to mute this user.");
     }
 
