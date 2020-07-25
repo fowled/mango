@@ -23,9 +23,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
 	} else {
 		message.reply("Invlid number provided. Only provided number between 1 and 100");
-	} else {
-		message.reply("Please enter the number of messages to delete!");
-	}
+	} 
+
+    } else {
+	message.reply("Please enter the number of messages to delete!");
+    }
 }
 
 const info = {
