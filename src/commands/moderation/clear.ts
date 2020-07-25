@@ -11,7 +11,7 @@ import * as LogChecker from "../../utils/LogChecker";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
-    if (message.member.hasPermission(["MANAGE_MESSAGES"]) {
+    if (message.member.hasPermission(["MANAGE_MESSAGES"])) {
         return message.reply("Sorry, but you don't have the `MANAGE_MESSAGES` permission.");
     }
 
