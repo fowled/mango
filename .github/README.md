@@ -27,7 +27,7 @@ The welcome message | The canvas command
 ------------------- | ------------------
 <img src="https://i.imgur.com/BWYHFlh.png" alt="welcome" width=450> | <img src="https://i.imgur.com/uldNvl9.png" alt="tictactoe" width=450>
 
-If help is needed, contact ```Mazz#0270``` on Discord.
+If help is needed, contact ```Mazz#4946``` on Discord.
 
 ## Badges
 [![Build Status](https://travis-ci.com/Ma15fo43/Mango.svg?branch=master)](https://travis-ci.com/Ma15fo43/Mango)
