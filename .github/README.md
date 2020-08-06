@@ -31,7 +31,7 @@ If help is needed, contact ```Mazz#4946``` on Discord.
 
 ## Badges
 [![Build Status](https://travis-ci.com/ignmazz/Mango.svg?branch=master)](https://travis-ci.com/ignmazz/Mango)
-![NPM Modules Check](https://github.com/ignùazz/Mango/workflows/NPM%20Modules%20Check/badge.svg?branch=master)
+![NPM Modules Check](https://github.com/ignmazz/Mango/workflows/NPM%20Modules%20Check/badge.svg?branch=master)
 [![GitHub](https://img.shields.io/github/license/ignmazz/Mango)](https://github.com/ignmazz/Mango/blob/master/LICENSE)
 ![GitHub issues](https://img.shields.io/github/issues/ignmazz/Mango)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/ignmazz/Mango)
