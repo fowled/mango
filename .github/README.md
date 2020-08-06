@@ -1,4 +1,4 @@
-# Mango
+# Mango <img src="https://travis-ci.com/ignmazz/Mango.svg?branch=master" />
 Mango is a **verified Discord bot** made in Typescript that will help you manage your server very easily. It has a lot of commands, listed below.
 
 ## Table of contents
@@ -30,13 +30,13 @@ The welcome message | The canvas command
 If help is needed, contact ```Mazz#4946``` on Discord.
 
 ## Badges
-[![Build Status](https://travis-ci.com/Ma15fo43/Mango.svg?branch=master)](https://travis-ci.com/Ma15fo43/Mango)
-![NPM Modules Check](https://github.com/Ma15fo43/Mango/workflows/NPM%20Modules%20Check/badge.svg?branch=master)
-[![GitHub](https://img.shields.io/github/license/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/blob/master/LICENSE)
-![GitHub issues](https://img.shields.io/github/issues/Ma15fo43/Mango)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/Ma15fo43/Mango)
+[![Build Status](https://travis-ci.com/ignmazz/Mango.svg?branch=master)](https://travis-ci.com/ignmazz/Mango)
+![NPM Modules Check](https://github.com/ignùazz/Mango/workflows/NPM%20Modules%20Check/badge.svg?branch=master)
+[![GitHub](https://img.shields.io/github/license/ignmazz/Mango)](https://github.com/ignmazz/Mango/blob/master/LICENSE)
+![GitHub issues](https://img.shields.io/github/issues/ignmazz/Mango)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/ignmazz/Mango)
 
 
 ### Links
-- Every single command, listed [here.](https://github.com/Ma15fo43/Mango/wiki/Commands!)
-- Everything on how to install the [release.](https://github.com/Ma15fo43/Mango/wiki/Commands!)
+- Every single command, listed [here.](https://github.com/ignmazz/Mango/wiki/Commands!)
+- Everything on how to install the [release.](https://github.com/ignmazz/Mango/wiki/Commands!)
