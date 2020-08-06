@@ -11,46 +11,44 @@ import * as Discord from "discord.js";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: void) {
 	const taggedUser: Discord.User = message.mentions.users.first();
-	const member: Discord.GuildMember = message.guild.member(taggedUser);
+	const reason = args.slice(1).join(" ");
 
-	if (member && member.kickable) {
-		let commande: string = message.content.split(" ").slice(2).join(" ");
-
-		if (commande === "") {
-			commande = "No reason";
-		}
-
-		const date = new Date();
-		const warnGuildMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
-			.setTitle(`Warn`)
-			.setDescription(`**${taggedUser.tag}** has been warned by *${message.author.tag}* on __${date.toLocaleDateString()}__: *"${commande}"*.`)
-			.setAuthor(message.author.username, message.author.avatarURL())
-			.setFooter(Client.user.username, Client.user.avatarURL())
-			.setColor("#4292f4")
-			.setTimestamp();
-		message.channel.send(warnGuildMessageEmbed);
-
-		const warnUserMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
-			.setTitle(`Warn`)
-			.setDescription(`You have been warned by **${message.author.username}**  __${date.toLocaleString()}__. Reason: *"${commande}"*.`)
-			.setAuthor(message.author.username, message.author.avatarURL())
-			.setFooter(Client.user.username, Client.user.avatarURL())
-			.setColor("#4292f4")
-			.setTimestamp();
-		Client.users.cache.get(taggedUser.id).send(warnUserMessageEmbed).catch((error: Error) => {
-			message.channel.send(`**${taggedUser.tag}** doesen't accept DMs from servers.`);
-		});
-	} else {
-		message.reply("You can't warn this user.");
+	if (!message.member.hasPermission("KICK_MEMBERS")) {
+		return message.reply("Sorry, but you need the `KICK_MEMBERS` permission to warn a user.");
+	} else if (!taggedUser) {
+		return message.reply("You must tag a user. `ma!warn @user reason`");
+	} else if (!args[2]) {
+		return message.reply("You must specify a reason before warning a user `ma!warn @user reason`");
 	}
+
+	const date = new Date();
+	const warnGuildMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
+		.setTitle(`Warn`)
+		.setDescription(`**${taggedUser.tag}** has been warned by *${message.author.tag}* on __${date.toLocaleDateString()}__: *"${reason}"*.`)
+		.setAuthor(message.author.username, message.author.avatarURL())
+		.setFooter(Client.user.username, Client.user.avatarURL())
+		.setColor("#4292f4")
+		.setTimestamp();
+	message.channel.send(warnGuildMessageEmbed);
+
+	const warnUserMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
+		.setTitle(`Warn`)
+		.setDescription(`You have been warned by **${message.author.username}**  __${date.toLocaleString()}__. Reason: *"${reason}"*.`)
+		.setAuthor(message.author.username, message.author.avatarURL())
+		.setFooter(Client.user.username, Client.user.avatarURL())
+		.setColor("#4292f4")
+		.setTimestamp();
+	Client.users.cache.get(taggedUser.id).send(warnUserMessageEmbed).catch((error: Error) => {
+		message.channel.send(`**${taggedUser.tag}** doesn't accept DMs from servers.`);
+	});
 
 }
 
 const info = {
-    name: "warn",
-    description: "Warn a member",
-    category: "moderation",
-    args: "[@user] (reason)"
+	name: "warn",
+	description: "Warn a member",
+	category: "moderation",
+	args: "[@user] [reason]"
 }
 
 export { info };
