@@ -1,5 +1,7 @@
-# Mango <img src="https://travis-ci.com/ignmazz/Mango.svg?branch=master" />
-Mango is a **verified Discord bot** made in Typescript that will help you manage your server very easily. It has a lot of commands, listed below.
+<div align="center">
+    <h1>Mango <img src="https://travis-ci.com/mazzlabs/Mango.svg?branch=master" /></h1>
+    <h3>Mango is a **verified Discord bot** made in Typescript that will help you manage your server very easily. It has a lot of commands, listed below.</h3>
+</div>
 
 ## Table of contents
 - [Intro](#Introduction)
@@ -30,7 +32,7 @@ The welcome message | The canvas command
 If help is needed, contact ```Mazz#4946``` on Discord.
 
 ## Badges
-[![Build Status](https://travis-ci.com/ignmazz/Mango.svg?branch=master)](https://travis-ci.com/ignmazz/Mango)
+[![Build Status](https://travis-ci.com/mazzlabs/Mango.svg?branch=master)](https://travis-ci.com/mazzlabs/Mango)
 ![NPM Modules Check](https://github.com/ignmazz/Mango/workflows/NPM%20Modules%20Check/badge.svg?branch=master)
 [![GitHub](https://img.shields.io/github/license/ignmazz/Mango)](https://github.com/ignmazz/Mango/blob/master/LICENSE)
 ![GitHub issues](https://img.shields.io/github/issues/ignmazz/Mango)
@@ -38,5 +40,5 @@ If help is needed, contact ```Mazz#4946``` on Discord.
 
 
 ### Links
-- Every single command, listed [here.](https://github.com/ignmazz/Mango/wiki/Commands!)
+- [**⚠ Deprecated**] Every single command, listed [here.](https://github.com/mazzlabs/Mango/wiki/Commands!)
 - Everything on how to install the [release.](https://github.com/ignmazz/Mango/wiki/Commands!)
