@@ -1,13 +1,19 @@
 <div align="center">
-    <h1>Mango <img src="https://travis-ci.com/mazzlabs/Mango.svg?branch=master" /></h1>
-    <h3>Mango is a **verified Discord bot** made in Typescript that will help you manage your server very easily. It has a lot of commands, listed below.</h3>
+    <h1>Mango</h1>
+    <p>Mango is a <b>verified Discord bot</b> made in Typescript that will help you manage your server very easily.</p>
+    <p>
+        <img src="https://travis-ci.com/mazzlabs/Mango.svg?branch=master" />
+        <img src="https://github.com/ignmazz/Mango/workflows/NPM%20Modules%20Check/badge.svg?branch=master />
+        <img src="https://img.shields.io/github/license/ignmazz/Mango" />
+        <img src="https://img.shields.io/github/issues/ignmazz/Mango" />
+        <img src="https://img.shields.io/github/issues-pr/ignmazz/Mango" />
+    </p>
 </div>
 
 ## Table of contents
 - [Intro](#Introduction)
 - [Features](#Features)
     - [Screenshots](#Screenshots)
-- [Repo badges](#Badges)
 - [Links](#links)
 
 ## Introduction
@@ -30,14 +36,6 @@ The welcome message | The canvas command
 <img src="https://i.imgur.com/BWYHFlh.png" alt="welcome" width=450> | <img src="https://i.imgur.com/uldNvl9.png" alt="tictactoe" width=450>
 
 If help is needed, contact ```Mazz#4946``` on Discord.
-
-## Badges
-[![Build Status](https://travis-ci.com/mazzlabs/Mango.svg?branch=master)](https://travis-ci.com/mazzlabs/Mango)
-![NPM Modules Check](https://github.com/ignmazz/Mango/workflows/NPM%20Modules%20Check/badge.svg?branch=master)
-[![GitHub](https://img.shields.io/github/license/ignmazz/Mango)](https://github.com/ignmazz/Mango/blob/master/LICENSE)
-![GitHub issues](https://img.shields.io/github/issues/ignmazz/Mango)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/ignmazz/Mango)
-
 
 ### Links
 - [**⚠ Deprecated**] Every single command, listed [here.](https://github.com/mazzlabs/Mango/wiki/Commands!)
