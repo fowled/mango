@@ -3,7 +3,7 @@
     <p>Mango is a <b>verified Discord bot</b> made in Typescript that will help you manage your server very easily.</p>
     <p>
         <img src="https://travis-ci.com/mazzlabs/Mango.svg?branch=master" />
-        <img src="https://github.com/ignmazz/Mango/workflows/NPM%20Modules%20Check/badge.svg?branch=master" />
+        <img src="https://github.com/mazzlabs/Mango/workflows/NPM/badge.svg" />
         <img src="https://img.shields.io/github/license/ignmazz/Mango" />
         <img src="https://img.shields.io/github/issues/ignmazz/Mango" />
         <img src="https://img.shields.io/github/issues-pr/ignmazz/Mango" />
