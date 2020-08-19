@@ -74,7 +74,7 @@ const info = {
     name: "tempmute",
     description: "Tempmute a member",
     category: "moderation",
-    args: "[duration] [@user] (reason)"
+    args: "[@user] [duration] (reason)"
 }
 
 export { info };
