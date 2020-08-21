@@ -8,7 +8,6 @@
         <img src="https://img.shields.io/github/issues/ignmazz/Mango" />
         <img src="https://img.shields.io/github/issues-pr/ignmazz/Mango" />
     </p>
-    <img src="https://user-images.githubusercontent.com/37367577/90290571-6762df80-de7e-11ea-8129-750638dc782e.png" width="700px" />
 </div>
 
 ## Table of contents
