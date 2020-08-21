@@ -51,7 +51,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     let reason = args[1] == undefined ? "no reason specified." : message.content.split(args[0])[1].trim();
 
-    message.reply(`**${memberMute.user.tag}** has been muted for: *${reason}*. <a:check:690888185084903475>`);
+    message.reply(`**${memberMute.user.tag}** has been muted for: *${reason}*. <a:check:745904327872217088>`);
 
     LogChecker.insertLog(Client, message.guild.id, message.author, `**${memberMute.user.tag}** has been __muted__ by ${message.author.tag} for: *${reason}* \nDuration of the punishment: infinite`);
 }

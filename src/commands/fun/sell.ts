@@ -42,7 +42,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             return message.reply("Sorry but an unexcepted error happened while saving data file. The error has been sent to the developer, and we're trying to correct it. :ok_hand:");
         }
 
-        message.reply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${content["curID"]}** <a:check:690888185084903475>`);
+        message.reply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${content["curID"]}** <a:check:745904327872217088>`);
     });
 }
 

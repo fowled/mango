@@ -35,7 +35,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             }
 
             // @ts-ignore
-            welcomeChannel.send("Success! This channel is now the default welcoming messages channel of this guild. <a:check:690888185084903475>");
+            welcomeChannel.send("Success! This channel is now the default welcoming messages channel of this guild. <a:check:745904327872217088>");
         });
     } catch (err) {
         Logger.error(err);

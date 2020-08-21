@@ -34,7 +34,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 return message.reply("Sorry but an unexcepted error happened while saving data file. The error has been sent to the devloper, and we're trying to correct it. :ok_hand:");
             }
             // @ts-ignore
-            logChannel.send("Success! This channel is now the default logging channel of this guild. <a:check:690888185084903475>");
+            logChannel.send("Success! This channel is now the default logging channel of this guild. <a:check:745904327872217088>");
         });
     } catch (err) {
         Logger.error(err);

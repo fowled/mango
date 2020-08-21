@@ -14,20 +14,20 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	let presence;
 
 	let statuses = {
-		"online": "<:online:720998984646262834> Online",
-		"idle": "<:idle:720998984402993162> Idle",
-		"dnd": "<:dnd:720998984188952577> DND",
-		"offline": "<:offline:720998984465907883> Offline",
+		"online": "<:online:746276053177073715> Online",
+		"idle": "<:idle:746276053055438938> Idle",
+		"dnd": "<:dnd:746276052824883232> DND",
+		"offline": "<:offline:745904190962008148> Offline",
 	}
 
-	if (selectedUser.presence.clientStatus.desktop) {
+	if (!selectedUser.presence.clientStatus) {
+		presence = "offline"
+	} else if (selectedUser.presence.clientStatus.desktop) {
 		presence = ":desktop: Desktop";
 	} else if (selectedUser.presence.clientStatus.mobile) {
 		presence = ":iphone: Phone";
 	} else if (selectedUser.presence.clientStatus.web) {
 		presence = ":computer: Web";
-	} else if (selectedUser.presence.status == "offline") {
-		presence = "Offline";
 	}
 
 	if (selectedUser) { // In the same server

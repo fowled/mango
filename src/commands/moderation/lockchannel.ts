@@ -12,14 +12,14 @@ import * as Logger from "../../utils/Logger";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     if (!message.member.hasPermission("ADMINISTRATOR") && message.author.id != "352158391038377984") {
-        return message.reply("You don't have the `ADMINISTRATOR` perm. <a:nocheck:691001377459142718>");
+        return message.reply("You don't have the `ADMINISTRATOR` perm. <a:nocheck:745904455731642408>");
     }
 
     const role: Discord.Role = message.guild.roles.cache.find(r => r.name == args[0]);
     const messageChannel = args[1] == undefined ? message.channel as Discord.GuildChannel : message.guild.channels.cache.get(args[1].toString().split("<#")[1].split(">")[0]) as unknown as Discord.GuildChannel;
 
     if (!role) {
-        return message.reply("I didn't find the role you specified. <a:nocheck:691001377459142718>");
+        return message.reply("I didn't find the role you specified. <a:nocheck:745904455731642408>");
     }
 
     messageChannel.overwritePermissions([{
@@ -27,7 +27,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         deny: ["SEND_MESSAGES"]
     }]).catch(err => {
         Logger.error(err)
-        message.reply("An error occured. <a:nocheck:691001377459142718>");
+        message.reply("An error occured. <a:nocheck:745904455731642408>");
     });
 }
 

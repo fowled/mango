@@ -12,29 +12,33 @@ import * as hastebin from "../../utils/PostToHastebin";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string, options: any) {
-    let levels: string[] = ["# Levelboard of the server"];
+    let levels: string[] = [];
 
     let memberIDs: string[] = [];
     message.guild.members.cache.forEach(member => memberIDs.push(member.id));
 
     let data = Fs.readFileSync("database/ranks/ranks.json", "utf8");
     data = JSON.parse(data);
+    let dataKeys = Object.keys(data);
 
-    Object.keys(data).forEach((key) => {
-        if (memberIDs.includes(key)) {
-            levels.push(`- *${data[key]}* XP / Level **${Math.ceil(parseInt(data[key]) / 50)}** - [${Client.users.cache.get(key).tag}]`);
+    for (let i = 0; i < 10; i++) {
+        if (memberIDs.includes(dataKeys[i])) {
+            levels.push(`${i}. *${data[dataKeys[i]]}* XP | Level **${Math.ceil(parseInt(data[dataKeys[i]]) / 50)}** - [${Client.users.cache.get(dataKeys[i]).tag}]`);
         }
-    });
+    }
 
     levels.forEach(() => {
         sortArray();
     });
 
-    hastebin.postText(levels.join("\n")).then(res => {
-        message.reply("The server **levelboard** is available here: " + res);
-    }).catch(err => {
-        console.error(err);
-    });
+    const levelEmbed = new Discord.MessageEmbed()
+        .setTitle("🎖 Levelboard!")
+        .setDescription(levels.join("\n"))
+        .setColor("RANDOM")
+        .setTimestamp()
+        .setFooter(Client.user.username, Client.user.displayAvatarURL())
+
+    message.channel.send(levelEmbed);
 
     function sortArray() {
         levels.sort(function (a, b) {

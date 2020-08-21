@@ -61,7 +61,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
                 message.channel.send(MessageEmbed);
             } else if (this.readyState == 4 && this.status == 404) {
-                message.reply("I didn't find that country. <a:nocheck:691001377459142718>");
+                message.reply("I didn't find that country. <a:nocheck:745904455731642408>");
             }
         }
 

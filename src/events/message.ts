@@ -1,10 +1,13 @@
 import * as Discord from "discord.js";
 import * as Fs from "fs";
+import SQLite from "better-sqlite3";
 
 import * as Logger from "./../utils/Logger";
 import * as Xp from "./../utils/Xp";
 
 import { queue } from "../index";
+
+// const sql = new SQLite("../../SQL/level.sqlite");
 
 export default async (Client: Discord.Client, message: Discord.Message) => {
 	if (message.author.bot || !message.guild) {
@@ -14,7 +17,7 @@ export default async (Client: Discord.Client, message: Discord.Message) => {
 	const prefix = "!";
 
 	if (message.mentions.has(Client.user, { ignoreDirect: false, ignoreEveryone: true, ignoreRoles: true }) && message.content.split(" ").length == 1) {
-		message.reply(`Hey, I'm Mango! Your current prefix is \`${prefix}\` \n→ help message: \`${prefix}help\` <a:check:690888185084903475>`);
+		message.reply(`Hey, I'm Mango! Your current prefix is \`${prefix}\` \n→ help message: \`${prefix}help\` <a:check:745904327872217088>`);
 	}
 
 	Xp.checkXP(message);

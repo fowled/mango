@@ -59,7 +59,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                     replaceWithStars(emojiToLetter(collected.first().emoji.name));
                     const correctLetter = new Discord.MessageEmbed()
                         .setAuthor(message.author.username, message.author.avatarURL())
-                        .setDescription(`<a:check:690888185084903475> Good job - you just found the \`${emojiToLetter(collected.first().emoji.name)}\` letter!`)
+                        .setDescription(`<a:check:745904327872217088> Good job - you just found the \`${emojiToLetter(collected.first().emoji.name)}\` letter!`)
                         .setColor("#3AD919")
                     message.channel.messages.fetch(firstMessageID).then(m => m.edit(correctLetter));
 
@@ -71,7 +71,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                     guessesNumber++;
                     const incorrectLetter = new Discord.MessageEmbed()
                         .setAuthor(message.author.username, message.author.avatarURL())
-                        .setDescription(`<a:nocheck:691001377459142718> Wrong letter \`${emojiToLetter(collected.first().emoji.name)}\`. Remaining attempts: **${10 - guessesNumber}**.`)
+                        .setDescription(`<a:nocheck:745904455731642408> Wrong letter \`${emojiToLetter(collected.first().emoji.name)}\`. Remaining attempts: **${10 - guessesNumber}**.`)
                         .setColor("#ff0000")
                     message.channel.messages.fetch(firstMessageID).then(m => m.edit(incorrectLetter));
                     guessedLetters.push(emojiToLetter(collected.first().emoji.name));
