@@ -1,11 +1,20 @@
-# Mango
-Mango is a **verified Discord bot** made in Typescript that will help you manage your server very easily. It has a lot of commands, listed below.
+<div align="center">
+    <h1>Mango</h1>
+    <p>Mango is a <b>verified Discord bot</b> made in Typescript that will help you manage your server very easily.</p>
+    <p>
+        <img src="https://travis-ci.com/mazzlabs/Mango.svg?branch=master" />
+        <img src="https://github.com/mazzlabs/Mango/workflows/NPM/badge.svg" />
+        <img src="https://img.shields.io/github/license/ignmazz/Mango" />
+        <img src="https://img.shields.io/github/issues/ignmazz/Mango" />
+        <img src="https://img.shields.io/github/issues-pr/ignmazz/Mango" />
+    </p>
+    <img src="https://user-images.githubusercontent.com/37367577/90290571-6762df80-de7e-11ea-8129-750638dc782e.png" width="700px" />
+</div>
 
 ## Table of contents
 - [Intro](#Introduction)
 - [Features](#Features)
     - [Screenshots](#Screenshots)
-- [Repo badges](#Badges)
 - [Links](#links)
 
 ## Introduction
@@ -29,14 +38,6 @@ The welcome message | The canvas command
 
 If help is needed, contact ```Mazz#4946``` on Discord.
 
-## Badges
-[![Build Status](https://travis-ci.com/Ma15fo43/Mango.svg?branch=master)](https://travis-ci.com/Ma15fo43/Mango)
-![NPM Modules Check](https://github.com/Ma15fo43/Mango/workflows/NPM%20Modules%20Check/badge.svg?branch=master)
-[![GitHub](https://img.shields.io/github/license/Ma15fo43/Mango)](https://github.com/Ma15fo43/Mango/blob/master/LICENSE)
-![GitHub issues](https://img.shields.io/github/issues/Ma15fo43/Mango)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/Ma15fo43/Mango)
-
-
 ### Links
-- Every single command, listed [here.](https://github.com/Ma15fo43/Mango/wiki/Commands!)
-- Everything on how to install the [release.](https://github.com/Ma15fo43/Mango/wiki/Commands!)
+- [**⚠ Deprecated**] Every single command, listed [here.](https://github.com/mazzlabs/Mango/wiki/Commands!)
+- Everything on how to install the [release.](https://github.com/ignmazz/Mango/wiki/Commands!)
