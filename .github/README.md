@@ -7,8 +7,6 @@
         <img src="https://img.shields.io/github/license/ignmazz/Mango" />
         <img src="https://img.shields.io/github/issues/ignmazz/Mango" />
         <img src="https://img.shields.io/github/issues-pr/ignmazz/Mango" />
-        <img src="https://img.shields.io/badge/users-150k%2B-success" />
-        <img src="https://img.shields.io/badge/servers-120%2B-success" />
     </p>
 </div>
 
