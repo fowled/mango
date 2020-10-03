@@ -1,6 +1,6 @@
 import * as Discord from "discord.js";
-import * as fs from "fs";
 import * as Logger from "../../utils/Logger";
+import * as Sequelize from "sequelize";
 
 // Fun command
 
@@ -13,45 +13,49 @@ import * as Logger from "../../utils/Logger";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     const ID = args[0];
-    let inventory = JSON.parse(fs.readFileSync("database/inventory/items.json", "utf8"));
 
     if (!ID) {
         return message.reply("In order to buy something, you must provide the item's ID.");
     }
 
-    let content = JSON.parse(fs.readFileSync('database/market/items.json', 'utf8'));
-    let money = JSON.parse(fs.readFileSync('database/money/data.json', 'utf8'));
-    let seller = content[ID]["sellerID"];
+    const marketmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");
+    const marketItem = await marketmodel.findOne({ where: { id: ID } });
 
-    if (money[message.author.id] < content[ID]["price"]) {
-        return message.reply(`You must have \`${content[ID]["price"] - money[message.author.id]}\` more dollars to get this item. :frowning:`);
-    } else if (message.author.id == seller) {
+    if (!marketItem) {
+        return message.reply(`I'm sorry, but there is no item matching ID **${args[0]}**. To consult the market, do \`ma!market\` :wink:`);
+    }
+
+    const itemName = marketItem.get("name");
+    const itemPrice = marketItem.get("price");
+    const itemSeller = marketItem.get("seller");
+    const itemSellerID = marketItem.get("sellerID");
+
+    const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
+    const authorMoney = await moneymodel.findOne({ where: { idOfUser: message.author.id } });
+    const getAuthorMoney = authorMoney.get("money");
+    const sellerMoney = await moneymodel.findOne({ where: { idOfUser: itemSellerID } });
+
+    if (getAuthorMoney < itemPrice) {
+        return message.reply(`You must have \`${(itemPrice as unknown as number) - (getAuthorMoney as unknown as number)}\` more dollars to get this item. :frowning:`);
+    } else if (message.author.id == itemSellerID) {
         return message.reply("You can't buy your own item...");
     }
 
-    if (inventory[message.author.id] == undefined) {
-        inventory[message.author.id] = {};
-        inventory[message.author.id]["items"] = `Item: **${content[ID]["name"]}** - bought *${content[ID]["price"]}*$ | seller: ${content[ID]["seller"]} \n`;
-    } else {
-        inventory[message.author.id]["items"] += `Item: **${content[ID]["name"]}** - bought *${content[ID]["price"]}*$ | seller: ${content[ID]["seller"]} \n`;
-    }
+    const inventorymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("inventoryItems");
 
-
-    money[message.author.id] -= content[ID]["price"];
-    money[seller] += content[ID]["price"];
-    message.reply(`Item **${content[ID]["name"]}** successfully bought for *${content[ID]["price"]}$*.`);
-    delete (content[ID]);
-
-    fs.writeFileSync("database/money/data.json", JSON.stringify(money));
-
-    fs.writeFileSync("database/inventory/items.json", JSON.stringify(inventory));
-
-    fs.writeFile(`database/market/items.json`, JSON.stringify(content), function (err) {
-        if (err) {
-            Logger.error(err);
-            return message.reply("Sorry but an unexcepted error happened while saving data file. The error has been sent to the devloper, and we're trying to correct it. :ok_hand:");
-        }
+    inventorymodel.create({
+        name: itemName,
+        price: itemPrice,
+        seller: itemSeller,
+        authorID: message.author.id
     });
+
+    authorMoney.decrement(['money'], { by: itemPrice as unknown as number });
+    sellerMoney.increment(['money'], { by: itemPrice as unknown as number });
+
+    message.reply(`Item **${itemName}** successfully bought for *${itemPrice}$*.`);
+
+    marketItem.destroy();
 }
 
 const info = {

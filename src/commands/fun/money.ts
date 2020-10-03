@@ -1,5 +1,5 @@
 import * as Discord from "discord.js";
-import * as fs from "fs";
+import * as Sequelize from "sequelize";
 
 // Fun command
 
@@ -11,16 +11,19 @@ import * as fs from "fs";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-    let money = JSON.parse(fs.readFileSync('database/money/data.json', 'utf8'));
+    const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
+    const money = await moneymodel.findOne({ where: { idOfUser: message.author.id } });
 
-    if (money[message.author.id] == undefined) {
-        money[message.author.id] = 500;
-        fs.writeFileSync("database/money/data.json", JSON.stringify(money));
-        
-        return message.reply("Since you are new here, I just created you an account with `500$`. Enjoy :wink:");
+    if (money) {
+        return message.channel.send(`:dollar: Your account currently has **${money.get("money")}$**!`);
+    } else {
+        moneymodel.create({
+            idOfUser: message.author.id,
+            money: 500
+        });
+
+        return message.channel.send("Since you are new to the bank, I just created an account with **500$** on it for you. Enjoy! :wink:");
     }
-
-    message.reply(`Your account currently has **${money[message.author.id]}**$.`);
 }
 
 const info = {
