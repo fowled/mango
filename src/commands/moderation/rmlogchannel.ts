@@ -15,31 +15,23 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
     }
 
-    let logChannelID = args[0] ? args[0].toString().split("<#")[1].split(">")[0] : message.channel.id;
-
-    // @ts-ignore
-    let logChannelName: string | Discord.GuildChannel = args[0] ? args[0].toString().split("<#")[1].split(">")[0] : message.channel.name;
-
     const logchannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("logChannels");
     const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: message.guild.id } });
-    
+
     if (logchannel) {
-        logchannelmodel.update({ idOfChannel: logChannelID }, { where: { idOfGuild: message.guild.id } });
+        logchannel.destroy();
     } else {
-        logchannelmodel.create({
-            idOfGuild: message.guild.id,
-            idOfChannel: message.channel.id
-        });
+        return message.channel.send("I'm sorry, but you don't have any log channel for the moment. Get started by doing `ma!setlogchannel [channel]`!");
     }
 
-    return message.channel.send(`<a:check:745904327872217088> Successfully updated the log channel to \`#${logChannelName}\`!`);
+    return message.channel.send(`<a:check:745904327872217088> Successfully removed the log channel! You won't receive log notifications anymore. Was that a mistake? Don't worry, do \`ma!setlogchannel (#channel)\` to add it again.`);
 }
 
 const info = {
-    name: "setlogchannel",
-    description: "Set guild's log channel for Mango",
+    name: "rmlogchannel",
+    description: "Remove the guild's log channel for Mango",
     category: "moderation",
-    args: "[#channel]"
+    args: "none"
 }
 
 export { info };

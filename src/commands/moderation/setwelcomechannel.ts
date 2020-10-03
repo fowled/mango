@@ -1,4 +1,5 @@
 import * as Discord from "discord.js";
+import * as Sequelize from "sequelize";
 import * as fs from "fs";
 import * as Logger from "../../utils/Logger";
 
@@ -11,36 +12,30 @@ import * as Logger from "../../utils/Logger";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[]) {
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     if (!message.member.hasPermission("ADMINISTRATOR")) {
         return message.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
     }
 
-    let welcomeChannelID = args[0].toString().split("<#")[1].split(">")[0];
+    let welcomeChannelID = args[0] ? args[0].toString().split("<#")[1].split(">")[0] : message.channel.id;
 
-    if (!welcomeChannelID) {
-        return message.channel.send("Please send the name or the ID of the channel you want welcome messages in.");
-    }
+    // @ts-ignore
+    let welcomeChannelName: string | Discord.GuildChannel = args[0] ? args[0].toString().split("<#")[1].split(">")[0] : message.channel.name;
 
-    try {
-        let welcomeChannel = Client.channels.cache.get(welcomeChannelID);
-        let content = JSON.parse(fs.readFileSync('database/welcome/channels.json', 'utf8'));
+    const welcomechannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("welChannels");
+    const welcomechannel = await welcomechannelmodel.findOne({ where: { idOfGuild: message.guild.id } });
+    
 
-        content[message.guild.id] = welcomeChannelID;
-
-        fs.writeFile(`database/welcome/channels.json`, JSON.stringify(content), function (err) {
-            if (err) {
-                Logger.error(err);
-                return message.reply("Sorry but an unexcepted error happened while saving data file. The error has been sent to the devloper, and we're trying to correct it. :ok_hand:");
-            }
-
-            // @ts-ignore
-            welcomeChannel.send("Success! This channel is now the default welcoming messages channel of this guild. <a:check:745904327872217088>");
+    if (welcomechannel) {
+        welcomechannelmodel.update({ idOfChannel: welcomeChannelID }, { where: { idOfGuild: message.guild.id } });
+    } else {
+        welcomechannelmodel.create({
+            idOfGuild: message.guild.id,
+            idOfChannel: message.channel.id
         });
-    } catch (err) {
-        Logger.error(err);
-        return message.reply("I couldn't find the channel you specified. Please check my permissions to view that channel, or verify the channel's spelling.");
     }
+
+    return message.channel.send(`<a:check:745904327872217088> Successfully updated the welcome channel to \`#${welcomeChannelName}\`!`);
 }
 
 const info = {

@@ -1,24 +1,17 @@
 import * as Discord from "discord.js";
-import * as fs from "fs";
+import * as Sequelize from "sequelize";
+import { sequelizeinit } from "../index";
 import * as canvaslib from "canvas";
 import * as Logger from "../utils/Logger";
 
 export default async (Client: Discord.Client, member: Discord.GuildMember) => {
-    let savedWelcChan = fs.readFileSync("database/welcome/channels.json", "utf-8");
-    savedWelcChan = JSON.parse(savedWelcChan);
-    const channel: Discord.GuildChannel = member.guild.channels.cache.find(ch => ch.id === savedWelcChan[member.guild.id]);
+    const welcomechannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = sequelizeinit.model("logChannels");
+    const welcomechannel = await welcomechannelmodel.findOne({ where: { idOfGuild: member.guild.id } });
 
-    if (!channel) {
-        return;
-    }
+    if (!welcomechannel) return;
 
-    const welcUserMessageEmbed = new Discord.MessageEmbed()
-        .setTitle("Welcome!")
-        .setDescription(`Welcome ${member}! We wish you to have fun in **${member.guild.name}**. Help message: type *ma!help* in server!`)
-        .setAuthor(member.user.username, member.user.avatarURL())
-        .setFooter(Client.user.username, Client.user.avatarURL())
-        .setColor("0FB1FB")
-    member.send(welcUserMessageEmbed).catch();
+    const welcomeChannelID = welcomechannel.get("idOfChannel") as string;
+    const channel = Client.channels.cache.get(welcomeChannelID);
 
     const canvas = canvaslib.createCanvas(700, 250);
     const ctx = canvas.getContext("2d");

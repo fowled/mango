@@ -29,6 +29,9 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         Logger.error(err)
         message.reply("An error occured. <a:nocheck:745904455731642408>");
     });
+
+    // @ts-ignore
+    LogChecker.insertLog(Client, message.guild.id, message.author, `**${message.channel}** (\`${message.channel.name}\`) has been unlocked by *${message.author.tag}*`);
 }
 
 const info = {

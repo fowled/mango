@@ -10,7 +10,7 @@ import * as LogChecker from "../../utils/LogChecker";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[]) {
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     const userUnmute: Discord.User = message.mentions.users.first();
     const memberUnmute: Discord.GuildMember = message.guild.member(userUnmute);
 

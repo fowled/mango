@@ -1,5 +1,6 @@
 import * as Discord from "discord.js";
 import * as Logger from "../../utils/Logger";
+import * as LogChecker from "../../utils/LogChecker";
 
 // Mod command
 
@@ -29,6 +30,9 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         Logger.error(err)
         message.reply("An error occured. <a:nocheck:745904455731642408>");
     });
+
+    // @ts-ignore
+    LogChecker.insertLog(Client, message.guild.id, message.author, `**${message.channel}** (\`${message.channel.name}\`) has been locked by *${message.author.tag}*`);
 }
 
 const info = {

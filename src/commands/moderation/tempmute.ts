@@ -11,7 +11,7 @@ import ms from "ms";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[]) {
+export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     const userMute: Discord.User = message.mentions.users.first();
     const memberMute: Discord.GuildMember = message.guild.member(userMute);
 
