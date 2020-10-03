@@ -1,5 +1,5 @@
 import * as Discord from "discord.js";
-import * as FS from "fs";
+import * as Sequelize from "sequelize";
 
 // Fun command
 
@@ -10,44 +10,27 @@ import * as FS from "fs";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(client: Discord.Client, message: Discord.Message, args: string[]) {
-	message.channel.startTyping();
+export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
+	const Xp: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("ranks");
+	const fetchUser = await Xp.findOne({ where: { idOfUser: message.author.id } });
+	const userXp: any = fetchUser.get("xp") as number;
 
-	setTimeout(() => {
-		FS.readFile(`database/ranks/ranks.json`, (err, data) => {
-			if (err) {
-				return message.reply("Sorry, but I got a problem fetching your level data. Please retry later and send this error to `@Mazz3015#2003`. " + `\`\`\`${err.message}\`\`\``);
-			}
 
-			let parsedData = JSON.parse(data as unknown as string);
-
-			const level: number = Math.floor(parseInt(parsedData[message.author.id], 10) / 50);
-
-			getExactLvl(level);
-
-			function getExactLvl(lvl) {
-				const levelEmbedMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
-					.setTitle(`${message.author.tag} level`)
-					.setAuthor(message.author.username, message.author.avatarURL())
-					.setDescription(`Your level - :gem: XP: **${parsedData[message.author.id]}** | :large_orange_diamond: Level: **${level}** `)
-					.setColor("#019FE9")
-					.setFooter(client.user.username, client.user.avatarURL())
-					.setTimestamp()
-				message.channel.send(levelEmbedMessage);
-
-			}
-
-		});
-	}, 2000);
-
-	message.channel.stopTyping();
+	const levelEmbedMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
+		.setTitle(`${message.author.tag} level`)
+		.setAuthor(message.author.username, message.author.avatarURL())
+		.setDescription(`Your level - :gem: XP: **${fetchUser.get("xp")}** | :large_orange_diamond: Level: *${Math.floor(userXp / 50)}*`)
+		.setColor("#019FE9")
+		.setFooter(client.user.username, client.user.avatarURL())
+		.setTimestamp()
+	message.channel.send(levelEmbedMessage);
 }
 
 const info = {
-    name: "level",
-    description: "Replies with your Mango level and XP",
-    category: "fun",
-    args: "none"
+	name: "level",
+	description: "Replies with your Mango level and XP",
+	category: "fun",
+	args: "none"
 }
 
 export { info };
