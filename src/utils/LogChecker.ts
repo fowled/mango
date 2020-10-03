@@ -1,30 +1,27 @@
 import * as Discord from "discord.js";
+import * as Sequelize from "sequelize";
+import { sequelizeinit } from "../index";
 import * as Logger from "./Logger";
-import * as fs from "fs";
 
-export function insertLog(Client: Discord.Client, guildID: string, author, msg: string) {
-    let channelID: any;
+export async function insertLog(Client: Discord.Client, guildID: string, author, msg: string) {
+    const logchannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = sequelizeinit.model("logChannels");
+    const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: guildID } });
+
+    if (!logchannel) return;
+
+    const logChannelID = logchannel.get("idOfChannel") as string;
+
+    const logMessageEmbed = new Discord.MessageEmbed()
+        .setAuthor(author.tag, author.avatarURL())
+        .setColor("#2D2B2B")
+        .setDescription(msg)
+        .setFooter(Client.user.username, Client.user.avatarURL())
+        .setTimestamp();
+
     try {
-        fs.readFile(`./database/log/channels.json`, "utf8", (err, data) => {
-            data = JSON.parse(data);
-
-            if (data[guildID] == undefined) {
-                return;
-            }
-
-            channelID = data[guildID];
-
-            const logMessageEmbed = new Discord.MessageEmbed()
-                .setAuthor(author.tag, author.avatarURL())
-                .setColor("#2D2B2B")
-                .setDescription(msg)
-                .setFooter(Client.user.username, Client.user.avatarURL())
-                .setTimestamp();
-
-            // @ts-ignore
-            Client.channels.cache.get(channelID).fetch().then(chan => chan.send(logMessageEmbed));
-        });
-    } catch (error) {
-        Logger.error(error);
+        // @ts-ignore
+        Client.channels.cache.get(logChannelID).send(logMessageEmbed);
+    } catch (e) {
+        Logger.error(e);
     }
 }

@@ -5,17 +5,17 @@ import * as Logger from "./Logger";
 
 export async function bind(Client: Discord.Client): Promise<void> {
 	return new Promise<void>((resolve: (value?: void | PromiseLike<void>) => void, reject: (reason?: any) => void): void => {
-		Fs.readdir("out/events/", (error: Error, files: string[]): void => { // lis les fichiers dans le dossier /out/events
+		Fs.readdir("out/events/", (error: Error, files: string[]): void => {
 			if (error) {
-				Logger.error(error); // Marque dans la console s'il y a une erreur
+				Logger.error(error);
 				reject(error);
 			}
 
-			files = files.filter((file: string): boolean => file.endsWith(".js")); // trie les fichiers en prenant seulement les fichiers ayant une extension en .js
-			for (const file of files) { // pour chaque fichier dans le dossier
-				const eventName: string = file.substring(0, file.length - 3); // le nom de l'event, en retirant l'extension du fichier
+			files = files.filter((file: string): boolean => file.endsWith(".js"));
+			for (const file of files) {
+				const eventName: string = file.substring(0, file.length - 3);
 				try {
-					const eventModule: NodeModule = require(Fs.realpathSync(`./out/events/${file}`).toString()); // demande le module correspondant au nom
+					const eventModule: NodeModule = require(Fs.realpathSync(`./out/events/${file}`).toString());
 					if (file)
 					// @ts-ignore
 					Client.on(eventName, eventModule.default.bind(null, Client)); // relie l'évent au module
@@ -24,7 +24,7 @@ export async function bind(Client: Discord.Client): Promise<void> {
 					Logger.error(err);
 				}
 			}
-			Logger.log(`Loaded ${files.length} events`); // Indique dans la console combien d'events ont été chargés
+			Logger.log(`Loaded ${files.length} events`);
 			resolve();
 		});
 	});
