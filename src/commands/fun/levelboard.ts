@@ -13,8 +13,8 @@ import * as Sequelize from "sequelize";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string, ops: any) {
     const Xp: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("ranks");
-    const ranks = await Xp.findAll();
-    
+    const ranks = await Xp.findAll({ order: [ ["xp", "DESC"] ] });
+
     let levels: string[] = [];
     
     let memberIDs: string[] = [];
@@ -29,16 +29,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             levels.push(`${medal} ${index + 1}. **${getUser.tag}** / *${user.xp}* xp → level \`${Math.floor(user.xp / 50)}\``);
         }
     });
-
-    levels.forEach(() => {
-        sortArray();
-    });
-
-    function sortArray() {
-        levels.sort(function (a, b) {
-            return <any>b.split("*")[1] - <any>a.split("*")[1];
-        });
-    }
     
     let page: number = 1;
     let trimLimit: number = (levels.length > 10) ? page * 10 : levels.length + 1;
