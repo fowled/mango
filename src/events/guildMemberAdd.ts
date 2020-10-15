@@ -5,13 +5,12 @@ import * as canvaslib from "canvas";
 import * as Logger from "../utils/Logger";
 
 export default async (Client: Discord.Client, member: Discord.GuildMember) => {
-    const welcomechannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = sequelizeinit.model("logChannels");
+    const welcomechannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = sequelizeinit.model("welChannels");
     const welcomechannel = await welcomechannelmodel.findOne({ where: { idOfGuild: member.guild.id } });
 
     if (!welcomechannel) return;
 
-    const welcomeChannelID = welcomechannel.get("idOfChannel") as string;
-    const channel = Client.channels.cache.get(welcomeChannelID);
+    const channel = Client.channels.cache.get(welcomechannel.get("idOfChannel") as unknown as string);
 
     const canvas = canvaslib.createCanvas(700, 250);
     const ctx = canvas.getContext("2d");

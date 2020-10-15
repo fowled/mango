@@ -21,7 +21,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
     const money = await moneymodel.findOne({ where: { idOfUser: message.author.id } });
-    const getMoney = money.get("money");
     
     if (item == "" || price == undefined) {
         return message.reply("You can't sell an empty item! `sell [price] [item]`");
@@ -29,14 +28,18 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
     } else if (item.includes("@")) {
         return message.reply("I can't add this item to the market because it contains a mention. Be sure to remove it.");
-    } else if (getMoney < price) {
-        return message.reply(`You can't sell this item at **${price}** because you only have **${money}**$.`);
     } else if (!money) {
         return message.reply("It looks like you haven't created your account! Do `ma!money` first :wink:");
     } else if (marketItem) {
         return message.reply(`It looks like the **${item}** item already exists. Please choose another name for your item.`);
     } else if (item.length > 70) {
         return message.reply("Your item name is too long!");
+    }
+    
+    const getMoney = money.get("money");
+
+    if (getMoney < price) {
+        return message.reply(`You can't sell this item at **${price}** because you only have **${money}**$.`);
     }
 
     const createdItem = marketmodel.create({

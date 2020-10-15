@@ -12,15 +12,15 @@ import * as Sequelize from "sequelize";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     const inventorymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");
-    const authorinventory = await inventorymodel.findAll();
+    const marketItems = await inventorymodel.findAll();
 
-    if (!authorinventory) {
+    if (marketItems.values.length == 0) {
         return message.reply("It seems like the market is empty! Start by `ma!buy`ing an object :wink:");
     }
 
     let splittedItems: string[] = [];
 
-    authorinventory.forEach((item, index) => {
+    marketItems.forEach((item, index) => {
         let object = { name: item.getDataValue("name"), price: item.getDataValue("price"), seller: item.getDataValue("seller") };
         splittedItems.push(`${index + 1}. **${object.name}** - *${object.price}$* | Sold by ${object.seller}`);
     });

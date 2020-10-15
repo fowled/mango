@@ -24,7 +24,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     const welcomechannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("welChannels");
     const welcomechannel = await welcomechannelmodel.findOne({ where: { idOfGuild: message.guild.id } });
-    
 
     if (welcomechannel) {
         welcomechannelmodel.update({ idOfChannel: welcomeChannelID }, { where: { idOfGuild: message.guild.id } });

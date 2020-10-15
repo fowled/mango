@@ -1,16 +1,18 @@
 import * as Discord from "discord.js";
-import * as fs from "fs";
+import * as Sequelize from "sequelize";
+import { sequelizeinit } from "../index";
 import * as canvaslib from "canvas";
 import * as Logger from "../utils/Logger";
 
 export default async(Client: Discord.Client, member: Discord.GuildMember) => {
-	let savedWelcChan = fs.readFileSync("database/welcome/channels.json", "utf-8");
-	savedWelcChan = JSON.parse(savedWelcChan);
-    const channel: Discord.GuildChannel = member.guild.channels.cache.find(ch => ch.id === savedWelcChan[member.guild.id]);
+    const welcomechannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = sequelizeinit.model("welChannels");
+    const welcomechannel = await welcomechannelmodel.findOne({ where: { idOfGuild: member.guild.id } });
     
-	if (!channel) {
+	if (!welcomechannel) {
 		return;
 	}
+
+    const channel = Client.channels.cache.get(welcomechannel.get("idOfChannel") as unknown as string);
 
 	const canvas = canvaslib.createCanvas(700, 250);
     const ctx = canvas.getContext("2d");
@@ -42,7 +44,7 @@ export default async(Client: Discord.Client, member: Discord.GuildMember) => {
         // @ts-ignore
         channel.send(`**${member.user.tag}** just left the server.`, attachment);
     } catch (err) {
-        Logger.error("Didn't find the channel to post attachment [guildMemberAdd]");
+        Logger.error("Didn't find the channel to post attachment [guildMemberRemove]");
     }
 };
 

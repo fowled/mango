@@ -10,12 +10,11 @@ import * as Sequelize from "sequelize";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     const inventorymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("inventoryItems");
     const authorinventory = await inventorymodel.findAll({ where: { authorID: message.author.id } });
 
-    if (!authorinventory) {
+    if (authorinventory.values.length == 0) {
         return message.reply("Your inventory is empty! Start by doing `ma!market` and then buy something with the `ma!buy [ID of the item]` command.");
     }
 
