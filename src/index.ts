@@ -13,7 +13,7 @@ export const sequelizeinit = new Sequelize.Sequelize("database", "username", "pa
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
-    storage: "database/db.sqlite",
+    storage: `${process.cwd()}/database/db.sqlite`,
 });
 
 Client.on('error', console.error);

@@ -1,5 +1,4 @@
 import * as Discord from "discord.js";
-import * as fs from "fs";
 import * as Logger from "../../utils/Logger";
 import * as Sequelize from "sequelize";
 

@@ -20,13 +20,16 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     let memberIDs: string[] = [];
     message.guild.members.cache.forEach(member => memberIDs.push(member.id));
 
-    ranks.forEach((item, index) => {
+    let index = 1;
+
+    ranks.forEach((item) => {
         let user = { id: item.getDataValue("idOfUser"), xp: item.getDataValue("xp") };
-        let medal = (index + 1) == 1 ? ":medal:" : (index + 1) == 2 ? ":second_place:" : (index + 1) == 3 ? ":third_place:" : "";
+        let medal = (index) == 1 ? ":medal:" : (index) == 2 ? ":second_place:" : (index) == 3 ? ":third_place:" : "";
         let getUser = Client.users.cache.get(user.id);
 
         if (memberIDs.includes(user.id)) {
-            levels.push(`${medal} ${index + 1}. **${getUser.tag}** / *${user.xp}* xp → level \`${Math.floor(user.xp / 50)}\``);
+            levels.push(`${medal} ${index}. **${getUser.tag}** / *${user.xp}* xp → level \`${Math.floor(user.xp / 50)}\``);
+            index++;
         }
     });
     
