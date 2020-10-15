@@ -1,5 +1,4 @@
 import * as Discord from "discord.js";
-import * as Fs from "fs";
 import * as Sequelize from "sequelize";
 
 // Fun command

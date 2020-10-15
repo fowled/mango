@@ -14,7 +14,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const inventorymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("inventoryItems");
     const authorinventory = await inventorymodel.findAll({ where: { authorID: message.author.id } });
 
-    if (authorinventory.values.length == 0) {
+    if (!authorinventory[0]) {
         return message.reply("Your inventory is empty! Start by doing `ma!market` and then buy something with the `ma!buy [ID of the item]` command.");
     }
 
@@ -36,7 +36,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const inventoryEmbed = new Discord.MessageEmbed()
         .setDescription(firstPageContent)
         .setColor("#33beff")
-        .setTitle(`Page ${page}`)
+        .setTitle(`🛍️ Inventory p.${page}`)
         .setTimestamp()
         .setFooter(Client.user.username, Client.user.displayAvatarURL())
 
@@ -74,7 +74,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         const inventoryEmbed = new Discord.MessageEmbed()
             .setDescription(whatToSend)
             .setColor("#33beff")
-            .setTitle(`Page ${page}`)
+            .setTitle(`🛍️ Inventory p.${page}`)
             .setTimestamp()
             .setFooter(Client.user.username, Client.user.displayAvatarURL())
 

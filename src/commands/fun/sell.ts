@@ -1,5 +1,4 @@
 import * as Discord from "discord.js";
-import * as Logger from "../../utils/Logger";
 import * as Sequelize from "sequelize";
 
 // Fun command
@@ -16,7 +15,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const price: string = args[0];
 
     const marketmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");
-    const marketItem = await marketmodel.findOne({ where: { id: args[0] } });
 
     const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
     const money = await moneymodel.findOne({ where: { idOfUser: message.author.id } });
@@ -29,8 +27,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply("I can't add this item to the market because it contains a mention. Be sure to remove it.");
     } else if (!money) {
         return message.reply("It looks like you haven't created your account! Do `ma!money` first :wink:");
-    } else if (marketItem) {
-        return message.reply(`It looks like the **${item}** item already exists. Please choose another name for your item.`);
     } else if (item.length > 70) {
         return message.reply("Your item name is too long!");
     }
@@ -41,14 +37,19 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply(`You can't sell this item at **${price}** because you only have **${money}**$.`);
     }
 
-    const createdItem = marketmodel.create({
+    const createdItem = await marketmodel.create({
         name: item,
         price: price,
         seller: message.author.tag,
         sellerID: message.author.id
-    });
+    }).catch(e => {
+        if (e.name == "SequelizeUniqueConstraintError") {
+            return message.channel.send("This object already exists! Please choose another name.");
+        }
+    }); 
 
-    message.reply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${(await createdItem).get("id")}** <a:check:745904327872217088>`);
+    // @ts-ignore
+    message.reply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${createdItem.get("id")}** <a:check:745904327872217088>`);
 }
 
 const info = {

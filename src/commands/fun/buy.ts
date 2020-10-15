@@ -32,6 +32,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
     const authorMoney = await moneymodel.findOne({ where: { idOfUser: message.author.id } });
+
+    if (!authorMoney) {
+        return message.channel.send("You don't have any money! Do `ma!money` to start using the market.");
+    }
+
     const getAuthorMoney = authorMoney.get("money");
     const sellerMoney = await moneymodel.findOne({ where: { idOfUser: itemSellerID } });
 
