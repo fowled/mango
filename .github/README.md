@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>Mango</h1>
+    <h1>Mango 🥭</h1>
     <p>Mango is a <b>verified Discord bot</b> made in Typescript that will help you manage your server very easily.</p>
     <p>
         <img src="https://travis-ci.com/mazzlabs/Mango.svg?branch=master" />
