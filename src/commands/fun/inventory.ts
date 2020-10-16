@@ -36,7 +36,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const inventoryEmbed = new Discord.MessageEmbed()
         .setDescription(firstPageContent)
         .setColor("#33beff")
-        .setTitle(`🛍️ Inventory p.${page}`)
+        .setTitle(`🛍️ Inventory`)
         .setTimestamp()
         .setFooter(Client.user.username, Client.user.displayAvatarURL())
 
@@ -74,7 +74,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         const inventoryEmbed = new Discord.MessageEmbed()
             .setDescription(whatToSend)
             .setColor("#33beff")
-            .setTitle(`🛍️ Inventory p.${page}`)
+            .setTitle(`🛍️ Inventory`)
             .setTimestamp()
             .setFooter(Client.user.username, Client.user.displayAvatarURL())
 

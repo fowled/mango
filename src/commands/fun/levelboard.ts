@@ -37,7 +37,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     let firstPageContent: string = levels.join("\n").split((trimLimit).toString() + ".")[0];
 
     const levelEmbed = new Discord.MessageEmbed()
-        .setTitle("🎖 Levelboard!")
+        .setTitle("🎖 Levelboard")
         .setDescription(firstPageContent)
         .setColor("RANDOM")
         .setTimestamp()
@@ -81,7 +81,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         const inventoryEmbed = new Discord.MessageEmbed()
             .setDescription(whatToSend)
             .setColor("#33beff")
-            .setTitle(`Levelboard p.${page}`)
+            .setTitle(`🎖 Levelboard`)
             .setTimestamp()
             .setFooter(Client.user.username, Client.user.displayAvatarURL())
 
