@@ -48,7 +48,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             });
 
         } catch (error) {
-            message.reply("Sorry, but I got an unexcepted error while creating the role. " + + `\`\`\`${error.message}\`\`\``);
+            message.reply("Sorry, but I got an unexcepted error while creating the role. " + `\`\`\`${error.message}\`\`\``);
         }
     }
 
@@ -56,6 +56,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     if (!mutetime) {
         return message.reply("You didn't specify a time to mute the discordian! :confused:");
+    } else if (!ms(mutetime)) {
+        return message.reply("This isn't a correct duration time. Please retry with a valid one.");
     }
 
     let reason = args[2] == undefined ? "no reason specified." : message.content.split(args[1])[1].trim();

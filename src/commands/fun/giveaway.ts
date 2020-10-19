@@ -39,7 +39,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 				.then((collected) => {
 					const durationNumber: string = collected.last().content;
 
-					message.channel.bulkDelete(7);
+					if (!ms(durationNumber)) {
+						return message.reply("This isn't a correct duration time. Please retry with a valid one.");
+					}
+
+					const channel = message.channel as unknown as Discord.TextChannel;
+					channel.bulkDelete(7);
 
 					const giveawayEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
 						.setTitle("🎉🎈 Giveaway!")
@@ -49,7 +54,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 						.setTimestamp()
 						.setFooter(Client.user.username, Client.user.displayAvatarURL())
 
-					message.channel.send(giveawayEmbed).then(m => {
+					channel.send(giveawayEmbed).then(m => {
 						m.react("👍🏻");
 
 						const filter = (reaction: any, user: { id: string; }) => {
@@ -63,15 +68,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 							message.channel.send(`Congratulations ${randomUser} (**${randomUser.tag}** - *${randomUser.id}*) you won the giveaway! \nPrizes: \`${giveawayRewards}\` :eyes: \nLink to the giveaway: https://discord.com/channels/${message.guild.id}/${message.channel.id}/${m.id}`);
 						});
 					});
-
-
-					let winner: Discord.GuildMember = message.guild.members.cache.random();
-
-					if (winner.user.bot) {
-						while (winner.user.bot) {
-							winner = message.guild.members.cache.random();
-						}
-					}
 
 				});
 		};

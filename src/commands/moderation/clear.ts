@@ -15,9 +15,11 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.reply("Sorry, but you don't have the `MANAGE_MESSAGES` permission.");
     }
 
+    const channel = message.channel as unknown as Discord.TextChannel;
+
     if (args.length > 0) {
         if (!isNaN(parseInt(args[0], 10)) && parseInt(args[0], 10) >= 1 && parseInt(args[0], 10) <= 100) {
-	    message.channel.bulkDelete(parseInt(args[0], 10))
+	    channel.bulkDelete(parseInt(args[0], 10))
 		.catch((error: Error) => message.reply("I don't have the permission to delete messages."));
 	    LogChecker.insertLog(Client, message.guild.id, message.author, `**${args[0]}** messages got deleted in *${message.channel}* by ${message.author.tag}`);
 

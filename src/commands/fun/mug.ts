@@ -15,7 +15,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const ctx = canvas.getContext("2d");
     const user = args[0] ? message.mentions.users.first() : message.member.user;
 
-    const background = await canvaslib.loadImage("./assets/mug.png");
+    const background = await canvaslib.loadImage("./assets/images/mug.png");
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
     ctx.beginPath(); // rounded profile pic

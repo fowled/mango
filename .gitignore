@@ -1,11 +1,7 @@
 .git
 out/
 node_modules/
-build/
 nohup.out
 .env
-ideas.md
-languages/
 database/
-src/events/message.ts
 server/

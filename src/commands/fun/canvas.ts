@@ -14,7 +14,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const canvas = canvaslib.createCanvas(700, 250);
     const ctx = canvas.getContext("2d");
 
-    const background = await canvaslib.loadImage("./assets/background.png");
+    const background = await canvaslib.loadImage("./assets/images/background.png");
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
     ctx.font = "35px Caviar Dreams"; // displays on the picture the member tag

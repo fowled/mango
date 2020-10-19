@@ -12,7 +12,7 @@ import * as fs from "fs";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     const wordsToFind: string[] = [];
-    let data = fs.readFileSync("assets/words.txt", "utf-8");
+    let data = fs.readFileSync("assets/docs/words.txt", "utf-8");
 
     for (let word of data.split("\n")) {
         wordsToFind.push(word);
