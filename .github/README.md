@@ -4,9 +4,9 @@
     <p>
         <img src="https://travis-ci.com/mazzlabs/Mango.svg?branch=master" />
         <img src="https://github.com/mazzlabs/Mango/workflows/NPM/badge.svg" />
-        <img src="https://img.shields.io/github/license/ignmazz/Mango" />
-        <img src="https://img.shields.io/github/issues/ignmazz/Mango" />
-        <img src="https://img.shields.io/github/issues-pr/ignmazz/Mango" />
+        <img src="https://img.shields.io/github/license/mazzlabs/Mango" />
+        <img src="https://img.shields.io/github/issues/mazzlabs/Mango" />
+        <img src="https://img.shields.io/github/issues-pr/mazzlabs/Mango" />
     </p>
 </div>
 
