@@ -21,8 +21,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     let splittedItems: string[] = [];
 
     marketItems.forEach((item, index) => {
-        let object = { name: item.getDataValue("name"), price: item.getDataValue("price"), seller: item.getDataValue("seller") };
-        splittedItems.push(`${index + 1}. **${object.name}** - *${object.price}$* | Sold by ${object.seller}`);
+        let object = { name: item.getDataValue("name"), price: item.getDataValue("price"), seller: item.getDataValue("seller"), id: item.getDataValue("id") };
+        splittedItems.push(`${index + 1}. **${object.name}** - *${object.price}$* | Sold by ${object.seller} » \`${object.id}\``);
     });
 
     const filter = (reaction: any, user: { id: string; }) => {

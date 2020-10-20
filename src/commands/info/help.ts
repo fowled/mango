@@ -33,7 +33,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		const helpMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setAuthor(message.author.username, message.author.avatarURL())
 			.setColor("RANDOM")
-			.setDescription(`» Prefix: \`@ the bot\` \n» To get help on a specific command: \`ma!help [command]\` \n\n**:tools: Moderation** \n${moderationcmd.join(", ")} \n\n**:partying_face: Fun** \n${funcmd.join(", ")} \n\n**:information_source: Information** \n${infocmd.join(", ")} \n\n**:video_game: Games** \n${gamecmd.join(", ")} \n\n**:musical_note: Music** \n${musiccmd.join(", ")} \n\n» Mango's developer: \`Mazz#4946\``)
+			.setDescription(`» Prefix: \`@ the bot\` \n» To get help on a specific command: \`ma!help [command]\` \n\n**:tools: Moderation** \n${moderationcmd.join(", ")} \n\n**:partying_face: Fun** \n${funcmd.join(", ")} \n\n**:information_source: Information** \n${infocmd.join(", ")} \n\n**:video_game: Games** \n${gamecmd.join(", ")} \n\n**:musical_note: Music** \n${musiccmd.join(", ")} \n\n» Mango's developer: \`${Client.users.cache.get("352158391038377984").tag}\``)
 			.setThumbnail(Client.user.avatarURL())
 			.setFooter(Client.user.username, Client.user.avatarURL())
 			.setTimestamp();
