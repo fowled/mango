@@ -46,7 +46,7 @@
     "sqlite3": "^5.0.0",
     "systeminformation": "^4.26.9",
     "tslint": "^6.1.2",
-    "typescript": "^3.9.6",
+    "typescript": "^3.9.7",
     "unidecode": "^0.1.8",
     "url": "^0.11.0",
     "xmlhttprequest": "^1.8.0",
