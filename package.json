@@ -42,7 +42,7 @@
     "rebuild": "^0.1.2",
     "request": "^2.88.2",
     "scratchlib": "^0.2.9",
-    "sequelize": "^6.3.4",
+    "sequelize": "^6.3.5",
     "sqlite3": "^5.0.0",
     "systeminformation": "^4.26.9",
     "tslint": "^6.1.2",
