@@ -7,6 +7,8 @@
         <img src="https://img.shields.io/github/license/mazzlabs/Mango" />
         <img src="https://img.shields.io/github/issues/mazzlabs/Mango" />
         <img src="https://img.shields.io/github/issues-pr/mazzlabs/Mango" />
+        <img src="https://badges.depfu.com/badges/6dea69dd7041b22fb2d1ae17eb72fbe3/status.svg" />
+        <img src="https://badges.depfu.com/badges/6dea69dd7041b22fb2d1ae17eb72fbe3/overview.svg" />
     </p>
 </div>
 
