@@ -11,7 +11,7 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^13.13.28",
     "basic-ftp": "^4.6.2",
-    "better-sqlite3": "^7.1.0",
+    "better-sqlite3": "^7.1.1",
     "body-parser": "^1.19.0",
     "canvas": "^2.6.1",
     "discord.js": "^12.3.1",
