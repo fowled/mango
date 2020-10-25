@@ -14,7 +14,7 @@
     "better-sqlite3": "^7.1.1",
     "body-parser": "^1.19.0",
     "canvas": "^2.6.1",
-    "discord.js": "^12.3.1",
+    "discord.js": "^12.4.1",
     "dom-parser": "^0.1.6",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
