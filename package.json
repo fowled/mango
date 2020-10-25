@@ -32,7 +32,7 @@
     "lyricist": "^2.2.2",
     "minimist": "^1.2.5",
     "moment": "^2.27.0",
-    "mongoose": "^5.10.0",
+    "mongoose": "^5.10.10",
     "ms": "^2.1.2",
     "node-fetch": "^2.6.1",
     "node-gyp": "^6.1.0",
