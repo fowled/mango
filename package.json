@@ -41,7 +41,7 @@
     "os-utils": "0.0.14",
     "rebuild": "^0.1.2",
     "request": "^2.88.2",
-    "scratchlib": "^0.2.9",
+    "scratchlib": "^0.3.8",
     "sequelize": "^6.3.5",
     "sqlite3": "^5.0.0",
     "systeminformation": "^4.27.10",
