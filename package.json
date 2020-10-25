@@ -20,7 +20,7 @@
     "ejs": "^3.1.5",
     "eslint": "^6.8.0",
     "express": "^4.17.1",
-    "express-handlebars": "^5.1.0",
+    "express-handlebars": "^5.2.0",
     "ffmpeg-static": "^4.2.7",
     "forever": "^3.0.2",
     "fs": "0.0.1-security",
