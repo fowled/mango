@@ -72,12 +72,12 @@ export async function run(client: Discord.Client, message: Discord.Message, args
 		const songInfo: ytdl.videoInfo = await ytdl.getInfo(music);
 
 		const song = {
-			title: songInfo.title,
-			url: songInfo.video_url,
+			title: songInfo.videoDetails.title,
+			url: songInfo.videoDetails.video_url,
 			requester: message.author.tag,
-			author: songInfo.author,
-			length: songInfo.length_seconds,
-			id: songInfo.video_id,
+			author: songInfo.videoDetails.author,
+			length: songInfo.videoDetails.lengthSeconds,
+			id: songInfo.videoDetails.videoId,
 		}
 
 		message.channel.send(`Currently getting info from **${song.title}**...`);
