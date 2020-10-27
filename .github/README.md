@@ -31,7 +31,7 @@ Let's dive into the dev part.
     - [```music/```](https://github.com/mazzlabs/Mango/tree/master/src/commands/music) → Folder containing music commands
 - [```events/```](https://github.com/mazzlabs/Mango/tree/master/src/events) → Folder containing Mango's events
 - [```models/```](https://github.com/mazzlabs/Mango/tree/master/src/models) → Folder containing Sequelize models
-- [```utils/```](https://github.com/mazzlabs/Mango/tree/master/src/utils) → Folder containing various utils file
+- [```utils/```](https://github.com/mazzlabs/Mango/tree/master/src/utils) → Folder containing various utils files
 
 ## Features
 - [x] Moderation
