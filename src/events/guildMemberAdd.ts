@@ -18,29 +18,34 @@ export default async (Client: Discord.Client, member: Discord.GuildMember) => {
     const background = await canvaslib.loadImage("./assets/images/background.png");
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-    ctx.font = "35px Caviar Dreams"; // displays on the picture the member tag
+    ctx.font = "35px Caviar Dreams";
     ctx.fillStyle = '#ffffff';
-    ctx.textAlign = "center";
-    ctx.fillText(`Welcome \n${member.user.tag}`, canvas.width - 400, canvas.height / 2.3);
+    ctx.textAlign = "left";
+    ctx.fillText(`Welcome to the server! \nWe're now ${member.guild.members.cache.size} members.`, 10, canvas.height / 2.5);
 
-    ctx.font = "25px Caviar Dreams"; // displays on the picture the member tag
-    ctx.fillStyle = '#ffffff';
-    ctx.textAlign = "center";
-    ctx.fillText(`Member #${member.guild.members.cache.size}`, canvas.width - 200, canvas.height / 1.30);
+    ctx.font = "27px Caviar Dreams";
+    ctx.fillText(`${member.user.tag}`, 10, canvas.height / 1.15)
 
-    ctx.beginPath(); // rounded profile pic
-    ctx.arc(75, 75, 50, 0, Math.PI * 2, true);
+    ctx.beginPath();
+    ctx.arc(630, 75, 60, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.clip();
 
     const avatar = await canvaslib.loadImage(member.user.displayAvatarURL({ format: "jpg" }));
-    ctx.drawImage(avatar, 25, 25, 100, 100);
+    ctx.drawImage(avatar, 570, 15, 120, 120);
 
-    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
+    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome.png');
+
+    const embed = new Discord.MessageEmbed()
+        .setAuthor(member.user.tag, member.user.displayAvatarURL())
+        .setDescription(`:wave: Welcome ${member} to **${member.guild.name}**!`)
+        .attachFiles([attachment])
+        .setImage("attachment://welcome.png")
+        .setColor("grey")
 
     try {
         // @ts-ignore
-        channel.send(`Welcome ${member} to **${member.guild.name}**!`, attachment);
+        channel.send(embed);
     } catch (err) {
         Logger.error("Didn't find the channel to post attachment [guildMemberAdd]");
     }
