@@ -11,6 +11,12 @@ import * as canvaslib from "canvas";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
+    if (!args[0]) {
+        return message.reply("You didn't specify any text to show on the canvas. Please try the command again.");
+    } else if (args.join(" ").length > 45) {
+        return message.reply("Your text is too long! Please retry the command.");
+    }
+
     const canvas = canvaslib.createCanvas(700, 250);
     const ctx = canvas.getContext("2d");
 
