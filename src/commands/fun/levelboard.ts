@@ -15,18 +15,14 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const ranks = await Xp.findAll({ order: [ ["xp", "DESC"] ] });
 
     let levels: string[] = [];
-    
-    let memberIDs: string[] = [];
-    message.guild.members.cache.forEach(member => memberIDs.push(member.id));
-
     let index = 1;
 
     ranks.forEach((item) => {
         let user = { id: item.getDataValue("idOfUser"), xp: item.getDataValue("xp") };
         let medal = (index) == 1 ? ":medal:" : (index) == 2 ? ":second_place:" : (index) == 3 ? ":third_place:" : "";
-        let getUser = Client.users.cache.get(user.id);
+        let getUser = message.guild.members.cache.get(user.id).user;
 
-        if (memberIDs.includes(user.id)) {
+        if (getUser) {
             levels.push(`${medal} ${index}. **${getUser.tag}** / *${user.xp}* xp → level \`${Math.floor(user.xp / 50)}\``);
             index++;
         }

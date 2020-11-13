@@ -13,10 +13,9 @@ import moment from "moment";
  */
 
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-    var cpuInfo, ramInfo, os, msgID;
-    const discordVersion = require("discord.js/package.json").version;
+    const discordVersion = require("discord.js").version;
+    let ramInfo: si.Systeminformation.MemData, os: si.Systeminformation.OsData;
 
-    await si.cpu().then(data => cpuInfo = data);
     await si.mem().then(data => ramInfo = data);
     await si.osInfo().then(data => os = data);
 
@@ -28,6 +27,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         .addField("OS", os.distro)
         .addField("Memory", `${(ramInfo.total / 104853.2055).toFixed()} mb`)
         .addField("Uptime", moment.duration(Client.uptime).humanize())
+        .addField("Stats", `» \`${Client.users.cache.size}\` users \n» \`${Client.guilds.cache.size}\` guilds`)
         .setColor("RANDOM")
         .setTimestamp()
         .setFooter(Client.user.username, Client.user.displayAvatarURL())
