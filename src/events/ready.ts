@@ -23,7 +23,7 @@ export default async (Client: Discord.Client) => {
 	setInterval(() => {
 		Client.user.setPresence({
 			activity: {
-				name: `ma!help • ${Client.users.cache.size} users | ${Client.guilds.cache.size} guilds`,
+				name: `ma!help • ${Client.guilds.cache.size} guilds`,
 				type: "WATCHING",
 			},
 			status: "online",
