@@ -5,7 +5,6 @@
         <img src="https://travis-ci.com/mazzlabs/Mango.svg?branch=master" />
         <img src="https://badges.depfu.com/badges/6dea69dd7041b22fb2d1ae17eb72fbe3/overview.svg" />
         <img src="https://img.shields.io/github/license/mazzlabs/Mango" />
-        <img src="https://badges.pufler.dev/visits/mazzlabs/mango?color=black&logo=github" />
     </p>
 </div>
 
@@ -17,7 +16,7 @@
 - [Links](#links)
 
 ## Introduction
-I started this bot around June 2019 as a summer project to learn how to code. I worked very hard on it and one year later, the bot is in 200 guilds and has more than 150k users! To be part of Mango's growth, feel free to [invite it](https://discord.com/oauth2/authorize?client_id=497443144632238090&permissions=8&scope=bot) in your server :smile:
+I started this bot around June 2019 as a summer project to learn how to code. I worked very hard on it and one year later, the bot is in 260 guilds and has more than 170k users! To be part of Mango's growth, feel free to [invite it](https://discord.com/oauth2/authorize?client_id=497443144632238090&permissions=8&scope=bot) in your server :smile:
 
 ## Structure
 Let's dive into the dev part.
