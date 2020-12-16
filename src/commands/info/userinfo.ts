@@ -13,6 +13,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	const selectedUser: Discord.GuildMember = message.mentions.users.size > 0 ? (message.guild.member(message.mentions.members.first()) ? message.mentions.members.first() : null) : message.member;
 	let presence;
 
+	/**
+	 * NOTE: Due to some changes to the Discord API (see gateway intents) some lines of code have been disabled to prevent the bot from no longer working properly.
+	 */
+
 	let statuses = {
 		"online": "<:online:746276053177073715> Online",
 		"idle": "<:idle:746276053055438938> Idle",
@@ -38,14 +42,15 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 			.setTimestamp()
 			.addField("Username", selectedUser.user.username, true)
 			.addField("Tag", selectedUser.user.discriminator, true)
-			.addField("Status", statuses[selectedUser.presence.status], true)
+			.addField("Bot?", selectedUser.user.bot, true)
+			// .addField("Status", statuses[selectedUser.presence.status], true)
 			.addField("Game", selectedUser.presence.activities.join(" ; ") ? !selectedUser.presence.activities.join("") : "None", true)
 			.addField("Joined on", message.guild.member(selectedUser).joinedAt.toLocaleDateString(), true)
 			.addField("Roles", message.guild.member(selectedUser).roles.cache.array().splice(1).map((role: Discord.Role) => role.name).length === 0 ? "No role" : message.guild.member(selectedUser).roles.cache.array().splice(1).map((role: Discord.Role) => role.name).join(", "), true)
 			.addField("Created on", selectedUser.user.createdAt.toLocaleDateString(), true)
 			.addField("Nickname", selectedUser.nickname ? selectedUser.nickname : "No", true)
 			.addField("Boosting", selectedUser.premiumSince ? selectedUser.premiumSince.toLocaleString() : "No", true)
-			.addField("Surface", presence)
+			// .addField("Surface", presence)
 			.setColor("RANDOM")
 			.setFooter(Client.user.username, Client.user.avatarURL());
 

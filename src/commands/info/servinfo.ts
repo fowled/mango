@@ -1,6 +1,6 @@
 import * as Discord from "discord.js";
 
-// Commande relative aux membres/serveur
+// Member command
 
 /**
  * Shows information about a server.
@@ -13,6 +13,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	let afkChannel: any;
 	const guildPicture: string = message.member.guild.iconURL();
 
+	/**
+	 * NOTE: Due to some changes to the Discord API (see gateway intents) some lines of code have been disabled to prevent the bot from no longer working properly.
+	 */
+
 	if (message.member.guild.afkChannel) {
 		afkChannel = `#<${message.member.guild.afkChannel}>`;
 	} else {
@@ -21,7 +25,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
 	let region = {
 		"brazil": ":flag_br:",
-		"eu-central": ":flag_eu:",
+		"europe": ":flag_eu:",
 		"singapore": ":flag_sg:",
 		"us-central": ":flag_us:",
 		"sydney": ":flag_au:",
@@ -51,7 +55,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		.addField("Boosts", `**${message.member.guild.premiumSubscriptionCount}**`, true)
 		.addField("Roles", `**${message.guild.roles.cache.size}**`, true)
 		.addField("AFK", afkChannel, true)
-		.addField("Presence", `• <:online:746276053177073715> Online - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "online").size}** users \n• <:idle:746276053055438938> Idle - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "idle").size}** users \n• <:dnd:746276052824883232> DND - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "dnd").size}** users \n• <:offline:745904190962008148> Offline - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "offline").size}** users`)
+		// .addField("Presence", `• <:online:746276053177073715> Online - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "online").size}** users \n• <:idle:746276053055438938> Idle - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "idle").size}** users \n• <:dnd:746276052824883232> DND - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "dnd").size}** users \n• <:offline:745904190962008148> Offline - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "offline").size}** users`)
 		.setFooter(Client.user.username, Client.user.avatarURL())
 		.setTimestamp();
 
