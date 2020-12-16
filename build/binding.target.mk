@@ -25,7 +25,6 @@ CFLAGS_Debug := \
 	-Wextra \
 	-Wno-unused-parameter \
 	-m64 \
-	-fPIC \
 	-g \
 	-O0
 
@@ -39,13 +38,13 @@ CFLAGS_CC_Debug := \
 	-std=gnu++1y
 
 INCS_Debug := \
-	-I/usr/include/nodejs/include/node \
-	-I/usr/include/nodejs/src \
-	-I/usr/include/nodejs/deps/openssl/config \
-	-I/usr/include/nodejs/deps/openssl/openssl/include \
-	-I/usr/include/nodejs/deps/uv/include \
-	-I/usr/include/nodejs/deps/zlib \
-	-I/usr/include/nodejs/deps/v8/include
+	-I/home/maxan/.cache/node-gyp/15.3.0/include/node \
+	-I/home/maxan/.cache/node-gyp/15.3.0/src \
+	-I/home/maxan/.cache/node-gyp/15.3.0/deps/openssl/config \
+	-I/home/maxan/.cache/node-gyp/15.3.0/deps/openssl/openssl/include \
+	-I/home/maxan/.cache/node-gyp/15.3.0/deps/uv/include \
+	-I/home/maxan/.cache/node-gyp/15.3.0/deps/zlib \
+	-I/home/maxan/.cache/node-gyp/15.3.0/deps/v8/include
 
 DEFS_Release := \
 	'-DNODE_GYP_MODULE_NAME=binding' \
@@ -67,7 +66,6 @@ CFLAGS_Release := \
 	-Wextra \
 	-Wno-unused-parameter \
 	-m64 \
-	-fPIC \
 	-O3 \
 	-fno-omit-frame-pointer
 
@@ -81,13 +79,13 @@ CFLAGS_CC_Release := \
 	-std=gnu++1y
 
 INCS_Release := \
-	-I/usr/include/nodejs/include/node \
-	-I/usr/include/nodejs/src \
-	-I/usr/include/nodejs/deps/openssl/config \
-	-I/usr/include/nodejs/deps/openssl/openssl/include \
-	-I/usr/include/nodejs/deps/uv/include \
-	-I/usr/include/nodejs/deps/zlib \
-	-I/usr/include/nodejs/deps/v8/include
+	-I/home/maxan/.cache/node-gyp/15.3.0/include/node \
+	-I/home/maxan/.cache/node-gyp/15.3.0/src \
+	-I/home/maxan/.cache/node-gyp/15.3.0/deps/openssl/config \
+	-I/home/maxan/.cache/node-gyp/15.3.0/deps/openssl/openssl/include \
+	-I/home/maxan/.cache/node-gyp/15.3.0/deps/uv/include \
+	-I/home/maxan/.cache/node-gyp/15.3.0/deps/zlib \
+	-I/home/maxan/.cache/node-gyp/15.3.0/deps/v8/include
 
 OBJS :=
 
@@ -106,8 +104,7 @@ LDFLAGS_Release := \
 	-rdynamic \
 	-m64
 
-LIBS := \
-	-lnode
+LIBS :=
 
 $(obj).target/binding.node: GYP_LDFLAGS := $(LDFLAGS_$(BUILDTYPE))
 $(obj).target/binding.node: LIBS := $(LIBS)
