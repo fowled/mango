@@ -21,12 +21,6 @@ export default async (Client: Discord.Client) => {
 	Logger.log(`All done - client is ready and is logged in as ${Client.user.tag}!`);
 
 	setInterval(() => {
-		Client.user.setPresence({
-			activity: {
-				name: `ma!help • ${Client.guilds.cache.size} guilds`,
-				type: "WATCHING",
-			},
-			status: "online",
-		});
+		Client.user.setActivity(`${Client.guilds.cache.size} guilds • ma!help`, { type: 5 });
 	}, 60000);
 };
