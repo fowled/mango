@@ -77,14 +77,6 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 });
             });
     }
-
-    function emojiToLetter(emoji) { // transforms emoji (reaction) to text
-        var unicodeChars = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
-        var chars = ["1", "2", "3", "4", "5"];
-        let index = unicodeChars.indexOf(emoji);
-        return chars[index];
-    }
-
 }
 
 const info = {

@@ -27,12 +27,15 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         .addField("OS", os.distro)
         .addField("Memory", `${(ramInfo.total / 104853.2055).toFixed()} mb`)
         .addField("Uptime", moment.duration(Client.uptime).humanize())
-        .addField("Stats", `» \`${Client.users.cache.size}\` users \n» \`${Client.guilds.cache.size}\` guilds`)
+        .addField("Stats", `» \`${collectUsers()}\` users \n» \`${Client.guilds.cache.size}\` guilds`)
         .setColor("RANDOM")
         .setTimestamp()
         .setFooter(Client.user.username, Client.user.displayAvatarURL())
-
     message.channel.send(info);
+
+    function collectUsers() {
+        return Client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
+    }
 }
 
 const info = {
