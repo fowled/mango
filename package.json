@@ -50,7 +50,7 @@
     "xmlhttprequest": "^1.8.0",
     "xmlhttprequest-ts": "^1.0.1",
     "yt-search": "^2.5.1",
-    "ytdl-core": "^4.2.1"
+    "ytdl-core": "^4.3.0"
   },
   "scripts": {
     "test": "tsc",
