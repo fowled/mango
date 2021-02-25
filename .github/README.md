@@ -2,7 +2,7 @@
     <h1>Mango 🥭</h1>
     <p>Mango is a <b>verified Discord bot</b> made in Typescript that will help you manage your server very easily.</p>
     <p>
-        <img src="https://travis-ci.com/mazzlabs/Mango.svg?branch=master" />
+        <img src="https://github.com/mazzlabs/Mango/actions/workflows/nodejs.yml/badge.svg" />
         <img src="https://badges.depfu.com/badges/6dea69dd7041b22fb2d1ae17eb72fbe3/overview.svg" />
         <img src="https://img.shields.io/github/license/mazzlabs/Mango" />
     </p>
