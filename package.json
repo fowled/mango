@@ -10,7 +10,7 @@
     "@types/mongoose": "^5.10.4",
     "@types/ms": "^0.7.31",
     "@types/node": "^14.14.35",
-    "basic-ftp": "^4.6.3",
+    "basic-ftp": "^4.6.4",
     "better-sqlite3": "^7.1.2",
     "body-parser": "^1.19.0",
     "canvas": "^2.7.0",
