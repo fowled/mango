@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6C3BF8C5-7521-F48F-E4EA-E2A90DB89357}</ProjectGuid>
+    <ProjectGuid>{CAC6D3E2-B1ED-6B74-DC4A-31FFECB577D0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>binding</RootNamespace>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
@@ -36,7 +36,6 @@
     <ExecutablePath>$(ExecutablePath);$(MSBuildProjectDirectory)\..\bin\;$(MSBuildProjectDirectory)\..\bin\</ExecutablePath>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <IntDir>$(Configuration)\obj\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.node</TargetExt>
@@ -48,9 +47,10 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\include\node;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\src;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\openssl\config;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\openssl\openssl\include;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\uv\include;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\zlib;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\include\node;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\src;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\openssl\config;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\openssl\openssl\include;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\uv\include;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\zlib;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
+      <CompileAsWinRT>false</CompileAsWinRT>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <DisableSpecificWarnings>4351;4355;4800;4251;4275;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ExceptionHandling>false</ExceptionHandling>
@@ -59,38 +59,33 @@
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=binding;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;V8_ENABLE_CHECKS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=binding;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;V8_ENABLE_CHECKS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <StringPooling>true</StringPooling>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWarningAsError>false</TreatWarningAsError>
       <WarningLevel>Level3</WarningLevel>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
-    <Lib>
-      <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\Max\\AppData\\Local\\node-gyp\\Cache\\12.0.0\\x64\\node.lib&quot;</AdditionalDependencies>
-      <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\ma15f\\AppData\\Local\\node-gyp\\Cache\\14.15.4\\x64\\node.lib&quot;</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(OutDir)$(ProjectName).node</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetExt>.node</TargetExt>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\include\node;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\src;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\openssl\config;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\openssl\openssl\include;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\uv\include;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\zlib;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=binding;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;V8_ENABLE_CHECKS;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\include\node;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\src;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\openssl\config;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\openssl\openssl\include;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\uv\include;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\zlib;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=binding;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;V8_ENABLE_CHECKS;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\include\node;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\src;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\openssl\config;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\openssl\openssl\include;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\uv\include;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\zlib;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\include\node;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\src;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\openssl\config;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\openssl\openssl\include;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\uv\include;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\zlib;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BufferSecurityCheck>true</BufferSecurityCheck>
+      <CompileAsWinRT>false</CompileAsWinRT>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <DisableSpecificWarnings>4351;4355;4800;4251;4275;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ExceptionHandling>false</ExceptionHandling>
@@ -102,33 +97,27 @@
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=binding;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=binding;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <StringPooling>true</StringPooling>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWarningAsError>false</TreatWarningAsError>
       <WarningLevel>Level3</WarningLevel>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
-    <Lib>
-      <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\Max\\AppData\\Local\\node-gyp\\Cache\\12.0.0\\x64\\node.lib&quot;</AdditionalDependencies>
-      <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\ma15f\\AppData\\Local\\node-gyp\\Cache\\14.15.4\\x64\\node.lib&quot;</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(OutDir)$(ProjectName).node</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetExt>.node</TargetExt>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\include\node;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\src;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\openssl\config;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\openssl\openssl\include;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\uv\include;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\zlib;C:\Users\Max\AppData\Local\node-gyp\Cache\12.0.0\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=binding;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\include\node;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\src;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\openssl\config;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\openssl\openssl\include;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\uv\include;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\zlib;C:\Users\ma15f\AppData\Local\node-gyp\Cache\14.15.4\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=binding;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -136,7 +125,7 @@
     <None Include="..\binding.gyp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\Max\AppData\Roaming\npm\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+    <ClCompile Include="C:\Program Files\nodejs\node_modules\npm\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
   <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets"/>

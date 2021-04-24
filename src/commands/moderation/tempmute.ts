@@ -63,7 +63,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     let reason = args[2] == undefined ? "no reason specified." : message.content.split(args[1])[1].trim();
 
     await memberMute.roles.add(muteRole);
-    message.reply(`**${memberMute.user.tag}** has been muted for *${ms(ms(mutetime))}*. <a:check:745904327872217088>`);
+    message.reply(`**${memberMute.user.tag}** has been muted for *${ms(ms(mutetime))}*. <:yes:835565213498736650>`);
     LogChecker.insertLog(Client, message.guild.id, message.author, `**${memberMute.user.tag}** has been __tempmuted__ by ${message.author.tag} for: *${reason}* \nDuration of the punishment: ${ms(ms(mutetime))}`);
 
     setTimeout(function () {

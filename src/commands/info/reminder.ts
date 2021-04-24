@@ -18,7 +18,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     const reminderEmbed = new Discord.MessageEmbed()
         .setTitle("Reminder")
         .setAuthor(message.author.tag, message.author.avatarURL())
-        .setDescription(`Reminder **${content}** successfully saved - we'll send you a dm in ${ms(ms(time))} <a:check:745904327872217088>`)
+        .setDescription(`Reminder **${content}** successfully saved - we'll send you a dm in ${ms(ms(time))} <:yes:835565213498736650>`)
         .setColor("#08ABF9")
         .setFooter(Client.user.username, Client.user.avatarURL())
         .setTimestamp()

@@ -32,7 +32,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         });
     }
 
-    return message.channel.send(`<a:check:745904327872217088> Successfully updated the log channel to \`#${logChannelName}\`!`);
+    return message.channel.send(`<:yes:835565213498736650> Successfully updated the log channel to \`#${logChannelName}\`!`);
 }
 
 const info = {

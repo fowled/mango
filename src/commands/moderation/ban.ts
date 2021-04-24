@@ -38,7 +38,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 				.setFooter(Client.user.username, Client.user.avatarURL());
 			Client.users.cache.get(bannedUserId).send(banMessageUser);
 		} else {
-			return message.channel.send("<a:nocheck:745904455731642408> You need the `BAN_MEMBERS` permission in order to do that.");
+			return message.channel.send("<:no:835565213322575963> You need the `BAN_MEMBERS` permission in order to do that.");
 		}
 
 		setTimeout(() => {
@@ -48,7 +48,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 				const banMessageGuild: Discord.MessageEmbed = new Discord.MessageEmbed()
 					.setTitle(`User **${userBan.username}** is now banned!`)
 					.setAuthor(message.author.username, message.author.avatarURL())
-					.setDescription(`<a:check:745904327872217088> **${memberBan.user.tag}** is now banned (*${reason}*)!`)
+					.setDescription(`<:yes:835565213498736650> **${memberBan.user.tag}** is now banned (*${reason}*)!`)
 					.setTimestamp()
 					.setColor("#4292f4")
 					.setFooter(Client.user.username, Client.user.avatarURL());

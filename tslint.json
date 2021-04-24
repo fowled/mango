@@ -1,5 +1,5 @@
 {
-	"defaultSeverity": "error",
+	"defaultSeverity": "warning",
 	"extends": [
 		"tslint:recommended"
 	],
@@ -11,7 +11,9 @@
 		"object-literal-sort-keys":false,
         "no-shadowed-variable": false,
 		"interface-name": [true, "never-prefix"],
-		"interface-over-type-literal": false
+		"interface-over-type-literal": false,
+		"prefer-for-of": false,
+		"radix": false
 	},
 	"rulesDirectory": []
 }

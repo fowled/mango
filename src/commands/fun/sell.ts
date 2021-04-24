@@ -49,7 +49,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }); 
 
     // @ts-ignore
-    message.reply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${createdItem.get("id")}** <a:check:745904327872217088>`);
+    message.reply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${createdItem.get("id")}** <:yes:835565213498736650>`);
 }
 
 const info = {

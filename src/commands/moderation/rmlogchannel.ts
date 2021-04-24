@@ -24,7 +24,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         return message.channel.send("I'm sorry, but you don't have any log channel for the moment. Get started by doing `ma!setlogchannel [channel]`!");
     }
 
-    return message.channel.send(`<a:check:745904327872217088> Successfully removed the log channel! You won't receive log notifications anymore. Was that a mistake? Don't worry, do \`ma!setlogchannel (#channel)\` to add it again.`);
+    return message.channel.send(`<:yes:835565213498736650> Successfully removed the log channel! You won't receive log notifications anymore. Was that a mistake? Don't worry, do \`ma!setlogchannel (#channel)\` to add it again.`);
 }
 
 const info = {

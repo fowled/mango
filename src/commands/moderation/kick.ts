@@ -36,7 +36,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 				.setFooter(Client.user.username, Client.user.avatarURL());
 			user.send(kickMessageUser);
 		} else {
-			return message.channel.send("<a:nocheck:745904455731642408> You need the `KICK_MEMBERS` permission in order to do that.");
+			return message.channel.send("<:no:835565213322575963> You need the `KICK_MEMBERS` permission in order to do that.");
 		}
 
 		setTimeout(() => {
@@ -44,7 +44,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 				const kickMessageGuild: Discord.MessageEmbed = new Discord.MessageEmbed()
 					.setTitle(`User ${user.username} has been kicked from the guild!`)
 					.setAuthor(message.author.username, message.author.avatarURL())
-					.setDescription(`<a:check:745904327872217088> **${user.tag}** is now kicked (*${reason}*)!`)
+					.setDescription(`<:yes:835565213498736650> **${user.tag}** is now kicked (*${reason}*)!`)
 					.setTimestamp()
 					.setColor("#4292f4")
 					.setFooter(Client.user.username, Client.user.avatarURL());
