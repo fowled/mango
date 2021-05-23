@@ -16,7 +16,7 @@
     "canvas": "^2.8.0",
     "discord.js": "^12.5.3",
     "dom-parser": "^0.1.6",
-    "dotenv": "^9.0.2",
+    "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "eslint": "^7.26.0",
     "express": "^4.17.1",
