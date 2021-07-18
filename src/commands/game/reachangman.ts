@@ -65,7 +65,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
                     const status = new Discord.MessageEmbed()
                         .setDescription(`Word: \`${stars}\``)
-                        .setColor("1E90FF")
+                        .setColor("#1E90FF")
                     message.channel.messages.fetch(secondMessageID).then(m => m.edit({ embeds: [status] }));
                 } else if (checkLetter(emojiToLetter(collected.first().emoji.name)) == false) {
                     guessesNumber++;

@@ -38,8 +38,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 color: "#524F4F"
             });
 
-            message.guild.channels.cache.forEach(async (channel, id) => {
-                await channel.updateOverwrite(muteRole, {
+            message.guild.channels.cache.forEach(async (channel: Discord.GuildChannel, id) => {
+                await channel.permissionOverwrites.edit(muteRole, {
                     SEND_MESSAGES: false,
                     ADD_REACTIONS: false
                 });

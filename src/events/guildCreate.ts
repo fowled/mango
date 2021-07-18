@@ -3,7 +3,7 @@ import * as Discord from "discord.js";
 module.exports = {
 	name: "guildCreate",
 	async execute(guild: Discord.Guild, Client: Discord.Client) {
-		const channel: Discord.TextChannel = guild.channels.cache.find(chan => chan.name === "welcome" && chan.type === "text") as unknown as Discord.TextChannel;
+		const channel: Discord.TextChannel = guild.channels.cache.find(chan => chan.name === "welcome" && chan.type === "GUILD_TEXT") as unknown as Discord.TextChannel;
 		const guildOwner: Discord.GuildMember = (await guild.fetchOwner());
 
 		if (!channel) { return; }

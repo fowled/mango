@@ -42,7 +42,7 @@ module.exports = {
             .setAuthor(member.user.tag, member.user.displayAvatarURL())
             .setDescription(`:wave: Welcome ${member} to **${member.guild.name}**!`)
             .setImage("attachment://welcome.png")
-            .setColor("grey")
+            .setColor("#808080")
         
         try {
             // @ts-ignore

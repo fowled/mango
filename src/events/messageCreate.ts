@@ -1,13 +1,14 @@
 import * as Discord from "discord.js";
 
-import * as Logger from "./../utils/Logger";
-import * as Xp from "./../utils/Xp";
+import * as Logger from "../utils/Logger";
+import * as Xp from "../utils/Xp";
 
 import { ops } from "../index";
 
 module.exports = {
-	name: "message",
-	execute(message: Discord.Message, Client: Discord.Client) {
+	name: "messageCreate",
+	async execute(message: Discord.Message, Client: Discord.Client) {
+		if (Client.application?.owner) await Client.application?.fetch();
 		if (message.member.user.bot) return;
 
 		const prefix: string = "ma!";

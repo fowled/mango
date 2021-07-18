@@ -27,7 +27,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		.setThumbnail(guildPicture)
 		.setAuthor(`${message.guild.name}`, guildPicture)
 		.setColor("RANDOM")
-		.addField(`**${message.member.guild.channels.cache.filter(channel => channel.type !== "category").size}** channels`, `• Text: **${message.member.guild.channels.cache.filter((channel: Discord.TextChannel) => channel.type === "text").size}** \n• Voice: **${message.member.guild.channels.cache.filter((channel: Discord.VoiceChannel) => channel.type === "voice").size}**`, true)
+		.addField(`**${message.member.guild.channels.cache.size}** channels`, `• Text: **${message.member.guild.channels.cache.filter((channel: Discord.TextChannel) => channel.type === "GUILD_TEXT").size}** \n• Voice: **${message.member.guild.channels.cache.filter((channel: Discord.VoiceChannel) => channel.type === "GUILD_VOICE").size}**`, true)
 		.addField("Owner", (await message.member.guild.fetchOwner()).user.username, true)
 		.addField("Created on", message.member.guild.createdAt.toLocaleDateString(), true)
 		.addField("Verification", message.member.guild.verificationLevel, true)

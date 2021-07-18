@@ -5,7 +5,7 @@ import { ops } from "../index";
 import * as Logger from "../utils/Logger";
 
 module.exports = {
-	name: "interaction",
+	name: "interactionCreate",
 	execute(interaction: Discord.CommandInteraction, Client: Discord.Client) {
 		let args: string[] = interaction.options.map(opt => opt.value.toString());
 		const command: string = interaction.commandName;

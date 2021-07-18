@@ -44,7 +44,7 @@ module.exports = {
             .setAuthor(member.user.tag, member.user.displayAvatarURL())
             .setDescription(`:frowning: See you soon ${member}`)
             .setImage("attachment://welcome.png")
-            .setColor("grey")
+            .setColor("#808080")
 
         try {
             // @ts-ignore

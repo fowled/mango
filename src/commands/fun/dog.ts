@@ -28,7 +28,7 @@ module.exports = {
 
                 let embed = new Discord.MessageEmbed()
                     .setAuthor(message.member.user.tag, message.member.user.avatarURL())
-                    .setColor("0FB1FB")
+                    .setColor("#0FB1FB")
                     .setDescription("Here is some info about your doggo.")
                     .addField("Breed", getSafe(() => parsedRequest[0].breeds[0].name), true)
                     .addField("Life span", getSafe(() => parsedRequest[0].breeds[0].life_span), true)

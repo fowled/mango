@@ -17,13 +17,15 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
     const role: Discord.Role = message.guild.roles.cache.find(r => r.name == args[0]);
-    const messageChannel = args[1] == undefined ? message.channel as Discord.GuildChannel : message.guild.channels.cache.get(args[1].toString().split("<#")[1].split(">")[0] as unknown as `${bigint}`);
+    const messageChannel = args[1] == undefined ? message.channel as Discord.GuildChannel : args[1] as unknown as Discord.GuildChannel;
+
+    console.log(args[1], typeof(args[1]));
 
     if (!role) {
         return message.reply("I didn't find the role you specified. <:no:835565213322575963>");
     }
 
-    messageChannel.overwritePermissions([{
+    messageChannel.permissionOverwrites.set([{
         id: role.id,
         deny: ["SEND_MESSAGES"]
     }]).catch(err => {
