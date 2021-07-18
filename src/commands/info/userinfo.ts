@@ -10,7 +10,7 @@ import * as Discord from "discord.js";
  * @param {any} options les options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any): Promise<void> {
-	const selectedUser: Discord.GuildMember = message.mentions.users.size > 0 ? (message.guild.member(message.mentions.members.first()) ? message.mentions.members.first() : null) : message.member;
+	const selectedUser: Discord.GuildMember = message.mentions.users.size > 0 ? (message.guild.members.fetch(message.mentions.members.first()) ? message.mentions.members.first() : null) : message.member;
 
 	let badges: {} = {
 		"DISCORD_EMPLOYEE": "<:staff:835496891453669387>",
@@ -46,10 +46,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 			.setTimestamp()
 			.addField("Name", selectedUser.user.username, true)
 			.addField("Tag", selectedUser.user.discriminator, true)
-			.addField("Bot?", selectedUser.user.bot, true)
+			.addField("Bot?", selectedUser.user.bot ? "yes" : "no", true)
 			.addField("Badges", badgesArray.join(" "), true)
-			.addField("Game", selectedUser.presence.activities.join(" ; ") ? !selectedUser.presence.activities.join("") : "None", true)
-			.addField("Joined on", message.guild.member(selectedUser).joinedAt.toLocaleDateString(), true)
+			.addField("Game", selectedUser.presence.activities.length > 0 ? selectedUser.presence.activities.toString() : "none", true)
+			.addField("Joined on", (await message.guild.members.fetch(selectedUser)).joinedAt.toLocaleDateString(), true)
 			.addField("Created on", selectedUser.user.createdAt.toLocaleDateString(), true)
 			.addField("Permissions", selectedUser.permissions.toArray().length === 0 ? "No permission" : `${selectedUser.permissions.toArray().length} permissions`, true)
 			.addField("Boosting", selectedUser.premiumSince ? selectedUser.premiumSince.toLocaleString() : "No", true)
@@ -57,8 +57,18 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 			.setColor("RANDOM")
 			.setFooter(Client.user.username, Client.user.avatarURL());
 
-		message.channel.send(userinfoMessageEmbed);
+		message.reply({ embeds: [userinfoMessageEmbed] });
 	} else {
-		message.channel.send("Tagged user is not in the server :frowning:");
+		message.reply("Tagged user is not in the server :frowning:");
 	}
 }
+
+const info = {
+	name: "userinfo",
+	description: "Get useful information on a user",
+	category: "info",
+	args: "none"
+}
+
+export { info };
+

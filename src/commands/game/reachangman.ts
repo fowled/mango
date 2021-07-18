@@ -31,7 +31,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     addReactions();
 
     function addReactions() {
-        message.channel.send("> Initializating...").then(async msg => {
+        message.reply("> Initializating...").then(async msg => {
             for (let letter of reactions) {
                 await msg.react(letter);
             }
@@ -39,7 +39,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
             createReactionCollector(msg);
         });
 
-        message.channel.send("> Word: ...").then(async msg => {
+        message.reply("> Word: ...").then(async msg => {
             for (let char of reactions2) {
                 await msg.react(char);
             }
@@ -49,46 +49,46 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
     function createReactionCollector(msg: Discord.Message) {
-        const filter: Discord.CollectorFilter = (reaction, user) => {
-            return user.id === message.author.id;
+        const filter: (reaction: any, user: any) => boolean = (reaction, user) => {
+            return user.id === message.member.user.id;
         }
 
-        msg.awaitReactions(filter, { max: 1 })
+        msg.awaitReactions({ filter, max: 1 })
             .then(collected => {
                 if (checkLetter(emojiToLetter(collected.first().emoji.name))) {
                     replaceWithStars(emojiToLetter(collected.first().emoji.name));
                     const correctLetter = new Discord.MessageEmbed()
-                        .setAuthor(message.author.username, message.author.avatarURL())
+                        .setAuthor(message.member.user.username, message.member.user.avatarURL())
                         .setDescription(`<:yes:835565213498736650> Good job - you just found the \`${emojiToLetter(collected.first().emoji.name)}\` letter!`)
                         .setColor("#3AD919")
-                    message.channel.messages.fetch(firstMessageID).then(m => m.edit(correctLetter));
+                    message.channel.messages.fetch(firstMessageID).then(m => m.edit({ embeds: [correctLetter] }));
 
                     const status = new Discord.MessageEmbed()
                         .setDescription(`Word: \`${stars}\``)
                         .setColor("1E90FF")
-                    message.channel.messages.fetch(secondMessageID).then(m => m.edit(status));
+                    message.channel.messages.fetch(secondMessageID).then(m => m.edit({ embeds: [status] }));
                 } else if (checkLetter(emojiToLetter(collected.first().emoji.name)) == false) {
                     guessesNumber++;
                     const incorrectLetter = new Discord.MessageEmbed()
-                        .setAuthor(message.author.username, message.author.avatarURL())
+                        .setAuthor(message.member.user.username, message.member.user.avatarURL())
                         .setDescription(`<:no:835565213322575963> Wrong letter \`${emojiToLetter(collected.first().emoji.name)}\`. Remaining attempts: **${10 - guessesNumber}**.`)
                         .setColor("#ff0000")
-                    message.channel.messages.fetch(firstMessageID).then(m => m.edit(incorrectLetter));
+                    message.channel.messages.fetch(firstMessageID).then(m => m.edit({ embeds: [incorrectLetter] }));
                     guessedLetters.push(emojiToLetter(collected.first().emoji.name));
                 }
 
                 if (checkIfWin()) {
                     const youWon = new Discord.MessageEmbed()
-                        .setAuthor(message.author.username, message.author.avatarURL())
+                        .setAuthor(message.member.user.username, message.member.user.avatarURL())
                         .setDescription(`GG - you won the game with *${10 - guessesNumber} attempts* left!`)
                         .setColor("#ffff00")
-                    return message.channel.messages.fetch(firstMessageID).then(m => m.edit(youWon));
+                    return message.channel.messages.fetch(firstMessageID).then(m => m.edit({ embeds: [youWon] }));
                 } else if (guessesNumber >= 10) {
                     const youLost = new Discord.MessageEmbed()
-                        .setAuthor(message.author.username, message.author.avatarURL())
+                        .setAuthor(message.member.user.username, message.member.user.avatarURL())
                         .setDescription(`You lost! Word was \`${thatOneWord}\`.`)
                         .setColor("#ff0000")
-                    return message.channel.messages.fetch(firstMessageID).then(m => m.edit(youLost));
+                    return message.channel.messages.fetch(firstMessageID).then(m => m.edit({ embeds: [youLost] }));
                 }
 
                 collected.first().remove();

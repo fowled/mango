@@ -20,7 +20,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     await si.osInfo().then(data => os = data);
 
     const info = new Discord.MessageEmbed()
-        .setAuthor(message.author.username, message.author.displayAvatarURL())
+        .setAuthor(message.member.user.username, message.member.user.displayAvatarURL())
         .setDescription("About **Mango's infrastructure**")
         .addField("Node version", process.version)
         .addField("Discord.js version", discordVersion)
@@ -31,7 +31,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         .setColor("RANDOM")
         .setTimestamp()
         .setFooter(Client.user.username, Client.user.displayAvatarURL())
-    message.channel.send(info);
+    message.reply({ embeds: [info] });
 
     function collectUsers() {
         return Client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);

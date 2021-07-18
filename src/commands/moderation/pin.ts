@@ -10,7 +10,7 @@ import * as Discord from "discord.js";
  * @param {any} options some options
  */
 export async function run(client: Discord.Client, message: Discord.Message, args: string[]) {
-	message.channel.messages.fetch(args[0])
+	message.channel.messages.fetch(args[0] as unknown as `${bigint}`)
 		.then((message: Discord.Message) => message.pin())
 		.catch(() => {
 			message.reply("An error occured, make sure I have the pin permission.");
@@ -21,7 +21,7 @@ const info = {
     name: "pin",
     description: "Pin a message",
     category: "moderation",
-    args: "[ID of the message]"
+    args: "[ID]"
 }
 
 export { info };

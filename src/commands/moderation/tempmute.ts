@@ -13,31 +13,29 @@ import ms from "ms";
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     const userMute: Discord.User = message.mentions.users.first();
-    const memberMute: Discord.GuildMember = message.guild.member(userMute);
+    const memberMute: Promise<Discord.GuildMember> = message.guild.members.fetch(userMute);
 
     if (!memberMute) {
         return message.reply("You specified an invalid user to mute. Please tag him in order to mute them.");
     }
 
-    if (memberMute.hasPermission(["ADMINISTRATOR"])) {
+    if ((await memberMute).permissions.has(["ADMINISTRATOR"])) {
         return message.reply("Sorry, but I can't mute the user you specified, because he has the Administrator permission.");
     }
 
-    if (!message.member.hasPermission(["MANAGE_MESSAGES"])) {
+    if (!message.member.permissions.has(["MANAGE_MESSAGES"])) {
         return message.reply("Sorry, but you don't have the permission to mute this user.");
-    } 
+    }
 
     let muteRole: Discord.Role = message.guild.roles.cache.find(role => role.name === "muted");
 
     if (!muteRole) {
         try {
             muteRole = await message.guild.roles.create({
-                data: {
-                    name: "muted",
-                    mentionable: false,
-                    permissions: [],
-                    color: "#524F4F"
-                }
+                name: "muted",
+                mentionable: false,
+                permissions: [],
+                color: "#524F4F"
             });
 
             message.guild.channels.cache.forEach(async (channel, id) => {
@@ -62,12 +60,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     let reason = args[2] == undefined ? "no reason specified." : message.content.split(args[1])[1].trim();
 
-    await memberMute.roles.add(muteRole);
-    message.reply(`**${memberMute.user.tag}** has been muted for *${ms(ms(mutetime))}*. <:yes:835565213498736650>`);
-    LogChecker.insertLog(Client, message.guild.id, message.author, `**${memberMute.user.tag}** has been __tempmuted__ by ${message.author.tag} for: *${reason}* \nDuration of the punishment: ${ms(ms(mutetime))}`);
+    await (await memberMute).roles.add(muteRole);
+    message.reply(`**${(await memberMute).user.tag}** has been muted for *${ms(ms(mutetime))}*. <:yes:835565213498736650>`);
+    LogChecker.insertLog(Client, message.guild.id, message.member.user, `**${(await memberMute).user.tag}** has been __tempmuted__ by ${message.member.user.tag} for: *${reason}* \nDuration of the punishment: ${ms(ms(mutetime))}`);
 
-    setTimeout(function () {
-        memberMute.roles.remove(muteRole);
+    setTimeout(async function () {
+        (await memberMute).roles.remove(muteRole);
     }, ms(mutetime));
 
 }

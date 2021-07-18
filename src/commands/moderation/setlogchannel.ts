@@ -11,7 +11,7 @@ import * as Sequelize from "sequelize";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops) {
-    if (!message.member.hasPermission("ADMINISTRATOR")) {
+    if (!message.member.permissions.has("ADMINISTRATOR")) {
         return message.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
     }
 
@@ -32,7 +32,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         });
     }
 
-    return message.channel.send(`<:yes:835565213498736650> Successfully updated the log channel to \`#${logChannelName}\`!`);
+    return message.reply(`<:yes:835565213498736650> Successfully updated the log channel to \`#${logChannelName}\`!`);
 }
 
 const info = {

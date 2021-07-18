@@ -13,7 +13,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	const taggedUser: Discord.User = message.mentions.users.first();
 	const reason = args.slice(1).join(" ");
 
-	if (!message.member.hasPermission("KICK_MEMBERS")) {
+	if (!message.member.permissions.has("KICK_MEMBERS")) {
 		return message.reply("Sorry, but you need the `KICK_MEMBERS` permission to warn a user.");
 	} else if (!taggedUser) {
 		return message.reply("You must tag a user. `ma!warn @user reason`");
@@ -24,22 +24,22 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	const date = new Date();
 	const warnGuildMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
 		.setTitle(`Warn`)
-		.setDescription(`**${taggedUser.tag}** has been warned by *${message.author.tag}* on __${date.toLocaleDateString()}__: *"${reason}"*.`)
-		.setAuthor(message.author.username, message.author.avatarURL())
+		.setDescription(`**${taggedUser.tag}** has been warned by *${message.member.user.tag}* on __${date.toLocaleDateString()}__: *"${reason}"*.`)
+		.setAuthor(message.member.user.username, message.member.user.avatarURL())
 		.setFooter(Client.user.username, Client.user.avatarURL())
 		.setColor("#4292f4")
 		.setTimestamp();
-	message.channel.send(warnGuildMessageEmbed);
+	message.reply({ embeds: [warnGuildMessageEmbed] });
 
 	const warnUserMessageEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
 		.setTitle(`Warn`)
-		.setDescription(`You have been warned by **${message.author.username}**  __${date.toLocaleString()}__. Reason: *"${reason}"*.`)
-		.setAuthor(message.author.username, message.author.avatarURL())
+		.setDescription(`You have been warned by **${message.member.user.username}**  __${date.toLocaleString()}__. Reason: *"${reason}"*.`)
+		.setAuthor(message.member.user.username, message.member.user.avatarURL())
 		.setFooter(Client.user.username, Client.user.avatarURL())
 		.setColor("#4292f4")
 		.setTimestamp();
-	Client.users.cache.get(taggedUser.id).send(warnUserMessageEmbed).catch((error: Error) => {
-		message.channel.send(`**${taggedUser.tag}** doesn't accept DMs from servers.`);
+	Client.users.cache.get(taggedUser.id).send({ embeds: [warnUserMessageEmbed] }).catch((error: Error) => {
+		message.reply(`**${taggedUser.tag}** doesn't accept DMs from servers.`);
 	});
 
 }

@@ -1,22 +1,27 @@
 import * as Discord from "discord.js";
 
-import * as MessageEmbed from "./../utils/Embed";
+module.exports = {
+	name: "guildCreate",
+	async execute(guild: Discord.Guild, Client: Discord.Client) {
+		const channel: Discord.TextChannel = guild.channels.cache.find(chan => chan.name === "welcome" && chan.type === "text") as unknown as Discord.TextChannel;
+		const guildOwner: Discord.GuildMember = (await guild.fetchOwner());
 
-export default async (Client: Discord.Client, guild: Discord.Guild) => {
-	const channel: Discord.TextChannel = guild.channels.resolve("welcome") as Discord.TextChannel;
-	if (!channel) { return; }
+		if (!channel) { return; }
 
-	channel.send(MessageEmbed.create(Client, {
-		title: `Hi, I'm ${Client.user.username} and I'm new in ${guild.name}!`,
-		description: `Help message has been sent to ${guild.owner.user}, but they are also available typing *!infohelp*.`,
-		thumbnail: {url: guild.iconURL()},
-		color: "RANDOM",
-	}));
+		const embed: Discord.MessageEmbed = new Discord.MessageEmbed()
+			.setTitle(`Hi, I'm ${Client.user.username} and I'm new in ${guild.name}!`)
+			.setDescription(`Help message has been sent to ${guildOwner.user.tag}, but they are also available typing *ma!help*.`)
+			.setThumbnail(guild.iconURL())
+			.setColor("RANDOM")
 
-	guild.owner.send(MessageEmbed.create(Client, {
-		title: `Thank you for adding me in ${guild.name}!`,
-		description: `Help message: *!infohelp*.`,
-		thumbnail: {url: guild.iconURL()},
-		color: "#4782F9",
-	}));
+		channel.send({ embeds: [embed] });
+
+		const ownerEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
+			.setTitle(`Thank you for adding me in ${guild.name}!`)
+			.setDescription(`Help message: *ma!help*`)
+			.setThumbnail(guild.iconURL())
+			.setColor("RANDOM")
+
+		guildOwner.send({ embeds: [ownerEmbed] });
+	}
 };

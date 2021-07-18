@@ -18,22 +18,22 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 let parsedRequest = JSON.parse(this.responseText);
 
                 let MessageEmbed = new Discord.MessageEmbed()
-                    .setAuthor(message.author.username, message.author.avatarURL())
+                    .setAuthor(message.member.user.username, message.member.user.avatarURL())
                     .setTitle("Coronavirus stats :chart_with_upwards_trend:")
                     .setDescription("Find here COVID-19 related information")
                     .setColor("#08ABF9")
                     .setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f637.png")
-                    .addField("Cases", parsedRequest.cases)
-                    .addField("Today cases", parsedRequest.todayCases)
-                    .addField("Deaths", parsedRequest.deaths)
-                    .addField("Today deaths", parsedRequest.todayDeaths)
-                    .addField("Recovered", parsedRequest.recovered)
-                    .addField("Critical", parsedRequest.critical)
-                    .addField("Affected countries", parsedRequest.affectedCountries)
+                    .addField("Cases", parsedRequest.cases.toString())
+                    .addField("Today cases", parsedRequest.todayCases.toString())
+                    .addField("Deaths", parsedRequest.deaths.toString())
+                    .addField("Today deaths", parsedRequest.todayDeaths.toString())
+                    .addField("Recovered", parsedRequest.recovered.toString())
+                    .addField("Critical", parsedRequest.critical.toString())
+                    .addField("Affected countries", parsedRequest.affectedCountries.toString())
                     .setFooter(Client.user.username, Client.user.avatarURL())
                     .setTimestamp()
 
-                message.channel.send(MessageEmbed);
+                message.reply({ embeds: [MessageEmbed] });
             }
         }
 
@@ -46,20 +46,21 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                 let parsedRequest = JSON.parse(this.responseText);
 
                 let MessageEmbed = new Discord.MessageEmbed()
-                    .setAuthor(message.author.username, message.author.avatarURL())
+                    .setAuthor(message.member.user.username, message.member.user.avatarURL())
                     .setTitle("Coronavirus stats :chart_with_upwards_trend:")
                     .setDescription("Find here COVID-19 related information")
-                    .setThumbnail(parsedRequest.countryInfo.flag)
-                    .addField("Cases", parsedRequest.cases)
-                    .addField("Today cases", parsedRequest.todayCases)
-                    .addField("Deaths", parsedRequest.deaths)
-                    .addField("Today deaths", parsedRequest.todayDeaths)
-                    .addField("Recovered", parsedRequest.recovered)
-                    .addField("Critical", parsedRequest.critical)
+                    .setThumbnail(parsedRequest.countryInfo.flag.toString())
+                    .setColor("#08ABF9")
+                    .addField("Cases", parsedRequest.cases.toString())
+                    .addField("Today cases", parsedRequest.todayCases.toString())
+                    .addField("Deaths", parsedRequest.deaths.toString())
+                    .addField("Today deaths", parsedRequest.todayDeaths.toString())
+                    .addField("Recovered", parsedRequest.recovered.toString())
+                    .addField("Critical", parsedRequest.critical.toString())
                     .setFooter(Client.user.username, Client.user.avatarURL())
                     .setTimestamp()
 
-                message.channel.send(MessageEmbed);
+                message.reply({ embeds: [MessageEmbed] });
             } else if (this.readyState == 4 && this.status == 404) {
                 message.reply("I didn't find that country. <:no:835565213322575963>");
             }

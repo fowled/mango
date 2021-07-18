@@ -10,49 +10,45 @@ import { XMLHttpRequest } from "xmlhttprequest";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-    const xhttp = new XMLHttpRequest();
-    let emojiList: string[] = [":confused:", ":confounded:", ":disappointed_relieved:", ":frowning:"];
+module.exports = {
+    name: "cat",
+    description: "Replies with a picture of a cat",
 
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            const parsedRequest = JSON.parse(xhttp.responseText);
-            const catPicture = parsedRequest[0].url;
-            let breeds;
+    execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
+        const xhttp = new XMLHttpRequest();
+        let emojiList: string[] = [":confused:", ":confounded:", ":disappointed_relieved:", ":frowning:"];
+        let checkMessageType: boolean = message.type === "APPLICATION_COMMAND";
 
-            breeds = new Discord.MessageEmbed()
-                .setAuthor(message.author.tag, message.author.avatarURL())
-                .attachFiles(catPicture)
-                .setColor("0FB1FB")
-                .setDescription("Here is some info about your cat.")
-                .addField("Breed", getSafe(() => parsedRequest[0].breeds[0].name), true)
-                .addField("Life span", getSafe(() => parsedRequest[0].breeds[0].life_span), true)
-                .addField("Temperament", getSafe(() => parsedRequest[0].breeds[0].temperament))
-                .setTimestamp()
-                .setFooter(Client.user.username, Client.user.avatarURL());
+        if (checkMessageType) message.defer();
 
-            message.channel.send(breeds);
-        }
-    };
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const parsedRequest = JSON.parse(xhttp.responseText);
+                const catPicture = new Discord.MessageAttachment(parsedRequest[0].url);
 
-    xhttp.open("GET", "https://api.thecatapi.com/v1/images/search", true);
-    xhttp.send();
+                let embed: Discord.MessageEmbed = new Discord.MessageEmbed()
+                    .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                    .setColor("0FB1FB")
+                    .setDescription("Here is some info about your cat.")
+                    .addField("Breed", getSafe(() => parsedRequest[0].breeds[0].name), true)
+                    .addField("Life span", getSafe(() => parsedRequest[0].breeds[0].life_span), true)
+                    .addField("Temperament", getSafe(() => parsedRequest[0].breeds[0].temperament))
+                    .setTimestamp()
+                    .setFooter(Client.user.username, Client.user.avatarURL());
 
-    function getSafe(fn: any) {
-        try {
-            return fn();
-        } catch (e) {
-            return `unspecified ${emojiList[Math.floor(Math.random() * emojiList.length)]}`;
+                checkMessageType ? message.editReply({ embeds: [embed], files: [catPicture] }) : message.reply({ embeds: [embed], files: [catPicture] });
+            }
+        };
+
+        xhttp.open("GET", "https://api.thecatapi.com/v1/images/search", true);
+        xhttp.send();
+
+        function getSafe(fn: any) {
+            try {
+                return fn();
+            } catch (e) {
+                return `unspecified ${emojiList[Math.floor(Math.random() * emojiList.length)]}`;
+            }
         }
     }
 }
-
-const info = {
-    name: "cat",
-    description: "Replies with a picture of a cat",
-    category: "fun",
-    args: "none"
-}
-
-export { info };
-

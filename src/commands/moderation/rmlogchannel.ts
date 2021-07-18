@@ -11,7 +11,7 @@ import * as Sequelize from "sequelize";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops) {
-    if (!message.member.hasPermission("ADMINISTRATOR")) {
+    if (!message.member.permissions.has("ADMINISTRATOR")) {
         return message.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
     }
 
@@ -21,10 +21,10 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     if (logchannel) {
         logchannel.destroy();
     } else {
-        return message.channel.send("I'm sorry, but you don't have any log channel for the moment. Get started by doing `ma!setlogchannel [channel]`!");
+        return message.reply("I'm sorry, but you don't have any log channel for the moment. Get started by doing `ma!setlogchannel [channel]`!");
     }
 
-    return message.channel.send(`<:yes:835565213498736650> Successfully removed the log channel! You won't receive log notifications anymore. Was that a mistake? Don't worry, do \`ma!setlogchannel (#channel)\` to add it again.`);
+    return message.reply(`<:yes:835565213498736650> Successfully removed the log channel! You won't receive log notifications anymore. Was that a mistake? Don't worry, do \`ma!setlogchannel (#channel)\` to add it again.`);
 }
 
 const info = {

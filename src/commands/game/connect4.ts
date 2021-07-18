@@ -13,31 +13,31 @@ import * as Logger from "../../utils/Logger";
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
 	let grid = {};
 	let turn = "J1";
-	let firstMessageID: string;
+	let firstMessageID;
 	let secondPlayer: Discord.User;
 
 	waitForSecondPlayer();
 
 	function waitForSecondPlayer() {
 		const filter = (reaction: any, user: { id: string; }) => {
-			return user.id !== message.author.id;
+			return user.id !== message.member.user.id;
 		};
 
-		let msgid: string;
+		let msgid;
 
-		message.channel.send("> Waiting for the 2nd player to approve... (click on the reaction to begin the game)").then(async msg => {
+		message.reply("> Waiting for the 2nd player to approve... (click on the reaction to begin the game)").then(async msg => {
 			msgid = msg.id;
 			await msg.react("👍🏻");
 
 			setTimeout(() => {
-				msg.awaitReactions(filter, { max: 1 })
+				msg.awaitReactions({ filter, max: 1 })
 					.then(collected => {
 						secondPlayer = collected.first().users.cache.last();
 						message.channel.messages.fetch(msgid).then(msg => msg.edit(`2nd player is **${secondPlayer.tag}**! :smile:`));
 						generateGrid();
 					}).catch(err => {
-					message.channel.messages.fetch(msgid).then(msg => msg.edit("Nobody has clicked the reaction for 30 seconds. Game cancelled."));
-				});
+						message.channel.messages.fetch(msgid).then(msg => msg.edit("Nobody has clicked the reaction for 30 seconds. Game cancelled."));
+					});
 			}, 200);
 		});
 	}
@@ -49,15 +49,15 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		const columns = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣"];
 
 		const intialization: Discord.MessageEmbed = new Discord.MessageEmbed()
-			.setAuthor(message.author.tag, message.author.displayAvatarURL())
+			.setAuthor(message.member.user.tag, message.member.user.displayAvatarURL())
 			.setColor("RANDOM")
 			.setDescription("Game is initializating... please wait a bit.")
 			.setTimestamp()
 			.setFooter(Client.user.username, Client.user.displayAvatarURL())
 
-		message.channel.send(intialization).then(msg => firstMessageID = msg.id);
+		message.reply({ embeds: [intialization] }).then(msg => firstMessageID = msg.id);
 
-		message.channel.send("> I am currently generating the grid. Please wait a bit..").then(async msg => {
+		message.reply("> I am currently generating the grid. Please wait a bit..").then(async msg => {
 			for (let number of columns) {
 				await msg.react(number);
 			}
@@ -85,13 +85,13 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	}
 
 	function createReactionCollector(msg: Discord.Message) {
-		const filter: Discord.CollectorFilter = (reaction, user) => {
-			return user.id === message.author.id || user.id === secondPlayer.id;
+		const filter: (reaction: any, user: any) => boolean = (reaction, user) => {
+			return user.id === message.member.user.id || user.id === secondPlayer.id;
 		}
 
-		msg.awaitReactions(filter, { max: 1 })
+		msg.awaitReactions({ filter, max: 1 })
 			.then(collected => {
-				if (secondPlayer === collected.first().users.cache.last() && turn !== "J2" || message.author === collected.first().users.cache.last() && turn !== "J1") { // if this isn't the good turn
+				if (secondPlayer === collected.first().users.cache.last() && turn !== "J2" || message.member.user === collected.first().users.cache.last() && turn !== "J1") { // if this isn't the good turn
 					collected.last().users.remove(collected.first().users.cache.last().id);
 					return createReactionCollector(msg);
 				}
@@ -101,7 +101,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 					.setColor("#1E90FF")
 					.setDescription(`**${collected.first().users.cache.last().tag}** reacted with the ${collected.first().emoji.name} emoji.`);
 
-				msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit(status));
+				msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit({ embeds: [status] }));
 
 				editGrid(msg, collected.first().emoji.name);
 
@@ -126,8 +126,8 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 				collected.last().users.remove(collected.first().users.cache.last().id); // removes user reaction
 				createReactionCollector(msg); // wait for reaction once the turn is finished
 			}).catch(err => {
-			createReactionCollector(msg);
-		});
+				createReactionCollector(msg);
+			});
 	}
 
 	async function editGrid(msg: Discord.Message, emoji: string) {

@@ -10,28 +10,23 @@ import * as Sequelize from "sequelize";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	const Xp: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("ranks");
-	const fetchUser = await Xp.findOne({ where: { idOfUser: message.author.id } });
-	const userXp: any = fetchUser.get("xp") as number;
-
-
-	const levelEmbedMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
-		.setTitle(`${message.author.tag} level`)
-		.setAuthor(message.author.username, message.author.avatarURL())
-		.setDescription(`Your level - :gem: XP: **${fetchUser.get("xp")}** | :large_orange_diamond: Level: *${Math.floor(userXp / 50)}*`)
-		.setColor("#019FE9")
-		.setFooter(client.user.username, client.user.avatarURL())
-		.setTimestamp()
-	message.channel.send(levelEmbedMessage);
-}
-
-const info = {
+module.exports = {
 	name: "level",
 	description: "Replies with your Mango level and XP",
-	category: "fun",
-	args: "none"
+
+	async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
+		const Xp: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("ranks");
+		const fetchUser = await Xp.findOne({ where: { idOfUser: message.member.user.id } });
+		const userXp: any = fetchUser.get("xp") as number;
+	
+	
+		const levelEmbedMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
+			.setTitle(`${message.member.user.tag} level`)
+			.setAuthor(message.member.user.username, message.member.user.avatarURL())
+			.setDescription(`Your level - :gem: XP: **${fetchUser.get("xp")}** | :large_orange_diamond: Level: *${Math.floor(userXp / 50)}*`)
+			.setColor("#019FE9")
+			.setFooter(Client.user.username, Client.user.avatarURL())
+			.setTimestamp()
+		message.reply({ embeds: [levelEmbedMessage], ephemeral: true });
+	}
 }
-
-export { info };
-

@@ -11,7 +11,7 @@ import * as LogChecker from "../../utils/LogChecker";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-    if (!message.member.hasPermission(["MANAGE_MESSAGES"])) {
+    if (!message.member.permissions.has(["MANAGE_MESSAGES"])) {
         return message.reply("Sorry, but you don't have the `MANAGE_MESSAGES` permission.");
     }
 
@@ -19,16 +19,16 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 
     if (args.length > 0) {
         if (!isNaN(parseInt(args[0], 10)) && parseInt(args[0], 10) >= 1 && parseInt(args[0], 10) <= 100) {
-	    channel.bulkDelete(parseInt(args[0], 10))
-		.catch((error: Error) => message.reply("I don't have the permission to delete messages."));
-	    LogChecker.insertLog(Client, message.guild.id, message.author, `**${args[0]}** messages got deleted in *${message.channel}* by ${message.author.tag}`);
+            channel.bulkDelete(parseInt(args[0], 10))
+                .catch((error: Error) => message.reply("I don't have the permission to delete messages."));
+            LogChecker.insertLog(Client, message.guild.id, message.member.user, `**${args[0]}** messages got deleted in *${message.channel}* by ${message.member.user.tag}`);
 
-	} else {
-		message.reply("Invlid number provided. Only provided number between 1 and 100");
-	} 
+        } else {
+            message.reply("Invlid number provided. Only provided number between 1 and 100");
+        }
 
     } else {
-	message.reply("Please enter the number of messages to delete!");
+        message.reply("Please enter the number of messages to delete!");
     }
 }
 
@@ -36,7 +36,7 @@ const info = {
     name: "clear",
     description: "Clear messages",
     category: "moderation",
-    args: "[number of messages to clear]"
+    args: "[number]"
 }
 
 export { info };

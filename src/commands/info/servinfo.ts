@@ -23,31 +23,12 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		afkChannel = "None.";
 	}
 
-	let region = {
-		"brazil": ":flag_br:",
-		"europe": ":flag_eu:",
-		"singapore": ":flag_sg:",
-		"us-central": ":flag_us:",
-		"sydney": ":flag_au:",
-		"us-east": ":flag_us:",
-		"us-south": ":flag_us:",
-		"us-west": ":flag_us:",
-		"eu-west": ":flag_eu:",
-		"vip-us-east": ":flag_us:",
-		"london": ":flag_gb:",
-		"amsterdam": ":flag_nl:",
-		"hongkong": ":flag_hk:",
-		"russia": ":flag_ru:",
-		"southafrica": ":flag_za:"
-	};
-
 	const reponse: Discord.MessageEmbed = new Discord.MessageEmbed()
 		.setThumbnail(guildPicture)
 		.setAuthor(`${message.guild.name}`, guildPicture)
 		.setColor("RANDOM")
 		.addField(`**${message.member.guild.channels.cache.filter(channel => channel.type !== "category").size}** channels`, `• Text: **${message.member.guild.channels.cache.filter((channel: Discord.TextChannel) => channel.type === "text").size}** \n• Voice: **${message.member.guild.channels.cache.filter((channel: Discord.VoiceChannel) => channel.type === "voice").size}**`, true)
-		.addField("Owner", message.member.guild.owner, true)
-		.addField("Region", region[message.member.guild.region], true)
+		.addField("Owner", (await message.member.guild.fetchOwner()).user.username, true)
 		.addField("Created on", message.member.guild.createdAt.toLocaleDateString(), true)
 		.addField("Verification", message.member.guild.verificationLevel, true)
 		.addField("Boosts", `**${message.member.guild.premiumSubscriptionCount}**`, true)
@@ -57,9 +38,18 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 		.setFooter(Client.user.username, Client.user.avatarURL())
 		.setTimestamp();
 
-		if (message.guild.banner) {
-			reponse.setImage(message.guild.bannerURL());
-		}
+	if (message.guild.banner) {
+		reponse.setImage(message.guild.bannerURL());
+	}
 
-	message.channel.send(reponse);
+	message.reply({ embeds: [reponse] });
 }
+
+const info = {
+	name: "servinfo",
+	description: "Get useful information on a server",
+	category: "info",
+	args: "none"
+}
+
+export { info };

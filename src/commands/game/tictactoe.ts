@@ -12,24 +12,24 @@ import * as Discord from "discord.js";
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
     let grid = {};
     let turn = "J1";
-    let firstMessageID: string;
+    let firstMessageID;
     let secondPlayer: Discord.User;
 
     waitForSecondPlayer();
 
     function waitForSecondPlayer() {
         const filter = (reaction: any, user: { id: string; }) => {
-            return user.id != message.author.id;
+            return user.id != message.member.user.id;
         };
 
-        let msgid: string;
+        let msgid;
 
-        message.channel.send("> Waiting for the 2nd player to approve... (click on the reaction to begin the game)").then(async msg => {
+        message.reply("> Waiting for the 2nd player to approve... (click on the reaction to begin the game)").then(async msg => {
             msgid = msg.id;
             await msg.react("👍🏻");
 
             setTimeout(function () {
-                msg.awaitReactions(filter, { max: 1 })
+                msg.awaitReactions({ filter: filter, max: 1 })
                     .then(collected => {
                         secondPlayer = collected.first().users.cache.last();
                         message.channel.messages.fetch(msgid).then(msg => msg.edit(`2nd player is **${secondPlayer.tag}**. Init...`));
@@ -45,9 +45,9 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         initGrid();
         let numbers = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
 
-        message.channel.send("> Status: init :eyes:").then(msg => firstMessageID = msg.id);
+        message.reply("> Status: init :eyes:").then(msg => firstMessageID = msg.id);
 
-        message.channel.send("> I am currently generating the grid. Please wait a bit..").then(async msg => {
+        message.reply("> I am currently generating the grid. Please wait a bit..").then(async msg => {
             for (let number of numbers) {
                 await msg.react(number);
             }
@@ -71,13 +71,13 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     }
 
     function createReactionCollector(msg: Discord.Message) {
-        const filter: Discord.CollectorFilter = (reaction, user) => {
-            return user.id === message.author.id || user.id === secondPlayer.id;
+        const filter: (reaction: any, user: any) => boolean = (reaction, user) => {
+            return user.id === message.member.user.id || user.id === secondPlayer.id;
         }
 
-        msg.awaitReactions(filter, { max: 1 })
+        msg.awaitReactions({ filter: filter, max: 1 })
             .then(collected => {
-                if (secondPlayer == collected.first().users.cache.last() && turn != "J2" || message.author == collected.first().users.cache.last() && turn != "J1") {
+                if (secondPlayer == collected.first().users.cache.last() && turn != "J2" || message.member.user == collected.first().users.cache.last() && turn != "J1") {
                     collected.last().users.remove(collected.first().users.cache.last().id);
                     return createReactionCollector(msg);
                 }
@@ -88,7 +88,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                         .setColor("#1E90FF")
                         .setDescription(`**${collected.first().users.cache.last().tag}** tried to react with the ${collected.first().emoji.name} emoji, but this case is already occupied by a player...`);
 
-                    msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit(status));
+                    msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit({ embeds: [status] }));
 
                     collected.last().users.remove(collected.first().users.cache.last().id);
                     return createReactionCollector(msg);
@@ -99,7 +99,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                     .setColor("#1E90FF")
                     .setDescription(`**${collected.first().users.cache.last().tag}** reacted with the ${collected.first().emoji.name} emoji.`);
 
-                msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit(status));
+                msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit({ embeds: [status] }));
 
                 editGrid(msg, collected.first().emoji.name);
 
@@ -109,7 +109,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                         .setColor("#ffff00")
                         .setDescription(`**${collected.first().users.cache.last().tag}** won the game. GG!`);
 
-                    msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit(status));
+                    msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit({ embeds: [status] }));
                     return;
                 } else if (checkIfEgality()) {
                     const status = new Discord.MessageEmbed()
@@ -117,7 +117,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
                         .setColor("#1E90FF")
                         .setDescription(`:crossed_swords: Nobody won... That's a draw!`);
 
-                    msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit(status));
+                    msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit({ embeds: [status] }));
                 }
 
                 detectPlayer(); // changes turn
@@ -149,7 +149,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         gridToObject.splice((letterToNumber - 1), 1, selectEmoji);
         grid[parseInt(emojiToLetter(emoji))].occupied = true;
         grid[parseInt(emojiToLetter(emoji))].player = turn;
-        
+
         await msg.edit(gridToObject.join(" "));
     }
 

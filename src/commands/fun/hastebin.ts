@@ -10,23 +10,26 @@ import * as Hastebin from "../../utils/PostToHastebin";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
-    const whatToPost = args.join(" ");
-
-    Hastebin.postText(whatToPost)
-    .then(res => {
-        message.reply("Here is your hastebin: " + res);
-    }).catch(err => {
-        message.reply("An error happened. Please retry the command.");
-    })
-}
-
-const info = {
+module.exports = {
     name: "hastebin",
-    description: "Write something on a beautiful picture",
-    category: "fun",
-    args: "[your text]"
+    description: "Write something to post on hastebin",
+    options: [
+        {
+            name: "text",
+            type: "STRING", 
+            description: "The text you want to post on hastebin",
+            required: true
+        }
+    ],
+    
+    execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+        const whatToPost = args.join(" ");
+    
+        Hastebin.postText(whatToPost)
+        .then(res => {
+            message.reply("Here is your hastebin: " + res);
+        }).catch(err => {
+            message.reply("An error happened. Please retry the command.");
+        });
+    }
 }
-
-export { info };
-

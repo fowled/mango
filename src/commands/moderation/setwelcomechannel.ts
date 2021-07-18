@@ -13,7 +13,7 @@ import * as Logger from "../../utils/Logger";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-    if (!message.member.hasPermission("ADMINISTRATOR")) {
+    if (!message.member.permissions.has("ADMINISTRATOR")) {
         return message.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
     }
 
@@ -34,7 +34,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
         });
     }
 
-    return message.channel.send(`<:yes:835565213498736650> Successfully updated the welcome channel to \`#${welcomeChannelName}\`!`);
+    return message.reply(`<:yes:835565213498736650> Successfully updated the welcome channel to \`#${welcomeChannelName}\`!`);
 }
 
 const info = {

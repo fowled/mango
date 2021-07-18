@@ -11,12 +11,12 @@ import * as Logger from "../../utils/Logger";
  * @param {any} options some options
  */
 export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-    if (!message.member.hasPermission("ADMINISTRATOR") && message.author.id != "352158391038377984") {
+    if (!message.member.permissions.has("ADMINISTRATOR") && message.member.user.id != "352158391038377984") {
         return message.reply("You don't have the `ADMINISTRATOR` perm. <:no:835565213322575963>");
     }
 
     const role = message.guild.roles.cache.find(r => r.name == args[0]);
-    const messageChannel = args[1] == undefined ? message.channel as Discord.GuildChannel : message.guild.channels.cache.get(args[1].toString().split("<#")[1].split(">")[0]) as unknown as Discord.GuildChannel;
+    const messageChannel = args[1] == undefined ? message.channel as Discord.GuildChannel : message.guild.channels.cache.get(args[1].toString().split("<#")[1].split(">")[0] as unknown as `${bigint}`);
 
     if (!role) {
         return message.reply("I didn't find the role you specified. <:no:835565213322575963>");
@@ -31,7 +31,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
     });
 
     // @ts-ignore
-    LogChecker.insertLog(Client, message.guild.id, message.author, `**${message.channel}** (\`${message.channel.name}\`) has been unlocked by *${message.author.tag}*`);
+    LogChecker.insertLog(Client, message.guild.id, message.member.user, `**${message.channel}** (\`${message.channel.name}\`) has been unlocked by *${message.member.user.tag}*`);
 }
 
 const info = {

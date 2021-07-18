@@ -1,6 +1,5 @@
 import * as Discord from "discord.js";
 import * as Fs from "fs";
-import * as Logger from "../../utils/Logger";
 
 // Help command
 
@@ -17,7 +16,7 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 	if (args[0]) {
 		const info = require(checkFolders(args[0])).info;
 		const infoEmbed = new Discord.MessageEmbed()
-			.setAuthor(message.author.username, message.author.displayAvatarURL())
+			.setAuthor(message.member.user.username, message.member.user.displayAvatarURL())
 			.setDescription(`Information about the **${args[0]}** command`)
 			.addField("Category", info.category, false)
 			.addField("Description", info.description, false)
@@ -26,19 +25,19 @@ export async function run(Client: Discord.Client, message: Discord.Message, args
 			.setTimestamp()
 			.setFooter(Client.user.username, Client.user.displayAvatarURL())
 
-		message.channel.send(infoEmbed);
+		message.reply({ embeds: [infoEmbed] });
 	} else {
 		checkCommands();
 
 		const helpMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
-			.setAuthor(message.author.username, message.author.avatarURL())
+			.setAuthor(message.member.user.username, message.member.user.avatarURL())
 			.setColor("RANDOM")
 			.setDescription(`» Prefix: \`@ the bot\` \n» To get help on a specific command: \`ma!help [command]\` \n\n**:tools: Moderation** \n${moderationcmd.join(", ")} \n\n**:partying_face: Fun** \n${funcmd.join(", ")} \n\n**:information_source: Information** \n${infocmd.join(", ")} \n\n**:video_game: Games** \n${gamecmd.join(", ")} \n\n**:musical_note: Music** \n${musiccmd.join(", ")} \n\n» Mango's developer: \`${Client.users.cache.get("352158391038377984").tag}\``)
 			.setThumbnail(Client.user.avatarURL())
 			.setFooter(Client.user.username, Client.user.avatarURL())
 			.setTimestamp();
 
-		message.channel.send(helpMessage);
+		message.reply({ embeds: [helpMessage] });
 	}
 
 	function checkFolders(command) {
