@@ -19,6 +19,7 @@
 		"strict": false,
 		"moduleResolution": "node",
 		"esModuleInterop": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"skipLibCheck": true
 	}
 }
