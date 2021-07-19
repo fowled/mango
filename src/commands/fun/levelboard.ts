@@ -43,12 +43,22 @@ module.exports = {
             .setTimestamp()
             .setFooter(Client.user.username, Client.user.displayAvatarURL());
 
-        let msg = await message.reply({ embeds: [levelEmbed] });
-        message.channel.messages.fetch(msg.id).then(async m => {
-            await m.react("◀️");
-            await m.react("▶️");
-            createReactionCollector(m);
+        message.reply({ embeds: [levelEmbed] }).then(async m => {
+            (message.type === "APPLICATION_COMMAND") ? fetchInteraction() : addReactions(m);
         });
+
+        function fetchInteraction() {
+            message.fetchReply().then((msg: Discord.Message) => {
+                addReactions(msg);
+            });
+        }
+
+        async function addReactions(msg) {
+            await msg.react("◀️");
+            await msg.react("▶️");
+
+            createReactionCollector(msg);
+        }
 
         const filter = (reaction: any, user: { id: string; }) => {
             return user.id == message.member.user.id;
@@ -85,7 +95,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter(Client.user.username, Client.user.displayAvatarURL())
 
-            message.reply({ embeds: [inventoryEmbed] }).then(async m => {
+            message.channel.send({ embeds: [inventoryEmbed] }).then(async m => {
                 await m.react("◀️");
                 await m.react("▶️");
 

@@ -14,7 +14,7 @@ module.exports = {
     name: "market",
     description: "Replies with the current Mango's marketplace",
 
-    async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+    async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
         const inventorymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");
         const marketItems = await inventorymodel.findAll();
 
@@ -45,11 +45,21 @@ module.exports = {
             .setFooter(Client.user.username, Client.user.displayAvatarURL())
 
         message.reply({ embeds: [inventoryEmbed] }).then(async m => {
-            await m.react("◀️");
-            await m.react("▶️");
-
-            createReactionCollector(m);
+            (message.type === "APPLICATION_COMMAND") ? fetchInteraction() : addReactions(m);
         });
+
+        function fetchInteraction() {
+            message.fetchReply().then((msg: Discord.Message) => {
+                addReactions(msg);
+            });
+        }
+
+        async function addReactions(msg) {
+            await msg.react("◀️");
+            await msg.react("▶️");
+
+            createReactionCollector(msg);
+        }
 
         function createReactionCollector(m: Discord.Message) {
             m.awaitReactions({ filter, max: 1 })
