@@ -13,6 +13,7 @@ import * as Hastebin from "../../utils/PostToHastebin";
 module.exports = {
     name: "hastebin",
     description: "Write something to post on hastebin",
+    category: "fun",
     options: [
         {
             name: "text",

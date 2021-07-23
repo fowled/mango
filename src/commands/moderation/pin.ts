@@ -1,4 +1,5 @@
 import * as Discord from "discord.js";
+import { replyMsg } from "../../utils/InteractionAdapter";
 
 // Moderation command
 
@@ -9,19 +10,34 @@ import * as Discord from "discord.js";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(client: Discord.Client, message: Discord.Message, args: string[]) {
-	message.channel.messages.fetch(args[0] as unknown as `${bigint}`)
-		.then((message: Discord.Message) => message.pin())
-		.catch(() => {
-			message.reply("An error occured, make sure I have the pin permission.");
-		});
-}
+module.exports = {
+	name: "pin",
+	description: "Pins a message",
+	category: "moderation",
+	options: [
+		{
+			name: "id",
+			type: "STRING",
+			description: "The ID of the message to pin",
+			required: true
+		}
+	],
 
-const info = {
-    name: "pin",
-    description: "Pin a message",
-    category: "moderation",
-    args: "[ID]"
-}
+	async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
+		if (!args[0]) {
+			return message.reply("You need to specify the message's ID so that I can pin it.");
+		}
 
-export { info };
+		let msg = await message.reply("Trying to pin the message...");
+
+		message.channel.messages.fetch(args[0])
+			.then((pinmessage: Discord.Message) => {
+				pinmessage.pin().then(() => {
+					replyMsg(message, "I successfully pinned the message.", msg, true);
+				});
+			}).catch(() => {
+				message.reply("An error occured, make sure I have the pin permission.");
+			});
+
+	}
+}

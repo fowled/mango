@@ -9,21 +9,18 @@ import * as Discord from "discord.js";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	(await message.guild.fetch()).invites.create(message.channel.id)
-	.then((invite: Discord.Invite) => {
-		message.reply(invite.url);
-	})
-	.catch((err: Error) => {
-		message.reply("I don't have the right perms ;( Make sure I have the admin rank :wink:");
-	});
-}
+module.exports = {
+	name: "invit",
+	description: "Create an invitation link",
+	category: "info",
 
-const info = {
-    name: "invit",
-    description: "Create an invitation link",
-    category: "info",
-    args: "none"
+	async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+		(await message.guild.fetch()).invites.create(message.channel.id)
+			.then((invite: Discord.Invite) => {
+				message.reply(invite.url);
+			})
+			.catch((err: Error) => {
+				message.reply("I don't have the right perms ;( Make sure I have the admin rank :wink:");
+			});
+	}
 }
-
-export { info };

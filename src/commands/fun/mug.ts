@@ -13,6 +13,7 @@ import * as canvaslib from "canvas";
 module.exports = {
     name: "mug",
     description: "Replies with a beautiful mug of the tagged user profile picture, or your own!",
+    category: "fun",
     options: [
         {
             name: "user",

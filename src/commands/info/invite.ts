@@ -9,24 +9,20 @@ import * as Discord from "discord.js";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-    const invite = new Discord.MessageEmbed()
-        .setAuthor(message.member.user.username, message.member.user.displayAvatarURL())
-        .setColor("RANDOM")
-        .setTitle("Invite the bot")
-        .setURL("https://discord.com/oauth2/authorize?client_id=497443144632238090&permissions=8&scope=bot")
-        .setDescription("Click [here](https://discord.com/oauth2/authorize?client_id=497443144632238090&permissions=8&scope=bot) to invite the bot.")
-        .setFooter(Client.user.username, Client.user.displayAvatarURL())
-
-    message.reply({ embeds: [invite] });
-}
-
-const info = {
+module.exports = {
     name: "invite",
-    description: "Link to invite the bot to servers",
+    description: "Sends a link to invite the bot to servers",
     category: "info",
-    args: "none"
-}
 
-export { info };
+    async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+        const invite = new Discord.MessageEmbed()
+            .setAuthor(message.member.user.username, message.member.user.displayAvatarURL())
+            .setColor("RANDOM")
+            .setTitle("Invite the bot")
+            .setURL("https://discord.com/oauth2/authorize?client_id=497443144632238090&permissions=8&scope=bot")
+            .setDescription("Click [here](https://discord.com/oauth2/authorize?client_id=497443144632238090&permissions=8&scope=bot) to invite the bot.")
+            .setFooter(Client.user.username, Client.user.displayAvatarURL())
+
+        message.reply({ embeds: [invite] });
+    }
+}

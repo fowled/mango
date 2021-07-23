@@ -13,6 +13,7 @@ import ms from "ms";
 module.exports = {
 	name: "giveaway",
 	description: "Creates a giveaway!",
+	category: "fun",
 
 	async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
 		createGiveaway();

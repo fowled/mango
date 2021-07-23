@@ -13,6 +13,7 @@ import * as Sequelize from "sequelize";
 module.exports = {
 	name: "level",
 	description: "Replies with your Mango level and XP",
+	category: "fun",
 
 	async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
 		const Xp: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("ranks");

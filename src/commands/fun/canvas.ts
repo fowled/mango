@@ -13,6 +13,7 @@ import * as canvaslib from "canvas";
 module.exports = {
     name: "canvas",
     description: "Write something on beautiful picture",
+    category: "fun",
     options: [
         {
             name: "text",

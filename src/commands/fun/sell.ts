@@ -13,6 +13,7 @@ import * as Sequelize from "sequelize";
 module.exports = {
     name: "sell",
     description: "Sells an object to Mango's marketplace",
+    category: "fun",
     options: [
         {
             name: "price",

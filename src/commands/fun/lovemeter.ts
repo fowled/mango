@@ -13,6 +13,7 @@ import ms from "ms";
 module.exports = {
     name: "lovemeter",
     description: "Calculates love % between to users",
+    category: "fun",
     options: [
         { 
             name: "user",

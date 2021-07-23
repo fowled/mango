@@ -13,6 +13,7 @@ import * as Sequelize from "sequelize";
 module.exports = {
     name: "inventory",
     description: "Shows your inventory",
+    category: "fun",
 
     async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
         const inventorymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("inventoryItems");

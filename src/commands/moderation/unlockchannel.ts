@@ -1,5 +1,6 @@
 import * as Discord from "discord.js";
 import * as Logger from "../../utils/Logger";
+import * as LogChecker from "../../utils/LogChecker";
 
 // Mod command
 
@@ -10,35 +11,48 @@ import * as Logger from "../../utils/Logger";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-    if (!message.member.permissions.has("ADMINISTRATOR") && message.member.user.id != "352158391038377984") {
-        return message.reply("You don't have the `ADMINISTRATOR` perm. <:no:835565213322575963>");
-    }
-
-    const role = message.guild.roles.cache.find(r => r.name == args[0]);
-    const messageChannel: Discord.GuildChannel = args[1] == undefined ? message.channel as Discord.GuildChannel : args[1] as unknown as Discord.GuildChannel;
-
-    if (!role) {
-        return message.reply("I didn't find the role you specified. <:no:835565213322575963>");
-    }
-
-    messageChannel.permissionOverwrites.set([{
-        id: role.id,
-        allow: "SEND_MESSAGES"
-    }]).catch(err => {
-        Logger.error(err)
-        message.reply("An error occured. <:no:835565213322575963>");
-    });
-
-    // @ts-ignore
-    LogChecker.insertLog(Client, message.guild.id, message.member.user, `**${message.channel}** (\`${message.channel.name}\`) has been unlocked by *${message.member.user.tag}*`);
-}
-
-const info = {
+module.exports = {
     name: "unlockchannel",
-    description: "Unlock a channel previously locked",
+    description: "Unlocks a channel",
     category: "moderation",
-    args: "[@role]"
-}
+    options: [
+        {
+            name: "role",
+            type: "MENTIONABLE",
+            description: "The role you want to unlock the channel to",
+            required: true
+        },
 
-export { info };
+        {
+            name: "channel",
+            type: "CHANNEL",
+            description: "The channel that will be unlocked",
+            required: false
+        }
+    ],
+
+    async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+        if (!message.member.permissions.has(["ADMINISTRATOR"])) {
+            return message.reply("<:no:835565213322575963> You don't have the `ADMINISTRATOR` permission.");
+        }
+
+        const role: Discord.Role = message.type === "APPLICATION_COMMAND" ? await message.guild.roles.fetch(args[0]) : message.mentions.roles.first();
+        const messageChannel = !args[1] ? message.channel as Discord.GuildChannel : (message.type === "APPLICATION_COMMAND" ? await message.guild.channels.fetch(args[1]) : args[1] as unknown as Discord.GuildChannel);
+
+        if (!role) {
+            return message.reply("I didn't find the role you specified. <:no:835565213322575963>");
+        }
+
+        messageChannel.permissionOverwrites.create(role, {
+            "SEND_MESSAGES": true,
+        }).then(() => {
+            message.reply(`<:yes:835565213498736650> ${messageChannel} has been unlocked for ${role}.`)
+        }).catch(err => {
+            Logger.error(err);
+            message.reply("An error occured. <:no:835565213322575963> ```\n" + err + "```");
+        });
+
+        // @ts-ignore
+        LogChecker.insertLog(Client, message.guild.id, message.member.user, `**${message.channel}** (\`${message.channel.name}\`) has been unlocked by *${message.member.user.tag}*`);
+    }
+}

@@ -13,6 +13,7 @@ import * as Sequelize from "sequelize";
 module.exports = {
     name: "money",
     description: "Replies with your bank account's money",
+    category: "fun",
 
     async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
         const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");

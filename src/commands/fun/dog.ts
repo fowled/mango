@@ -13,6 +13,7 @@ import { XMLHttpRequest } from "xmlhttprequest";
 module.exports = {
     name: "dog",
     description: "Replies with a picture of a dog",
+    category: "fun",
 
     execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
         const xhttp = new XMLHttpRequest();

@@ -11,73 +11,79 @@ import * as Logger from "../../utils/Logger";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	let reason: string = message.content.split(" ").slice(2).join(" ");
+module.exports = {
+	name: "ban",
+	description: "Bans a user",
+	category: "moderation",
+	options: [
+		{
+			name: "user",
+			type: "USER",
+			description: "The user you want to ban",
+			required: true
+		},
 
-	if (reason === "") {
-		reason = "No reason provided";
-	}
-
-	const userBan: Discord.User = message.mentions.users.first();
-	const memberBan: Promise<Discord.GuildMember> = message.guild.members.fetch(userBan);
-
-	if (memberBan) {
-		const banMessageAuthor: string = message.member.user.tag;
-		const banGuildName: string = message.member.guild.name;
-		const guildIcon: string = message.member.guild.iconURL();
-		const bannedUserId = userBan.id;
-		const date: Date = new Date();
-
-		if ((await memberBan).bannable && message.member.permissions.has("BAN_MEMBERS")) {
-			const banMessageUser: Discord.MessageEmbed = new Discord.MessageEmbed()
-				.setTitle(`Banned!`)
-				.setDescription(`You have been banned from the server **${banGuildName}** by *${banMessageAuthor}* on __${date.toLocaleString()}__! Reason: *"${reason}"*`)
-				.setTimestamp()
-				.setThumbnail(guildIcon)
-				.setColor("#4292f4")
-				.setFooter(Client.user.username, Client.user.avatarURL());
-			Client.users.cache.get(bannedUserId).send({ embeds: [banMessageUser] });
-		} else {
-			return message.reply("<:no:835565213322575963> You need the `BAN_MEMBERS` permission in order to do that.");
+		{
+			name: "reason",
+			type: "STRING",
+			description: "The reason of the ban",
+			required: false
 		}
+	],
 
-		setTimeout(() => {
-			memberBan.then(user => user.ban(({
-				reason,
-			})).then(async () => {
-				const banMessageGuild: Discord.MessageEmbed = new Discord.MessageEmbed()
-					.setTitle(`User **${userBan.username}** is now banned!`)
-					.setAuthor(message.member.user.username, message.member.user.avatarURL())
-					.setDescription(`<:yes:835565213498736650> **${(await memberBan).user.tag}** is now banned (*${reason}*)!`)
+	async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+		const memberBan: Discord.GuildMember = message.type === "APPLICATION_COMMAND" ? await message.guild.members.fetch(args[0]) : message.mentions.members.first();
+		let reason: string = args[1] ? (message.type === "APPLICATION_COMMAND" ? args[1] : args.slice(1).join(" ")) : "no reason provided";
+		
+		if (memberBan) {
+			const banMessageAuthor: string = message.member.user.tag;
+			const banGuildName: string = message.member.guild.name;
+			const guildIcon: string = message.member.guild.iconURL();
+			const bannedUserId = memberBan.user.id;
+			const date: Date = new Date();
+
+			if (memberBan.bannable && message.member.permissions.has(["BAN_MEMBERS"])) {
+				const banMessageUser: Discord.MessageEmbed = new Discord.MessageEmbed()
+					.setTitle(`Banned!`)
+					.setDescription(`You have been banned from the server **${banGuildName}** by *${banMessageAuthor}* on __${date.toLocaleString()}__! Reason: *"${reason}"*`)
 					.setTimestamp()
+					.setThumbnail(guildIcon)
 					.setColor("#4292f4")
 					.setFooter(Client.user.username, Client.user.avatarURL());
-				message.reply({ embeds: [banMessageGuild] });
+				Client.users.cache.get(bannedUserId).send({ embeds: [banMessageUser] });
+			} else {
+				return message.reply("<:no:835565213322575963> You need the `BAN_MEMBERS` permission in order to do that.");
+			}
 
-				LogChecker.insertLog(Client, message.guild.id, message.member.user, `**${(await memberBan).user.tag}** has been __banned__ by ${message.member.user.tag} for: *${reason}* \nDuration of the punishment: infinite`);
+			setTimeout(() => {
+				memberBan.ban({
+					reason,
+				}).then(async () => {
+					const banMessageGuild: Discord.MessageEmbed = new Discord.MessageEmbed()
+						.setTitle(`User **${memberBan.user.username}** is now banned!`)
+						.setAuthor(message.member.user.username, message.member.user.avatarURL())
+						.setDescription(`<:yes:835565213498736650> **${memberBan.user.tag}** is now banned (*${reason}*)!`)
+						.setTimestamp()
+						.setColor("#4292f4")
+						.setFooter(Client.user.username, Client.user.avatarURL());
+					message.reply({ embeds: [banMessageGuild] });
 
-			}).catch(async (err: any) => {
-				const banMessageError: Discord.MessageEmbed = new Discord.MessageEmbed()
-					.setTitle("Error")
-					.setAuthor(message.member.user.username, message.member.user.avatarURL())
-					.setDescription(`An error has occured while banning **${(await memberBan).user.tag}**; missing permissions. Please, I am a serious bot, I can have admin rank!`)
-					.setTimestamp()
-					.setColor("#FF0000")
-					.setFooter(Client.user.username, Client.user.avatarURL());
-				message.reply({ embeds: [banMessageError] });
-				Logger.error(err);
-			}));
-		}, 500);
-	} else {
-		message.reply("Whoops, please select a member. Ban hammer is waiting!");
+					LogChecker.insertLog(Client, message.guild.id, message.member.user, `**${memberBan.user.tag}** has been __banned__ by ${message.member.user.tag} for: *${reason}* \nDuration of the punishment: infinite`);
+
+				}).catch(async (err: any) => {
+					const banMessageError: Discord.MessageEmbed = new Discord.MessageEmbed()
+						.setTitle("Error")
+						.setAuthor(message.member.user.username, message.member.user.avatarURL())
+						.setDescription(`An error has occured while banning **${memberBan.user.tag}**; missing permissions. Please, I am a serious bot, I can have admin rank!`)
+						.setTimestamp()
+						.setColor("#FF0000")
+						.setFooter(Client.user.username, Client.user.avatarURL());
+					message.reply({ embeds: [banMessageError] });
+					Logger.error(err);
+				});
+			}, 500);
+		} else {
+			message.reply("Whoops, please select a member. Ban hammer is waiting!");
+		}
 	}
 }
-
-const info = {
-	name: "ban",
-	description: "Ban a member",
-	category: "moderation",
-	args: "[@user] (reason)"
-}
-
-export { info };

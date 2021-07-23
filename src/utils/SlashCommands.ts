@@ -3,29 +3,33 @@ import * as Fs from "fs";
 import * as path from "path";
 
 export async function SlashCommands(client: Discord.Client) {
-    /* await client.guilds.cache.get("833765854796972052").commands.fetch().then(cmd => cmd.forEach(cmd => {
+    await client.guilds.cache.get("833765854796972052").commands.fetch().then(cmd => cmd.forEach(cmd => {
         cmd.delete();
-    })); */
+    }));
 
-    let folders = ["fun", "game"];
+    let folders = ["fun", "game", "info"];
     let commandsArray: any[] = [];
 
-    const commandFiles = Fs.readdirSync(path.join(__dirname, "..", "commands", folders[1])).filter(file => file.endsWith('.js'));
+    /* for (const folder of folders) {
+        const commandFiles = Fs.readdirSync(path.join(__dirname, "..", "commands", folder)).filter(file => file.endsWith('.js'));
 
-    for (const file of commandFiles) {
-        const command = require(`../commands/${folders[1]}/${file}`);
+        console.log(commandFiles);
 
-        let commandObject = {
-            name: command.name,
-            description: command.description
-        }
+        for (const file of commandFiles) { */
+            const command = require(`../commands/moderation/rmlogchannel`);
 
-        if (command.options) {
-            Object.assign(commandObject, { options: command.options });
-        }
+            let commandObject = {
+                name: command.name,
+                description: command.description
+            }
 
-        commandsArray.push(commandObject);
-    }
+            if (command.options) {
+                Object.assign(commandObject, { options: command.options });
+            }
+
+            commandsArray.push(commandObject);
+        // }
+    // }
 
     return client.guilds.cache.get("833765854796972052").commands.set(commandsArray);
 };

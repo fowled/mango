@@ -13,7 +13,7 @@ import * as Logger from "../../utils/Logger";
 module.exports = {
 	name: "connect4",
 	description: "Play connect4 with your friends",
-
+	category: "game",
 
 	async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
 		let grid = {};

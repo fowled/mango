@@ -1,5 +1,7 @@
 import * as Discord from "discord.js";
 import * as Fs from "fs";
+import * as path from "path";
+import { client } from "../..";
 
 // Help command
 
@@ -10,98 +12,63 @@ import * as Fs from "fs";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[], options: any) {
-	let moderationcmd: string[] = [], funcmd: string[] = [], musiccmd: string[] = [], infocmd: string[] = [], gamecmd: string[] = [];
+module.exports = {
+	name: "help",
+	description: "Showcasing all of Mango's commands",
+	category: "info",
+	options: [
+		{
+			name: "command",
+			type: "STRING",
+			description: "Get precise help on a specified command",
+			required: false
+		}
+	],
 
-	if (args[0]) {
-		const info = require(checkFolders(args[0])).info;
-		const infoEmbed = new Discord.MessageEmbed()
+	async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+		if (args[0]) {
+			let command = Client.commands.get(args[0]);
+
+			if (!command) {
+				return message.reply("<:no:835565213322575963> I couldn't find the command you requested. Please check the correct command name with `ma!help`");
+			}
+			
+			const infoEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setAuthor(message.member.user.username, message.member.user.displayAvatarURL())
-			.setDescription(`Information about the **${args[0]}** command`)
-			.addField("Category", info.category, false)
-			.addField("Description", info.description, false)
-			.addField("Args", info.args, false)
+			.setDescription(`Information about the **${command.name}** command`)
+			.addField("Category", command.category, false)
+			.addField("Description", command.description, false)
 			.setColor("RANDOM")
 			.setTimestamp()
 			.setFooter(Client.user.username, Client.user.displayAvatarURL())
-
-		message.reply({ embeds: [infoEmbed] });
-	} else {
-		checkCommands();
-
-		const helpMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
-			.setAuthor(message.member.user.username, message.member.user.avatarURL())
-			.setColor("RANDOM")
-			.setDescription(`» Prefix: \`@ the bot\` \n» To get help on a specific command: \`ma!help [command]\` \n\n**:tools: Moderation** \n${moderationcmd.join(", ")} \n\n**:partying_face: Fun** \n${funcmd.join(", ")} \n\n**:information_source: Information** \n${infocmd.join(", ")} \n\n**:video_game: Games** \n${gamecmd.join(", ")} \n\n**:musical_note: Music** \n${musiccmd.join(", ")} \n\n» Mango's developer: \`${Client.users.cache.get("352158391038377984").tag}\``)
-			.setThumbnail(Client.user.avatarURL())
-			.setFooter(Client.user.username, Client.user.avatarURL())
-			.setTimestamp();
-
-		message.reply({ embeds: [helpMessage] });
-	}
-
-	function checkFolders(command) {
-		let folders = ["moderation", "fun", "music", "info", "game"];
-		var files: string[];
-		var finalPath: string;
-
-		folders.forEach(folder => {
-			files = Fs.readdirSync(`./src/commands/${folder}`);
-
-			files.forEach(file => {
-				if (file.split(".")[0] == command) {
-					return finalPath = `../../commands/${folder}/${file.split(".")[0]}.js`;
+			
+			let options: string[] = [], usage: string[] = [];
+			
+			if (command && command.options) {
+				for (const [index, opt] of command.options.entries()) {
+					options.push(`${index + 1}. <${opt.name}> - ${opt.description} - ${opt.required ? "required" : "not required"}`);
+					usage.push(`<${opt.name}>`);
 				}
-			});
-		});
 
-		return finalPath;
-	}
+				infoEmbed.addField("Args", "```md\n" + options.join("\n") + "```", false);
+				infoEmbed.addField("Usage", `\`ma!${command.name} ${usage.join(" ")}\``);
+			}
 
-	function checkCommands() {
-		let folders = ["moderation", "fun", "music", "info", "game"];
-		var files: string[];
-		var commands: string[] = [];
+			message.reply({ embeds: [infoEmbed] });
+		} else {
+			const helpMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
+				.setAuthor(message.member.user.username, message.member.user.avatarURL())
+				.setColor("RANDOM")
+				.setDescription(`» Prefix: \`ma!\` \n» To get help on a specific command: \`ma!help [command]\` \n\n**:tools: Moderation** \n${GetCategoryCmds("fun")} \n\n**:partying_face: Fun** \n${GetCategoryCmds("fun")} \n\n**:information_source: Information** \n${GetCategoryCmds("info")} \n\n**:video_game: Games** \n${GetCategoryCmds("game")} \n\n» Mango's developer: \`${(await Client.users.fetch("352158391038377984")).tag}\``)
+				.setThumbnail(Client.user.avatarURL())
+				.setFooter(Client.user.username, Client.user.avatarURL())
+				.setTimestamp();
 
-		folders.forEach(folder => {
-			files = Fs.readdirSync(`./src/commands/${folder}`);
+			message.reply({ embeds: [helpMessage] });
+		}
 
-			files.forEach(file => {
-				getVar(folder).push(`\`${file.split(".")[0]}\``);
-			});
-		});
-
-		return commands;
-	}
-
-	function getVar(folderName: string) {
-		switch (folderName) {
-			case "moderation":
-				return moderationcmd;
-
-			case "fun":
-				return funcmd;
-
-			case "music":
-				return musiccmd;
-
-			case "info":
-				return infocmd;
-
-			case "game":
-				return gamecmd;
-
-			default:
-				return null;
+		function GetCategoryCmds(category: string) {
+			return Client.commands.filter(cmd => cmd.category === category).map(cmd => `\`${cmd.name}\``).join(", ");
 		}
 	}
 }
-
-const info = {
-    name: "help",
-    description: "Seriously, what did you expect...?",
-    category: "info",
-    args: "none"
-}
-
-export { info };

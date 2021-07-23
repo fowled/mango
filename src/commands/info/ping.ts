@@ -1,4 +1,5 @@
 import * as Discord from "discord.js";
+import { replyMsg } from "../../utils/InteractionAdapter";
 
 // Test command
 
@@ -9,27 +10,28 @@ import * as Discord from "discord.js";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(client: Discord.Client, message: Discord.Message, args: string[], ops: any) {
-	const ping: Discord.Message = await message.reply("Ping?") as Discord.Message;
+module.exports = {
+	name: "ping",
+	description: "Get info on Mango's latency",
+	category: "info",
 
-	const pong: Discord.MessageEmbed = new Discord.MessageEmbed()
-		.setTitle(`Latency information for ${message.member.user.tag}`)
-		.setAuthor(message.member.user.username, message.member.user.avatarURL())
-		.setColor("RANDOM")
-		.setDescription("Latency information")
-		.addField("Host latency", `**${Math.floor(ping.createdTimestamp - message.createdTimestamp)}** ms.`)
-		.addField("API latency", `**${Math.round(client.ws.ping)}** ms.`, true)
-		.setFooter(client.user.username, client.user.avatarURL())
-		.setTimestamp();
+	async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
+		let ping = await message.reply("Ping?");
 
-	ping.edit({ embeds: [pong] });
+		if (message.type === "APPLICATION_COMMAND") {
+			ping = await message.fetchReply() as unknown as Discord.Message;
+		}
+
+		const pong: Discord.MessageEmbed = new Discord.MessageEmbed()
+			.setTitle(`Latency information for ${message.member.user.tag}`)
+			.setAuthor(message.member.user.username, message.member.user.avatarURL())
+			.setColor("RANDOM")
+			.setDescription("Latency information")
+			.addField("Host latency", `**${Math.floor(ping.createdTimestamp - message.createdTimestamp)}** ms.`)
+			.addField("API latency", `**${Math.round(Client.ws.ping)}** ms.`, true)
+			.setFooter(Client.user.username, Client.user.avatarURL())
+			.setTimestamp();
+
+		replyMsg(message, { embeds: [pong] }, ping, true);
+	}
 }
-
-const info = {
-    name: "ping",
-    description: "Get info on Mango's latency",
-    category: "info",
-    args: "none"
-}
-
-export { info };

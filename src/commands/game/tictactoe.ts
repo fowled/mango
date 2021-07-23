@@ -12,6 +12,7 @@ import * as Discord from "discord.js";
 module.exports = {
     name: "tictactoe",
     description: "Play a tictactoe game, thanks to Mango",
+    category: "game",
 
     async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
         let grid = {};

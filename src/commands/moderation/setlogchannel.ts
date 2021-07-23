@@ -10,36 +10,33 @@ import * as Sequelize from "sequelize";
  * @param {string[]} args the command args
  * @param {any} options some options
  */
-export async function run(Client: Discord.Client, message: Discord.Message, args: string[], ops) {
-    if (!message.member.permissions.has("ADMINISTRATOR")) {
-        return message.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
-    }
-
-    let logChannelID = args[0] ? args[0].toString().split("<#")[1].split(">")[0] : message.channel.id;
-
-    // @ts-ignore
-    let logChannelName: string | Discord.GuildChannel = args[0] ? args[0].toString().split("<#")[1].split(">")[0] : message.channel.name;
-
-    const logchannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("logChannels");
-    const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: message.guild.id } });
-    
-    if (logchannel) {
-        logchannelmodel.update({ idOfChannel: logChannelID }, { where: { idOfGuild: message.guild.id } });
-    } else {
-        logchannelmodel.create({
-            idOfGuild: message.guild.id,
-            idOfChannel: message.channel.id
-        });
-    }
-
-    return message.reply(`<:yes:835565213498736650> Successfully updated the log channel to \`#${logChannelName}\`!`);
-}
-
-const info = {
+module.exports = {
     name: "setlogchannel",
-    description: "Set guild's log channel for Mango",
+    description: "Sets the guild's log channel for Mango",
     category: "moderation",
-    args: "[#channel]"
-}
 
-export { info };
+    async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+        if (!message.member.permissions.has(["ADMINISTRATOR"])) {
+            return message.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
+        }
+
+        let logChannelID = args[0] ? args[0].toString().split("<#")[1].split(">")[0] : message.channel.id;
+
+        // @ts-ignore
+        let logChannelName: string | Discord.GuildChannel = args[0] ? args[0].toString().split("<#")[1].split(">")[0] : message.channel.name;
+
+        const logchannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("logChannels");
+        const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: message.guild.id } });
+
+        if (logchannel) {
+            logchannelmodel.update({ idOfChannel: logChannelID }, { where: { idOfGuild: message.guild.id } });
+        } else {
+            logchannelmodel.create({
+                idOfGuild: message.guild.id,
+                idOfChannel: message.channel.id
+            });
+        }
+
+        return message.reply(`<:yes:835565213498736650> Successfully updated the log channel to \`#${logChannelName}\`!`);
+    }
+}

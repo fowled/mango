@@ -39,7 +39,7 @@ for (const folder of commandFolders) {
 (async () => {
 	await eventBinder();
 	await client.login(Token);
-	// SlashCommands(client);
+	SlashCommands(client);
 })();
 
 async function eventBinder() {

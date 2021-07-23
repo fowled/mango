@@ -13,6 +13,7 @@ import ms from "ms";
 module.exports = {
     name: "poll",
     description: "Creates a poll",
+    category: "fun",
     options: [
         {
             name: "duration",

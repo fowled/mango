@@ -13,6 +13,7 @@ import * as Discord from "discord.js";
 module.exports = {
     name: "buy",
     description: "Buy something of the market",
+    category: "fun",
     options: [
         {
             name: "id",

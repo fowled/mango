@@ -13,6 +13,7 @@ import { XMLHttpRequest } from "xmlhttprequest-ts";
 module.exports = {
 	name: "scproj",
 	description: "Shows information about a Scratch project",
+	category: "fun",
 	options: [
         {
             name: "id",
