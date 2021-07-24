@@ -14,16 +14,26 @@ module.exports = {
     name: "setlogchannel",
     description: "Sets the guild's log channel for Mango",
     category: "moderation",
+    options: [
+        {
+            name: "channel",
+            type: "CHANNEL",
+            description: "The channel you want to set logs to",
+            required: false
+        }
+    ],
 
     async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
         if (!message.member.permissions.has(["ADMINISTRATOR"])) {
             return message.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
         }
 
-        let logChannelID = args[0] ? args[0].toString().split("<#")[1].split(">")[0] : message.channel.id;
+        let logChannelID = args[0] ? args[0].replace(/\D+/g, "") : message.channel.id;
+        let fetchChannel = await Client.channels.fetch(logChannelID) as Discord.TextChannel;
 
-        // @ts-ignore
-        let logChannelName: string | Discord.GuildChannel = args[0] ? args[0].toString().split("<#")[1].split(">")[0] : message.channel.name;
+        if (fetchChannel.type !== "GUILD_TEXT") {
+            return message.reply(`The channel you specified isn't a text channel. Please retry the command.`);
+        }
 
         const logchannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("logChannels");
         const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: message.guild.id } });
@@ -37,6 +47,6 @@ module.exports = {
             });
         }
 
-        return message.reply(`<:yes:835565213498736650> Successfully updated the log channel to \`#${logChannelName}\`!`);
+        return message.reply(`<:yes:835565213498736650> Successfully updated the log channel to \`#${fetchChannel.name}\`!`);
     }
 }

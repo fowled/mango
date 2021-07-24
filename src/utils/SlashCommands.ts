@@ -10,13 +10,11 @@ export async function SlashCommands(client: Discord.Client) {
     let folders = ["fun", "game", "info"];
     let commandsArray: any[] = [];
 
-    /* for (const folder of folders) {
+    for (const folder of folders) {
         const commandFiles = Fs.readdirSync(path.join(__dirname, "..", "commands", folder)).filter(file => file.endsWith('.js'));
 
-        console.log(commandFiles);
-
-        for (const file of commandFiles) { */
-            const command = require(`../commands/moderation/rmlogchannel`);
+        for (const file of commandFiles) {
+            const command = require(`../commands/${folder}/${file}`);
 
             let commandObject = {
                 name: command.name,
@@ -28,8 +26,8 @@ export async function SlashCommands(client: Discord.Client) {
             }
 
             commandsArray.push(commandObject);
-        // }
-    // }
+        }
+    }
 
     return client.guilds.cache.get("833765854796972052").commands.set(commandsArray);
 };

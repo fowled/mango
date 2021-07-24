@@ -12,7 +12,7 @@ module.exports = {
         
         if (!welcomechannel) return;
         
-        const channel = Client.channels.cache.get(welcomechannel.get("idOfChannel") as unknown as `${bigint}`);
+        const channel: Discord.TextChannel = await Client.channels.fetch(welcomechannel.get("idOfChannel") as unknown as `${bigint}`) as Discord.TextChannel;
         
         const canvas = canvaslib.createCanvas(700, 250);
         const ctx = canvas.getContext("2d");
@@ -44,8 +44,7 @@ module.exports = {
             .setImage("attachment://welcome.png")
             .setColor("#808080")
         
-        try {
-            // @ts-ignore
+        try { 
             channel.send({ embeds: [embed], files: [attachment] });
         } catch (err) {
             Logger.error("Didn't find the channel to post attachment [guildMemberAdd]");

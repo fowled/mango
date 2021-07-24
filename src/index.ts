@@ -38,8 +38,9 @@ for (const folder of commandFolders) {
 
 (async () => {
 	await eventBinder();
+	await handleRejections();
 	await client.login(Token);
-	SlashCommands(client);
+	// SlashCommands(client);
 })();
 
 async function eventBinder() {
@@ -55,4 +56,10 @@ async function eventBinder() {
 	}
 
 	Logger.log(`Successfully loaded ${eventFiles.length} events`);
+}
+
+async function handleRejections() {
+	process.on("unhandledRejection", error => {
+		console.warn("Unhandled promise rejection:", error);
+	});
 }

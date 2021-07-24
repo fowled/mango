@@ -33,7 +33,9 @@ module.exports = {
     async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
         const memberMute: Discord.GuildMember = message.type === "APPLICATION_COMMAND" ? await message.guild.members.fetch(args[0]) : message.mentions.members.first();
 
-        if (memberMute.permissions.has(["ADMINISTRATOR"])) {
+        if (!memberMute) {
+            return message.reply("You specified an invalid user to mute. Please tag him in order to mute them.");
+        } if (memberMute.permissions.has(["ADMINISTRATOR"])) {
             return message.reply("Sorry, but I can't mute the user you specified, because he has one of the following perms: `ADMINISTRATOR`");
         } else if (!message.member.permissions.has(["MANAGE_MESSAGES"])) {
             return message.reply("Sorry, but you don't have the permission to mute this user.");
