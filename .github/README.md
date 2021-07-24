@@ -26,7 +26,6 @@ Let's dive into the dev part.
     - [```game/```](https://github.com/mazzlabs/Mango/tree/master/src/commands/game) → Folder containing game commands
     - [```info/```](https://github.com/mazzlabs/Mango/tree/master/src/commands/info) → Folder containing info command
     - [```moderation/```](https://github.com/mazzlabs/Mango/tree/master/src/commands/moderation) → Folder containing moderation commands
-    - [```music/```](https://github.com/mazzlabs/Mango/tree/master/src/commands/music) → Folder containing music commands
 - [```events/```](https://github.com/mazzlabs/Mango/tree/master/src/events) → Folder containing Mango's events
 - [```models/```](https://github.com/mazzlabs/Mango/tree/master/src/models) → Folder containing Sequelize models
 - [```utils/```](https://github.com/mazzlabs/Mango/tree/master/src/utils) → Folder containing various util files
@@ -34,11 +33,12 @@ Let's dive into the dev part.
 ## Features
 - [x] Moderation
 - [x] Games
-- [x] Info & API
-- [x] Music 
+- [x] Info
 - [x] Economy
+- [x] Scratch API 
+- [ ] Hypixel API - coming soon!
 
-You can get the help message by typing ```ma!help```.
+You can get the help message by typing ```ma!help``` (or ```/help``` using slash commands).
 
 Mango will welcome your members with a nice-looking picture with their avatar and the server member count, automatically. You don't have to do anything ;)
 
@@ -47,4 +47,4 @@ The welcome message | The canvas command
 ------------------- | ------------------
 <img src="https://i.imgur.com/BWYHFlh.png" alt="welcome" width=450> | <img src="https://i.imgur.com/uldNvl9.png" alt="tictactoe" width=450>
 
-If help is needed, contact ```Mazz#9999``` on Discord.
+If help is needed, please contact me - https://t.me/enclosures
