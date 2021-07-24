@@ -29,5 +29,5 @@ export async function SlashCommands(client: Discord.Client) {
         }
     }
 
-    return client.guilds.cache.get("833765854796972052").commands.set(commandsArray);
+    return client.application.commands.set(commandsArray);
 };
