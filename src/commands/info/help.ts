@@ -1,7 +1,5 @@
+// @ts-nocheck
 import * as Discord from "discord.js";
-import * as Fs from "fs";
-import * as path from "path";
-import { client } from "../..";
 
 // Help command
 

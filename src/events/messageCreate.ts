@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as Discord from "discord.js";
 
 import * as Logger from "../utils/Logger";

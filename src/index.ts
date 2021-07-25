@@ -1,4 +1,5 @@
-﻿import * as Discord from "discord.js";
+﻿// @ts-nocheck
+import * as Discord from "discord.js";
 import * as Sequelize from "sequelize";
 import * as fs from "fs";
 import * as path from "path";

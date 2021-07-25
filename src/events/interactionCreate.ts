@@ -1,5 +1,5 @@
+// @ts-nocheck
 import * as Discord from "discord.js";
-import * as Fs from "fs";
 
 import { ops } from "../index";
 import * as Logger from "../utils/Logger";
