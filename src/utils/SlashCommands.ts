@@ -3,7 +3,7 @@ import * as Fs from "fs";
 import * as path from "path";
 
 export async function SlashCommands(client: Discord.Client) {
-    await client.guilds.cache.get("833765854796972052").commands.fetch().then(cmd => cmd.forEach(cmd => {
+    await client.application.commands.fetch().then(cmd => cmd.forEach(cmd => {
         cmd.delete();
     }));
 

@@ -10,7 +10,7 @@ module.exports = {
 	name: "messageCreate",
 	async execute(message: Discord.Message, Client: Discord.Client) {
 		if (Client.application?.owner) await Client.application?.fetch();
-		if (message.member.user.bot) return;
+		if (message.author.bot) return;
 
 		const prefix: string = "ma!";
 
