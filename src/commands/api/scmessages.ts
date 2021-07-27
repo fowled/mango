@@ -13,7 +13,7 @@ import { XMLHttpRequest } from "xmlhttprequest-ts";
 module.exports = {
 	name: "scmessages",
 	description: "Replies with user's message count",
-	category: "fun",
+	category: "api",
 	options: [
 		{
 			name: "username",
