@@ -36,7 +36,7 @@ module.exports = {
 			"HOUSE_BALANCE": "<:balance:835496891453669386>",
 			"EARLY_SUPPORTER": "<:early_supporter:835496891399536651>",
 			"VERIFIED_BOT": "<:verified:835501423843999744>",
-			"EARLY_VERIFIED_DEVELOPER": "<:developer:835496891101478933>"
+			"EARLY_VERIFIED_BOT_DEVELOPER": "<:developer:835496891101478933>"
 		}
 
 		let badgesArray: string[] = [];
