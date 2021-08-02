@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as Discord from "discord.js";
 
 import * as Logger from "../utils/Logger";
@@ -9,23 +8,25 @@ import { ops } from "../index";
 module.exports = {
 	name: "messageCreate",
 	async execute(message: Discord.Message, Client: Discord.Client) {
-		if (Client.application?.owner) await Client.application?.fetch();
+		/* if (Client.application?.owner) await Client.application?.fetch();
 		if (message.author.bot) return;
 
-		const prefix: string = "ma!";
+		const prefix: string = "/";
 
 		Xp.checkXP(message, ops);
 
 		const args: string[] = message.content.slice(prefix.length).trim().split(/ +/);
 		const command: string = args.shift().toLowerCase();
 
-		if (!message.content.startsWith(prefix) || !Client.commands.has(command)) return;
+		if (!message.content.startsWith(prefix) || clientCommands.has(command)) return;
 
 		try {
-			Client.commands.get(command).execute(Client, message, args, ops);
-			Logger.log(`${message.member.user.tag} ran the ${Client.commands.get(command).name} command in ${message.guild.name}`);
+			clientCommands.get(command).execute(Client, message, args, ops);
+			Logger.log(`${message.member.user.tag} ran the ${clientCommands.get(command).name} command in ${message.guild.name}`);
 		} catch (error) {
 			Logger.error(error);
-		}
+		} */
+
+		return;
 	}
 };

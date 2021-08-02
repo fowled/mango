@@ -38,7 +38,7 @@ Let's dive into the dev part.
 - [x] Scratch API 
 - [ ] Hypixel API - coming soon!
 
-You can get the help message by typing ```ma!help``` (or ```/help``` using slash commands).
+You can get the help message by typing ```/help```.
 
 Mango will welcome your members with a nice-looking picture with their avatar and the server member count, automatically. You don't have to do anything ;)
 

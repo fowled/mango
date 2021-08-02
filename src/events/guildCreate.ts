@@ -10,7 +10,7 @@ module.exports = {
 
 		const embed: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle(`Hi, I'm ${Client.user.username} and I'm new in ${guild.name}!`)
-			.setDescription(`Help message has been sent to ${guildOwner.user.tag}, but they are also available typing *ma!help*.`)
+			.setDescription(`Help message has been sent to ${guildOwner.user.tag}, but they are also available typing */help*.`)
 			.setThumbnail(guild.iconURL())
 			.setColor("RANDOM")
 
@@ -18,7 +18,7 @@ module.exports = {
 
 		const ownerEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle(`Thank you for adding me in ${guild.name}!`)
-			.setDescription(`Help message: *ma!help*`)
+			.setDescription(`Help message: */help*`)
 			.setThumbnail(guild.iconURL())
 			.setColor("RANDOM")
 

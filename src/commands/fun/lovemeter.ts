@@ -6,7 +6,7 @@ import ms from "ms";
 /**
  * A love meter between 2 members
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -23,8 +23,8 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
-        const member = message.type === "APPLICATION_COMMAND" ? Client.users.cache.get(args[0]) : Client.users.cache.get(message.mentions.members.first().id);
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+        const member = Client.users.cache.get(args[0]);
 
         const randomNumber = Math.floor(Math.random() * 10) + 1;
         let messageContent = "\n";
@@ -39,12 +39,12 @@ module.exports = {
 
         const lovemeter = new Discord.MessageEmbed()
             .setTitle("Lovemeter :heart:")
-            .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+            .setAuthor(interaction.member.user.tag, interaction.member.user.avatarURL())
             .setColor("#08ABF9")
             .setDescription(`Current __lovemeter__ between you and *${member}*: ${messageContent} \n→ **${randomNumber * 10}**% of love`)
             .setFooter(Client.user.username, Client.user.avatarURL())
             .setTimestamp()
 
-        message.reply({ embeds: [lovemeter] });
+        interaction.reply({ embeds: [lovemeter] });
     }
 }

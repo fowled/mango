@@ -7,7 +7,7 @@ import * as LogChecker from "../../utils/LogChecker";
 /**
  * Locks a channel
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -31,28 +31,28 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
-        if (!message.member.permissions.has(["ADMINISTRATOR"])) {
-            return message.reply("<:no:835565213322575963> You don't have the `ADMINISTRATOR` permission.");
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+        if (!interaction.member.permissions.has(["ADMINISTRATOR"])) {
+            return interaction.reply("<:no:835565213322575963> You don't have the `ADMINISTRATOR` permission.");
         }
 
-        const role: Discord.Role = message.type === "APPLICATION_COMMAND" ? await message.guild.roles.fetch(args[0]) : message.mentions.roles.first();
-        const messageChannel = !args[1] ? message.channel as Discord.GuildChannel : (message.type === "APPLICATION_COMMAND" ? await message.guild.channels.fetch(args[1]) : args[1] as unknown as Discord.GuildChannel);
+        const role: Discord.Role = await interaction.guild.roles.fetch(args[0]);
+        const messageChannel = !args[1] ? interaction.channel as Discord.GuildChannel : await interaction.guild.channels.fetch(args[1]);
 
         if (!role) {
-            return message.reply("I didn't find the role you specified. <:no:835565213322575963>");
+            return interaction.reply("I didn't find the role you specified. <:no:835565213322575963>");
         }
 
         messageChannel.permissionOverwrites.create(role, {
             "SEND_MESSAGES": true,
         }).then(() => {
-            message.reply(`<:yes:835565213498736650> ${messageChannel} has been unlocked for ${role}.`)
+            interaction.reply(`<:yes:835565213498736650> ${messageChannel} has been unlocked for ${role}.`)
         }).catch(err => {
             Logger.error(err);
-            message.reply("An error occured. <:no:835565213322575963> ```\n" + err + "```");
+            interaction.reply("An error occured. <:no:835565213322575963> ```\n" + err + "```");
         });
 
         // @ts-ignore
-        LogChecker.insertLog(Client, message.guild.id, message.member.user, `**${message.channel}** (\`${message.channel.name}\`) has been unlocked by *${message.member.user.tag}*`);
+        LogChecker.insertLog(Client, interaction.guild.id, interaction.member.user, `**${interaction.channel}** (\`${interaction.channel.name}\`) has been unlocked by *${interaction.member.user.tag}*`);
     }
 }

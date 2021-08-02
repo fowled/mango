@@ -6,7 +6,7 @@ import * as LogChecker from "../../utils/LogChecker";
 /**
  * Deletes several messages at once.
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -23,26 +23,26 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
-        if (!message.member.permissions.has(["MANAGE_MESSAGES"])) {
-            return message.reply("Sorry, but you don't have the `MANAGE_MESSAGES` permission.");
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+        if (!interaction.member.permissions.has(["MANAGE_MESSAGES"])) {
+            return interaction.reply("Sorry, but you don't have the `MANAGE_MESSAGES` permission.");
         }
 
-        const channel = message.channel as unknown as Discord.TextChannel;
+        const channel = interaction.channel as unknown as Discord.TextChannel;
 
         if (args.length > 0) {
             if (!isNaN(parseInt(args[0], 10)) && parseInt(args[0], 10) >= 1 && parseInt(args[0], 10) <= 100) {
                 channel.bulkDelete(parseInt(args[0], 10)).then(() => {
-                    return (message.type === "APPLICATION_COMMAND") ? message.reply(`<:yes:835565213498736650> Successfully deleted ${args[0]} messages!`) : message.channel.send(`<:yes:835565213498736650> Successfully deleted ${args[0]} messages!`);
-                }).catch((error: Error) => message.reply("I don't have the permission to delete messages."));
-                LogChecker.insertLog(Client, message.guild.id, message.member.user, `**${args[0]}** messages got deleted in *${message.channel}* by ${message.member.user.tag}`);
+                    return interaction.reply(`<:yes:835565213498736650> Successfully deleted ${args[0]} messages!`);
+                }).catch((error: Error) => interaction.reply("I don't have the permission to delete messages."));
+                LogChecker.insertLog(Client, interaction.guild.id, interaction.member.user, `**${args[0]}** messages got deleted in *${interaction.channel}* by ${interaction.member.user.tag}`);
 
             } else {
-                message.reply("Invlid number provided. Only provided number between 1 and 100");
+                interaction.reply("Invlid number provided. Only provided number between 1 and 100");
             }
 
         } else {
-            message.reply("Please enter the number of messages to delete!");
+            interaction.reply("Please enter the number of messages to delete!");
         }
     }
 }

@@ -6,7 +6,7 @@ import { XMLHttpRequest } from "xmlhttprequest";
 /**
  * Replies with stats about the COVID-19 epidemic
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -23,7 +23,7 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         if (!args[0]) {
             const xhttp: XMLHttpRequest = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
@@ -31,7 +31,7 @@ module.exports = {
                     let parsedRequest = JSON.parse(this.responseText);
 
                     let MessageEmbed = new Discord.MessageEmbed()
-                        .setAuthor(message.member.user.username, message.member.user.avatarURL())
+                        .setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
                         .setTitle("Coronavirus stats :chart_with_upwards_trend:")
                         .setDescription("Find here COVID-19 related information")
                         .setColor("#08ABF9")
@@ -46,7 +46,7 @@ module.exports = {
                         .setFooter(Client.user.username, Client.user.avatarURL())
                         .setTimestamp()
 
-                    message.reply({ embeds: [MessageEmbed] });
+                    interaction.reply({ embeds: [MessageEmbed] });
                 }
             }
 
@@ -59,7 +59,7 @@ module.exports = {
                     let parsedRequest = JSON.parse(this.responseText);
 
                     let MessageEmbed = new Discord.MessageEmbed()
-                        .setAuthor(message.member.user.username, message.member.user.avatarURL())
+                        .setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
                         .setTitle("Coronavirus stats :chart_with_upwards_trend:")
                         .setDescription("Find here COVID-19 related information")
                         .setThumbnail(parsedRequest.countryInfo.flag.toString())
@@ -73,9 +73,9 @@ module.exports = {
                         .setFooter(Client.user.username, Client.user.avatarURL())
                         .setTimestamp()
 
-                    message.reply({ embeds: [MessageEmbed] });
+                    interaction.reply({ embeds: [MessageEmbed] });
                 } else if (this.readyState == 4 && this.status == 404) {
-                    message.reply("I didn't find that country. <:no:835565213322575963>");
+                    interaction.reply("I didn't find that country. <:no:835565213322575963>");
                 }
             }
 

@@ -6,7 +6,7 @@ import * as Sequelize from "sequelize";
 /**
  * Replies with your money
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -15,19 +15,19 @@ module.exports = {
     description: "Replies with your bank account's money",
     category: "fun",
 
-    async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
-        const money = await moneymodel.findOne({ where: { idOfUser: message.member.user.id } });
+        const money = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
 
         if (money) {
-            return message.reply({ content: `:dollar: Your account currently has **${money.get("money")}$**!`, ephemeral: true });
+            return interaction.reply({ content: `:dollar: Your account currently has **${money.get("money")}$**!`, ephemeral: true });
         } else {
             moneymodel.create({
-                idOfUser: message.member.user.id,
+                idOfUser: interaction.member.user.id,
                 money: 500
             });
 
-            return message.reply("Since you are new to the bank, I just created an account with **500$** on it for you. Enjoy! :wink:");
+            return interaction.reply("Since you are new to the bank, I just created an account with **500$** on it for you. Enjoy! :wink:");
         }
     }
 }

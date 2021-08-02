@@ -6,7 +6,7 @@ import ms from "ms";
 /**
  * answers with the guild's level leaderboard (levelboard)
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -58,20 +58,16 @@ module.exports = {
         },
     ],
 
-    async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
-        if (args.length === 0) {
-            return message.reply("It looks like you're having trouble using that command. Here's the syntax: `ma!poll [duration] | option 1 | up to 5 options`.");
-        }
-
-        const time = message.type === "APPLICATION_COMMAND" ? args[0] : message.content.split("poll")[1].trim().split(" | ")[0];
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+        const time = args[0];
         args.shift();
-        let splitMessage = message.type === "APPLICATION_COMMAND" ? args : message.content.split(`${time} |`)[1].split(" | ");
+        let splitMessage = args;
         let choices: string[] = [];
         let reactions = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
         let msgID;
 
         if (splitMessage.length > 6) {
-            return message.reply("Not-that-fatal error: 5 args limit exceeded. Please provide less args.");
+            return interaction.reply("Not-that-fatal error: 5 args limit exceeded. Please provide less args.");
         }
 
         for (let i = 0; i < splitMessage.length; i++) {
@@ -79,18 +75,18 @@ module.exports = {
         }
 
         const poll = new Discord.MessageEmbed()
-            .setAuthor(message.member.user.username, message.member.user.avatarURL())
-            .setTitle(`Poll by **${message.member.user.tag}**`)
+            .setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+            .setTitle(`Poll by **${interaction.member.user.tag}**`)
             .setDescription(choices.join("\n"))
             .setColor("#00BFFF")
             .setFooter(Client.user.username, Client.user.avatarURL())
 
-        message.reply({ embeds: [poll] }).then(async msg => {
-            (message.type === "APPLICATION_COMMAND") ? fetchInteraction() : addReactions(msg);
+        interaction.reply({ embeds: [poll] }).then(async msg => {
+            fetchInteraction();
         });
 
         function fetchInteraction() {
-            message.fetchReply().then((msg: Discord.Message) => {
+            interaction.fetchReply().then((msg: Discord.Message) => {
                 addReactions(msg);
             });
         }
@@ -112,30 +108,28 @@ module.exports = {
                 return ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"].includes(reaction.emoji.name);
             };
 
-            msg.awaitReactions({ filter, time: ms(time), errors: ["time"] })
-                .then((collected: Discord.Collection<string, Discord.MessageReaction>) => {
-                }).catch((collected: Discord.Collection<string, Discord.MessageReaction>) => {
-                    let msgContent = "";
-                    let numberOfReactions = 0;
+            msg.awaitReactions({ filter, time: ms(time), errors: ["time"] }).catch((collected: Discord.Collection<string, Discord.MessageReaction>) => {
+                let msgContent = "";
+                let numberOfReactions = 0;
 
-                    for (var i = 0; i < splitMessage.length; i++) {
-                        numberOfReactions += (msg.reactions.cache.array()[i].users.cache.size - 1);
-                    }
+                for (var i = 0; i < splitMessage.length; i++) {
+                    numberOfReactions += (Array.from(msg.reactions.cache.values())[i].count - 1);
+                }
 
-                    for (var x = 0; x < splitMessage.length; x++) {
-                        msgContent += `${reactions[x]} - ${splitMessage[x]} - ${msg.reactions.cache.array()[x].count - 1} votes **[${Math.round((msg.reactions.cache.array()[x].count - 1) / numberOfReactions * 100)}%]** \n`;
-                    }
+                for (var x = 0; x < splitMessage.length; x++) {
+                    msgContent += `${reactions[x]} - ${splitMessage[x]} - ${Array.from(msg.reactions.cache.values())[x].count - 1} votes **[${Math.round((Array.from(msg.reactions.cache.values())[x].count - 1) / numberOfReactions * 100)}%]** \n`;
+                }
 
-                    const votes = new Discord.MessageEmbed()
-                        .setAuthor(message.member.user.username, message.member.user.avatarURL())
-                        .setTitle("Results of the poll")
-                        .setURL(`https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${msgID}`)
-                        .setDescription(msgContent)
-                        .setColor("#00BFFF")
-                        .setFooter(Client.user.username, Client.user.avatarURL())
+                const votes = new Discord.MessageEmbed()
+                    .setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+                    .setTitle("Results of the poll")
+                    .setURL(`https://discordapp.com/channels/${interaction.guild.id}/${interaction.channel.id}/${msgID}`)
+                    .setDescription(msgContent)
+                    .setColor("#00BFFF")
+                    .setFooter(Client.user.username, Client.user.avatarURL())
 
-                    message.channel.send({ embeds: [votes] });
-                });
+                interaction.channel.send({ embeds: [votes] });
+            });
         }
     }
 }

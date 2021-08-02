@@ -6,7 +6,7 @@ import * as Hastebin from "../../utils/PostToHastebin";
 /**
  * Creates a custom haste
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -23,14 +23,14 @@ module.exports = {
         }
     ],
     
-    execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+    execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const whatToPost = args.join(" ");
     
         Hastebin.postText(whatToPost)
         .then(res => {
-            message.reply("Here is your hastebin: " + res);
+            interaction.reply("Here is your hastebin: " + res);
         }).catch(err => {
-            message.reply("An error happened. Please retry the command.");
+            interaction.reply("An error happened. Please retry the command.");
         });
     }
 }

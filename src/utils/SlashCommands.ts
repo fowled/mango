@@ -7,10 +7,9 @@ export async function SlashCommands(client: Discord.Client) {
         cmd.delete();
     }));
 
-    let folders = ["fun", "game", "info"];
-    let commandsArray: any[] = [];
+    const interactionFolders = Fs.readdirSync(path.join(__dirname, "..", "commands"));
 
-    for (const folder of folders) {
+    for (const folder of interactionFolders) {
         const commandFiles = Fs.readdirSync(path.join(__dirname, "..", "commands", folder)).filter(file => file.endsWith('.js'));
 
         for (const file of commandFiles) {
@@ -25,9 +24,8 @@ export async function SlashCommands(client: Discord.Client) {
                 Object.assign(commandObject, { options: command.options });
             }
 
-            commandsArray.push(commandObject);
+            console.log(interactionFolders, commandObject);
+            await client.application.commands.create(commandObject);
         }
     }
-
-    return client.application.commands.set(commandsArray);
 };

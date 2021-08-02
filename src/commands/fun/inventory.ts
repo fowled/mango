@@ -6,7 +6,7 @@ import * as Sequelize from "sequelize";
 /**
  * Shows your inventory w/ market
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -15,12 +15,12 @@ module.exports = {
     description: "Shows your inventory",
     category: "fun",
 
-    async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const inventorymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("inventoryItems");
-        const authorinventory = await inventorymodel.findAll({ where: { authorID: message.member.user.id } });
+        const authorinventory = await inventorymodel.findAll({ where: { authorID: interaction.member.user.id } });
 
         if (!authorinventory[0]) {
-            return message.reply("Your inventory is empty! Start by doing `ma!market` and then buy something with the `ma!buy [ID of the item]` command.");
+            return interaction.reply("Your inventory is empty! Start by doing `/market` and then buy something with the `/buy [ID of the item]` command.");
         }
 
         let splittedItems: string[] = [];
@@ -31,7 +31,7 @@ module.exports = {
         });
 
         const filter = (reaction: any, user: { id: string; }) => {
-            return user.id == message.member.user.id;
+            return user.id == interaction.member.user.id;
         };
 
         let page: number = 1;
@@ -45,12 +45,12 @@ module.exports = {
             .setTimestamp()
             .setFooter(Client.user.username, Client.user.displayAvatarURL())
 
-        message.reply({ embeds: [inventoryEmbed] }).then(async m => {
-            (message.type === "APPLICATION_COMMAND") ? fetchInteraction() : addReactions(m);
+        interaction.reply({ embeds: [inventoryEmbed] }).then(async m => {
+            fetchInteraction();
         });
 
         function fetchInteraction() {
-            message.fetchReply().then((msg: Discord.Message) => {
+            interaction.fetchReply().then((msg: Discord.Message) => {
                 addReactions(msg);
             });
         }
@@ -93,7 +93,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter(Client.user.username, Client.user.displayAvatarURL())
 
-            message.channel.send({ embeds: [inventoryEmbed] }).then(async m => {
+            interaction.channel.send({ embeds: [inventoryEmbed] }).then(async m => {
                 await m.react("◀️");
                 await m.react("▶️");
 

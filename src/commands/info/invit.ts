@@ -5,7 +5,7 @@ import * as Discord from "discord.js";
 /**
  * Generates an invitation in the server.
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -14,13 +14,13 @@ module.exports = {
 	description: "Create an invitation link",
 	category: "info",
 
-	async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
-		(await message.guild.fetch()).invites.create(message.channel.id)
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+		(await interaction.guild.fetch()).invites.create(interaction.channel.id)
 			.then((invite: Discord.Invite) => {
-				message.reply(invite.url);
+				interaction.reply(invite.url);
 			})
 			.catch((err: Error) => {
-				message.reply("I don't have the right perms ;( Make sure I have the admin rank :wink:");
+				interaction.reply("I don't have the right perms ;( Make sure I have the admin rank :wink:");
 			});
 	}
 }

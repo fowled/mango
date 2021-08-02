@@ -6,7 +6,7 @@ import * as canvaslib from "canvas";
 /**
  * Draws something.
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -23,11 +23,11 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         if (!args[0]) {
-            return message.reply("You didn't specify any text to show on the canvas. Please try the command again.");
+            return interaction.reply("You didn't specify any text to show on the canvas. Please try the command again.");
         } else if (args.join(" ").length > 45) {
-            return message.reply("Your text is too long! Please retry the command.");
+            return interaction.reply("Your text is too long! Please retry the command.");
         }
 
         const canvas = canvaslib.createCanvas(700, 250);
@@ -44,18 +44,18 @@ module.exports = {
         ctx.font = "35px Caviar Dreams"; // displays on the picture the member tag
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = "left";
-        ctx.fillText(`${message.member.user.username} said:`, 10, canvas.height / 2);
+        ctx.fillText(`${interaction.member.user.username} said:`, 10, canvas.height / 2);
 
         ctx.beginPath(); // rounded profile pic
         ctx.arc(630, 75, 60, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.clip();
 
-        const avatar = await canvaslib.loadImage(message.member.user.displayAvatarURL({ format: "jpg" }));
+        const avatar = await canvaslib.loadImage(interaction.member.user.displayAvatarURL({ format: "jpg" }));
         ctx.drawImage(avatar, 570, 15, 120, 120);
 
         const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png');
 
-        message.reply({ files: [attachment] });
+        interaction.reply({ files: [attachment] });
     }
 }

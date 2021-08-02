@@ -1,12 +1,12 @@
-// @ts-nocheck
 import * as Discord from "discord.js";
+import { clientInteractions } from "../../index";
 
 // Help command
 
 /**
  * Answers with the infohelp message in dm.
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -23,16 +23,16 @@ module.exports = {
 		}
 	],
 
-	async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
 		if (args[0]) {
-			let command = Client.commands.get(args[0]);
+			let command = clientInteractions.get(args[0]);
 
 			if (!command) {
-				return message.reply("<:no:835565213322575963> I couldn't find the command you requested. Please check the correct command name with `ma!help`");
+				return interaction.reply("<:no:835565213322575963> I couldn't find the command you requested. Please check the correct command name with `/help`");
 			}
 			
 			const infoEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
-			.setAuthor(message.member.user.username, message.member.user.displayAvatarURL())
+			.setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
 			.setDescription(`Information about the **${command.name}** command`)
 			.addField("Category", command.category, false)
 			.addField("Description", command.description, false)
@@ -49,24 +49,24 @@ module.exports = {
 				}
 
 				infoEmbed.addField("Args", "```md\n" + options.join("\n") + "```", false);
-				infoEmbed.addField("Usage", `\`ma!${command.name} ${usage.join(" ")}\``);
+				infoEmbed.addField("Usage", `\`/${command.name} ${usage.join(" ")}\``);
 			}
 
-			message.reply({ embeds: [infoEmbed] });
+			interaction.reply({ embeds: [infoEmbed] });
 		} else {
-			const helpMessage: Discord.MessageEmbed = new Discord.MessageEmbed()
-				.setAuthor(message.member.user.username, message.member.user.avatarURL())
+			const helpinteraction: Discord.MessageEmbed = new Discord.MessageEmbed()
+				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
 				.setColor("RANDOM")
-				.setDescription(`» Prefix: \`ma!\` \n» To get help on a specific command: \`ma!help [command]\` \n\n**:tools: Moderation** \n${GetCategoryCmds("moderation")} \n\n**:partying_face: Fun** \n${GetCategoryCmds("fun")} \n\n**:information_source: Information** \n${GetCategoryCmds("info")} \n\n**:computer: APIs** \n${GetCategoryCmds("api")} \n\n**:video_game: Games** \n${GetCategoryCmds("game")} \n\n» Mango's developer: \`${(await Client.users.fetch("352158391038377984")).tag}\``)
+				.setDescription(`» Prefix: \`/\` \n» To get help on a specific command: \`/help [command]\` \n\n**:tools: Moderation** \n${GetCategoryCmds("moderation")} \n\n**:partying_face: Fun** \n${GetCategoryCmds("fun")} \n\n**:information_source: Information** \n${GetCategoryCmds("info")} \n\n**:computer: APIs** \n${GetCategoryCmds("api")} \n\n**:video_game: Games** \n${GetCategoryCmds("game")} \n\n» Mango's developer: \`${(await Client.users.fetch("352158391038377984")).tag}\``)
 				.setThumbnail(Client.user.avatarURL())
 				.setFooter(Client.user.username, Client.user.avatarURL())
 				.setTimestamp();
 
-			message.reply({ embeds: [helpMessage] });
+			interaction.reply({ embeds: [helpinteraction] });
 		}
 
 		function GetCategoryCmds(category: string) {
-			return Client.commands.filter(cmd => cmd.category === category).map(cmd => `\`${cmd.name}\``).join(", ");
+			return clientInteractions.filter(cmd => cmd.category === category).map(cmd => `\`${cmd.name}\``).join(", ");
 		}
 	}
 }

@@ -5,7 +5,7 @@ import * as Discord from "discord.js";
 /**
  * Re-creating the tic-tac-toe game but it's in Discord
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -14,22 +14,22 @@ module.exports = {
     description: "Play a tictactoe game, thanks to Mango",
     category: "game",
 
-    async execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         let grid = {};
         let turn = "J1";
         let firstMessageID;
         let secondPlayer: Discord.User;
 
         const filter = (reaction: any, user: { id: string; }) => {
-            return user.id != message.member.user.id;
+            return user.id != interaction.member.user.id;
         };
 
-        message.reply("> Waiting for the 2nd player to approve... (click on the reaction to begin the game)").then(async (msg: Discord.Message & Discord.CommandInteraction) => {
-            (message.type === "APPLICATION_COMMAND") ? fetchInteraction() : addReactions(msg);
+        interaction.reply("> Waiting for the 2nd player to approve... (click on the reaction to begin the game)").then(() => {
+            fetchInteraction();
         });
 
         function fetchInteraction() {
-            message.fetchReply().then((msg: Discord.Message & Discord.CommandInteraction) => {
+            interaction.fetchReply().then((msg: Discord.Message & Discord.CommandInteraction) => {
                 addReactions(msg);
             });
         }
@@ -55,9 +55,9 @@ module.exports = {
             initGrid();
             let numbers = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
 
-            message.reply("> Status: init :eyes:").then(msg => firstMessageID = msg.id);
+            interaction.editReply("> Status: init :eyes:").then(msg => firstMessageID = msg.id);
 
-            message.reply("> I am currently generating the grid. Please wait a bit..").then(async msg => {
+            interaction.channel.send("> I am currently generating the grid. Please wait a bit..").then(async msg => {
                 for (let number of numbers) {
                     await msg.react(number);
                 }
@@ -82,12 +82,12 @@ module.exports = {
 
         function createReactionCollector(msg: Discord.Message) {
             const filter: (reaction: any, user: any) => boolean = (reaction, user) => {
-                return user.id === message.member.user.id || user.id === secondPlayer.id;
+                return user.id === interaction.member.user.id || user.id === secondPlayer.id;
             }
 
             msg.awaitReactions({ filter: filter, max: 1 })
                 .then(collected => {
-                    if (secondPlayer == collected.first().users.cache.last() && turn != "J2" || message.member.user == collected.first().users.cache.last() && turn != "J1") {
+                    if (secondPlayer == collected.first().users.cache.last() && turn != "J2" || interaction.member.user == collected.first().users.cache.last() && turn != "J1") {
                         collected.last().users.remove(collected.first().users.cache.last().id);
                         return createReactionCollector(msg);
                     }
@@ -98,7 +98,7 @@ module.exports = {
                             .setColor("#1E90FF")
                             .setDescription(`**${collected.first().users.cache.last().tag}** tried to react with the ${collected.first().emoji.name} emoji, but this case is already occupied by a player...`);
 
-                        msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit({ embeds: [status] }));
+                        interaction.editReply({ embeds: [status] });
 
                         collected.last().users.remove(collected.first().users.cache.last().id);
                         return createReactionCollector(msg);
@@ -109,7 +109,7 @@ module.exports = {
                         .setColor("#1E90FF")
                         .setDescription(`**${collected.first().users.cache.last().tag}** reacted with the ${collected.first().emoji.name} emoji.`);
 
-                    msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit({ embeds: [status] }));
+                    interaction.editReply({ embeds: [status] });
 
                     editGrid(msg, collected.first().emoji.name);
 
@@ -119,7 +119,7 @@ module.exports = {
                             .setColor("#ffff00")
                             .setDescription(`**${collected.first().users.cache.last().tag}** won the game. GG!`);
 
-                        msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit({ embeds: [status] }));
+                        interaction.editReply({ embeds: [status] });
                         return;
                     } else if (checkIfEgality()) {
                         const status = new Discord.MessageEmbed()
@@ -127,7 +127,7 @@ module.exports = {
                             .setColor("#1E90FF")
                             .setDescription(`:crossed_swords: Nobody won... That's a draw!`);
 
-                        msg.channel.messages.fetch(firstMessageID).then(msg => msg.edit({ embeds: [status] }));
+                        interaction.editReply({ embeds: [status] });;
                     }
 
                     detectPlayer(); // changes turn

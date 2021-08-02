@@ -5,7 +5,7 @@ import * as Discord from "discord.js";
 /**
  * Shows information about a server.
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -14,41 +14,41 @@ module.exports = {
 	description: "Get useful information from a server",
 	category: "info",
 
-	async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
 
 		let afkChannel: any;
-		const guildPicture: string = message.member.guild.iconURL();
+		const guildPicture: string = interaction.member.guild.iconURL();
 
 		/**
 		 * NOTE: Due to some changes to the Discord API (see gateway intents) some lines of code have been disabled to prevent the bot from no longer working properly.
 		 */
 
-		if (message.member.guild.afkChannel) {
-			afkChannel = `#<${message.member.guild.afkChannel}>`;
+		if (interaction.member.guild.afkChannel) {
+			afkChannel = `#<${interaction.member.guild.afkChannel}>`;
 		} else {
 			afkChannel = "None.";
 		}
 
 		const reponse: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setThumbnail(guildPicture)
-			.setAuthor(`${message.guild.name}`, guildPicture)
+			.setAuthor(`${interaction.guild.name}`, guildPicture)
 			.setColor("RANDOM")
-			.addField(`**${message.member.guild.channels.cache.size}** channels`, `• Text: **${message.member.guild.channels.cache.filter((channel: Discord.TextChannel) => channel.type === "GUILD_TEXT").size}** \n• Voice: **${message.member.guild.channels.cache.filter((channel: Discord.VoiceChannel) => channel.type === "GUILD_VOICE").size}**`, true)
-			.addField("Owner", (await message.member.guild.fetchOwner()).user.username, true)
-			.addField("Created on", message.member.guild.createdAt.toLocaleDateString(), true)
-			.addField("Verification", message.member.guild.verificationLevel, true)
-			.addField("Boosts", `**${message.member.guild.premiumSubscriptionCount}**`, true)
-			.addField("Roles", `**${message.guild.roles.cache.size}**`, true)
+			.addField(`**${interaction.member.guild.channels.cache.size}** channels`, `• Text: **${interaction.member.guild.channels.cache.filter((channel: Discord.TextChannel) => channel.type === "GUILD_TEXT").size}** \n• Voice: **${interaction.member.guild.channels.cache.filter((channel: Discord.VoiceChannel) => channel.type === "GUILD_VOICE").size}**`, true)
+			.addField("Owner", (await interaction.member.guild.fetchOwner()).user.username, true)
+			.addField("Created on", interaction.member.guild.createdAt.toLocaleDateString(), true)
+			.addField("Verification", interaction.member.guild.verificationLevel, true)
+			.addField("Boosts", `**${interaction.member.guild.premiumSubscriptionCount}**`, true)
+			.addField("Roles", `**${interaction.guild.roles.cache.size}**`, true)
 			.addField("AFK", afkChannel, true)
-			// .addField("Presence", `• <:online:746276053177073715> Online - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "online").size}** users \n• <:idle:746276053055438938> Idle - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "idle").size}** users \n• <:dnd:746276052824883232> DND - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "dnd").size}** users \n• <:offline:745904190962008148> Offline - **${message.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "offline").size}** users`)
+			// .addField("Presence", `• <:online:746276053177073715> Online - **${interaction.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "online").size}** users \n• <:idle:746276053055438938> Idle - **${interaction.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "idle").size}** users \n• <:dnd:746276052824883232> DND - **${interaction.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "dnd").size}** users \n• <:offline:745904190962008148> Offline - **${interaction.member.guild.members.cache.filter((member: Discord.GuildMember) => member.user.presence.status == "offline").size}** users`)
 			.setFooter(Client.user.username, Client.user.avatarURL())
 			.setTimestamp();
 
-		if (message.guild.banner) {
-			reponse.setImage(message.guild.bannerURL());
+		if (interaction.guild.banner) {
+			reponse.setImage(interaction.guild.bannerURL());
 		}
 
-		message.reply({ embeds: [reponse] });
+		interaction.reply({ embeds: [reponse] });
 	}
 }
 

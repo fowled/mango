@@ -5,7 +5,7 @@ import * as Discord from "discord.js";
 /**
  * Shows some user information.
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -22,8 +22,8 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
-		const selectedUser = args[0] ? (message.type === "APPLICATION_COMMAND" ? await message.guild.members.fetch(args[0]) : message.mentions.members.first()) : message.member;
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+		const selectedUser = args[0] ? await interaction.guild.members.fetch(args[0]) : interaction.member;
 
 		let badges: {} = {
 			"DISCORD_EMPLOYEE": "<:staff:835496891453669387>",
@@ -66,13 +66,13 @@ module.exports = {
 				.addField("Created on", selectedUser.user.createdAt.toLocaleDateString(), true)
 				.addField("Permissions", selectedUser.permissions.toArray().length === 0 ? "No permission" : `${selectedUser.permissions.toArray().length} permissions`, true)
 				.addField("Boosting", selectedUser.premiumSince ? selectedUser.premiumSince.toLocaleString() : "No", true)
-				.addField("Roles", selectedUser.roles.cache.size === 1 ? "No role" : selectedUser.roles.cache.filter(role => role.name !== "@everyone").array().join(", "), false)
+				.addField("Roles", selectedUser.roles.cache.size === 1 ? "No role" : selectedUser.roles.cache.filter(role => role.name !== "@everyone").map(el => el.name).join(", "), false)
 				.setColor("RANDOM")
 				.setFooter(Client.user.username, Client.user.avatarURL());
 
-			message.reply({ embeds: [userinfoMessageEmbed] });
+			interaction.reply({ embeds: [userinfoMessageEmbed] });
 		} else {
-			message.reply("Tagged user is not in the server :frowning:");
+			interaction.reply("Tagged user is not in the server :frowning:");
 		}
 	}
 }

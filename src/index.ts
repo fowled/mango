@@ -1,5 +1,4 @@
-﻿// @ts-nocheck
-import * as Discord from "discord.js";
+﻿import * as Discord from "discord.js";
 import * as Sequelize from "sequelize";
 import * as fs from "fs";
 import * as path from "path";
@@ -23,24 +22,13 @@ export const sequelizeinit = new Sequelize.Sequelize("database", "username", "pa
 export const ops = {
 	queue: queue,
 	sequelize: sequelizeinit
-}
-
-client.commands = new Discord.Collection();
-
-const commandFolders = fs.readdirSync(path.join(__dirname, "commands"));
-
-for (const folder of commandFolders) {
-	const commandFiles = fs.readdirSync(path.join(__dirname, "commands", folder)).filter(file => file.endsWith('.js'));
-	for (const file of commandFiles) {
-		const command = require(`./commands/${folder}/${file}`);
-		client.commands.set(command.name, command);
-	}
-}
+};
 
 (async () => {
 	await eventBinder();
 	await handleRejections();
 	await client.login(Token);
+	await registerCommands();
 	// SlashCommands(client);
 })();
 
@@ -64,3 +52,19 @@ async function handleRejections() {
 		console.warn("Unhandled promise rejection:", error);
 	});
 }
+
+let clientInteractions: any = new Discord.Collection();
+
+async function registerCommands() {
+	const commandFolders = fs.readdirSync(path.join(__dirname, "commands"));
+
+	for (const folder of commandFolders) {
+		const commandFiles = fs.readdirSync(path.join(__dirname, "commands", folder)).filter(file => file.endsWith('.js'));
+		for (const file of commandFiles) {
+			const command = require(`./commands/${folder}/${file}`);
+			clientInteractions.set(command.name, command);
+		}
+	}
+}
+
+export { clientInteractions };

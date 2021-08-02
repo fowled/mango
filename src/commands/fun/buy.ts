@@ -6,7 +6,7 @@ import * as Discord from "discord.js";
 /**
  * Buys something on the black market (lmfao)
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -23,18 +23,18 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const ID = args[0];
 
         if (!ID) {
-            return message.reply("In order to buy something, you must provide the item's ID.");
+            return interaction.reply("In order to buy something, you must provide the item's ID.");
         }
 
         const marketmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");
         const marketItem = await marketmodel.findOne({ where: { id: ID } });
 
         if (!marketItem) {
-            return message.reply(`I'm sorry, but there is no item matching ID **${args[0]}**. To consult the market, do \`ma!market\` :wink:`);
+            return interaction.reply(`I'm sorry, but there is no item matching ID **${args[0]}**. To consult the market, do \`/market\` :wink:`);
         }
 
         const itemName = marketItem.get("name");
@@ -43,19 +43,19 @@ module.exports = {
         const itemSellerID = marketItem.get("sellerID");
 
         const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
-        const authorMoney = await moneymodel.findOne({ where: { idOfUser: message.member.user.id } });
+        const authorMoney = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
 
         if (!authorMoney) {
-            return message.reply("You don't have any money! Do `ma!money` to start using the market.");
+            return interaction.reply("You don't have any money! Do `/money` to start using the market.");
         }
 
         const getAuthorMoney = authorMoney.get("money");
         const sellerMoney = await moneymodel.findOne({ where: { idOfUser: itemSellerID } });
 
         if (getAuthorMoney < itemPrice) {
-            return message.reply(`You must have \`${(itemPrice as unknown as number) - (getAuthorMoney as unknown as number)}\` more dollars to get this item. :frowning:`);
-        } else if (message.member.user.id == itemSellerID) {
-            return message.reply("You can't buy your own item...");
+            return interaction.reply(`You must have \`${(itemPrice as unknown as number) - (getAuthorMoney as unknown as number)}\` more dollars to get this item. :frowning:`);
+        } else if (interaction.member.user.id == itemSellerID) {
+            return interaction.reply("You can't buy your own item...");
         }
 
         const inventorymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("inventoryItems");
@@ -64,13 +64,13 @@ module.exports = {
             name: itemName,
             price: itemPrice,
             seller: itemSeller,
-            authorID: message.member.user.id
+            authorID: interaction.member.user.id
         });
 
         authorMoney.decrement(['money'], { by: itemPrice as unknown as number });
         sellerMoney.increment(['money'], { by: itemPrice as unknown as number });
 
-        message.reply(`Item **${itemName}** successfully bought for *${itemPrice}$*.`);
+        interaction.reply(`Item **${itemName}** successfully bought for *${itemPrice}$*.`);
 
         marketItem.destroy();
     }

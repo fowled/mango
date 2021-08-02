@@ -6,7 +6,7 @@ import { XMLHttpRequest } from "xmlhttprequest-ts";
 /**
  * Shows information about a Scratch project.
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -23,7 +23,7 @@ module.exports = {
         },
 	],
 
-	execute(Client: Discord.Client, message: Discord.Message, args, ops) {
+	execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
 		let project: string = args[0];
 		const xhttp: any = new XMLHttpRequest();
 	
@@ -40,9 +40,9 @@ module.exports = {
 	
 				const requestedProject: Discord.MessageEmbed = new Discord.MessageEmbed()
 					.setTitle(`Information about ${parsedRequest.title}`)
-					.setAuthor(message.member.user.username, message.member.user.avatarURL())
+					.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
 					.setURL(`https://scratch.mit.edu/projects/${project}/`)
-					.setThumbnail(message.member.user.avatarURL())
+					.setThumbnail(interaction.member.user.avatarURL())
 					.setImage(parsedRequest.image)
 					.setDescription(`**${parsedRequest.title}** by *${parsedRequest.author.username}*`)
 					.addField("Number of :eye:", `**${parsedRequest.stats.views}** views.`)
@@ -54,9 +54,9 @@ module.exports = {
 					.setTimestamp()
 					.setColor("#FF8000")
 					.setFooter(Client.user.username, Client.user.avatarURL());
-				message.reply({ embeds: [requestedProject] });
+				interaction.reply({ embeds: [requestedProject] });
 			} else if (this.readyState == 4 && this.responseText == "{\"code\":\"NotFound\",\"message\":\"\"}") {
-				message.reply("I did not find the project you requested.");
+				interaction.reply("I did not find the project you requested.");
 			}
 		}
 	

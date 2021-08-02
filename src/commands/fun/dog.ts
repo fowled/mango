@@ -6,7 +6,7 @@ import { XMLHttpRequest } from "xmlhttprequest";
 /**
  * Replies with a funny or cutie picture of a dog :3
  * @param {Discord.Client} Client the client
- * @param {Discord.Message} Message the message that contains the command name
+ * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -15,12 +15,11 @@ module.exports = {
     description: "Replies with a picture of a dog",
     category: "fun",
 
-    execute(Client: Discord.Client, message: Discord.Message & Discord.CommandInteraction, args, ops) {
+    execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const xhttp = new XMLHttpRequest();
         let emojiList: string[] = [":confused:", ":confounded:", ":disappointed_relieved:", ":frowning:"];
-        let checkMessageType: boolean = message.type === "APPLICATION_COMMAND";
 
-        if (checkMessageType) message.defer();
+        interaction.defer();
 
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -28,7 +27,7 @@ module.exports = {
                 const dogPicture = new Discord.MessageAttachment(parsedRequest[0].url);
 
                 let embed = new Discord.MessageEmbed()
-                    .setAuthor(message.member.user.tag, message.member.user.avatarURL())
+                    .setAuthor(interaction.member.user.tag, interaction.member.user.avatarURL())
                     .setColor("#0FB1FB")
                     .setDescription("Here is some info about your doggo.")
                     .addField("Breed", getSafe(() => parsedRequest[0].breeds[0].name), true)
@@ -37,7 +36,7 @@ module.exports = {
                     .setTimestamp()
                     .setFooter(Client.user.username, Client.user.avatarURL());
 
-                checkMessageType ? message.editReply({ embeds: [embed], files: [dogPicture] }) : message.reply({ embeds: [embed], files: [dogPicture] });
+                interaction.editReply({ embeds: [embed], files: [dogPicture] });
             }
         };
 
