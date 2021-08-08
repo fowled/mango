@@ -38,10 +38,8 @@ module.exports = {
 
         const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
         const money = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
-
-        if (item == "" || price == undefined) {
-            return interaction.reply("You can't sell an empty item! `sell [price] [item]`");
-        } else if (isNaN(price as unknown as number) || price.startsWith("-")) {
+ 
+        if (isNaN(price as unknown as number) || price.startsWith("-")) {
             return interaction.reply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
         } else if (item.includes("@")) {
             return interaction.reply("I can't add this item to the market because it contains a mention. Be sure to remove it.");

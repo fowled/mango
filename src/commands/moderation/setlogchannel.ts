@@ -14,7 +14,6 @@ module.exports = {
     name: "setlogchannel",
     description: "Sets the guild's log channel for Mango",
     category: "moderation",
-
     memberPermissions: ["MANAGE_CHANNELS"],
     options: [
         {
@@ -26,10 +25,6 @@ module.exports = {
     ],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        if (!interaction.member.permissions.has(["ADMINISTRATOR"])) {
-            return interaction.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
-        }
-
         let logChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
         let fetchChannel = await Client.channels.fetch(logChannelID) as Discord.TextChannel;
 

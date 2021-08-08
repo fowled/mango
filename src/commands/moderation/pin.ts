@@ -25,10 +25,6 @@ module.exports = {
 	],
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-		if (!args[0]) {
-			return interaction.reply("You need to specify the message's ID so that I can pin it.");
-		}
-
 		await interaction.reply("Trying to pin the interaction...");
 
 		interaction.channel.messages.fetch(args[0])

@@ -14,7 +14,6 @@ module.exports = {
     name: "setwelcomechannel",
     description: "Sets guild's welcome channel for Mango",
     category: "moderation",
-
     memberPermissions: ["MANAGE_CHANNELS"],
     options: [
         {

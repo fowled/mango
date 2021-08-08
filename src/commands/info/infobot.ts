@@ -17,7 +17,6 @@ module.exports = {
     description: "Get info about Mango's infrastructure",
     category: "info",
 
-
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         await interaction.deferReply();
 

@@ -36,9 +36,7 @@ module.exports = {
         const content = args.slice(1, args.length).join(" ");
         const date = new Date();
 
-        if (args.length < 2) {
-            return interaction.reply("<:no:835565213322575963> It looks like you're missing arguments. Command usage: `/reminder <duration> <content>`");
-        } else if (!ms(time)) {
+        if (!ms(time)) {
             return interaction.reply("<:no:835565213322575963> The duration must follow this format - `50s`, `10m` or `10h`.");
         }
 

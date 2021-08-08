@@ -14,7 +14,6 @@ module.exports = {
     name: "rmwelcomechannel",
     description: "Removes the guild's welcome channel for Mango",
     category: "moderation",
-
     memberPermissions: ["MANAGE_CHANNELS"],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {

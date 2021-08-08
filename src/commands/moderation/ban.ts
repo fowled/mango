@@ -35,8 +35,8 @@ module.exports = {
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
 		const memberBan: Discord.GuildMember = await interaction.guild.members.fetch(args[0]);
-		let reason: string = args[1] ?  args[1] : "no reason provided";
-		
+		let reason: string = args[1] ? args[1] : "no reason provided";
+
 		if (memberBan) {
 			const banMessageAuthor: string = interaction.member.user.tag;
 			const banGuildName: string = interaction.member.guild.name;
@@ -44,18 +44,14 @@ module.exports = {
 			const bannedUserId = memberBan.user.id;
 			const date: Date = new Date();
 
-			if (memberBan.bannable && interaction.member.permissions.has(["BAN_MEMBERS"])) {
-				const banMessageUser: Discord.MessageEmbed = new Discord.MessageEmbed()
-					.setTitle(`Banned!`)
-					.setDescription(`You have been banned from the server **${banGuildName}** by *${banMessageAuthor}* on __${date.toLocaleString()}__! Reason: *"${reason}"*`)
-					.setTimestamp()
-					.setThumbnail(guildIcon)
-					.setColor("#4292f4")
-					.setFooter(Client.user.username, Client.user.avatarURL());
-				Client.users.cache.get(bannedUserId).send({ embeds: [banMessageUser] });
-			} else {
-				return interaction.reply("<:no:835565213322575963> You need the `BAN_MEMBERS` permission in order to do that.");
-			}
+			const banMessageUser: Discord.MessageEmbed = new Discord.MessageEmbed()
+				.setTitle(`Banned!`)
+				.setDescription(`You have been banned from the server **${banGuildName}** by *${banMessageAuthor}* on __${date.toLocaleString()}__! Reason: *"${reason}"*`)
+				.setTimestamp()
+				.setThumbnail(guildIcon)
+				.setColor("#4292f4")
+				.setFooter(Client.user.username, Client.user.avatarURL());
+			Client.users.cache.get(bannedUserId).send({ embeds: [banMessageUser] });
 
 			setTimeout(() => {
 				memberBan.ban({
@@ -73,14 +69,6 @@ module.exports = {
 					LogChecker.insertLog(Client, interaction.guild.id, interaction.member.user, `**${memberBan.user.tag}** has been __banned__ by ${interaction.member.user.tag} for: *${reason}* \nDuration of the punishment: infinite`);
 
 				}).catch(async (err: any) => {
-					const banMessageError: Discord.MessageEmbed = new Discord.MessageEmbed()
-						.setTitle("Error")
-						.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
-						.setDescription(`An error has occured while banning **${memberBan.user.tag}**; missing permissions. Please, I am a serious bot, I can have admin rank!`)
-						.setTimestamp()
-						.setColor("#FF0000")
-						.setFooter(Client.user.username, Client.user.avatarURL());
-					interaction.reply({ embeds: [banMessageError] });
 					Logger.error(err);
 				});
 			}, 500);

@@ -37,10 +37,6 @@ module.exports = {
 
         if (!memberMute) {
             return interaction.reply("You specified an invalid user to mute. Please tag him in order to mute them.");
-        } if (memberMute.permissions.has(["ADMINISTRATOR"])) {
-            return interaction.reply("Sorry, but I can't mute the user you specified, because he has one of the following perms: `ADMINISTRATOR`");
-        } else if (!interaction.member.permissions.has(["MANAGE_MESSAGES"])) {
-            return interaction.reply("Sorry, but you don't have the permission to mute this user.");
         }
 
         let muteRole: Discord.Role = interaction.guild.roles.cache.find(role => role.name === "muted");

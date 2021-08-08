@@ -14,7 +14,6 @@ module.exports = {
     name: "coronavirus",
     description: "Get COVID-19 disease's latest information",
     category: "info",
-
     options: [
         {
             name: "country",

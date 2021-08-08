@@ -42,18 +42,14 @@ module.exports = {
 			const guildIcon: string = interaction.member.guild.iconURL();
 			const date: Date = new Date();
 
-			if (memberKick.kickable && interaction.member.permissions.has(["KICK_MEMBERS"])) {
-				const kickMessageUser: Discord.MessageEmbed = new Discord.MessageEmbed()
-					.setTitle(`Kicked!`)
-					.setDescription(`You have been kicked from the server **${kickGuildName}** by *${kickMessageAuthor}* on date __${date.toLocaleDateString()}__ ! Reason: *"${reason}"*`)
-					.setTimestamp()
-					.setThumbnail(guildIcon)
-					.setColor("#4292f4")
-					.setFooter(Client.user.username, Client.user.avatarURL());
-				memberKick.send({ embeds: [kickMessageUser] });
-			} else {
-				return interaction.reply("<:no:835565213322575963> You need the `KICK_MEMBERS` permission in order to do that.");
-			}
+			const kickMessageUser: Discord.MessageEmbed = new Discord.MessageEmbed()
+				.setTitle(`Kicked!`)
+				.setDescription(`You have been kicked from the server **${kickGuildName}** by *${kickMessageAuthor}* on date __${date.toLocaleDateString()}__ ! Reason: *"${reason}"*`)
+				.setTimestamp()
+				.setThumbnail(guildIcon)
+				.setColor("#4292f4")
+				.setFooter(Client.user.username, Client.user.avatarURL());
+			memberKick.send({ embeds: [kickMessageUser] });
 
 			setTimeout(async () => {
 				await memberKick.kick(reason).then(async () => {

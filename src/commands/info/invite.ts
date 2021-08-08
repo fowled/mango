@@ -14,7 +14,6 @@ module.exports = {
     description: "Sends a link to invite the bot to servers",
     category: "info",
 
-
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const invite = new Discord.MessageEmbed()
             .setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())

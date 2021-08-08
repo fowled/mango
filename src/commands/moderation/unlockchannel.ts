@@ -34,10 +34,6 @@ module.exports = {
     ],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        if (!interaction.member.permissions.has(["ADMINISTRATOR"])) {
-            return interaction.reply("<:no:835565213322575963> You don't have the `ADMINISTRATOR` permission.");
-        }
-
         const role: Discord.Role = await interaction.guild.roles.fetch(args[0]);
         const messageChannel = !args[1] ? interaction.channel as Discord.GuildChannel : await interaction.guild.channels.fetch(args[1]);
 

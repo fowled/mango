@@ -26,10 +26,6 @@ module.exports = {
     ],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        if (!interaction.member.permissions.has(["MANAGE_MESSAGES"])) {
-            return interaction.reply("Sorry, but you don't have the `MANAGE_MESSAGES` permission.");
-        }
-
         const channel = interaction.channel as unknown as Discord.TextChannel;
 
         if (args.length > 0) {
