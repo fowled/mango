@@ -6,7 +6,7 @@ import * as path from "path";
 import * as Logger from "./utils/Logger";
 import { Token } from "./token";
 
-export const client: Discord.Client = new Discord.Client({ intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_VOICE_STATES", "GUILD_MESSAGES", "DIRECT_MESSAGES", "GUILD_MESSAGE_REACTIONS"], partials: ["CHANNEL", "MESSAGE", "REACTION"] });
+export const client: Discord.Client = new Discord.Client({ intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES"] });
 
 export const talkedRecently = new Set();
 const queue = new Map();
