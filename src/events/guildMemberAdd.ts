@@ -12,7 +12,7 @@ module.exports = {
         
         if (!welcomechannel) return;
         
-        const channel: Discord.TextChannel = await Client.channels.fetch(welcomechannel.get("idOfChannel") as unknown as `${bigint}`) as Discord.TextChannel;
+        const channel: Discord.TextChannel = await Client.channels.fetch(welcomechannel.get("idOfChannel") as unknown as string) as Discord.TextChannel;
         
         const canvas = canvaslib.createCanvas(700, 250);
         const ctx = canvas.getContext("2d");

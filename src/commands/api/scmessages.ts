@@ -45,6 +45,7 @@ module.exports = {
 				interaction.reply("I did not find the user you requested.");
 			}
 		};
+		
 		xhttp.open("GET", `https://api.scratch.mit.edu/users/${user}/messages/count`, true);
 		xhttp.send();
 	}

@@ -13,6 +13,7 @@ module.exports = {
     name: "tictactoe",
     description: "Play a tictactoe game, thanks to Mango",
     category: "game",
+    botPermissions: ["ADD_REACTIONS"],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         let grid = {};

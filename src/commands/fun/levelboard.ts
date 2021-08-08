@@ -14,10 +14,11 @@ module.exports = {
     name: "levelboard",
     description: "Replies with the server XP level leaderboard",
     category: "fun",
+    botPermissions: ["ADD_REACTIONS"],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const Xp: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("ranks");
-        const ranks = await Xp.findAll({ order: [["xp", "DESC"]] });
+        const ranks = await Xp.findAll({ order: [["xp", "DESC"]], where: { idOfGuild: interaction.guild.id } });
 
         let levels: string[] = [];
         let index = 1;

@@ -1,7 +1,5 @@
 import * as Discord from "discord.js";
 import * as Sequelize from "sequelize";
-import * as fs from "fs";
-import * as Logger from "../../utils/Logger";
 
 // Fun command
 
@@ -16,6 +14,8 @@ module.exports = {
     name: "setwelcomechannel",
     description: "Sets guild's welcome channel for Mango",
     category: "moderation",
+
+    memberPermissions: ["MANAGE_CHANNELS"],
     options: [
         {
             name: "channel",
@@ -26,10 +26,6 @@ module.exports = {
     ],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        if (!interaction.member.permissions.has("ADMINISTRATOR")) {
-            return interaction.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
-        }
-
         let welcomeChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
         let fetchChannel = await Client.channels.fetch(welcomeChannelID) as Discord.TextChannel;
 

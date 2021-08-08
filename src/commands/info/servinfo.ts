@@ -15,7 +15,6 @@ module.exports = {
 	category: "info",
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-
 		let afkChannel: any;
 		const guildPicture: string = interaction.member.guild.iconURL();
 

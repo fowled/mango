@@ -14,6 +14,7 @@ module.exports = {
     name: "poll",
     description: "Creates a poll",
     category: "fun",
+    botPermissions: ["ADD_REACTIONS"],
     options: [
         {
             name: "duration",

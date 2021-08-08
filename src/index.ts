@@ -3,9 +3,7 @@ import * as Sequelize from "sequelize";
 import * as fs from "fs";
 import * as path from "path";
 
-import { SlashCommands } from "./utils/SlashCommands";
 import * as Logger from "./utils/Logger";
-
 import { Token } from "./token";
 
 export const client: Discord.Client = new Discord.Client({ intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_VOICE_STATES", "GUILD_MESSAGES", "DIRECT_MESSAGES", "GUILD_MESSAGE_REACTIONS"], partials: ["CHANNEL", "MESSAGE", "REACTION"] });
@@ -20,7 +18,6 @@ export const sequelizeinit = new Sequelize.Sequelize("database", "username", "pa
 });
 
 export const ops = {
-	queue: queue,
 	sequelize: sequelizeinit
 };
 
@@ -29,7 +26,6 @@ export const ops = {
 	await handleRejections();
 	await client.login(Token);
 	await registerCommands();
-	// SlashCommands(client);
 })();
 
 async function eventBinder() {

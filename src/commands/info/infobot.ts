@@ -17,8 +17,9 @@ module.exports = {
     description: "Get info about Mango's infrastructure",
     category: "info",
 
+
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        await interaction.defer();
+        await interaction.deferReply();
 
         const discordVersion = require("discord.js").version;
         let ramInfo: si.Systeminformation.MemData, os: si.Systeminformation.OsData;

@@ -14,10 +14,11 @@ module.exports = {
     name: "mug",
     description: "Replies with a beautiful mug of the tagged user profile picture, or your own!",
     category: "fun",
+    botPermissions: ["ATTACH_FILES"],
     options: [
         {
             name: "user",
-            type: "MENTIONABLE",
+            type: "USER",
             description: "The user you want to have a mug of",
             required: false
         }

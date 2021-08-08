@@ -14,6 +14,8 @@ module.exports = {
     name: "unmute",
     description: "Unmutes a user",
     category: "moderation",
+    botPermissions: ["MANAGE_ROLES"],
+    memberPermissions: ["MANAGE_ROLES", "MANAGE_MESSAGES"],
     options: [
         {
             name: "user",
@@ -26,16 +28,10 @@ module.exports = {
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const memberUnmute: Discord.GuildMember = await interaction.guild.members.fetch(args[0]);
 
-        if (memberUnmute.permissions.has(["ADMINISTRATOR", "MANAGE_MESSAGES"])) {
-            return interaction.reply("Sorry, but I can't unmute the user you specified, because he has one of the following perms: `ADMINISTATOR` or `MANAGE_MESSAGES`.");
-        }
-
         let muteRole: Discord.Role = interaction.guild.roles.cache.find(role => role.name === "muted");
 
         if (!muteRole || !memberUnmute.roles.cache.has(muteRole.id)) {
             return interaction.reply(`It looks like that **${memberUnmute.user.tag}** isn't muted :eyes:`);
-        } else if (!interaction.member.permissions.has(["ADMINISTRATOR"])) {
-            return interaction.reply("You don't have the permission to unmute this person.");
         }
 
         try {

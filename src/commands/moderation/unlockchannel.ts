@@ -15,6 +15,8 @@ module.exports = {
     name: "unlockchannel",
     description: "Unlocks a channel",
     category: "moderation",
+    botPermissions: ["MANAGE_CHANNELS"],
+    memberPermissions: ["MANAGE_CHANNELS"],
     options: [
         {
             name: "role",

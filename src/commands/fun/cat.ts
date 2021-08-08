@@ -14,12 +14,13 @@ module.exports = {
     name: "cat",
     description: "Replies with a picture of a cat",
     category: "fun",
+    botPermissions: ["ATTACH_FILES"],
 
     execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const xhttp = new XMLHttpRequest();
         let emojiList: string[] = [":confused:", ":confounded:", ":disappointed_relieved:", ":frowning:"];
 
-        interaction.defer();
+        interaction.deferReply();
 
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {

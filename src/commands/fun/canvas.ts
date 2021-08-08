@@ -14,6 +14,7 @@ module.exports = {
     name: "canvas",
     description: "Write something on beautiful picture",
     category: "fun",
+    botPermissions: ["ATTACH_FILES"],
     options: [
         {
             name: "text",
@@ -24,9 +25,7 @@ module.exports = {
     ],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        if (!args[0]) {
-            return interaction.reply("You didn't specify any text to show on the canvas. Please try the command again.");
-        } else if (args.join(" ").length > 45) {
+        if (args[0].length > 45) {
             return interaction.reply("Your text is too long! Please retry the command.");
         }
 
@@ -41,7 +40,7 @@ module.exports = {
         ctx.textAlign = "left";
         ctx.fillText(`"${args.join(" ")}"`, 10, canvas.height / 1.5);
 
-        ctx.font = "35px Caviar Dreams"; // displays on the picture the member tag
+        ctx.font = "35px Caviar Dreams";
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = "left";
         ctx.fillText(`${interaction.member.user.username} said:`, 10, canvas.height / 2);

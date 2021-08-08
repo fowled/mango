@@ -15,6 +15,7 @@ module.exports = {
     description: "Play a hangman game directly from your Discord channel",
     category: "game",
 
+
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const wordsToFind: string[] = [];
         let data = fs.readFileSync("assets/docs/words.txt", "utf-8");

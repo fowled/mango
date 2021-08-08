@@ -14,6 +14,7 @@ module.exports = {
     name: "market",
     description: "Replies with the current Mango's marketplace",
     category: "fun",
+    botPermissions: ["ADD_REACTIONS"],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const inventorymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");

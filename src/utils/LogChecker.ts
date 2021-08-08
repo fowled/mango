@@ -9,7 +9,7 @@ export async function insertLog(Client: Discord.Client, guildID: string, author,
 
     if (!logchannel) return;
 
-    const logChannelID = logchannel.get("idOfChannel") as `${bigint}`;
+    const logChannelID = logchannel.get("idOfChannel") as string;
 
     const logMessageEmbed = new Discord.MessageEmbed()
         .setAuthor(author.tag, author.avatarURL())

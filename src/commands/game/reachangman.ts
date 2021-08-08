@@ -14,6 +14,7 @@ module.exports = {
     name: "reachangman",
     description: "Play a hangman game with reactions",
     category: "game",
+    botPermissions: ["ADD_REACTIONS", "MANAGE_MESSAGES"],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: any, ops: any) {
         const wordsToFind: string[] = [];

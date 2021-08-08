@@ -49,6 +49,7 @@ export async function defModels() {
 
     sequelizeinit.define("ranks", {
         idOfUser: Sequelize.STRING,
-        xp: Sequelize.INTEGER
+        xp: Sequelize.INTEGER,
+        idOfGuild: Sequelize.INTEGER
     });
 }

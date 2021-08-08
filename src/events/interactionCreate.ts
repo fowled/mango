@@ -12,8 +12,17 @@ module.exports = {
 
 		if (!interaction.isCommand() && !clientInteractions.has(command)) return;
 
+		const commandInteraction: any = clientInteractions.get(command);
+		const interactionMember: Discord.GuildMember = interaction.member as unknown as Discord.GuildMember;
+
+		if (commandInteraction.memberPermissions && !interactionMember.permissions.has(commandInteraction.memberPermissions)) {
+			return interaction.reply({ content: `<:no:835565213322575963> Sorry, but it looks like you're missing one of the following permissions: \`${commandInteraction.memberPermissions.join(", ")}\``, ephemeral: true});
+		} else if (commandInteraction.botPermissions && !interaction.guild.members.cache.get(Client.user.id).permissions.has(commandInteraction.botPermissions)) {
+			return interaction.reply({ content: `<:no:835565213322575963> It looks like I'm missing one of the following permissions: \`${commandInteraction.botPermissions.join(", ")}\``, ephemeral: true});
+		}
+
 		try {
-			clientInteractions.get(command).execute(Client, interaction, args, ops);
+			commandInteraction.execute(Client, interaction, args, ops);
 		} catch (err) {
 			Logger.error(err);
 			Logger.log(`The interaction ${interaction.user.tag} tried to call in ${interaction.guild.name} doesen't seem to exist (${interaction.commandName})`);

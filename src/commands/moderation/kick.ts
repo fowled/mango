@@ -14,6 +14,8 @@ module.exports = {
 	name: "kick",
 	description: "Kicks a user",
 	category: "moderation",
+	botPermissions: ["SEND_MESSAGES, KICK_MESSAGES"],
+	memberPermissions: ["KICK_MESSAGES"],
 	options: [
 		{
 			name: "user",

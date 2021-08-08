@@ -15,11 +15,9 @@ module.exports = {
     description: "Removes the guild's welcome channel for Mango",
     category: "moderation",
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        if (!interaction.member.permissions.has(["ADMINISTRATOR"])) {
-            return interaction.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
-        }
+    memberPermissions: ["MANAGE_CHANNELS"],
 
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const welcomechannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("welChannels");
         const welcomechannel = await welcomechannelmodel.findOne({ where: { idOfGuild: interaction.guild.id } });
 

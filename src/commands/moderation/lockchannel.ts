@@ -15,6 +15,8 @@ module.exports = {
     name: "lockchannel",
     description: "Locks a channel",
     category: "moderation",
+    botPermissions: ["MANAGE_CHANNELS"],
+    memberPermissions: ["MANAGE_CHANNELS"],
     options: [
         {
             name: "role",
@@ -44,7 +46,7 @@ module.exports = {
         }
 
         messageChannel.permissionOverwrites.create(role, {
-            SEND_MESSAGES: false
+            "SEND_MESSAGES": false
         }).then(() => {
             interaction.reply(`<:yes:835565213498736650> ${messageChannel} has been locked for ${role}.`);
         }).catch(err => {

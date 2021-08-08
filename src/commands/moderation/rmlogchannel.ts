@@ -14,12 +14,9 @@ module.exports = {
     name: "rmlogchannel",
     description: "Removes the guild's log channel for Mango",
     category: "moderation",
+    memberPermissions: ["MANAGE_CHANNELS"],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        if (!interaction.member.permissions.has(["ADMINISTRATOR"])) {
-            return interaction.reply("I'm sorry, but you don't have the `ADMINISTRATOR` permission.");
-        }
-
         const logchannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("logChannels");
         const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: interaction.guild.id } });
 

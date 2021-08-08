@@ -26,10 +26,6 @@ module.exports = {
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const ID = args[0];
 
-        if (!ID) {
-            return interaction.reply("In order to buy something, you must provide the item's ID.");
-        }
-
         const marketmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");
         const marketItem = await marketmodel.findOne({ where: { id: ID } });
 

@@ -14,6 +14,7 @@ module.exports = {
     name: "reminder",
     description: "Set a reminder with Mango",
     category: "info",
+
     options: [
         {
             name: "duration",
