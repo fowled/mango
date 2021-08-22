@@ -17,7 +17,7 @@ module.exports = {
 
 		if (commandInteraction.memberPermissions && !interactionMember.permissions.has(commandInteraction.memberPermissions)) {
 			return interaction.reply({ content: `<:no:835565213322575963> Sorry, but it looks like you're missing one of the following permissions: \`${commandInteraction.memberPermissions.join(", ")}\``, ephemeral: true});
-		} else if (commandInteraction.botPermissions && !interaction.guild.members.cache.get(Client.user.id).permissions.has(commandInteraction.botPermissions)) {
+		} else if (commandInteraction.botPermissions && !interaction.guild.me.permissions.has(commandInteraction.botPermissions)) {
 			return interaction.reply({ content: `<:no:835565213322575963> It looks like I'm missing one of the following permissions: \`${commandInteraction.botPermissions.join(", ")}\``, ephemeral: true});
 		}
 
