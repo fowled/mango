@@ -103,10 +103,12 @@ module.exports = {
         }
 
         function buttonChecker() {
-            let index: number = page++;
+            let index: number = page + 1;
 
             if (authorinventory.slice(index * 10, index * 10 + 10).length === 0) {
                 return true;
+            } else {
+                return false;
             }
         }
     }

@@ -98,10 +98,12 @@ module.exports = {
         }
 
         function buttonChecker() {
-            let index: number = page++;
+            let index: number = page + 1;
 
             if (marketItems.slice(index * 10, index * 10 + 10).length === 0) {
                 return true;
+            } else {
+                return false;
             }
         }
     }

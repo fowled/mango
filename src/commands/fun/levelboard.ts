@@ -61,9 +61,9 @@ module.exports = {
             await itemsContent.forEach(async (item, index) => {
                 let object = { id: item["idOfUser"], xp: item["xp"] };
                 let medal: string = (index) == 0 ? ":medal:" : (index) == 1 ? ":second_place:" : (index) == 2 ? ":third_place:" : "";
-                let getUser: string = (await interaction.guild.members.fetch(object.id)).user.tag;
+                let getUser: string = (await Client.users.fetch(object.id)).tag;
 
-                pageContent.push(`${medal} ${index + (page * 10 + 1)}. **${getUser}** / *${object.xp}* xp → level \`${Math.floor(object.xp / 50)}\``);
+                await pageContent.push(`${medal} ${index + (page * 10 + 1)}. **${getUser}** / *${object.xp}* xp → level \`${Math.floor(object.xp / 50)}\``);
             });
 
             const levelEmbed = new Discord.MessageEmbed()
@@ -100,10 +100,12 @@ module.exports = {
         }
 
         function buttonChecker() {
-            let index: number = page++;
+            let index: number = page + 1;
 
             if (ranks.slice(index * 10, index * 10 + 10).length === 0) {
                 return true;
+            } else {
+                return false;
             }
         }
     }
