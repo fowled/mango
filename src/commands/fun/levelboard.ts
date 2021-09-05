@@ -54,16 +54,16 @@ module.exports = {
             });
         }
 
-        function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
+        async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
             const itemsContent = ranks.slice(page * 10, page * 10 + 10);
             let pageContent: string[] = [];
 
-            itemsContent.forEach(async (item, index) => {
+            await itemsContent.forEach(async (item, index) => {
                 let object = { id: item["idOfUser"], xp: item["xp"] };
-                let getUser = await interaction.guild.members.fetch(object.id);
                 let medal = (index) == 0 ? ":medal:" : (index) == 1 ? ":second_place:" : (index) == 2 ? ":third_place:" : "";
+                let getUserTag = await interaction.guild.members.fetch(object.id);
 
-                pageContent.push(`${medal} ${index + (page * 10 + 1)}. **${getUser.user.tag}** / *${object.xp}* xp → level \`${Math.floor(object.xp / 50)}\``);
+                pageContent.push(`${medal} ${index + (page * 10 + 1)}. **${getUserTag.user.tag}** / *${object.xp}* xp → level \`${Math.floor(object.xp / 50)}\``);
             });
 
             const levelEmbed = new Discord.MessageEmbed()

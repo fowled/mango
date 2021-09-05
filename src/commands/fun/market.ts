@@ -64,11 +64,6 @@ module.exports = {
                 pageContent.push(`${index + (page * 10 + 1)}. \`${object.name}\` - \`${object.price}$\` | Sold by \`${object.seller}\` » \`${object.id}\``);
             });
 
-            if (itemsContent.length === 0) {
-                pageContent.push("Nothing to see here!");
-                pageContent.push("Use the ◀ button to get back to the market.");
-            }
-
             const inventoryEmbed = new Discord.MessageEmbed()
                 .setDescription(pageContent.join("\n"))
                 .setColor("#33beff")
