@@ -15,14 +15,22 @@ module.exports = {
     category: "info",
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+        const button = new Discord.MessageActionRow()
+            .addComponents(
+                new Discord.MessageButton()
+                    .setLabel('Invite me!')
+                    .setStyle("LINK")
+                    .setURL("https://discord.com/oauth2/authorize?client_id=497443144632238090&permissions=8&scope=bot")
+            );
+
         const invite = new Discord.MessageEmbed()
             .setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
             .setColor("RANDOM")
             .setTitle("Invite the bot")
             .setURL("https://discord.com/oauth2/authorize?client_id=497443144632238090&permissions=8&scope=bot")
-            .setDescription("Click [here](https://discord.com/oauth2/authorize?client_id=497443144632238090&permissions=8&scope=bot) to invite the bot.")
+            .setDescription("Click [here](https://discord.com/oauth2/authorize?client_id=497443144632238090&permissions=8&scope=bot) to invite the bot (or on the fancy button)")
             .setFooter(Client.user.username, Client.user.displayAvatarURL())
 
-        interaction.reply({ embeds: [invite] });
+        interaction.reply({ embeds: [invite], components: [button] });
     }
 }

@@ -81,12 +81,14 @@ module.exports = {
                     new Discord.MessageButton()
                         .setCustomId("back")
                         .setLabel('◀')
-                        .setStyle('PRIMARY'),
+                        .setStyle('PRIMARY')
+                        .setDisabled(page === 0 ? true : false),
 
                     new Discord.MessageButton()
                         .setCustomId("next")
                         .setLabel('▶')
-                        .setStyle('PRIMARY'),
+                        .setStyle('PRIMARY')
+                        .setDisabled(buttonChecker()),
                 );
 
             if (!arg) {
@@ -97,6 +99,14 @@ module.exports = {
                 arg.update({ embeds: [inventoryEmbed], components: [button] }).then(async i => {
                     fetchInteraction();
                 });
+            }
+        }
+
+        function buttonChecker() {
+            let index: number = page++;
+
+            if (marketItems.slice(index * 10, index * 10 + 10).length === 0) {
+                return true;
             }
         }
     }

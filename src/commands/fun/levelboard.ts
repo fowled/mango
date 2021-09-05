@@ -66,16 +66,6 @@ module.exports = {
                 pageContent.push(`${medal} ${index + (page * 10 + 1)}. **${getUser.tag}** / *${object.xp}* xp → level \`${Math.floor(object.xp / 50)}\``);
             });
 
-            if (itemsContent.length === 0) {
-                if (page !== -1) {
-                    page--;
-                } else {
-                    page++;
-                }
-
-                getPageContent(page);
-            }
-
             const levelEmbed = new Discord.MessageEmbed()
                 .setDescription(pageContent.join("\n"))
                 .setColor("#33beff")
@@ -88,12 +78,14 @@ module.exports = {
                     new Discord.MessageButton()
                         .setCustomId("back")
                         .setLabel('◀')
-                        .setStyle('PRIMARY'),
+                        .setStyle('PRIMARY')
+                        .setDisabled(page === 0 ? true : false),
 
                     new Discord.MessageButton()
                         .setCustomId("next")
                         .setLabel('▶')
-                        .setStyle('PRIMARY'),
+                        .setStyle('PRIMARY')
+                        .setDisabled(buttonChecker())
                 );
 
             if (!arg) {
@@ -104,6 +96,14 @@ module.exports = {
                 arg.update({ embeds: [levelEmbed], components: [button] }).then(async i => {
                     fetchInteraction();
                 });
+            }
+        }
+
+        function buttonChecker() {
+            let index: number = page++;
+
+            if (ranks.slice(index * 10, index * 10 + 10).length === 0) {
+                return true;
             }
         }
     }

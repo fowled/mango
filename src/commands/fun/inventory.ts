@@ -24,83 +24,90 @@ module.exports = {
             return interaction.reply("Your inventory is empty! Start by doing `/market` and then buy something with the `/buy [ID of the item]` command.");
         }
 
-        let splittedItems: string[] = [];
+        let page: number = 0;
 
-        authorinventory.forEach((item, index) => {
-            let object = { name: item.getDataValue("name"), price: item.getDataValue("price"), seller: item.getDataValue("seller") };
-            splittedItems.push(`${index + 1}. **${object.name}** - *${object.price}$* | Sold by ${object.seller}`);
-        });
-
-        const filter = (reaction: any, user: { id: string; }) => {
-            return user.id == interaction.member.user.id;
-        };
-
-        let page: number = 1;
-        let trimLimit: number = (splittedItems.length > 10) ? page * 10 : splittedItems.length + 1;
-        let firstPageContent: string = splittedItems.join("\n").split(trimLimit.toString() + ".")[0];
-
-        const inventoryEmbed = new Discord.MessageEmbed()
-            .setDescription(firstPageContent)
-            .setColor("#33beff")
-            .setTitle(`🛍️ Inventory`)
-            .setTimestamp()
-            .setFooter(Client.user.username, Client.user.displayAvatarURL())
-
-        interaction.reply({ embeds: [inventoryEmbed] }).then(async m => {
-            fetchInteraction();
-        });
+        getPageContent(0);
 
         function fetchInteraction() {
             interaction.fetchReply().then((msg: Discord.Message) => {
-                addReactions(msg);
+                createReactionCollector(msg);
             });
-        }
-
-        async function addReactions(msg: Discord.Message) {
-            await msg.react("◀️");
-            await msg.react("▶️");
-
-            createReactionCollector(msg);
         }
 
         function createReactionCollector(m: Discord.Message) {
-            m.awaitReactions({ filter: filter, max: 1 })
-                .then(collected => {
-                    if (collected.first().emoji.name == "▶️") {
-                        page++;
-                        sendMessage(page);
-                    } else {
-                        page--;
-                        sendMessage(page);
-                    }
+            const collector: Discord.InteractionCollector<Discord.MessageComponentInteraction> = m.createMessageComponentCollector({ componentType: 'BUTTON', max: 1 });
 
-                    createReactionCollector(m);
-                });
-        }
+            collector.on("collect", i => {
+                if (i.user.id !== interaction.member.user.id) return;
 
-        function sendMessage(page: number) {
-            let whatToSend: string;
+                if (i.customId === "back") {
+                    page--;
+                } else if (i.customId === "next") {
+                    page++;
+                }
 
-            try {
-                whatToSend = page != 1 ? `${(page - 1) * 10}. ${splittedItems.join("\n").split(`${((page - 1) * 10).toString()}.`)[1].split(`${(page * 10).toString()}.`)[0]}` : firstPageContent;
-            } catch (e) {
+                getPageContent(page, i);
+            });
+
+            collector.on("end", () => {
                 return;
-            }
-
-            const inventoryEmbed = new Discord.MessageEmbed()
-                .setDescription(whatToSend)
-                .setColor("#33beff")
-                .setTitle(`🛍️ Inventory`)
-                .setTimestamp()
-                .setFooter(Client.user.username, Client.user.displayAvatarURL())
-
-            interaction.channel.send({ embeds: [inventoryEmbed] }).then(async m => {
-                await m.react("◀️");
-                await m.react("▶️");
-
-                createReactionCollector(m);
             });
         }
 
+        function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
+            const itemsContent = authorinventory.slice(page * 10, page * 10 + 10);
+            let pageContent: string[] = [];
+
+            itemsContent.forEach((item, index) => {
+                let object = { name: item["name"], price: item["price"], seller: item["seller"] };
+
+                pageContent.push(`${index + (page * 10 + 1)}. \`${object.name}\` - \`${object.price}$\` | Sold by \`${object.seller}\``);
+            });
+
+            if (itemsContent.length === 0) {
+                pageContent.push("Nothing to see here!");
+                pageContent.push("Use the ◀ button to get back to the market.");
+            }
+
+            const inventoryEmbed = new Discord.MessageEmbed()
+                .setDescription(pageContent.join("\n"))
+                .setColor("#33beff")
+                .setTitle(`🛒 Inventory`)
+                .setTimestamp()
+                .setFooter(Client.user.username, Client.user.displayAvatarURL())
+
+            const button = new Discord.MessageActionRow()
+                .addComponents(
+                    new Discord.MessageButton()
+                        .setCustomId("back")
+                        .setLabel('◀')
+                        .setStyle('PRIMARY')
+                        .setDisabled(page === 0 ? true : false),
+
+                    new Discord.MessageButton()
+                        .setCustomId("next")
+                        .setLabel('▶')
+                        .setStyle('PRIMARY')
+                        .setDisabled(buttonChecker()),
+                );
+
+            if (!arg) {
+                interaction.reply({ embeds: [inventoryEmbed], components: [button] }).then(async i => {
+                    fetchInteraction();
+                });
+            } else {
+                arg.update({ embeds: [inventoryEmbed], components: [button] }).then(async i => {
+                    fetchInteraction();
+                });
+            }
+        }
+
+        function buttonChecker() {
+            let index: number = page++;
+
+            if (authorinventory.slice(index * 10, index * 10 + 10).length === 0) {
+                return true;
+            }
+        }
     }
 }
