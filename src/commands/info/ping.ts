@@ -16,14 +16,12 @@ module.exports = {
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
 		await interaction.reply("Ping?");
-		const ping: Discord.Message = interaction.fetchReply() as unknown as Discord.Message;
 
 		const pong: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle(`Latency information for ${interaction.member.user.tag}`)
 			.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
 			.setColor("RANDOM")
 			.setDescription("Latency information")
-			.addField("Host latency", `**${Math.floor(ping.createdTimestamp - interaction.createdTimestamp)}** ms.`)
 			.addField("API latency", `**${Math.round(Client.ws.ping)}** ms.`, true)
 			.setFooter(Client.user.username, Client.user.avatarURL())
 			.setTimestamp();
