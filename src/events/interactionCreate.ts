@@ -7,6 +7,8 @@ import * as Logger from "../utils/Logger";
 module.exports = {
 	name: "interactionCreate",
 	execute(interaction: Discord.CommandInteraction, Client: Discord.Client) {
+		if (interaction.isButton()) return;
+
 		let args: string[] = interaction.options.data.map(opt => opt.value.toString());
 		const command: string = interaction.commandName;
 
