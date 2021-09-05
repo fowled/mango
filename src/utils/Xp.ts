@@ -11,6 +11,7 @@ export async function checkXP(message: Discord.Message, ops) {
 	} else {
 		Xp.create({
 			idOfUser: message.member.user.id, 
+			nameOfUser: message.author.tag,
 			xp: 0,
 			idOfGuild: message.guild.id
 		});
