@@ -26,7 +26,7 @@ module.exports = {
 
         let page: number = 0;
 
-        await getPageContent(0);
+        getPageContent(page);
 
         async function fetchInteraction() {
             interaction.fetchReply().then((msg: Discord.Message) => {

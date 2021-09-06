@@ -26,7 +26,7 @@ module.exports = {
 
         let page: number = 0;
 
-        getPageContent(0);
+        getPageContent(page);
 
         function fetchInteraction() {
             interaction.fetchReply().then((msg: Discord.Message) => {

@@ -24,7 +24,6 @@ export async function SlashCommands(client: Discord.Client) {
                 Object.assign(commandObject, { options: command.options });
             }
 
-            console.log(interactionFolders, commandObject);
             await client.application.commands.create(commandObject);
         }
     }
