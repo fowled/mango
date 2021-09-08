@@ -9,7 +9,7 @@ module.exports = {
 	execute(interaction: Discord.CommandInteraction, Client: Discord.Client) {
 		if (interaction.isButton()) return;
 
-		let args: string[] = interaction.options.data.map(opt => opt.value.toString());
+		const args: string[] = interaction.options.data.map(opt => opt.value.toString());
 		const command: string = interaction.commandName;
 
 		if (!interaction.isCommand() && !clientInteractions.has(command)) return;

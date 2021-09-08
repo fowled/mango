@@ -59,13 +59,13 @@ module.exports = {
         },
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
         const time = args[0];
         args.shift();
-        let splitMessage = args;
-        let choices: string[] = [];
-        let reactions = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
-        let msgID;
+        const splitMessage = args;
+        const choices: string[] = [];
+        const reactions = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
+        let msgID: string;
 
         if (splitMessage.length > 6) {
             return interaction.reply("Not-that-fatal error: 5 args limit exceeded. Please provide less args.");
@@ -82,7 +82,7 @@ module.exports = {
             .setColor("#00BFFF")
             .setFooter(Client.user.username, Client.user.avatarURL())
 
-        interaction.reply({ embeds: [poll] }).then(async msg => {
+        interaction.reply({ embeds: [poll] }).then(async () => {
             fetchInteraction();
         });
 
@@ -105,11 +105,11 @@ module.exports = {
         }
 
         function createReactionCollector(msg: Discord.Message) {
-            const filter = (reaction, user) => {
+            const filter = (reaction) => {
                 return ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"].includes(reaction.emoji.name);
             };
 
-            msg.awaitReactions({ filter, time: ms(time), errors: ["time"] }).catch((collected: Discord.Collection<string, Discord.MessageReaction>) => {
+            msg.awaitReactions({ filter, time: ms(time), errors: ["time"] }).catch(() => {
                 let msgContent = "";
                 let numberOfReactions = 0;
 

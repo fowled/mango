@@ -23,7 +23,7 @@ module.exports = {
         },
 	],
 
-	execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+	execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
 		const user: string = args[0];
 		const xhttp: any = new XMLHttpRequest();
 	
@@ -68,7 +68,8 @@ module.exports = {
 		xhttp.send();
 	
 		function checkLines(status: string) {
-			let splitArray: string[] = status.split("\n");
+			const splitArray: string[] = status.split("\n");
+
 			for (let i: number = 0; i < splitArray.length; i++) {
 				if (splitArray[i] != "") {
 					return false;

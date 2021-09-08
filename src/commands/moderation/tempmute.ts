@@ -40,7 +40,7 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
         const memberMute: Discord.GuildMember = await interaction.guild.members.fetch(args[0]);
 
         if (!memberMute) {
@@ -58,7 +58,7 @@ module.exports = {
                     color: "#524F4F"
                 });
 
-                interaction.guild.channels.cache.forEach(async (channel: Discord.GuildChannel, id) => {
+                interaction.guild.channels.cache.forEach(async (channel: Discord.GuildChannel) => {
                     await channel.permissionOverwrites.edit(muteRole, {
                         SEND_MESSAGES: false,
                         ADD_REACTIONS: false
@@ -70,15 +70,15 @@ module.exports = {
             }
         }
 
-        let mutetime = args[1];
+        const mutetime = args[1];
         
         if (!ms(mutetime)) {
             return interaction.reply("This isn't a correct duration time. Please retry with a valid one.");
         }
 
-        let reason = args[2] == undefined ? "no reason specified." : (interaction.type === "APPLICATION_COMMAND" ? args[2] : args.slice(1, args.length).join(" "));
+        const reason = args[2] == undefined ? "no reason specified." : (interaction.type === "APPLICATION_COMMAND" ? args[2] : args.slice(1, args.length).join(" "));
 
-        await memberMute.roles.add(muteRole).catch(err => {
+        await memberMute.roles.add(muteRole).catch(() => {
             return interaction.reply("Looks like I'm missing permissions. Check them in the server settings.");
         });
 

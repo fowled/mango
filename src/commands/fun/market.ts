@@ -56,10 +56,10 @@ module.exports = {
 
         function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
             const itemsContent = marketItems.slice(page * 10, page * 10 + 10);
-            let pageContent: string[] = [];
+            const pageContent: string[] = [];
 
             itemsContent.forEach((item, index) => {
-                let object = { name: item["name"], price: item["price"], seller: item["seller"], id: item["id"] };
+                const object = { name: item["name"], price: item["price"], seller: item["seller"], id: item["id"] };
 
                 pageContent.push(`${index + (page * 10 + 1)}. \`${object.name}\` - \`${object.price}$\` | Sold by \`${object.seller}\` » \`${object.id}\``);
             });
@@ -87,18 +87,18 @@ module.exports = {
                 );
 
             if (!arg) {
-                interaction.reply({ embeds: [inventoryEmbed], components: [button] }).then(async i => {
+                interaction.reply({ embeds: [inventoryEmbed], components: [button] }).then(async () => {
                     fetchInteraction();
                 });
             } else {
-                arg.update({ embeds: [inventoryEmbed], components: [button] }).then(async i => {
+                arg.update({ embeds: [inventoryEmbed], components: [button] }).then(async () => {
                     fetchInteraction();
                 });
             }
         }
 
         function buttonChecker() {
-            let index: number = page + 1;
+            const index: number = page + 1;
 
             if (marketItems.slice(index * 10, index * 10 + 10).length === 0) {
                 return true;

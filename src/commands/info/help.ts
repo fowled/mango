@@ -23,9 +23,9 @@ module.exports = {
 		}
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
 		if (args[0]) {
-			let command = clientInteractions.get(args[0]);
+			const command = clientInteractions.get(args[0]);
 
 			if (!command) {
 				return interaction.reply("<:no:835565213322575963> I couldn't find the command you requested. Please check the correct command name with `/help`");
@@ -40,7 +40,7 @@ module.exports = {
 			.setTimestamp()
 			.setFooter(Client.user.username, Client.user.displayAvatarURL())
 			
-			let options: string[] = [], usage: string[] = [];
+			const options: string[] = [], usage: string[] = [];
 			
 			if (command && command.options) {
 				for (const [index, opt] of command.options.entries()) {

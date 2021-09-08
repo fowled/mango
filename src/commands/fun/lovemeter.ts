@@ -1,5 +1,4 @@
 import * as Discord from "discord.js";
-import ms from "ms";
 
 // Fun command
 
@@ -23,7 +22,7 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
         const member = Client.users.cache.get(args[0]);
 
         const randomNumber = Math.floor(Math.random() * 10) + 1;

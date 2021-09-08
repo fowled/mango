@@ -25,10 +25,10 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
         const memberUnmute: Discord.GuildMember = await interaction.guild.members.fetch(args[0]);
 
-        let muteRole: Discord.Role = interaction.guild.roles.cache.find(role => role.name === "muted");
+        const muteRole: Discord.Role = interaction.guild.roles.cache.find(role => role.name === "muted");
 
         if (!muteRole || !memberUnmute.roles.cache.has(muteRole.id)) {
             return interaction.reply(`It looks like that **${memberUnmute.user.tag}** isn't muted :eyes:`);

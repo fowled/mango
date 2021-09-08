@@ -48,7 +48,7 @@ async function handleRejections() {
 	});
 }
 
-let clientInteractions: any = new Discord.Collection();
+const clientInteractions: any = new Discord.Collection();
 
 async function registerCommands() {
 	const commandFolders = fs.readdirSync(path.join(__dirname, "commands"));

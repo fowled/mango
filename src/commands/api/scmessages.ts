@@ -23,7 +23,7 @@ module.exports = {
 		},
 	],
 
-	execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+	execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
 		const user: string = args[0];
 		const xhttp: XMLHttpRequest = new XMLHttpRequest();
 

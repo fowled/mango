@@ -16,9 +16,9 @@ module.exports = {
     category: "fun",
     botPermissions: ["ATTACH_FILES"],
 
-    execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
         const xhttp = new XMLHttpRequest();
-        let emojiList: string[] = [":confused:", ":confounded:", ":disappointed_relieved:", ":frowning:"];
+        const emojiList: string[] = [":confused:", ":confounded:", ":disappointed_relieved:", ":frowning:"];
 
         interaction.deferReply();
 
@@ -27,7 +27,7 @@ module.exports = {
                 const parsedRequest = JSON.parse(xhttp.responseText);
                 const catPicture = new Discord.MessageAttachment(parsedRequest[0].url);
 
-                let embed: Discord.MessageEmbed = new Discord.MessageEmbed()
+                const embed: Discord.MessageEmbed = new Discord.MessageEmbed()
                     .setAuthor(interaction.member.user.tag, interaction.member.user.avatarURL())
                     .setColor("#0FB1FB")
                     .setDescription("Here is some info about your cat.")

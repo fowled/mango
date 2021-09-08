@@ -24,7 +24,7 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
         const canvas = canvaslib.createCanvas(300, 250);
         const ctx = canvas.getContext("2d");
         const user = args[0] ? interaction.mentions.users.first() : interaction.member.user;

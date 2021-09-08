@@ -16,11 +16,11 @@ module.exports = {
     category: "game",
     botPermissions: ["ADD_REACTIONS", "MANAGE_MESSAGES"],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: any, ops: any) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
         const wordsToFind: string[] = [];
-        let data = fs.readFileSync("assets/docs/words.txt", "utf-8");
+        const data = fs.readFileSync("assets/docs/words.txt", "utf-8");
 
-        for (let word of data.split("\n")) {
+        for (const word of data.split("\n")) {
             wordsToFind.push(word);
         }
 
@@ -28,9 +28,9 @@ module.exports = {
         const reactions: string[] = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲'];
         const reactions2: string[] = ['🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿'];
         let guessesNumber: number = 0;
-        let guessedLetters: string[] = [];
+        const guessedLetters: string[] = [];
         let stars: string = "";
-        let firstMessage: Discord.CommandInteraction & Discord.Message, secondMessage: Discord.CommandInteraction & Discord.Message;
+        let secondMessage: Discord.CommandInteraction & Discord.Message;
 
         replaceWithStars();
 
@@ -49,7 +49,7 @@ module.exports = {
         }
 
         async function addReactions(firstmsg: Discord.Message & Discord.CommandInteraction) {
-            for (let char of reactions) {
+            for (const char of reactions) {
                 firstmsg.react(char);
             }
 
@@ -57,25 +57,24 @@ module.exports = {
                 .setDescription(`Word: \`${stars}\``)
                 .setColor("#1E90FF")
             interaction.channel.send({ embeds: [statusMessageEmbed] }).then(async (msg: Discord.Message & Discord.CommandInteraction) => {
-                for (let char of reactions2) {
+                for (const char of reactions2) {
                     await msg.react(char);
                 }
 
-                firstMessage = firstmsg;
                 secondMessage = msg;
 
-                applyReactionCollectors(firstmsg, msg);
+                applyReactionCollectors();
             });
         }
 
-        async function applyReactionCollectors(firstinteraction: Discord.CommandInteraction & Discord.Message, secondinteraction: Discord.CommandInteraction & Discord.Message) {
+        async function applyReactionCollectors() {
             for (let i = 0; i < arguments.length; i++) {
                 createReactionCollector(arguments[i]);
             }
         }
 
         function createReactionCollector(msg: Discord.Message & Discord.CommandInteraction) {
-            const filter: (reaction: any, user: any) => boolean = (reaction, user) => {
+            const filter = (reaction, user) => {
                 return user.id === interaction.member.user.id;
             }
 
@@ -119,7 +118,7 @@ module.exports = {
 
                     collected.first().remove();
                     createReactionCollector(msg);
-                }).catch(err => {
+                }).catch(() => {
                     createReactionCollector(msg);
                 });
         }
@@ -160,9 +159,10 @@ module.exports = {
         }
 
         function emojiToLetter(emoji: string) {
-            var unicodeChars = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿'];
-            var chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-            let index = unicodeChars.indexOf(emoji);
+            const unicodeChars = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿'];
+            const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+            const index = unicodeChars.indexOf(emoji);
+
             return chars[index];
         }
     }

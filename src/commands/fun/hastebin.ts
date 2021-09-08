@@ -23,13 +23,13 @@ module.exports = {
         }
     ],
     
-    execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
         const whatToPost = args.join(" ");
     
         Hastebin.postText(whatToPost)
         .then(res => {
             interaction.reply("Here is your hastebin: " + res);
-        }).catch(err => {
+        }).catch(() => {
             interaction.reply("An error happened. Please retry the command.");
         });
     }

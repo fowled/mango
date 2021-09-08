@@ -14,7 +14,7 @@ module.exports = {
 	description: "Get useful information from a server",
 	category: "info",
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
 		let afkChannel: any;
 		const guildPicture: string = interaction.member.guild.iconURL();
 

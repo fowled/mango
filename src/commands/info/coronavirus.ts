@@ -23,14 +23,14 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
         if (!args[0]) {
             const xhttp: XMLHttpRequest = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    let parsedRequest = JSON.parse(this.responseText);
+                    const parsedRequest = JSON.parse(this.responseText);
 
-                    let MessageEmbed = new Discord.MessageEmbed()
+                    const MessageEmbed = new Discord.MessageEmbed()
                         .setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
                         .setTitle("Coronavirus stats :chart_with_upwards_trend:")
                         .setDescription("Find here COVID-19 related information")
@@ -56,9 +56,9 @@ module.exports = {
             const xhttp: XMLHttpRequest = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    let parsedRequest = JSON.parse(this.responseText);
+                    const parsedRequest = JSON.parse(this.responseText);
 
-                    let MessageEmbed = new Discord.MessageEmbed()
+                    const MessageEmbed = new Discord.MessageEmbed()
                         .setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
                         .setTitle("Coronavirus stats :chart_with_upwards_trend:")
                         .setDescription("Find here COVID-19 related information")

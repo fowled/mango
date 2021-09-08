@@ -14,7 +14,7 @@ module.exports = {
     description: "Sends a link to invite the bot to servers",
     category: "info",
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
         const button = new Discord.MessageActionRow()
             .addComponents(
                 new Discord.MessageButton()

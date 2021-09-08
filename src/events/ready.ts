@@ -14,7 +14,7 @@ module.exports = {
 	execute(Client: Discord.Client) {
 		Logger.log("Synchronizing database models...");
 
-		let models = ["marketItems", "inventoryItems", "moneyAcc", "welChannels", "logChannels", "ranks"];
+		const models = ["marketItems", "inventoryItems", "moneyAcc", "welChannels", "logChannels", "ranks"];
 
 		for (let i = 0; i < 6; i++) {
 			sequelize.model(models[i]).sync();

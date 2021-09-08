@@ -15,12 +15,12 @@ module.exports = {
 	category: "info",
 	botPermissions: ["CREATE_INSTANT_INVITE"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
 		(await interaction.guild.fetch()).invites.create(interaction.channel.id)
 			.then((invite: Discord.Invite) => {
 				interaction.reply(invite.url);
 			})
-			.catch((err: Error) => {
+			.catch(() => {
 				interaction.reply("I don't have the right perms ;( Make sure I have the admin rank :wink:");
 			});
 	}

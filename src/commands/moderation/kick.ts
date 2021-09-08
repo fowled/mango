@@ -32,9 +32,9 @@ module.exports = {
 		}
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
 		const memberKick: Discord.GuildMember = await interaction.guild.members.fetch(args[0]);
-		let reason: string = args[1] ? args[1] : "no reason provided";
+		const reason: string = args[1] ? args[1] : "no reason provided";
 
 		if (memberKick) {
 			const kickMessageAuthor: string = interaction.member.user.username;
@@ -63,7 +63,7 @@ module.exports = {
 					interaction.reply({ embeds: [kickMessageGuild] });
 
 					LogChecker.insertLog(Client, interaction.guild.id, interaction.member.user, `**${memberKick.user.tag}** has been __kicked__ by ${interaction.member.user.tag} for: *${reason}* \nDuration of the punishment: infinite`);
-				}).catch((err: any) => {
+				}).catch(() => {
 					const kickMessageError: Discord.MessageEmbed = new Discord.MessageEmbed()
 						.setTitle("Error")
 						.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())

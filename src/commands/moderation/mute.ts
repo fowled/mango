@@ -32,7 +32,7 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
         const memberMute: Discord.GuildMember = await interaction.guild.members.fetch(args[0]);
 
         if (!memberMute) {
@@ -55,7 +55,7 @@ module.exports = {
             }
         }
 
-        interaction.guild.channels.cache.forEach(async (channel: Discord.GuildChannel, id) => {
+        interaction.guild.channels.cache.forEach(async (channel: Discord.GuildChannel) => {
             await channel.permissionOverwrites.edit(muteRole, {
                 SEND_MESSAGES: false,
                 ADD_REACTIONS: false
@@ -64,7 +64,7 @@ module.exports = {
 
         await memberMute.roles.add(muteRole);
 
-        let reason = args[1] == undefined ? "no reason specified." : args[1];
+        const reason = args[1] == undefined ? "no reason specified." : args[1];
 
         interaction.reply(`**${memberMute.user.tag}** has been muted for: *${reason}*. <:yes:835565213498736650>`);
 

@@ -15,10 +15,9 @@ module.exports = {
     category: "game",
     botPermissions: ["ADD_REACTIONS"],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        let grid = {};
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+        const grid = {};
         let turn = "J1";
-        let firstMessageID;
         let secondPlayer: Discord.User;
 
         const filter = (reaction: any, user: { id: string; }) => {
@@ -47,7 +46,7 @@ module.exports = {
                     secondPlayer = collected.first().users.cache.last();
                     msg.editReply(`2nd player is **${secondPlayer.tag}**. Init...`);
                     generateGrid();
-                }).catch(err => {
+                }).catch(() => {
                     msg.editReply("Nobody has clicked the reaction for 30 seconds. Game cancelled.");
                 });
         }
@@ -56,10 +55,10 @@ module.exports = {
             initGrid();
             let numbers = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
 
-            interaction.editReply("> Status: init :eyes:").then(msg => firstMessageID = msg.id);
+            interaction.editReply("> Status: init :eyes:");
 
             interaction.channel.send("> I am currently generating the grid. Please wait a bit..").then(async msg => {
-                for (let number of numbers) {
+                for (const number of numbers) {
                     await msg.react(number);
                 }
 
@@ -82,7 +81,7 @@ module.exports = {
         }
 
         function createReactionCollector(msg: Discord.Message) {
-            const filter: (reaction: any, user: any) => boolean = (reaction, user) => {
+            const filter = (reaction: any, user: { id: string; }) => {
                 return user.id === interaction.member.user.id || user.id === secondPlayer.id;
             }
 
@@ -128,13 +127,13 @@ module.exports = {
                             .setColor("#1E90FF")
                             .setDescription(`:crossed_swords: Nobody won... That's a draw!`);
 
-                        interaction.editReply({ embeds: [status] });;
+                        interaction.editReply({ embeds: [status] });
                     }
 
                     detectPlayer(); // changes turn
                     collected.last().users.remove(collected.first().users.cache.last().id); // removes user reaction
                     createReactionCollector(msg); // wait for reaction once the turn is finished
-                }).catch(err => {
+                }).catch(() => {
                     createReactionCollector(msg);
                 });
         }
@@ -148,10 +147,10 @@ module.exports = {
         }
 
         async function editGrid(msg: Discord.Message, emoji: string) {
-            let getGrid = msg.content.split(" ");
-            let gridToObject = Object.values(getGrid);
+            const getGrid = msg.content.split(" ");
+            const gridToObject = Object.values(getGrid);
+            const letterToNumber = parseInt(emojiToLetter(emoji));
             let selectEmoji = turn == "J1" ? ":x:" : ":o:";
-            let letterToNumber = parseInt(emojiToLetter(emoji));
 
             if (gridToObject[letterToNumber - 1].startsWith("\n")) {
                 selectEmoji = `\n${selectEmoji}`;
@@ -173,12 +172,12 @@ module.exports = {
         }
 
         function checkIfWin(turn: string) {
-            let casesToCheck = ["1,2,3", "3,6,9", "9,8,7", "7,4,1", "2,5,8", "7,5,3", "1,5,9", "4,5,6"];
+            const casesToCheck = ["1,2,3", "3,6,9", "9,8,7", "7,4,1", "2,5,8", "7,5,3", "1,5,9", "4,5,6"];
 
             for (let i = 0; i < casesToCheck.length; i++) {
-                let firstCase = casesToCheck[i].split(",")[0];
-                let secondCase = casesToCheck[i].split(",")[1];
-                let thirdCase = casesToCheck[i].split(",")[2];
+                const firstCase = casesToCheck[i].split(",")[0];
+                const secondCase = casesToCheck[i].split(",")[1];
+                const thirdCase = casesToCheck[i].split(",")[2];
 
                 if (checkGridCases(firstCase, secondCase, thirdCase, turn)) {
                     return true;
@@ -195,9 +194,10 @@ module.exports = {
         }
 
         function emojiToLetter(emoji: string) { // transforms emoji (reaction) to text
-            var unicodeChars = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
-            var chars = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-            let index = unicodeChars.indexOf(emoji);
+            const unicodeChars = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
+            const chars = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+            const index = unicodeChars.indexOf(emoji);
+
             return chars[index];
         }
     }

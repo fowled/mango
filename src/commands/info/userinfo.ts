@@ -22,10 +22,10 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
 		const selectedUser = args[0] ? await interaction.guild.members.fetch(args[0]) : interaction.member;
 
-		let badges: {} = {
+		const badges: {} = {
 			"DISCORD_EMPLOYEE": "<:staff:835496891453669387>",
 			"PARTNERED_SERVER_OWNER": "<:partner:835496891571634189>",
 			"HYPESQUAD_EVENTS": "<:hypesquad_events:835496891101478934>",
@@ -39,7 +39,7 @@ module.exports = {
 			"EARLY_VERIFIED_BOT_DEVELOPER": "<:developer:835496891101478933>"
 		}
 
-		let badgesArray: string[] = [];
+		const badgesArray: string[] = [];
 
 		selectedUser.user.flags.toArray().forEach(badge => {
 			badgesArray.push(badges[badge]);

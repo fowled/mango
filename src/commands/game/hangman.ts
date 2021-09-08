@@ -16,20 +16,20 @@ module.exports = {
     category: "game",
 
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
         const wordsToFind: string[] = [];
-        let data = fs.readFileSync("assets/docs/words.txt", "utf-8");
+        const data = fs.readFileSync("assets/docs/words.txt", "utf-8");
 
-        for (let word of data.split("\n")) {
+        for (const word of data.split("\n")) {
             wordsToFind.push(word);
         }
 
         const thatOneWord: string = wordsToFind[Math.floor(Math.random() * wordsToFind.length)];
+        const guessedLetters: string[] = [];
         let guessesNumber: number = 0;
-        let guessedLetters: string[] = [];
         let stars: string = "";
 
-        const filter: (m: any) => boolean = m => m.author.id === interaction.member.user.id;
+        const filter = m => m.author.id === interaction.member.user.id;
 
         replaceWithStars();
 

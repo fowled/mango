@@ -25,8 +25,8 @@ module.exports = {
     ],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        let logChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
-        let fetchChannel = await Client.channels.fetch(logChannelID) as Discord.TextChannel;
+        const logChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
+        const fetchChannel = await Client.channels.fetch(logChannelID) as Discord.TextChannel;
 
         if (fetchChannel.type !== "GUILD_TEXT") {
             return interaction.reply(`The channel you specified isn't a text channel. Please retry the command.`);

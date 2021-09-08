@@ -23,20 +23,18 @@ module.exports = {
         },
 	],
 
-	execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+	execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
 		let project: string = args[0];
 		const xhttp: any = new XMLHttpRequest();
 	
 		if (project.startsWith("https://")) {
-			let projectLink = project.split("https://scratch.mit.edu/projects")[1];
+			const projectLink = project.split("https://scratch.mit.edu/projects")[1];
 			project = projectLink;
 		}
 	
 		xhttp.onreadystatechange = function () {
 			if (this.readyState == 4 && this.status == 200) {
 				const parsedRequest = JSON.parse(this.responseText);
-				let sharedDate = this.responseText.split('"shared":"')[1].split(`T`)[0];
-				let sharedHour = this.responseText.split(`"shared":"${sharedDate}T`)[1].split('.000Z"}')[0];
 	
 				const requestedProject: Discord.MessageEmbed = new Discord.MessageEmbed()
 					.setTitle(`Information about ${parsedRequest.title}`)

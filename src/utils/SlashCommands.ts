@@ -15,7 +15,7 @@ export async function SlashCommands(client: Discord.Client) {
         for (const file of commandFiles) {
             const command = require(`../commands/${folder}/${file}`);
 
-            let commandObject = {
+            const commandObject = {
                 name: command.name,
                 description: command.description
             }
@@ -27,4 +27,4 @@ export async function SlashCommands(client: Discord.Client) {
             await client.application.commands.create(commandObject);
         }
     }
-};
+}

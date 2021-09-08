@@ -33,9 +33,9 @@ module.exports = {
 		}
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
 		const memberBan: Discord.GuildMember = await interaction.guild.members.fetch(args[0]);
-		let reason: string = args[1] ? args[1] : "no reason provided";
+		const reason: string = args[1] ? args[1] : "no reason provided";
 
 		if (memberBan) {
 			const banMessageAuthor: string = interaction.member.user.tag;

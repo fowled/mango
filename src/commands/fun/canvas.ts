@@ -24,7 +24,7 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
         if (args[0].length > 45) {
             return interaction.reply("Your text is too long! Please retry the command.");
         }

@@ -31,7 +31,7 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
         const time = args[0];
         const content = args.slice(1, args.length).join(" ");
         const date = new Date();
@@ -59,7 +59,7 @@ module.exports = {
                 .setFooter(Client.user.username, Client.user.avatarURL())
                 .setTimestamp()
 
-            interaction.member.user.send({ embeds: [reminderAuthor] }).catch(err => {
+            interaction.member.user.send({ embeds: [reminderAuthor] }).catch(() => {
                 interaction.channel.send(`<:no:835565213322575963> ${interaction.member.user} I couldn't send you the message as your private messages are turned off.`);
             });
         }, ms(time));

@@ -24,7 +24,7 @@ module.exports = {
 		}
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
 		await interaction.reply("Trying to pin the interaction...");
 
 		interaction.channel.messages.fetch(args[0])

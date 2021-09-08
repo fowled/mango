@@ -59,7 +59,7 @@ module.exports = {
             const pageContent: string[] = [];
 
             itemsContent.forEach((item, index) => {
-                let object = { tag: item["nameOfUser"], xp: item["xp"] };
+                const object = { tag: item["nameOfUser"], xp: item["xp"] };
 
                 pageContent.push(`${index + (page * 10 + 1)}. **${object.tag}** / *${object.xp}* xp → level \`${Math.floor(object.xp / 50)}\``);
             });
@@ -87,18 +87,18 @@ module.exports = {
                 );
 
             if (!arg) {
-                interaction.reply({ embeds: [levelEmbed], components: [button] }).then(async i => {
+                interaction.reply({ embeds: [levelEmbed], components: [button] }).then(async () => {
                     fetchInteraction();
                 });
             } else {
-                arg.update({ embeds: [levelEmbed], components: [button] }).then(async i => {
+                arg.update({ embeds: [levelEmbed], components: [button] }).then(async () => {
                     fetchInteraction();
                 });
             }
         }
 
         function buttonChecker() {
-            let index: number = page + 1;
+            const index: number = page + 1;
 
             if (ranks.slice(index * 10, index * 10 + 10).length === 0) {
                 return true;

@@ -1,9 +1,8 @@
-import * as Discord from "discord.js";
 import * as Logger from "./../utils/Logger";
 
 module.exports = {
 	name: "error",
-	execute(error: Error, Client: Discord.Client) {
+	execute(error: Error) {
 		Logger.error(error.message);
 	}
 };
