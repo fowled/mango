@@ -2,6 +2,7 @@
 import * as Sequelize from "sequelize";
 import * as fs from "fs";
 import * as path from "path";
+import * as hypixel from "hypixel-api-reborn";
 
 import * as Logger from "./utils/Logger";
 import { Token } from "./token";
@@ -17,8 +18,10 @@ export const sequelizeinit = new Sequelize.Sequelize("database", "username", "pa
 });
 
 export const ops = {
-	sequelize: sequelizeinit
+	sequelize: sequelizeinit,
 };
+
+export const hypixelClient: hypixel.Client = new hypixel.Client(process.env.API_KEY);
 
 (async () => {
 	await eventBinder();

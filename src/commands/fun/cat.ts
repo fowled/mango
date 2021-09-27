@@ -20,8 +20,6 @@ module.exports = {
         const xhttp = new XMLHttpRequest();
         const emojiList: string[] = [":confused:", ":confounded:", ":disappointed_relieved:", ":frowning:"];
 
-        interaction.deferReply();
-
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 const parsedRequest = JSON.parse(xhttp.responseText);

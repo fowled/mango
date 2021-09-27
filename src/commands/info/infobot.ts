@@ -18,8 +18,6 @@ module.exports = {
     category: "info",
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
-        await interaction.deferReply();
-
         const discordVersion = require("discord.js").version;
         let ramInfo: si.Systeminformation.MemData, os: si.Systeminformation.OsData;
 

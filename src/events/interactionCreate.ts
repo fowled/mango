@@ -6,13 +6,15 @@ import * as Logger from "../utils/Logger";
 
 module.exports = {
 	name: "interactionCreate",
-	execute(interaction: Discord.CommandInteraction, Client: Discord.Client) {
+	async execute(interaction: Discord.CommandInteraction, Client: Discord.Client) {
 		if (interaction.isButton()) return;
 
 		const args: string[] = interaction.options.data.map(opt => opt.value.toString());
 		const command: string = interaction.commandName;
 
 		if (!interaction.isCommand() && !clientInteractions.has(command)) return;
+
+		await interaction.deferReply();
 
 		const commandInteraction: any = clientInteractions.get(command);
 		const interactionMember: Discord.GuildMember = interaction.member as unknown as Discord.GuildMember;
@@ -27,7 +29,6 @@ module.exports = {
 			commandInteraction.execute(Client, interaction, args, ops);
 		} catch (err) {
 			Logger.error(err);
-			Logger.log(`The interaction ${interaction.user.tag} tried to call in ${interaction.guild.name} doesen't seem to exist (${interaction.commandName})`);
 		}
 
 		Logger.log(`${interaction.user.tag} just used the ${interaction.commandName} interaction in ${interaction.guild.name}.`);
