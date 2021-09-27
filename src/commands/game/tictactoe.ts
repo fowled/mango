@@ -24,7 +24,7 @@ module.exports = {
             return user.id != interaction.member.user.id;
         };
 
-        interaction.reply("> Waiting for the 2nd player to approve... (click on the reaction to begin the game)").then(() => {
+        interaction.editReply("> Waiting for the 2nd player to approve... (click on the reaction to begin the game)").then(() => {
             fetchInteraction();
         });
 

@@ -44,6 +44,6 @@ module.exports = {
             .setFooter(Client.user.username, Client.user.avatarURL())
             .setTimestamp()
 
-        interaction.reply({ embeds: [lovemeter] });
+        interaction.editReply({ embeds: [lovemeter] });
     }
 }

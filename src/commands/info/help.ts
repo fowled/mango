@@ -28,7 +28,7 @@ module.exports = {
 			const command = clientInteractions.get(args[0]);
 
 			if (!command) {
-				return interaction.reply("<:no:835565213322575963> I couldn't find the command you requested. Please check the correct command name with `/help`");
+				return interaction.editReply("<:no:835565213322575963> I couldn't find the command you requested. Please check the correct command name with `/help`");
 			}
 			
 			const infoEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
@@ -52,7 +52,7 @@ module.exports = {
 				infoEmbed.addField("Usage", `\`/${command.name} ${usage.join(" ")}\``);
 			}
 
-			interaction.reply({ embeds: [infoEmbed] });
+			interaction.editReply({ embeds: [infoEmbed] });
 		} else {
 			const helpinteraction: Discord.MessageEmbed = new Discord.MessageEmbed()
 				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
@@ -62,7 +62,7 @@ module.exports = {
 				.setFooter(Client.user.username, Client.user.avatarURL())
 				.setTimestamp();
 
-			interaction.reply({ embeds: [helpinteraction] });
+			interaction.editReply({ embeds: [helpinteraction] });
 		}
 
 		function GetCategoryCmds(category: string) {

@@ -44,7 +44,7 @@ module.exports = {
         const memberMute: Discord.GuildMember = await interaction.guild.members.fetch(args[0]);
 
         if (!memberMute) {
-            return interaction.reply("You specified an invalid user to mute. Please tag him in order to mute them.");
+            return interaction.editReply("You specified an invalid user to mute. Please tag him in order to mute them.");
         }
 
         let muteRole: Discord.Role = interaction.guild.roles.cache.find(role => role.name === "muted");
@@ -66,23 +66,23 @@ module.exports = {
                 });
 
             } catch (error) {
-                interaction.reply("Sorry, but I got an unexcepted error while creating the role. " + `\`\`\`${error.message}\`\`\``);
+                interaction.editReply("Sorry, but I got an unexcepted error while creating the role. " + `\`\`\`${error.message}\`\`\``);
             }
         }
 
         const mutetime = args[1];
         
         if (!ms(mutetime)) {
-            return interaction.reply("This isn't a correct duration time. Please retry with a valid one.");
+            return interaction.editReply("This isn't a correct duration time. Please retry with a valid one.");
         }
 
         const reason = args[2] == undefined ? "no reason specified." : (interaction.type === "APPLICATION_COMMAND" ? args[2] : args.slice(1, args.length).join(" "));
 
         await memberMute.roles.add(muteRole).catch(() => {
-            return interaction.reply("Looks like I'm missing permissions. Check them in the server settings.");
+            return interaction.editReply("Looks like I'm missing permissions. Check them in the server settings.");
         });
 
-        interaction.reply(`**${memberMute.user.tag}** has been muted for *${ms(ms(mutetime))}*. <:yes:835565213498736650>`);
+        interaction.editReply(`**${memberMute.user.tag}** has been muted for *${ms(ms(mutetime))}*. <:yes:835565213498736650>`);
 
         LogChecker.insertLog(Client, interaction.guild.id, interaction.member.user, `**${memberMute.user.tag}** has been __tempmuted__ by ${interaction.member.user.tag} for: *${reason}* \nDuration of the punishment: ${ms(ms(mutetime))}`);
 

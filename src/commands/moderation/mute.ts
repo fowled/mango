@@ -36,7 +36,7 @@ module.exports = {
         const memberMute: Discord.GuildMember = await interaction.guild.members.fetch(args[0]);
 
         if (!memberMute) {
-            return interaction.reply("You specified an invalid user to mute. Please tag him in order to mute them.");
+            return interaction.editReply("You specified an invalid user to mute. Please tag him in order to mute them.");
         }
 
         let muteRole: Discord.Role = interaction.guild.roles.cache.find(role => role.name === "muted");
@@ -51,7 +51,7 @@ module.exports = {
                 });
 
             } catch (error) {
-                interaction.reply("Sorry, but I got an unexcepted error while creating the role. " + + `\`\`\`${error.message}\`\`\``);
+                interaction.editReply("Sorry, but I got an unexcepted error while creating the role. " + + `\`\`\`${error.message}\`\`\``);
             }
         }
 
@@ -66,7 +66,7 @@ module.exports = {
 
         const reason = args[1] == undefined ? "no reason specified." : args[1];
 
-        interaction.reply(`**${memberMute.user.tag}** has been muted for: *${reason}*. <:yes:835565213498736650>`);
+        interaction.editReply(`**${memberMute.user.tag}** has been muted for: *${reason}*. <:yes:835565213498736650>`);
 
         LogChecker.insertLog(Client, interaction.guild.id, interaction.member.user, `**${memberMute.user.tag}** has been __muted__ by ${interaction.member.user.tag} for: *${reason}* \nDuration of the punishment: infinite`);
     }

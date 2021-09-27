@@ -64,7 +64,7 @@ module.exports = {
 						.setTimestamp()
 						.setColor("#4292f4")
 						.setFooter(Client.user.username, Client.user.avatarURL());
-					interaction.reply({ embeds: [banMessageGuild] });
+					interaction.editReply({ embeds: [banMessageGuild] });
 
 					LogChecker.insertLog(Client, interaction.guild.id, interaction.member.user, `**${memberBan.user.tag}** has been __banned__ by ${interaction.member.user.tag} for: *${reason}* \nDuration of the punishment: infinite`);
 
@@ -73,7 +73,7 @@ module.exports = {
 				});
 			}, 500);
 		} else {
-			interaction.reply("Whoops, please select a member. Ban hammer is waiting!");
+			interaction.editReply("Whoops, please select a member. Ban hammer is waiting!");
 		}
 	}
 }

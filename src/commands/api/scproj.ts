@@ -52,9 +52,9 @@ module.exports = {
 					.setTimestamp()
 					.setColor("#FF8000")
 					.setFooter(Client.user.username, Client.user.avatarURL());
-				interaction.reply({ embeds: [requestedProject] });
+				interaction.editReply({ embeds: [requestedProject] });
 			} else if (this.readyState == 4 && this.responseText == "{\"code\":\"NotFound\",\"message\":\"\"}") {
-				interaction.reply("I did not find the project you requested.");
+				interaction.editReply("I did not find the project you requested.");
 			}
 		}
 	

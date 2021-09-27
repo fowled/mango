@@ -44,11 +44,11 @@ module.exports = {
                 .addField("Language", player.userLanguage, true)
                 .addField("Version", player.mcVersion ? player.mcVersion : "unknown", true)
                 .setFooter(Client.user.username, Client.user.avatarURL())
-            interaction.reply({ embeds: [embed] });
+            interaction.editReply({ embeds: [embed] });
 
             console.log(player);
         }).catch(() => {
-            return interaction.reply(`<:no:835565213322575963> Couldn't find the player with nickname \`${args[0]}\`.`);
+            return interaction.editReply(`<:no:835565213322575963> Couldn't find the player with nickname \`${args[0]}\`.`);
         });
     }
 

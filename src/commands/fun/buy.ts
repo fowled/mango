@@ -30,7 +30,7 @@ module.exports = {
         const marketItem = await marketmodel.findOne({ where: { id: ID } });
 
         if (!marketItem) {
-            return interaction.reply(`I'm sorry, but there is no item matching ID **${args[0]}**. To consult the market, do \`/market\` :wink:`);
+            return interaction.editReply(`I'm sorry, but there is no item matching ID **${args[0]}**. To consult the market, do \`/market\` :wink:`);
         }
 
         const itemName = marketItem.get("name");
@@ -42,16 +42,16 @@ module.exports = {
         const authorMoney = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
 
         if (!authorMoney) {
-            return interaction.reply("You don't have any money! Do `/money` to start using the market.");
+            return interaction.editReply("You don't have any money! Do `/money` to start using the market.");
         }
 
         const getAuthorMoney = authorMoney.get("money");
         const sellerMoney = await moneymodel.findOne({ where: { idOfUser: itemSellerID } });
 
         if (getAuthorMoney < itemPrice) {
-            return interaction.reply(`You must have \`${(itemPrice as unknown as number) - (getAuthorMoney as unknown as number)}\` more dollars to get this item. :frowning:`);
+            return interaction.editReply(`You must have \`${(itemPrice as unknown as number) - (getAuthorMoney as unknown as number)}\` more dollars to get this item. :frowning:`);
         } else if (interaction.member.user.id == itemSellerID) {
-            return interaction.reply("You can't buy your own item...");
+            return interaction.editReply("You can't buy your own item...");
         }
 
         const inventorymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("inventoryItems");
@@ -66,7 +66,7 @@ module.exports = {
         authorMoney.decrement(['money'], { by: itemPrice as unknown as number });
         sellerMoney.increment(['money'], { by: itemPrice as unknown as number });
 
-        interaction.reply(`Item **${itemName}** successfully bought for *${itemPrice}$*.`);
+        interaction.editReply(`Item **${itemName}** successfully bought for *${itemPrice}$*.`);
 
         marketItem.destroy();
     }

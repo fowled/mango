@@ -20,7 +20,7 @@ module.exports = {
 		createGiveaway();
 
 		async function createGiveaway() {
-			interaction.reply("Enter a name for the giveaway, and I'll create it for you.");
+			interaction.editReply("Enter a name for the giveaway, and I'll create it for you.");
 
 			const channel: Discord.TextChannel = interaction.channel as Discord.TextChannel;
 

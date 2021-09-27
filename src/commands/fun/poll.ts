@@ -68,7 +68,7 @@ module.exports = {
         let msgID: string;
 
         if (splitMessage.length > 6) {
-            return interaction.reply("Not-that-fatal error: 5 args limit exceeded. Please provide less args.");
+            return interaction.editReply("Not-that-fatal error: 5 args limit exceeded. Please provide less args.");
         }
 
         for (let i = 0; i < splitMessage.length; i++) {
@@ -82,7 +82,7 @@ module.exports = {
             .setColor("#00BFFF")
             .setFooter(Client.user.username, Client.user.avatarURL())
 
-        interaction.reply({ embeds: [poll] }).then(async () => {
+        interaction.editReply({ embeds: [poll] }).then(async () => {
             fetchInteraction();
         });
 

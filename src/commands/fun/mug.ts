@@ -42,6 +42,6 @@ module.exports = {
     
         const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png');
     
-        interaction.reply({ files: [attachment] });
+        interaction.editReply({ files: [attachment] });
     }
 }

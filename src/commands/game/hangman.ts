@@ -39,7 +39,7 @@ module.exports = {
             .setDescription(`Hangman game generated. Try to guess the word. You have 10 guesses. \nWord to find: \`${stars}\``)
             .setFooter(Client.user.username, Client.user.avatarURL())
 
-        await interaction.reply({ embeds: [startEmbed] }).then(() => {
+        await interaction.editReply({ embeds: [startEmbed] }).then(() => {
             createMessageCollector();
         });
 

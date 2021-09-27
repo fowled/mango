@@ -20,14 +20,14 @@ module.exports = {
         const money = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
 
         if (money) {
-            return interaction.reply({ content: `:dollar: Your account currently has **${money.get("money")}$**!`, ephemeral: true });
+            return interaction.editReply({ content: `:dollar: Your account currently has **${money.get("money")}$**!` });
         } else {
             moneymodel.create({
                 idOfUser: interaction.member.user.id,
                 money: 500
             });
 
-            return interaction.reply("Since you are new to the bank, I just created an account with **500$** on it for you. Enjoy! :wink:");
+            return interaction.editReply("Since you are new to the bank, I just created an account with **500$** on it for you. Enjoy! :wink:");
         }
     }
 }

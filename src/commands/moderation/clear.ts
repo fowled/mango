@@ -31,16 +31,16 @@ module.exports = {
         if (args.length > 0) {
             if (!isNaN(parseInt(args[0], 10)) && parseInt(args[0], 10) >= 1 && parseInt(args[0], 10) <= 100) {
                 channel.bulkDelete(parseInt(args[0], 10)).then(() => {
-                    return interaction.reply(`<:yes:835565213498736650> Successfully deleted ${args[0]} messages!`);
-                }).catch(() => interaction.reply("I don't have the permission to delete messages."));
+                    return interaction.editReply(`<:yes:835565213498736650> Successfully deleted ${args[0]} messages!`);
+                }).catch(() => interaction.editReply("I don't have the permission to delete messages."));
                 LogChecker.insertLog(Client, interaction.guild.id, interaction.member.user, `**${args[0]}** messages got deleted in *${interaction.channel}* by ${interaction.member.user.tag}`);
 
             } else {
-                interaction.reply("Invlid number provided. Only provided number between 1 and 100");
+                interaction.editReply("Invlid number provided. Only provided number between 1 and 100");
             }
 
         } else {
-            interaction.reply("Please enter the number of messages to delete!");
+            interaction.editReply("Please enter the number of messages to delete!");
         }
     }
 }

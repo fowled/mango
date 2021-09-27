@@ -47,7 +47,7 @@ module.exports = {
 			reponse.setImage(interaction.guild.bannerURL());
 		}
 
-		interaction.reply({ embeds: [reponse] });
+		interaction.editReply({ embeds: [reponse] });
 	}
 }
 

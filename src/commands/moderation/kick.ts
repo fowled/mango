@@ -60,7 +60,7 @@ module.exports = {
 						.setTimestamp()
 						.setColor("#4292f4")
 						.setFooter(Client.user.username, Client.user.avatarURL());
-					interaction.reply({ embeds: [kickMessageGuild] });
+					interaction.editReply({ embeds: [kickMessageGuild] });
 
 					LogChecker.insertLog(Client, interaction.guild.id, interaction.member.user, `**${memberKick.user.tag}** has been __kicked__ by ${interaction.member.user.tag} for: *${reason}* \nDuration of the punishment: infinite`);
 				}).catch(() => {
@@ -71,11 +71,11 @@ module.exports = {
 						.setTimestamp()
 						.setColor("#FF0000")
 						.setFooter(Client.user.username, Client.user.avatarURL());
-					interaction.reply({ embeds: [kickMessageError] });
+					interaction.editReply({ embeds: [kickMessageError] });
 				});
 			}, 750);
 		} else {
-			interaction.reply("Boop! A super rare unknown error has occured. Maybe the user you tried to kick isn't in the server...?");
+			interaction.editReply("Boop! A super rare unknown error has occured. Maybe the user you tried to kick isn't in the server...?");
 		}
 
 	}

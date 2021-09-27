@@ -18,10 +18,10 @@ module.exports = {
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
 		(await interaction.guild.fetch()).invites.create(interaction.channel.id)
 			.then((invite: Discord.Invite) => {
-				interaction.reply(invite.url);
+				interaction.editReply(invite.url);
 			})
 			.catch(() => {
-				interaction.reply("I don't have the right perms ;( Make sure I have the admin rank :wink:");
+				interaction.editReply("I don't have the right perms ;( Make sure I have the admin rank :wink:");
 			});
 	}
 }

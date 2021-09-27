@@ -40,19 +40,19 @@ module.exports = {
         const money = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
  
         if (isNaN(price as unknown as number) || price.startsWith("-")) {
-            return interaction.reply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
+            return interaction.editReply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
         } else if (item.includes("@")) {
-            return interaction.reply("I can't add this item to the market because it contains a mention. Be sure to remove it.");
+            return interaction.editReply("I can't add this item to the market because it contains a mention. Be sure to remove it.");
         } else if (!money) {
-            return interaction.reply("It looks like you haven't created your account! Do `/money` first :wink:");
+            return interaction.editReply("It looks like you haven't created your account! Do `/money` first :wink:");
         } else if (item.length > 70) {
-            return interaction.reply("Your item name is too long!");
+            return interaction.editReply("Your item name is too long!");
         }
 
         const getMoney = money.get("money");
 
         if (getMoney < price) {
-            return interaction.reply(`You can't sell this item at **${price}** because you only have **${money}**$.`);
+            return interaction.editReply(`You can't sell this item at **${price}** because you only have **${money}**$.`);
         }
 
         const createdItem = await marketmodel.create({
@@ -62,11 +62,11 @@ module.exports = {
             sellerID: interaction.member.user.id
         }).catch(e => {
             if (e.name == "SequelizeUniqueConstraintError") {
-                return interaction.reply("This object already exists! Please choose another name.");
+                return interaction.editReply("This object already exists! Please choose another name.");
             }
         });
 
         // @ts-ignore
-        interaction.reply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${createdItem.get("id")}** <:yes:835565213498736650>`);
+        interaction.editReply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${createdItem.get("id")}** <:yes:835565213498736650>`);
     }
 }

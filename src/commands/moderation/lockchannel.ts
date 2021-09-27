@@ -38,16 +38,16 @@ module.exports = {
         const messageChannel = !args[1] ? interaction.channel as Discord.GuildChannel : await interaction.guild.channels.fetch(args[1]);
 
         if (!role) {
-            return interaction.reply("I didn't find the role you specified. <:no:835565213322575963>");
+            return interaction.editReply("I didn't find the role you specified. <:no:835565213322575963>");
         }
 
         messageChannel.permissionOverwrites.create(role, {
             "SEND_MESSAGES": false
         }).then(() => {
-            interaction.reply(`<:yes:835565213498736650> ${messageChannel} has been locked for ${role}.`);
+            interaction.editReply(`<:yes:835565213498736650> ${messageChannel} has been locked for ${role}.`);
         }).catch(err => {
             Logger.error(err);
-            interaction.reply("An error occured. <:no:835565213322575963> ```\n" + err + "```");
+            interaction.editReply("An error occured. <:no:835565213322575963> ```\n" + err + "```");
         });
 
         // @ts-ignore

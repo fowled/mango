@@ -27,6 +27,6 @@ module.exports = {
 			.setColor("#019FE9")
 			.setFooter(Client.user.username, Client.user.avatarURL())
 			.setTimestamp()
-		interaction.reply({ embeds: [levelEmbedinteraction], ephemeral: true });
+		interaction.editReply({ embeds: [levelEmbedinteraction] });
 	}
 }

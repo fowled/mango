@@ -46,7 +46,7 @@ module.exports = {
                         .setFooter(Client.user.username, Client.user.avatarURL())
                         .setTimestamp()
 
-                    interaction.reply({ embeds: [MessageEmbed] });
+                    interaction.editReply({ embeds: [MessageEmbed] });
                 }
             }
 
@@ -73,9 +73,9 @@ module.exports = {
                         .setFooter(Client.user.username, Client.user.avatarURL())
                         .setTimestamp()
 
-                    interaction.reply({ embeds: [MessageEmbed] });
+                    interaction.editReply({ embeds: [MessageEmbed] });
                 } else if (this.readyState == 4 && this.status == 404) {
-                    interaction.reply("I didn't find that country. <:no:835565213322575963>");
+                    interaction.editReply("I didn't find that country. <:no:835565213322575963>");
                 }
             }
 

@@ -29,7 +29,7 @@ module.exports = {
         const fetchChannel = await Client.channels.fetch(logChannelID) as Discord.TextChannel;
 
         if (fetchChannel.type !== "GUILD_TEXT") {
-            return interaction.reply(`The channel you specified isn't a text channel. Please retry the command.`);
+            return interaction.editReply(`The channel you specified isn't a text channel. Please retry the command.`);
         }
 
         const logchannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("logChannels");
@@ -44,6 +44,6 @@ module.exports = {
             });
         }
 
-        return interaction.reply(`<:yes:835565213498736650> Successfully updated the log channel to \`#${fetchChannel.name}\`!`);
+        return interaction.editReply(`<:yes:835565213498736650> Successfully updated the log channel to \`#${fetchChannel.name}\`!`);
     }
 }

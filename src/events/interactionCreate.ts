@@ -14,17 +14,17 @@ module.exports = {
 
 		if (!interaction.isCommand() && !clientInteractions.has(command)) return;
 
-		await interaction.deferReply();
-
 		const commandInteraction: any = clientInteractions.get(command);
 		const interactionMember: Discord.GuildMember = interaction.member as unknown as Discord.GuildMember;
-
+		
 		if (commandInteraction.memberPermissions && !interactionMember.permissions.has(commandInteraction.memberPermissions)) {
-			return interaction.reply({ content: `<:no:835565213322575963> Sorry, but it looks like you're missing one of the following permissions: \`${commandInteraction.memberPermissions.join(", ")}\``, ephemeral: true});
+			return interaction.reply({ content: `<:no:835565213322575963> Sorry, but it looks like you're missing one of the following permissions: \`${commandInteraction.memberPermissions.join(", ")}\``, ephemeral: true });
 		} else if (commandInteraction.botPermissions && !interaction.guild.me.permissions.has(commandInteraction.botPermissions)) {
-			return interaction.reply({ content: `<:no:835565213322575963> It looks like I'm missing one of the following permissions: \`${commandInteraction.botPermissions.join(", ")}\``, ephemeral: true});
+			return interaction.reply({ content: `<:no:835565213322575963> It looks like I'm missing one of the following permissions: \`${commandInteraction.botPermissions.join(", ")}\``, ephemeral: true });
 		}
-
+		
+		await interaction.deferReply();
+		
 		try {
 			commandInteraction.execute(Client, interaction, args, ops);
 		} catch (err) {

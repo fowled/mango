@@ -28,9 +28,9 @@ module.exports = {
     
         Hastebin.postText(whatToPost)
         .then(res => {
-            interaction.reply("Here is your hastebin: " + res);
+            interaction.editReply("Here is your hastebin: " + res);
         }).catch(() => {
-            interaction.reply("An error happened. Please retry the command.");
+            interaction.editReply("An error happened. Please retry the command.");
         });
     }
 }

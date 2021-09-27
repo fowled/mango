@@ -70,9 +70,9 @@ module.exports = {
 				.setColor("RANDOM")
 				.setFooter(Client.user.username, Client.user.avatarURL());
 
-			interaction.reply({ embeds: [userinfoMessageEmbed] });
+			interaction.editReply({ embeds: [userinfoMessageEmbed] });
 		} else {
-			interaction.reply("Tagged user is not in the server :frowning:");
+			interaction.editReply("Tagged user is not in the server :frowning:");
 		}
 	}
 }

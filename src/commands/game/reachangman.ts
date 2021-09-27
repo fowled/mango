@@ -38,7 +38,7 @@ module.exports = {
             .setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
             .setDescription("The game is currently initializating - please wait for the reactions to register.")
             .setColor("#1E90FF")
-        interaction.reply({ embeds: [firstMessageEmbed] }).then(() => {
+        interaction.editReply({ embeds: [firstMessageEmbed] }).then(() => {
             fetchInteraction()
         });
 

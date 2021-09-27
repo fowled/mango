@@ -21,7 +21,7 @@ module.exports = {
         const marketItems = await inventorymodel.findAll({ raw: true });
 
         if (!marketItems[0]) {
-            return interaction.reply("It seems like the market is empty! Start by `/sell`ing an object :wink:");
+            return interaction.editReply("It seems like the market is empty! Start by `/sell`ing an object :wink:");
         }
 
         let page: number = 0;
@@ -87,7 +87,7 @@ module.exports = {
                 );
 
             if (!arg) {
-                interaction.reply({ embeds: [inventoryEmbed], components: [button] }).then(async () => {
+                interaction.editReply({ embeds: [inventoryEmbed], components: [button] }).then(async () => {
                     fetchInteraction();
                 });
             } else {

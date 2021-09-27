@@ -21,7 +21,7 @@ module.exports = {
         const authorinventory = await inventorymodel.findAll({ where: { authorID: interaction.member.user.id } });
 
         if (!authorinventory[0]) {
-            return interaction.reply("Your inventory is empty! Start by doing `/market` and then buy something with the `/buy [ID of the item]` command.");
+            return interaction.editReply("Your inventory is empty! Start by doing `/market` and then buy something with the `/buy [ID of the item]` command.");
         }
 
         let page: number = 0;
@@ -92,7 +92,7 @@ module.exports = {
                 );
 
             if (!arg) {
-                interaction.reply({ embeds: [inventoryEmbed], components: [button] }).then(async () => {
+                interaction.editReply({ embeds: [inventoryEmbed], components: [button] }).then(async () => {
                     fetchInteraction();
                 });
             } else {

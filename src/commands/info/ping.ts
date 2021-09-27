@@ -15,7 +15,7 @@ module.exports = {
 	category: "info",
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
-		await interaction.reply("Ping?");
+		await interaction.editReply("Ping?");
 
 		const pong: Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle(`Latency information for ${interaction.member.user.tag}`)

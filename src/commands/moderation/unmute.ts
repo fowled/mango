@@ -31,15 +31,15 @@ module.exports = {
         const muteRole: Discord.Role = interaction.guild.roles.cache.find(role => role.name === "muted");
 
         if (!muteRole || !memberUnmute.roles.cache.has(muteRole.id)) {
-            return interaction.reply(`It looks like that **${memberUnmute.user.tag}** isn't muted :eyes:`);
+            return interaction.editReply(`It looks like that **${memberUnmute.user.tag}** isn't muted :eyes:`);
         }
 
         try {
             memberUnmute.roles.remove(muteRole);
-            interaction.reply(`**${memberUnmute.user.tag}** has been successfully unmuted. <:yes:835565213498736650>`);
+            interaction.editReply(`**${memberUnmute.user.tag}** has been successfully unmuted. <:yes:835565213498736650>`);
             LogChecker.insertLog(Client, interaction.guild.id, interaction.member.user, `**${memberUnmute.user.tag}** has been __unmuted__ by ${interaction.member.user.tag}.`);
         } catch (error) {
-            interaction.reply("Sorry, but I got an unexcepted error while unmuting this user. " + + `\`\`\`${error.message}\`\`\``);
+            interaction.editReply("Sorry, but I got an unexcepted error while unmuting this user. " + + `\`\`\`${error.message}\`\`\``);
         }
     }
 }

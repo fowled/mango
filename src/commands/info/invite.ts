@@ -31,6 +31,6 @@ module.exports = {
             .setDescription("Click [here](https://discord.com/oauth2/authorize?client_id=497443144632238090&permissions=8&scope=bot) to invite the bot (or on the fancy button)")
             .setFooter(Client.user.username, Client.user.displayAvatarURL())
 
-        interaction.reply({ embeds: [invite], components: [button] });
+        interaction.editReply({ embeds: [invite], components: [button] });
     }
 }

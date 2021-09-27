@@ -23,9 +23,9 @@ module.exports = {
         if (welcomechannel) {
             welcomechannel.destroy();
         } else {
-            return interaction.reply("I'm sorry, but you don't have any log channel for the moment. Get started by doing `/setwelcomechannel [channel]`!");
+            return interaction.editReply("I'm sorry, but you don't have any log channel for the moment. Get started by doing `/setwelcomechannel [channel]`!");
         }
 
-        return interaction.reply(`<:yes:835565213498736650> Successfully removed the welcome channel! You won't receive welcome notifications anymore. Was that a mistake? Don't worry, do \`/setwelcomechannel (#channel)\` to add it again.`);
+        return interaction.editReply(`<:yes:835565213498736650> Successfully removed the welcome channel! You won't receive welcome notifications anymore. Was that a mistake? Don't worry, do \`/setwelcomechannel (#channel)\` to add it again.`);
     }
 }

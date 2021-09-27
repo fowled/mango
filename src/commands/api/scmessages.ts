@@ -40,9 +40,9 @@ module.exports = {
 					.setThumbnail(interaction.member.user.avatarURL())
 					.setTimestamp()
 					.setFooter(Client.user.username, Client.user.avatarURL());
-				interaction.reply({ embeds: [requestedMessages] });
+				interaction.editReply({ embeds: [requestedMessages] });
 			} else if (this.readyState === 4 && this.responseText === "{\"code\":\"NotFound\",\"message\":\"\"}") {
-				interaction.reply("I did not find the user you requested.");
+				interaction.editReply("I did not find the user you requested.");
 			}
 		};
 		

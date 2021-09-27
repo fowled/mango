@@ -21,7 +21,7 @@ module.exports = {
         const ranks = await Xp.findAll({ order: [["xp", "DESC"]], where: { idOfGuild: interaction.guild.id }, raw: true });
 
         if (!ranks[0]) {
-            return interaction.reply("It seems that the leaderboard is currently empty.");
+            return interaction.editReply("It seems that the leaderboard is currently empty.");
         }
 
         let page: number = 0;
@@ -87,7 +87,7 @@ module.exports = {
                 );
 
             if (!arg) {
-                interaction.reply({ embeds: [levelEmbed], components: [button] }).then(async () => {
+                interaction.editReply({ embeds: [levelEmbed], components: [button] }).then(async () => {
                     fetchInteraction();
                 });
             } else {

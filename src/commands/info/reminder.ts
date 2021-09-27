@@ -37,7 +37,7 @@ module.exports = {
         const date = new Date();
 
         if (!ms(time)) {
-            return interaction.reply("<:no:835565213322575963> The duration must follow this format - `50s`, `10m` or `10h`.");
+            return interaction.editReply("<:no:835565213322575963> The duration must follow this format - `50s`, `10m` or `10h`.");
         }
 
         const reminderEmbed = new Discord.MessageEmbed()
@@ -48,7 +48,7 @@ module.exports = {
             .setFooter(Client.user.username, Client.user.avatarURL())
             .setTimestamp()
 
-        interaction.reply({ embeds: [reminderEmbed] });
+        interaction.editReply({ embeds: [reminderEmbed] });
 
         setTimeout(function () {
             const reminderAuthor = new Discord.MessageEmbed()

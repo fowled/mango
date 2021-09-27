@@ -25,7 +25,7 @@ module.exports = {
 	],
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
-		await interaction.reply("Trying to pin the interaction...");
+		await interaction.editReply("Trying to pin the interaction...");
 
 		interaction.channel.messages.fetch(args[0])
 			.then((pininteraction: Discord.CommandInteraction & Discord.Message) => {
@@ -33,7 +33,7 @@ module.exports = {
 					interaction.editReply("Successfully pinned the message!");
 				});
 			}).catch(() => {
-				interaction.reply("An error occured, make sure I have the pin permission.");
+				interaction.editReply("An error occured, make sure I have the pin permission.");
 			});
 
 	}

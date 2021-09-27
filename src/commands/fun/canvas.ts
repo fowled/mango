@@ -26,7 +26,7 @@ module.exports = {
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
         if (args[0].length > 45) {
-            return interaction.reply("Your text is too long! Please retry the command.");
+            return interaction.editReply("Your text is too long! Please retry the command.");
         }
 
         const canvas = canvaslib.createCanvas(700, 250);
@@ -55,6 +55,6 @@ module.exports = {
 
         const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'canvas.png');
 
-        interaction.reply({ files: [attachment] });
+        interaction.editReply({ files: [attachment] });
     }
 }

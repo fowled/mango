@@ -59,9 +59,9 @@ module.exports = {
 					.addField("Country", requestedUser.profile.country)
 					.setTimestamp()
 					.setFooter(Client.user.username, Client.user.avatarURL());
-				interaction.reply({ embeds: [reponse] });
+				interaction.editReply({ embeds: [reponse] });
 			} else if (this.readyState === 4 && this.responseText === "{\"code\":\"NotFound\",\"message\":\"\"}" || this.responseText.startsWith(`{"code":"ResourceNotFound"`)) {
-				interaction.reply("I did not find the user you requested.");
+				interaction.editReply("I did not find the user you requested.");
 			}
 		};
 		xhttp.open("GET", `https://api.scratch.mit.edu/users/${user}/`, true);
