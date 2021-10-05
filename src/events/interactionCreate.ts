@@ -4,6 +4,8 @@ import { clientInteractions } from "../index";
 import { ops } from "../index";
 import * as Logger from "../utils/Logger";
 
+import { logCommand } from "../utils/SendLog";
+
 module.exports = {
 	name: "interactionCreate",
 	async execute(interaction: Discord.CommandInteraction, Client: Discord.Client) {
@@ -31,6 +33,6 @@ module.exports = {
 			Logger.error(err);
 		}
 
-		Logger.log(`${interaction.user.tag} just used the ${interaction.commandName} interaction in ${interaction.guild.name}.`);
+		logCommand(Client, `\`\`\`diff\n+ ${interaction.user.tag} just used the ${interaction.commandName} interaction in ${interaction.guild.name}.\`\`\``);
 	}
 };

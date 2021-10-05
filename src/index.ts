@@ -6,6 +6,7 @@ import * as hypixel from "hypixel-api-reborn";
 
 import * as Logger from "./utils/Logger";
 import { Token } from "./token";
+import { logError } from "./utils/SendLog";
 
 export const client: Discord.Client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MEMBERS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
@@ -47,7 +48,7 @@ async function eventBinder() {
 
 async function handleRejections() {
 	process.on("unhandledRejection", error => {
-		console.warn("Unhandled promise rejection:", error);
+		logError(client, `\`\`\`asciidoc\n[Unhandled promise rejection]\n* ${error}\`\`\``);
 	});
 }
 
