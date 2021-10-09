@@ -47,4 +47,4 @@ The welcome message | The canvas command
 ------------------- | ------------------
 <img src="https://i.imgur.com/BWYHFlh.png" alt="welcome" width=450> | <img src="https://i.imgur.com/uldNvl9.png" alt="tictactoe" width=450>
 
-If help is needed, please contact me - https://t.me/enclosures
+If help is needed, please contact me - https://t.me/fowled
