@@ -19,7 +19,7 @@
     "dotenv": "^10.0.0",
     "hypixel-api-reborn": "^9.0.3",
     "scratchlib": "^0.4.0",
-    "sequelize": "^6.7.0",
+    "sequelize": "^6.8.0",
     "sqlite3": "^5.0.2",
     "systeminformation": "^5.9.8",
     "xmlhttprequest": "^1.8.0",
