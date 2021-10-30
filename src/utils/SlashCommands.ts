@@ -24,9 +24,7 @@ export async function SlashCommands(client: Discord.Client) {
                 Object.assign(commandObject, { options: command.options });
             }
 
-            await client.guilds.fetch("833765854796972052").then(guild => {
-                guild.commands.create(commandObject);
-            });
+            await client.application.commands.create(commandObject);
         }
     }
 }
