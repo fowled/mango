@@ -33,6 +33,13 @@ module.exports = {
 			Logger.error(err);
 		}
 
-		logCommand(Client, `\`\`\`diff\n+ ${interaction.user.tag} just used the ${interaction.commandName} interaction in ${interaction.guild.name}.\`\`\``);
+		const commandEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
+			.setDescription(`**${interaction.user.tag}** just ran the \`${interaction.commandName}\` command in *${interaction.guild.name}*.`)
+			.setAuthor(interaction.user.username, interaction.user.displayAvatarURL())
+			.setColor("NOT_QUITE_BLACK")
+			.setTimestamp()
+			.setFooter(Client.user.username, Client.user.displayAvatarURL())
+
+		logCommand(Client, commandEmbed);
 	}
 };

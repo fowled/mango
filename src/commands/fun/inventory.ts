@@ -54,20 +54,16 @@ module.exports = {
             });
         }
 
-        function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
+        async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
             const itemsContent = authorinventory.slice(page * 10, page * 10 + 10);
             const pageContent: string[] = [];
 
-            itemsContent.forEach((item, index) => {
-                const object = { name: item["name"], price: item["price"], seller: item["seller"] };
+            await itemsContent.forEach(async (item, index) => {
+                const object = { name: item["name"], price: item["price"], seller: item["sellerID"] };
+                const user: Discord.User = await Client.users.fetch(object.seller);
 
-                pageContent.push(`${index + (page * 10 + 1)}. \`${object.name}\` - \`${object.price}$\` | Sold by \`${object.seller}\``);
+                pageContent.push(`${index + (page * 10 + 1)}. \`${object.name}\` - \`${object.price}$\` | Sold by \`${user.tag}\``);
             });
-
-            if (itemsContent.length === 0) {
-                pageContent.push("Nothing to see here!");
-                pageContent.push("Use the ◀ button to get back to the market.");
-            }
 
             const inventoryEmbed = new Discord.MessageEmbed()
                 .setDescription(pageContent.join("\n"))

@@ -35,7 +35,6 @@ module.exports = {
 
         const itemName = marketItem.get("name");
         const itemPrice = marketItem.get("price");
-        const itemSeller = marketItem.get("seller");
         const itemSellerID = marketItem.get("sellerID");
 
         const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
@@ -59,7 +58,7 @@ module.exports = {
         inventorymodel.create({
             name: itemName,
             price: itemPrice,
-            seller: itemSeller,
+            sellerID: itemSellerID,
             authorID: interaction.member.user.id
         });
 

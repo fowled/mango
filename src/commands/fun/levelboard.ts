@@ -54,14 +54,15 @@ module.exports = {
             });
         }
 
-        function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
+        async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
             const itemsContent = ranks.slice(page * 10, page * 10 + 10);
             const pageContent: string[] = [];
 
-            itemsContent.forEach((item, index) => {
-                const object = { tag: item["nameOfUser"], xp: item["xp"] };
+            await itemsContent.forEach(async (item, index) => {
+                const object = { xp: item["xp"], id: item["idOfUser"] };
+                const user: Discord.User = await Client.users.fetch(object.id);
 
-                pageContent.push(`${index + (page * 10 + 1)}. **${object.tag}** / *${object.xp}* xp → level \`${Math.floor(object.xp / 50)}\``);
+                pageContent.push(`${index + (page * 10 + 1)}. **${user}** / *${object.xp}* xp → level \`${Math.floor(object.xp / 50)}\``);
             });
 
             const levelEmbed = new Discord.MessageEmbed()

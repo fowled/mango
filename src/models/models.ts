@@ -8,7 +8,6 @@ export async function defModels() {
             unique: true
         },
         price: Sequelize.TEXT,
-        seller: Sequelize.STRING,
         sellerID: Sequelize.STRING,
         id: {
             type: Sequelize.INTEGER,
@@ -23,7 +22,7 @@ export async function defModels() {
             unique: true
         },
         price: Sequelize.TEXT,
-        seller: Sequelize.STRING,
+        sellerID: Sequelize.STRING,
         authorID: Sequelize.STRING,
         id: {
             type: Sequelize.INTEGER,
@@ -49,7 +48,6 @@ export async function defModels() {
 
     sequelizeinit.define("ranks", {
         idOfUser: Sequelize.STRING,
-        nameOfUser: Sequelize.STRING,
         xp: Sequelize.INTEGER,
         idOfGuild: Sequelize.INTEGER
     });

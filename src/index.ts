@@ -47,8 +47,14 @@ async function eventBinder() {
 }
 
 async function handleRejections() {
-	process.on("unhandledRejection", error => {
-		logError(client, `\`\`\`asciidoc\n[Unhandled promise rejection]\n* ${error}\`\`\``);
+	process.on("unhandledRejection", (error: Error) => {
+		const errorEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
+			.setDescription("<:no:835565213322575963> An error has been detected... \n" + `\`\`\`${error.stack}\`\`\``)
+			.setTimestamp()
+			.setFooter(client.user.username, client.user.displayAvatarURL())
+			.setColor("DARK_RED")
+
+		logError(client, errorEmbed);
 	});
 }
 

@@ -54,14 +54,15 @@ module.exports = {
             });
         }
 
-        function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
+        async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
             const itemsContent = marketItems.slice(page * 10, page * 10 + 10);
             const pageContent: string[] = [];
 
-            itemsContent.forEach((item, index) => {
-                const object = { name: item["name"], price: item["price"], seller: item["seller"], id: item["id"] };
+            await itemsContent.forEach(async (item, index) => {
+                const object = { name: item["name"], price: item["price"], sellerID: item["sellerID"], id: item["id"] };
+                const user: Discord.User = await Client.users.fetch(object.sellerID);
 
-                pageContent.push(`${index + (page * 10 + 1)}. \`${object.name}\` - \`${object.price}$\` | Sold by \`${object.seller}\` » \`${object.id}\``);
+                pageContent.push(`${index + (page * 10 + 1)}. \`${object.name}\` - \`${object.price}$\` | Sold by \`${user.tag}\` » \`${object.id}\``);
             });
 
             const inventoryEmbed = new Discord.MessageEmbed()
