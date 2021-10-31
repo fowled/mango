@@ -15,7 +15,7 @@
   "homepage": "https://github.com/mazzlabs/Mango#readme",
   "dependencies": {
     "canvas": "^2.8.0",
-    "discord.js": "^13.2.0",
+    "discord.js": "^13.3.0",
     "dotenv": "^10.0.0",
     "hypixel-api-reborn": "^9.0.3",
     "scratchlib": "^0.4.0",
