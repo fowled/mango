@@ -8,10 +8,10 @@ import { logCommand } from "../utils/SendLog";
 
 module.exports = {
 	name: "interactionCreate",
-	async execute(interaction: Discord.CommandInteraction, Client: Discord.Client) {
+	async execute(interaction: Discord.CommandInteraction & Discord.Message, Client: Discord.Client) {
 		if (interaction.isButton()) return;
 
-		const args: string[] = interaction.options.data.map(opt => opt.value.toString());
+		const args: string[] = interaction.options.data.filter(data => data.type !== "SUB_COMMAND").map(opt => opt.value.toString());
 		const command: string = interaction.commandName;
 
 		if (!interaction.isCommand() && !clientInteractions.has(command)) return;

@@ -58,12 +58,13 @@ module.exports = {
             const itemsContent = ranks.slice(page * 10, page * 10 + 10);
             const pageContent: string[] = [];
 
-            await itemsContent.forEach(async (item, index) => {
-                const object = { xp: item["xp"], id: item["idOfUser"] };
-                const user: Discord.User = await Client.users.fetch(object.id);
+            for (let i = 0; i < itemsContent.length; i++) {
+                const xp = itemsContent[i]["xp"];
+                const id = itemsContent[i]["idOfUser"];
+                const user: Discord.User = await Client.users.fetch(id);
 
-                pageContent.push(`${index + (page * 10 + 1)}. **${user}** / *${object.xp}* xp → level \`${Math.floor(object.xp / 50)}\``);
-            });
+                pageContent.push(`${i + (page * 10 + 1)}. **${user}** / *${xp}* xp → level \`${Math.floor(xp / 50)}\``);
+            }
 
             const levelEmbed = new Discord.MessageEmbed()
                 .setDescription(pageContent.join("\n"))

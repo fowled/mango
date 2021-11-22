@@ -58,12 +58,14 @@ module.exports = {
             const itemsContent = authorinventory.slice(page * 10, page * 10 + 10);
             const pageContent: string[] = [];
 
-            await itemsContent.forEach(async (item, index) => {
-                const object = { name: item["name"], price: item["price"], seller: item["sellerID"] };
-                const user: Discord.User = await Client.users.fetch(object.seller);
+            for (let index = 0; index < itemsContent.length; index++) {
+                const itemName = itemsContent[index]["name"];
+                const itemPrice = itemsContent[index]["price"];
+                const itemSeller = itemsContent[index]["sellerID"];
+                const user: Discord.User = await Client.users.fetch(itemSeller);
 
-                pageContent.push(`${index + (page * 10 + 1)}. \`${object.name}\` - \`${object.price}$\` | Sold by \`${user.tag}\``);
-            });
+                pageContent.push(`${index + (page * 10 + 1)}. \`${itemName}\` - \`${itemPrice}$\` | Sold by \`${user.tag}\``);
+            }
 
             const inventoryEmbed = new Discord.MessageEmbed()
                 .setDescription(pageContent.join("\n"))

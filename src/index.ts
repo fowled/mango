@@ -3,10 +3,12 @@ import * as Sequelize from "sequelize";
 import * as fs from "fs";
 import * as path from "path";
 import * as hypixel from "hypixel-api-reborn";
+import * as cron from "node-cron";
 
 import * as Logger from "./utils/Logger";
 import { Token } from "./token";
 import { logError } from "./utils/SendLog";
+import { timestampYear } from "./utils/Timestamp";
 
 export const client: Discord.Client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MEMBERS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
@@ -29,6 +31,7 @@ export const hypixelClient: hypixel.Client = new hypixel.Client(process.env.API_
 	await handleRejections();
 	await client.login(Token);
 	await registerCommands();
+	await runCronJobs();
 })();
 
 async function eventBinder() {
@@ -70,6 +73,27 @@ async function registerCommands() {
 			clientInteractions.set(command.name, command);
 		}
 	}
+}
+
+async function runCronJobs() {
+	cron.schedule("0 0 * * *", async function () {
+		const todayDate = new Date();
+		const todayDateString = `${todayDate.getMonth()}/${todayDate.getDate()}`;
+
+		const findBirthdaysToday = await sequelizeinit.model("birthdays").findAll({ where: { birthday: todayDateString } });
+
+		for (let i = 0; i < findBirthdaysToday.length; i++) {
+			const guildID = findBirthdaysToday[i]["idOfGuild"];
+			const user = await client.users.fetch(findBirthdaysToday[i]["idOfUser"]);
+			const birthdayTimestamp = findBirthdaysToday[i]["birthdayTimestamp"]
+			const findRelatedChannels = await sequelizeinit.model("birthdayChannels").findAll({ where: { idOfGuild: guildID } });
+
+			for (let y = 0; y < findRelatedChannels.length; y++) {
+				const fetchChannel: Discord.TextChannel = await client.channels.fetch(findRelatedChannels[y]["idOfChannel"]) as unknown as Discord.TextChannel;
+				fetchChannel.send(`:partying_face: Happy birthday ${user}! According to my database, you were born ${timestampYear(birthdayTimestamp)}.`);
+			}
+		}
+	});
 }
 
 export { clientInteractions };

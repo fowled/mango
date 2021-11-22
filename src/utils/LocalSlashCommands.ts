@@ -3,7 +3,10 @@ import * as Fs from "fs";
 import * as path from "path";
 
 export async function SlashCommands(client: Discord.Client) {
-    await client.application.commands.fetch().then(cmd => cmd.forEach(cmd => {
+    const guildID: string = process.env.GUILD_ID;
+    const guild: Discord.Guild = await client.guilds.fetch(guildID);
+
+    await guild.commands.fetch().then(cmd => cmd.forEach(cmd => {
         cmd.delete();
     }));
 
@@ -22,13 +25,13 @@ export async function SlashCommands(client: Discord.Client) {
 
             if (command.options) {
                 Object.assign(commandObject, { options: command.options });
-            }
-
+            } 
+            
             if (command.subcommands) {
                 Object.assign(commandObject, { options: command.subcommands });
             }
 
-            await client.application.commands.create(commandObject);
+            await guild.commands.create(commandObject);
         }
     }
 }

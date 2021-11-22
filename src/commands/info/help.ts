@@ -30,18 +30,18 @@ module.exports = {
 			if (!command) {
 				return interaction.editReply("<:no:835565213322575963> I couldn't find the command you requested. Please check the correct command name with `/help`");
 			}
-			
+
 			const infoEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
-			.setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
-			.setDescription(`Information about the **${command.name}** command`)
-			.addField("Category", command.category, false)
-			.addField("Description", command.description, false)
-			.setColor("RANDOM")
-			.setTimestamp()
-			.setFooter(Client.user.username, Client.user.displayAvatarURL())
-			
+				.setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
+				.setDescription(`Information about the **${command.name}** command`)
+				.addField("Category", command.category, false)
+				.addField("Description", command.description, false)
+				.setColor("RANDOM")
+				.setTimestamp()
+				.setFooter(Client.user.username, Client.user.displayAvatarURL())
+
 			const options: string[] = [], usage: string[] = [];
-			
+
 			if (command && command.options) {
 				for (const [index, opt] of command.options.entries()) {
 					options.push(`${index + 1}. <${opt.name}> - ${opt.description} - ${opt.required ? "required" : "not required"}`);
@@ -57,7 +57,7 @@ module.exports = {
 			const helpinteraction: Discord.MessageEmbed = new Discord.MessageEmbed()
 				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
 				.setColor("RANDOM")
-				.setDescription(`» Prefix: \`/\` \n» To get help on a specific command: \`/help [command]\` \n\n**:tools: Moderation** \n${GetCategoryCmds("moderation")} \n\n**:partying_face: Fun** \n${GetCategoryCmds("fun")} \n\n**:information_source: Information** \n${GetCategoryCmds("info")} \n\n**:computer: APIs** \n${GetCategoryCmds("api")} \n\n**:video_game: Games** \n${GetCategoryCmds("game")} \n\n» Mango's developer: \`${(await Client.users.fetch("352158391038377984")).tag}\``)
+				.setDescription(`» Prefix: \`/\` \n» To get help on a specific command: \`/help [command]\` \n\n**:tools: Moderation** \n${GetCategoryCmds("moderation")} \n\n**:partying_face: Fun** \n${GetCategoryCmds("fun")} \n\n**:information_source: Information** \n${GetCategoryCmds("info")} \n\n**:computer: APIs** \n${GetCategoryCmds("api")} \n\n**:video_game: Games** \n${GetCategoryCmds("game")} \n\n» Number of commands: \`${clientInteractions.size}\` \n» Mango's developer: \`${(await Client.users.fetch("352158391038377984")).tag}\``)
 				.setThumbnail(Client.user.avatarURL())
 				.setFooter(Client.user.username, Client.user.avatarURL())
 				.setTimestamp();

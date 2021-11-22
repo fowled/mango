@@ -40,7 +40,7 @@ module.exports = {
         } else {
             logchannelmodel.create({
                 idOfGuild: interaction.guild.id,
-                idOfChannel: interaction.channel.id
+                idOfChannel: logChannelID
             });
         }
 

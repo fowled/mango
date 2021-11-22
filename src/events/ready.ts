@@ -7,18 +7,15 @@ import { sequelizeinit } from ".././index";
 
 const sequelize = sequelizeinit;
 
-defModels();
-
 module.exports = {
 	name: "ready",
-	execute(Client: Discord.Client) {
+
+	async execute(Client: Discord.Client) {
+		await defModels();
+
 		Logger.log("Synchronizing database models...");
 
-		const models = ["marketItems", "inventoryItems", "moneyAcc", "welChannels", "logChannels", "ranks"];
-
-		for (let i = 0; i < 6; i++) {
-			sequelize.model(models[i]).sync();
-		}
+		sequelize.sync();
 
 		Client.user.setActivity("/help", { type: "WATCHING" });
 

@@ -46,6 +46,18 @@ export async function defModels() {
         idOfChannel: Sequelize.STRING
     });
 
+    sequelizeinit.define("birthdaysChannels", {
+        idOfGuild: Sequelize.STRING,
+        idOfChannel: Sequelize.STRING
+    });
+
+    sequelizeinit.define("birthdays", {
+        idOfUser: Sequelize.STRING,
+        birthday: Sequelize.STRING,
+        birthdayTimestamp: Sequelize.NUMBER,
+        idOfGuild: Sequelize.STRING
+    });
+
     sequelizeinit.define("ranks", {
         idOfUser: Sequelize.STRING,
         xp: Sequelize.INTEGER,

@@ -39,7 +39,7 @@ module.exports = {
             welcomechannelmodel.update({ idOfChannel: welcomeChannelID }, { where: { idOfGuild: interaction.guild.id } });
         } else {
             welcomechannelmodel.create({
-                idOfGuild: interaction.guild.id,
+                idOfGuild: welcomeChannelID,
                 idOfChannel: interaction.channel.id
             });
         }
