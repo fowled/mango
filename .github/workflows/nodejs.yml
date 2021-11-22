@@ -27,7 +27,7 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: "16.6.0"
-          cache: yarn
+        cache: yarn
     - run: yarn
     - run: npm test
       env:
