@@ -13,6 +13,7 @@ module.exports = {
         if (!welcomechannel) return;
 
         const channel: Discord.TextChannel = await Client.channels.fetch(welcomechannel.get("idOfChannel") as unknown as string) as Discord.TextChannel;
+        const fetchNumberOfMembers: number = member.guild.memberCount;
 
         const canvas = canvaslib.createCanvas(700, 250);
         const ctx = canvas.getContext("2d");
@@ -23,7 +24,7 @@ module.exports = {
         ctx.font = "35px Caviar Dreams";
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = "left";
-        ctx.fillText(`A user left the server. \nWe're now ${member.guild.members.cache.size} members.`, 10, canvas.height / 2.5);
+        ctx.fillText(`A user left the server. \nWe're now ${fetchNumberOfMembers} members.`, 10, canvas.height / 2.5);
 
         ctx.font = "27px Caviar Dreams";
         ctx.fillText(`${member.user.tag}`, 10, canvas.height / 1.15)
