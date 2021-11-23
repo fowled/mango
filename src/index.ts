@@ -3,7 +3,7 @@ import * as Sequelize from "sequelize";
 import * as fs from "fs";
 import * as path from "path";
 import * as hypixel from "hypixel-api-reborn";
-import * as cron from "node-cron";
+import * as cron from "node-schedule";
 
 import * as Logger from "./utils/Logger";
 import { Token } from "./token";
@@ -76,7 +76,7 @@ async function registerCommands() {
 }
 
 async function runCronJobs() {
-	cron.schedule("0 0 * * *", async function () {
+	cron.scheduleJob("0 0 * * *", async function () {
 		const todayDate = new Date();
 		const todayDateString = `${todayDate.getMonth()}/${todayDate.getDate()}`;
 
@@ -86,7 +86,7 @@ async function runCronJobs() {
 			const guildID = findBirthdaysToday[i]["idOfGuild"];
 			const user = await client.users.fetch(findBirthdaysToday[i]["idOfUser"]);
 			const birthdayTimestamp = findBirthdaysToday[i]["birthdayTimestamp"]
-			const findRelatedChannels = await sequelizeinit.model("birthdayChannels").findAll({ where: { idOfGuild: guildID } });
+			const findRelatedChannels = await sequelizeinit.model("birthdaysChannels").findAll({ where: { idOfGuild: guildID } });
 
 			for (let y = 0; y < findRelatedChannels.length; y++) {
 				const fetchChannel: Discord.TextChannel = await client.channels.fetch(findRelatedChannels[y]["idOfChannel"]) as unknown as Discord.TextChannel;
