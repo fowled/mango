@@ -115,11 +115,11 @@ module.exports = {
         }
 
         async function addBirthday() {
-            if (fetchGuildBirthday) {
-                return interaction.editReply(`Your birthday has already been added to the database at date ${timestamp(Date.parse(fetchBirthday["birthday"]))}! If you'd like to change it, run \`/birthday edit\`.`);
-            }
-
             const birthdayTimestamp = Date.parse(interaction.options.getString("date"));
+
+            if (fetchGuildBirthday) {
+                return interaction.editReply(`Your birthday has already been added to the database at date ${timestamp(birthdayTimestamp)}! If you'd like to change it, run \`/birthday edit\`.`);
+            }
 
             if (isNaN(birthdayTimestamp)) {
                 return interaction.editReply("Could not parse the specified string to a date. Please retry the command using this scheme: `MM/DD/YYYY`.");
