@@ -63,7 +63,7 @@ module.exports = {
             for (let index = 0; index < itemsContent.length; index++) {
                 const date = itemsContent[index]["birthdayTimestamp"];
                 const user = itemsContent[index]["idOfUser"];
-                let fetchUser = await Client.users.fetch(user, { force: true });
+                let fetchUser = await Client.users.fetch(user);
 
                 pageContent.push(`${index + (page * 10 + 1)}. ${fetchUser} • ${timestamp(date)} (${timestampYear(date)})`);
             }
