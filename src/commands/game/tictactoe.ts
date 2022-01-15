@@ -44,10 +44,10 @@ module.exports = {
             msg.awaitReactions({ filter: filter, max: 1 })
                 .then(collected => {
                     secondPlayer = collected.first().users.cache.last();
-                    msg.editReply(`2nd player is **${secondPlayer.tag}**. Init...`);
+                    interaction.editReply(`2nd player is **${secondPlayer.tag}**. Init...`);
                     generateGrid();
                 }).catch(() => {
-                    msg.editReply("Nobody has clicked the reaction for 30 seconds. Game cancelled.");
+                    interaction.editReply("Nobody has clicked the reaction for 30 seconds. Game cancelled.");
                 });
         }
 
@@ -62,12 +62,11 @@ module.exports = {
                     await msg.react(number);
                 }
 
-                numbers = ["1️⃣", "2️⃣", "3️⃣", "\n4️⃣", "5️⃣", "6️⃣", "\n7️⃣", "8️⃣", "9️⃣"];
+                numbers = [":one:", ":two:", ":three:", "\n:four:", ":five:", ":six:", "\n:seven:", ":eight:", ":nine:"];
 
-                await msg.edit(numbers.join(" "));
-                setTimeout(function () {
-                    createReactionCollector(msg);
-                }, 300)
+                await msg.edit(numbers.join(" ")).then(() => {
+                    createReactionCollector(msg)
+                });
             });
         }
 
@@ -77,7 +76,6 @@ module.exports = {
                 grid[i]["occupied"] = false;
                 grid[i]["player"] = null;
             }
-
         }
 
         function createReactionCollector(msg: Discord.Message) {
@@ -86,7 +84,7 @@ module.exports = {
             }
 
             msg.awaitReactions({ filter: filter, max: 1 })
-                .then(collected => {
+                .then(async collected => {
                     if (secondPlayer == collected.first().users.cache.last() && turn != "J2" || interaction.member.user == collected.first().users.cache.last() && turn != "J1") {
                         collected.last().users.remove(collected.first().users.cache.last().id);
                         return createReactionCollector(msg);
@@ -111,7 +109,7 @@ module.exports = {
 
                     interaction.editReply({ embeds: [status] });
 
-                    editGrid(msg, collected.first().emoji.name);
+                    await editGrid(msg, collected.first().emoji.name);
 
                     if (checkIfWin(turn)) {
                         const status = new Discord.MessageEmbed()
@@ -120,7 +118,6 @@ module.exports = {
                             .setDescription(`**${collected.first().users.cache.last().tag}** won the game. GG!`);
 
                         interaction.editReply({ embeds: [status] });
-                        return;
                     } else if (checkIfEgality()) {
                         const status = new Discord.MessageEmbed()
                             .setAuthor(collected.first().users.cache.last().tag, collected.first().users.cache.last().avatarURL())
@@ -133,8 +130,8 @@ module.exports = {
                     detectPlayer(); // changes turn
                     collected.last().users.remove(collected.first().users.cache.last().id); // removes user reaction
                     createReactionCollector(msg); // wait for reaction once the turn is finished
-                }).catch(() => {
-                    createReactionCollector(msg);
+                }).catch((err) => {
+                    console.log(err);
                 });
         }
 
@@ -147,9 +144,10 @@ module.exports = {
         }
 
         async function editGrid(msg: Discord.Message, emoji: string) {
-            const getGrid = msg.content.split(" ");
+            const getGrid = (await msg.fetch()).content.split(" ");
             const gridToObject = Object.values(getGrid);
             const letterToNumber = parseInt(emojiToLetter(emoji));
+
             let selectEmoji = turn == "J1" ? ":x:" : ":o:";
 
             if (gridToObject[letterToNumber - 1].startsWith("\n")) {
