@@ -13,6 +13,7 @@ import { timestampYear } from "./utils/Timestamp";
 export const client: Discord.Client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MEMBERS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
 export const talkedRecently = new Set();
+
 export const sequelizeinit = new Sequelize.Sequelize("database", "username", "password", {
 	host: 'localhost',
 	dialect: 'sqlite',
@@ -35,7 +36,7 @@ export const hypixelClient: hypixel.Client = new hypixel.Client(process.env.API_
 })();
 
 async function eventBinder() {
-	const eventFiles = fs.readdirSync(__dirname + '/events/').filter(file => file.endsWith('.js'));
+	const eventFiles = fs.readdirSync(__dirname + '/events/').filter(file => file.endsWith('.ts'));
 
 	for (const file of eventFiles) {
 		const event = require(`./events/${file}`);
@@ -67,7 +68,7 @@ async function registerCommands() {
 	const commandFolders = fs.readdirSync(path.join(__dirname, "commands"));
 
 	for (const folder of commandFolders) {
-		const commandFiles = fs.readdirSync(path.join(__dirname, "commands", folder)).filter(file => file.endsWith('.js'));
+		const commandFiles = fs.readdirSync(path.join(__dirname, "commands", folder)).filter(file => file.endsWith('.ts'));
 		for (const file of commandFiles) {
 			const command = require(`./commands/${folder}/${file}`);
 			clientInteractions.set(command.name, command);

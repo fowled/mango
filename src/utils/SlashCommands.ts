@@ -10,7 +10,7 @@ export async function SlashCommands(client: Discord.Client) {
     const interactionFolders = Fs.readdirSync(path.join(__dirname, "..", "commands"));
 
     for (const folder of interactionFolders) {
-        const commandFiles = Fs.readdirSync(path.join(__dirname, "..", "commands", folder)).filter(file => file.endsWith('.js'));
+        const commandFiles = Fs.readdirSync(path.join(__dirname, "..", "commands", folder)).filter(file => file.endsWith('.ts'));
 
         for (const file of commandFiles) {
             const command = require(`../commands/${folder}/${file}`);

@@ -4,5 +4,4 @@ node_modules/
 nohup.out
 .env
 database/
-server/
 build/
