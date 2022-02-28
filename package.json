@@ -5,7 +5,8 @@
 	"main": "src/index.ts",
 	"scripts": {
 		"start": "yarn run nodemon api/server.ts",
-		"pm2": "pm2 start mango.sh"
+		"pm2": "pm2 start mango.sh",
+		"test": "tsc"
 	},
 	"author": "fowled",
 	"license": "MIT",
