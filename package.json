@@ -4,8 +4,8 @@
 	"description": "a useful discord bot",
 	"main": "src/index.ts",
 	"scripts": {
-		"dev": "yarn run nodemon src/index.ts",
-		"server": "yarn run nodemon api/server.ts"
+		"start": "yarn run nodemon api/server.ts",
+		"pm2": "pm2 start mango.sh"
 	},
 	"author": "fowled",
 	"license": "MIT",
