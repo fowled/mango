@@ -1,0 +1,8 @@
+{  
+    "useTabs": true,
+    "singleQuote": false,
+    "printWidth": 3000,
+    "bracketSpacing": true,
+    "semicolons": true,
+    "arrowFunctionParenthesis": "avoid"
+}
