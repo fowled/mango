@@ -8,6 +8,10 @@ import { URLSearchParams } from "url";
 
 import { log } from "../src/utils/Logger";
 import { client } from "../src/index";
+import { sequelizeinit } from "../src/index";
+
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const store = new SequelizeStore({ db: sequelizeinit });
 
 const app: Express = express();
 
@@ -15,10 +19,11 @@ declare module "express-session" {
 	interface SessionData {
 		token: string;
 		refresh_token: string;
+		date: Date;
 	}
 }
 
-app.use(session({ secret: process.env.SESSION_SECRET, cookie: { secure: false }, resave: false, saveUninitialized: true }));
+app.use(session({ secret: process.env.SESSION_SECRET, cookie: { secure: false }, store: store, resave: false, saveUninitialized: false }));
 
 app.use(urlencoded({ extended: false }));
 
@@ -34,6 +39,8 @@ app.use(
 	})
 );
 
+store.sync();
+
 app.get("/", async function (req, res) {
 	return res.send({ message: "Welcome to Mango's API!" });
 });
@@ -41,29 +48,34 @@ app.get("/", async function (req, res) {
 app.get("/token", async function (req, res) {
 	const code: string = req.query.code as string;
 
-	const fetchToken = await fetch("https://discord.com/api/oauth2/token", {
-		method: "POST",
+	const getToken = await fetchToken(code);
+	const nextWeekDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
 
-		body: new URLSearchParams({
-			client_id: process.env.CLIENT_ID,
-			client_secret: process.env.CLIENT_SECRET,
-			code,
-			grant_type: "authorization_code",
-			redirect_uri: process.env.REDIRECT_URI,
-			scope: "identify guilds",
-		}),
+	req.session.token = getToken.access_token;
+	req.session.date = nextWeekDate;
 
-		headers: {
-			"Content-Type": "application/x-www-form-urlencoded",
-		},
-	});
+	return res.status(403).send({ message: "Unauthorized" });
+});
 
-	const parseResponse = await fetchToken.json();
+app.get("/refresh", async function (req, res) {
+	const fetchNewToken = await fetchToken(req.session.refresh_token);
+	const nextWeekDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
 
-	req.session.token = parseResponse.access_token;
-	req.session.refresh_token = parseResponse.refresh_token;
+	req.session.token = fetchNewToken.access_token;
+	req.session.date = nextWeekDate;
 
-	return res.send({ message: "Unauthorized" });
+	return res.status(403).send({ message: "Unauthorized" });
+});
+
+app.get("/expired", async function (req, res) {
+	const todayDate = new Date();
+	const sessionExpirationDate = new Date(req.session.date);
+
+	if (todayDate > sessionExpirationDate) {
+		return res.send(true);
+	} else {
+		return res.send(false);
+	}
 });
 
 app.get("/authed", async function (req, res) {
@@ -72,6 +84,12 @@ app.get("/authed", async function (req, res) {
 	} else {
 		return res.send(false);
 	}
+});
+
+app.get("/logout", async function (req, res) {
+	req.session.destroy(null);
+
+	return res.send({ message: "Nothing to see here..." });
 });
 
 app.get("/stats", async function (req, res) {
@@ -129,7 +147,7 @@ app.get("/manage/:guildId", async function (req, res) {
 	const guildInfo: Guild = client.guilds.resolve(guildId);
 
 	if (guildInfo == null) {
-		return res.status(403).send({ message: "403: Unauthorized - bot isn't in guild." });
+		return res.status(403).send({ message: "Bot isn't in guild." });
 	}
 
 	return res.status(200).send({ guild: guildInfo });
@@ -148,3 +166,24 @@ const port = process.env.PORT ?? 3000;
 app.listen(port, () => {
 	log(`Server is up and running at http://localhost:${port}`);
 });
+
+async function fetchToken(code: string) {
+	const fetchToken = await fetch("https://discord.com/api/oauth2/token", {
+		method: "POST",
+
+		body: new URLSearchParams({
+			client_id: process.env.CLIENT_ID,
+			client_secret: process.env.CLIENT_SECRET,
+			code,
+			grant_type: "authorization_code",
+			redirect_uri: process.env.REDIRECT_URI,
+			scope: "identify guilds",
+		}),
+
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded",
+		},
+	}).then((res) => res.json());
+
+	return fetchToken;
+}
