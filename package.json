@@ -43,7 +43,7 @@
 		"sequelize": "^6.17.0",
 		"sqlite3": "^5.0.2",
 		"systeminformation": "^5.11.6",
-		"ts-node": "^10.6.0",
+		"ts-node": "^10.7.0",
 		"ts-node-dev": "^1.1.8",
 		"xmlhttprequest": "^1.8.0",
 		"xmlhttprequest-ts": "^1.0.1"
