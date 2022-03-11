@@ -26,7 +26,7 @@ module.exports = {
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
         const ID = args[0];
 
-        const marketmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");
+        const marketmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");
         const marketItem = await marketmodel.findOne({ where: { id: ID } });
 
         if (!marketItem) {
@@ -37,7 +37,7 @@ module.exports = {
         const itemPrice = marketItem.get("price");
         const itemSellerID = marketItem.get("sellerID");
 
-        const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
+        const moneymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
         const authorMoney = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
 
         if (!authorMoney) {
@@ -53,7 +53,7 @@ module.exports = {
             return interaction.editReply("You can't buy your own item...");
         }
 
-        const inventorymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("inventoryItems");
+        const inventorymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("inventoryItems");
 
         inventorymodel.create({
             name: itemName,

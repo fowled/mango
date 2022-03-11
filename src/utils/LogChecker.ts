@@ -4,7 +4,7 @@ import { sequelizeinit } from "../index";
 import * as Logger from "./Logger";
 
 export async function insertLog(Client: Discord.Client, guildID: string, author, msg: string) {
-    const logchannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = sequelizeinit.model("logChannels");
+    const logchannelmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = sequelizeinit.model("logChannels");
     const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: guildID } });
 
     if (!logchannel) return;

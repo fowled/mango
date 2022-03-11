@@ -16,7 +16,7 @@ module.exports = {
 	category: "fun",
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-		const Xp: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("ranks");
+		const Xp: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("ranks");
 		const fetchUser = await Xp.findOne({ where: { idOfUser: interaction.member.user.id, idOfGuild: interaction.guild.id } });
 		const userXp: any = fetchUser.get("xp") as number;
 

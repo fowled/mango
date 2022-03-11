@@ -1,31 +1,21 @@
-import express, { Express, urlencoded } from "express";
+import express, { Express, request, urlencoded } from "express";
 import cors from "cors";
 import session from "express-session";
 import cookieParser from "cookie-parser";
-import fetch from "node-fetch";
-import { Guild, BitField } from "discord.js";
-import { URLSearchParams } from "url";
 
 import { log } from "../src/utils/Logger";
-import { client } from "../src/index";
 import { sequelizeinit } from "../src/index";
+import { fetchToken, getUser, getGuilds, getStats, manageGuild } from "./utils/requests";
+import { hasTokenExpired } from "./utils/manager";
 
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const store = new SequelizeStore({ db: sequelizeinit });
 
 const app: Express = express();
 
-declare module "express-session" {
-	interface SessionData {
-		token: string;
-		refresh_token: string;
-		date: Date;
-	}
-}
-
 app.use(session({ secret: process.env.SESSION_SECRET, cookie: { secure: false }, store: store, resave: false, saveUninitialized: false }));
 
-app.use(urlencoded({ extended: false }));
+app.use(urlencoded({ extended: true }));
 
 app.use(express.json());
 
@@ -45,45 +35,37 @@ app.get("/", async function (req, res) {
 	return res.send({ message: "Welcome to Mango's API!" });
 });
 
-app.get("/token", async function (req, res) {
+app.get("/callback", async function (req, res) {
 	const code: string = req.query.code as string;
 
 	const getToken = await fetchToken(code);
 	const nextWeekDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
 
-	req.session.token = getToken.access_token;
-	req.session.date = nextWeekDate;
+	Object.assign(req.session, {
+		token: getToken.access_token,
+		refresh_token: getToken.refresh_token,
+		date: nextWeekDate,
+		user: await getUser(getToken.access_token),
+		guilds: await getGuilds(getToken.access_token),
+	});
 
-	return res.status(403).send({ message: "Unauthorized" });
+	return res.redirect("http://localhost:3000");
 });
 
-app.get("/refresh", async function (req, res) {
-	const fetchNewToken = await fetchToken(req.session.refresh_token);
-	const nextWeekDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+app.get("/info", hasTokenExpired, async function (req, res) {
+	const authed: boolean = req.session.token ? true : false;
+	const user: {} = req.session.user;
+	const guilds: {} = req.session.guilds;
 
-	req.session.token = fetchNewToken.access_token;
-	req.session.date = nextWeekDate;
-
-	return res.status(403).send({ message: "Unauthorized" });
+	return res.send({ authed, user, guilds });
 });
 
-app.get("/expired", async function (req, res) {
-	const todayDate = new Date();
-	const sessionExpirationDate = new Date(req.session.date);
-
-	if (todayDate > sessionExpirationDate) {
-		return res.send(true);
-	} else {
-		return res.send(false);
+app.get("/manage/:guildId", hasTokenExpired, async function (req, res) {
+	if (!req.session.token) {
+		return res.status(403).send({ message: "Unauthorized" });
 	}
-});
 
-app.get("/authed", async function (req, res) {
-	if (req.session.token) {
-		return res.send(true);
-	} else {
-		return res.send(false);
-	}
+	return res.status(200).send({ guild: await manageGuild(req.params.guildId) });
 });
 
 app.get("/logout", async function (req, res) {
@@ -93,64 +75,7 @@ app.get("/logout", async function (req, res) {
 });
 
 app.get("/stats", async function (req, res) {
-	const retrieveUsers: number = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
-
-	const dataObject = {
-		users: retrieveUsers,
-		servers: client.guilds.cache.size,
-	};
-
-	return res.status(200).json({
-		message: dataObject,
-	});
-});
-
-app.get("/me", async function (req, res) {
-	const userResult = await fetch("https://discord.com/api/users/@me", {
-		headers: {
-			authorization: `Bearer ${req.session.token}`,
-		},
-	}).then((res) => res.json());
-
-	return res.send(userResult);
-});
-
-app.get("/managed", async function (req, res) {
-	const managedServersArray = [];
-
-	const userGuilds = await fetch("https://discord.com/api/users/@me/guilds", {
-		headers: {
-			authorization: `Bearer ${req.session.token}`,
-		},
-	});
-
-	if (userGuilds.status !== 200) return res.status(userGuilds.status).send(userGuilds.statusText);
-
-	for (let guild of await userGuilds.json()) {
-		const permissionsBitfield: boolean = new BitField(guild.permissions).has("32");
-		const isBotInGuild: boolean = client.guilds.resolve(guild.id) != null;
-
-		guild.bot = isBotInGuild;
-
-		if (permissionsBitfield) {
-			managedServersArray.push(guild);
-		}
-	}
-
-	managedServersArray.sort((a) => (a.bot === false ? 1 : -1));
-
-	return res.status(200).send({ managedServersArray });
-});
-
-app.get("/manage/:guildId", async function (req, res) {
-	const guildId: string = req.params.guildId;
-	const guildInfo: Guild = client.guilds.resolve(guildId);
-
-	if (guildInfo == null) {
-		return res.status(403).send({ message: "Bot isn't in guild." });
-	}
-
-	return res.status(200).send({ guild: guildInfo });
+	return res.send({ message: await getStats() });
 });
 
 app.use((req, res, next) => {
@@ -167,23 +92,28 @@ app.listen(port, () => {
 	log(`Server is up and running at http://localhost:${port}`);
 });
 
-async function fetchToken(code: string) {
-	const fetchToken = await fetch("https://discord.com/api/oauth2/token", {
-		method: "POST",
+setInterval(async function () {
+	await refreshCache();
+}, 60 * 1000);
 
-		body: new URLSearchParams({
-			client_id: process.env.CLIENT_ID,
-			client_secret: process.env.CLIENT_SECRET,
-			code,
-			grant_type: "authorization_code",
-			redirect_uri: process.env.REDIRECT_URI,
-			scope: "identify guilds",
-		}),
+async function refreshCache() {
+	log("Just refreshed the cache!");
 
-		headers: {
-			"Content-Type": "application/x-www-form-urlencoded",
-		},
-	}).then((res) => res.json());
+	const sessionModel = sequelizeinit.model("Session");
 
-	return fetchToken;
+	(await sessionModel.findAll()).forEach(async (elm) => {
+		const getData = JSON.parse(elm.get("data") as string);
+
+		if (getData.authed === false) return;
+
+		const fetchUser = await getUser(getData.token);
+		const fetchManagedGuilds = await getGuilds(getData.token);
+
+		Object.assign(getData, {
+			user: fetchUser,
+			guilds: fetchManagedGuilds
+		});
+
+		await elm.update({ data: JSON.stringify(getData) });
+	});
 }

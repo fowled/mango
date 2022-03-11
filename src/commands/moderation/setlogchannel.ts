@@ -32,7 +32,7 @@ module.exports = {
             return interaction.editReply(`The channel you specified isn't a text channel. Please retry the command.`);
         }
 
-        const logchannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("logChannels");
+        const logchannelmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("logChannels");
         const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: interaction.guild.id } });
 
         if (logchannel) {

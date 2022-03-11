@@ -17,7 +17,7 @@ module.exports = {
     memberPermissions: ["MANAGE_CHANNELS"],
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        const logchannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("logChannels");
+        const logchannelmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("logChannels");
         const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: interaction.guild.id } });
 
         if (logchannel) {

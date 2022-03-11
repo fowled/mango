@@ -20,6 +20,5 @@ module.exports = {
 		Client.user.setActivity("/help", { type: "WATCHING" });
 
 		Logger.log(`All done - client is ready and is logged in as ${Client.user.tag}!`);
-
-	}
+	},
 };

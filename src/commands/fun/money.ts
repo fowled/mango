@@ -16,7 +16,7 @@ module.exports = {
     category: "fun",
 
     async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
+        const moneymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
         const money = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
 
         if (money) {

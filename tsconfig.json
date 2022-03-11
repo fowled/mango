@@ -2,12 +2,7 @@
 	"compilerOptions": {
 		"target": "esnext",
 		"module": "commonjs",
-		"lib": [
-			"es2015",
-			"es2016",
-			"es2017",
-			"esnext"
-		],
+		"lib": ["es2015", "es2016", "es2017", "esnext"],
 		"allowJs": false,
 		"checkJs": false,
 		"declaration": false,
@@ -21,12 +16,7 @@
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
-		"typeRoots": [
-			"./api/typings",
-			"./node_modules/@types"
-		]
+		"typeRoots": ["./node_modules/@types"]
 	},
-	"exclude": [
-		"node_modules"
-	],
+	"exclude": ["node_modules"]
 }

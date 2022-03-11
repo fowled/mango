@@ -34,9 +34,9 @@ module.exports = {
         const item: string = args.slice(1, args.length).join(" ");
         const price: string = args[0];
 
-        const marketmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");
+        const marketmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");
 
-        const moneymodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
+        const moneymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
         const money = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
  
         if (isNaN(price as unknown as number) || price.startsWith("-")) {

@@ -7,7 +7,7 @@ import * as Logger from "../utils/Logger";
 module.exports = {
     name: "guildMemberRemove",
     async execute(member: Discord.GuildMember, Client: Discord.Client) {
-        const welcomechannelmodel: Sequelize.ModelCtor<Sequelize.Model<any, any>> = sequelizeinit.model("welChannels");
+        const welcomechannelmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = sequelizeinit.model("welChannels");
         const welcomechannel = await welcomechannelmodel.findOne({ where: { idOfGuild: member.guild.id } });
 
         if (!welcomechannel) return;
