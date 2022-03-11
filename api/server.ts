@@ -1,4 +1,4 @@
-import express, { Express, request, urlencoded } from "express";
+import express, { Express, urlencoded } from "express";
 import cors from "cors";
 import session from "express-session";
 import cookieParser from "cookie-parser";
@@ -49,7 +49,7 @@ app.get("/callback", async function (req, res) {
 		guilds: await getGuilds(getToken.access_token),
 	});
 
-	return res.redirect("http://localhost:3000");
+	return res.redirect("https://mango.bot");
 });
 
 app.get("/info", hasTokenExpired, async function (req, res) {
@@ -97,23 +97,28 @@ setInterval(async function () {
 }, 60 * 1000);
 
 async function refreshCache() {
-	log("Just refreshed the cache!");
-
+	const userIDs: string[] = [];
 	const sessionModel = sequelizeinit.model("Session");
 
 	(await sessionModel.findAll()).forEach(async (elm) => {
 		const getData = JSON.parse(elm.get("data") as string);
+		
+		console.log(userIDs);
 
-		if (getData.authed === false) return;
+		if (!getData.token || userIDs.includes(getData.user.id)) return;
+		
+		userIDs.push(getData.user.id);
 
 		const fetchUser = await getUser(getData.token);
 		const fetchManagedGuilds = await getGuilds(getData.token);
 
-		Object.assign(getData, {
+		await Object.assign(getData, {
 			user: fetchUser,
-			guilds: fetchManagedGuilds
+			guilds: fetchManagedGuilds,
 		});
 
-		await elm.update({ data: JSON.stringify(getData) });
+		await sessionModel.update({ data: JSON.stringify(getData) }, { where: { data: getData.toString() } });
 	});
+
+	log("Just refreshed the cache!");
 }
