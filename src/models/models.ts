@@ -2,65 +2,65 @@ import * as Sequelize from "sequelize";
 import { sequelizeinit } from "../index";
 
 export async function defModels() {
-    sequelizeinit.define("marketItems", {
-        name: {
-            type: Sequelize.STRING,
-            unique: true
-        },
-        price: Sequelize.TEXT,
-        sellerID: Sequelize.STRING,
-        id: {
-            type: Sequelize.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
-        }
-    });
+	sequelizeinit.define("marketItems", {
+		name: {
+			type: Sequelize.STRING,
+			unique: true,
+		},
+		price: Sequelize.TEXT,
+		sellerID: Sequelize.STRING,
+		id: {
+			type: Sequelize.INTEGER,
+			autoIncrement: true,
+			primaryKey: true,
+		},
+	});
 
-    sequelizeinit.define("inventoryItems", {
-        name: {
-            type: Sequelize.STRING,
-            unique: true
-        },
-        price: Sequelize.TEXT,
-        sellerID: Sequelize.STRING,
-        authorID: Sequelize.STRING,
-        id: {
-            type: Sequelize.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
-        }
-    });
+	sequelizeinit.define("inventoryItems", {
+		name: {
+			type: Sequelize.STRING,
+			unique: true,
+		},
+		price: Sequelize.TEXT,
+		sellerID: Sequelize.STRING,
+		authorID: Sequelize.STRING,
+		id: {
+			type: Sequelize.INTEGER,
+			autoIncrement: true,
+			primaryKey: true,
+		},
+	});
 
-    sequelizeinit.define("moneyAcc", {
-        idOfUser: Sequelize.STRING,
-        money: Sequelize.INTEGER
-    });
+	sequelizeinit.define("moneyAcc", {
+		idOfUser: Sequelize.STRING,
+		money: Sequelize.INTEGER,
+	});
 
-    sequelizeinit.define("welChannels", {
-        idOfGuild: Sequelize.STRING,
-        idOfChannel: Sequelize.STRING
-    });
+	sequelizeinit.define("welChannels", {
+		idOfGuild: Sequelize.STRING,
+		idOfChannel: Sequelize.STRING,
+	});
 
-    sequelizeinit.define("logChannels", {
-        idOfGuild: Sequelize.STRING,
-        idOfChannel: Sequelize.STRING
-    });
+	sequelizeinit.define("logChannels", {
+		idOfGuild: Sequelize.STRING,
+		idOfChannel: Sequelize.STRING,
+	});
 
-    sequelizeinit.define("birthdaysChannels", {
-        idOfGuild: Sequelize.STRING,
-        idOfChannel: Sequelize.STRING
-    });
+	sequelizeinit.define("birthdaysChannels", {
+		idOfGuild: Sequelize.STRING,
+		idOfChannel: Sequelize.STRING,
+	});
 
-    sequelizeinit.define("birthdays", {
-        idOfUser: Sequelize.STRING,
-        birthday: Sequelize.STRING,
-        birthdayTimestamp: Sequelize.NUMBER,
-        idOfGuild: Sequelize.STRING
-    });
+	sequelizeinit.define("birthdays", {
+		idOfUser: Sequelize.STRING,
+		birthday: Sequelize.STRING,
+		birthdayTimestamp: Sequelize.NUMBER,
+		idOfGuild: Sequelize.STRING,
+	});
 
-    sequelizeinit.define("ranks", {
-        idOfUser: Sequelize.STRING,
-        xp: Sequelize.INTEGER,
-        idOfGuild: Sequelize.INTEGER
-    });
+	sequelizeinit.define("ranks", {
+		idOfUser: Sequelize.STRING,
+		xp: Sequelize.INTEGER,
+		idOfGuild: Sequelize.INTEGER,
+	});
 }

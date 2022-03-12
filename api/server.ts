@@ -101,12 +101,10 @@ async function refreshCache() {
 	const sessionModel = sequelizeinit.model("Session");
 
 	(await sessionModel.findAll()).forEach(async (elm) => {
-		const getData = JSON.parse(elm.get("data") as string);
-		
-		console.log(userIDs);
+		const getData = elm.get("data") as any;
 
 		if (!getData.token || userIDs.includes(getData.user.id)) return;
-		
+
 		userIDs.push(getData.user.id);
 
 		const fetchUser = await getUser(getData.token);
@@ -117,7 +115,7 @@ async function refreshCache() {
 			guilds: fetchManagedGuilds,
 		});
 
-		await sessionModel.update({ data: JSON.stringify(getData) }, { where: { data: getData.toString() } });
+		await sessionModel.update({ data: getData }, { where: { data: { user: { id: getData.user.id } } } });
 	});
 
 	log("Just refreshed the cache!");
