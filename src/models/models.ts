@@ -63,4 +63,13 @@ export async function defModels() {
 		xp: Sequelize.INTEGER,
 		idOfGuild: Sequelize.INTEGER,
 	});
+
+	sequelizeinit.define("sessions", {
+		sid: {
+			type: Sequelize.STRING(36),
+			primaryKey: true,
+		},
+		expires: Sequelize.DATE,
+		data: Sequelize.JSON,
+	});
 }

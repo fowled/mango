@@ -3,13 +3,18 @@ import cors from "cors";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 
+import { defModels } from "../src/models/models";
 import { log } from "../src/utils/Logger";
 import { sequelizeinit } from "../src/index";
 import { fetchToken, getUser, getGuilds, getStats, manageGuild } from "./utils/requests";
 import { hasTokenExpired } from "./utils/manager";
 
+defModels();
+
+sequelizeinit.sync();
+
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
-const store = new SequelizeStore({ db: sequelizeinit });
+const store = new SequelizeStore({ db: sequelizeinit, table: "sessions" });
 
 const app: Express = express();
 
@@ -23,13 +28,11 @@ app.use(cookieParser());
 
 app.use(
 	cors({
-		origin: ["http://localhost:3000", "https://mango.bot"],
+		origin: process.env.PRODUCTION_URI,
 		credentials: true,
 		exposedHeaders: ["set-cookie"],
 	})
 );
-
-store.sync();
 
 app.get("/", async function (req, res) {
 	return res.send({ message: "Welcome to Mango's API!" });
@@ -49,7 +52,7 @@ app.get("/callback", async function (req, res) {
 		guilds: await getGuilds(getToken.access_token),
 	});
 
-	return res.redirect("https://mango.bot");
+	return res.redirect(process.env.PRODUCTION_URI);
 });
 
 app.get("/info", hasTokenExpired, async function (req, res) {
@@ -98,7 +101,7 @@ setInterval(async function () {
 
 async function refreshCache() {
 	const userIDs: string[] = [];
-	const sessionModel = sequelizeinit.model("Session");
+	const sessionModel = sequelizeinit.model("sessions");
 
 	(await sessionModel.findAll()).forEach(async (elm) => {
 		const getData = elm.get("data") as any;
