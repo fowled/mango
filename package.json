@@ -43,7 +43,7 @@
 		"scratchlib": "^0.4.0",
 		"sequelize": "^6.17.0",
 		"sqlite3": "^5.0.2",
-		"systeminformation": "^5.11.6",
+		"systeminformation": "^5.11.8",
 		"ts-node": "^10.7.0",
 		"ts-node-dev": "^1.1.8",
 		"xmlhttprequest": "^1.8.0",
@@ -57,7 +57,7 @@
 		"@types/cors": "^2.8.12",
 		"@typescript-eslint/eslint-plugin": "^4.31.0",
 		"@typescript-eslint/parser": "^4.31.0",
-		"eslint": "^8.10.0",
+		"eslint": "^8.11.0",
 		"typescript": "^4.6.2"
 	}
 }
