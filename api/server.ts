@@ -55,12 +55,18 @@ app.get("/callback", async function (req, res) {
 	return res.redirect(process.env.PRODUCTION_URI);
 });
 
-app.get("/info", hasTokenExpired, async function (req, res) {
+app.get("/user", hasTokenExpired, async function (req, res) {
 	const authed: boolean = req.session.token ? true : false;
 	const user: {} = req.session.user;
+
+	return res.send({ authed, user });
+});
+
+app.get("/guilds", hasTokenExpired, async function (req, res) {
+	const authed: boolean = req.session.token ? true : false;
 	const guilds: {} = req.session.guilds;
 
-	return res.send({ authed, user, guilds });
+	return res.send({ authed, guilds });
 });
 
 app.get("/manage/:guildId", hasTokenExpired, async function (req, res) {
