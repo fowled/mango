@@ -28,7 +28,7 @@ app.use(cookieParser());
 
 app.use(
 	cors({
-		origin: process.env.PRODUCTION_URI,
+		origin: [process.env.PRODUCTION_URI, /\.vercel\.app$/],
 		credentials: true,
 		exposedHeaders: ["set-cookie"],
 	})
