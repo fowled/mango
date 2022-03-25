@@ -1076,10 +1076,10 @@ discord-api-types@^0.24.0:
   resolved "https://registry.npmjs.org/discord-api-types/-/discord-api-types-0.24.0.tgz"
   integrity sha512-X0uA2a92cRjowUEXpLZIHWl4jiX1NsUpDhcEOpa1/hpO1vkaokgZ8kkPtPih9hHth5UVQ3mHBu/PpB4qjyfJ4A==
 
-discord-oauth2@^2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/discord-oauth2/-/discord-oauth2-2.9.0.tgz#5fb64f79f92f654aa4c7d44e993e4dc257126628"
-  integrity sha512-2DtocOmsXw5KjhW4eUMpr6RAih+juON0DOzSWr6F8qZePzuOJWznHbqDJmU70YB4Wv2Psyc6Shr3SEvRQ2Gk4Q==
+discord-oauth2@^2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/discord-oauth2/-/discord-oauth2-2.10.0.tgz#7d31baced2b96c739b194c0ae42254cace3dcecd"
+  integrity sha512-AV+pjKURHyGTCLCUO1vep83/M8zzlAaTkpjAB6bisBCjsyiQzJGihKR4dlM88UeAaJbyqDxnHIsHafePIO2ssg==
 
 discord.js@13.2.0:
   version "13.2.0"
