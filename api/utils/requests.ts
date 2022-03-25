@@ -63,6 +63,8 @@ export async function getGuilds(token: string) {
 		},
 	}).then((res) => res.json());
 
+	if (userGuilds.message) return;
+
 	for (let guild of userGuilds) {
 		const permissionsBitfield: boolean = new BitField(guild.permissions).has("32");
 		const isBotInGuild: boolean = client.guilds.resolve(guild.id) != null;

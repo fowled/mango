@@ -103,7 +103,7 @@ app.listen(port, () => {
 
 setInterval(async function () {
 	await refreshCache();
-}, 60 * 1000);
+}, 60 * 5 * 1000);
 
 async function refreshCache() {
 	const userIDs: string[] = [];
