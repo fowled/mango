@@ -1,6 +1,7 @@
 .git
-out/
-node_modules/
 .env
+node_modules/
 database/
 build/
+.yarn/*
+!.yarn/releases/
