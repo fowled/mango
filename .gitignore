@@ -1,7 +1,6 @@
 .git
 out/
 node_modules/
-.yarn
 .env
 database/
 build/
