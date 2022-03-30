@@ -2,6 +2,7 @@
 	"name": "mango",
 	"version": "1.0.0",
 	"description": "a useful discord bot",
+	"packageManager": "yarn@3.2.0",
 	"main": "src/index.ts",
 	"scripts": {
 		"start": "yarn run nodemon api/server.ts",

@@ -1,7 +1,7 @@
 .git
 out/
 node_modules/
-nohup.out
+.yarn
 .env
 database/
 build/
