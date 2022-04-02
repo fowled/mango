@@ -1186,15 +1186,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-session-sequelize@npm:^7.1.2":
-  version: 7.1.2
-  resolution: "connect-session-sequelize@npm:7.1.2"
+"connect-session-sequelize@npm:^7.1.3":
+  version: 7.1.3
+  resolution: "connect-session-sequelize@npm:7.1.3"
   dependencies:
     debug: ^4.1.1
     deep-equal: ^2.0.3
   peerDependencies:
     sequelize: ">= 6.1.0"
-  checksum: 5bad59cbb5cd9d950573fd569b44e076d00c20b0d3ad952711920b0611b12ec219a4191e34f0dac22a1efa9bfeefcf5b76b8475d223868d2c3c21dd4fb968ab3
+  checksum: 14ee47cf09f534dc994ca92c532876e1cf020c96b21e377eff1593f484d62f8baae0c6c8ff78a73e5c407dad2c890d920cc20e627871b2696f24c6e0ef7c7100
   languageName: node
   linkType: hard
 
@@ -3312,7 +3312,7 @@ __metadata:
     "@typescript-eslint/parser": ^4.31.0
     axios: ^0.26.1
     canvas: ^2.9.1
-    connect-session-sequelize: ^7.1.2
+    connect-session-sequelize: ^7.1.3
     cookie-parser: ^1.4.6
     cors: ^2.8.5
     dayjs: ^1.11.0
