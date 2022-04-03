@@ -1,8 +1,6 @@
 import fetch from "node-fetch";
 import { URLSearchParams } from "url";
-import { Guild, BitField } from "discord.js";
-
-import { client } from "../../src/index";
+import { Guild, BitField, Client } from "discord.js";
 
 export async function fetchToken(code: string) {
 	const fetchToken = await fetch("https://discord.com/api/oauth2/token", {
@@ -54,7 +52,7 @@ export async function getUser(token: string) {
 	return userResult;
 }
 
-export async function getGuilds(token: string) {
+export async function getGuilds(token: string, client: Client) {
 	const managedServersArray = [];
 
 	const userGuilds = await fetch("https://discord.com/api/users/@me/guilds", {
@@ -81,7 +79,7 @@ export async function getGuilds(token: string) {
 	return managedServersArray;
 }
 
-export async function getStats() {
+export async function getStats(client: Client) {
 	const retrieveUsers: number = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
 
 	const stats = {
@@ -92,7 +90,7 @@ export async function getStats() {
 	return stats;
 }
 
-export async function manageGuild(guildId: string) {
+export async function manageGuild(guildId: string, client: Client) {
 	let guildInfo: Guild | string = client.guilds.resolve(guildId);
 
 	if (guildInfo == null) {
