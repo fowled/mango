@@ -1,2 +1,2 @@
 git pull
-ts-node -T api/server.ts
+ts-node -T src/index.ts
