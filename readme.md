@@ -5,4 +5,4 @@ The Discord bot you didn't know you needed.
 Check https://mango.bot for features and dashboard. 
 
 ### Invite the bot
-You can do so by clciking [here](https://go.fowled.club/mango).
+You can do so by clicking [here](https://go.fowled.club/mango).
