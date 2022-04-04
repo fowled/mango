@@ -42,6 +42,7 @@
 		"hypixel-api-reborn": "^9.0.3",
 		"node-schedule": "^2.1.0",
 		"nodemon": "^2.0.15",
+		"prettier": "^2.6.2",
 		"scratchlib": "^0.4.0",
 		"sequelize": "^6.17.0",
 		"sqlite3": "^5.0.2",
