@@ -24,7 +24,7 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db) {
         const logChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
         const fetchChannel = await Client.channels.fetch(logChannelID) as Discord.TextChannel;
 
@@ -32,7 +32,7 @@ module.exports = {
             return interaction.editReply(`The channel you specified isn't a text channel. Please retry the command.`);
         }
 
-        const logchannelmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("logChannels");
+        const logchannelmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("logChannels");
         const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: interaction.guild.id } });
 
         if (logchannel) {

@@ -15,8 +15,8 @@ module.exports = {
 	description: "Replies with your Mango level and XP",
 	category: "fun",
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-		const Xp: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("ranks");
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db) {
+		const Xp: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("ranks");
 		const fetchUser = await Xp.findOne({ where: { idOfUser: interaction.member.user.id, idOfGuild: interaction.guild.id } });
 		const userXp: any = fetchUser.get("xp") as number;
 

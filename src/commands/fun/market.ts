@@ -16,8 +16,8 @@ module.exports = {
     category: "fun",
     botPermissions: ["ADD_REACTIONS"],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        const inventorymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db) {
+        const inventorymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("marketItems");
         const marketItems = await inventorymodel.findAll({ raw: true });
 
         if (!marketItems[0]) {

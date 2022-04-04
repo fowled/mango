@@ -73,7 +73,7 @@ module.exports = {
 				});
 			}, 500);
 		} else {
-			interaction.editReply("Whoops, please select a member. Ban hammer is waiting!");
+			interaction.editReply("Whodb, please select a member. Ban hammer is waiting!");
 		}
 	}
 }

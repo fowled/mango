@@ -15,8 +15,8 @@ module.exports = {
     description: "Replies with your bank account's money",
     category: "fun",
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        const moneymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db) {
+        const moneymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("moneyAcc");
         const money = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
 
         if (money) {

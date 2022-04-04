@@ -30,13 +30,13 @@ module.exports = {
         },
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db) {
         const item: string = args.slice(1, args.length).join(" ");
         const price: string = args[0];
 
-        const marketmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("marketItems");
+        const marketmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("marketItems");
 
-        const moneymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("moneyAcc");
+        const moneymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("moneyAcc");
         const money = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
  
         if (isNaN(price as unknown as number) || price.startsWith("-")) {

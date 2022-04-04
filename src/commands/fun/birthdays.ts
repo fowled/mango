@@ -18,8 +18,8 @@ module.exports = {
     category: "fun",
     botPermissions: ["ADD_REACTIONS"],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args, ops) {
-        const birthdaysmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("birthdays");
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args, db) {
+        const birthdaysmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("birthdays");
         const birthdays = await birthdaysmodel.findAll({ order: [["birthdayTimestamp", "ASC"]], where: { idOfGuild: interaction.guild.id }, raw: true });
 
         if (!birthdays[0]) {

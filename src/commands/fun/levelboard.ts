@@ -16,8 +16,8 @@ module.exports = {
     category: "fun",
     botPermissions: ["ADD_REACTIONS"],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        const Xp: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("ranks");
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db) {
+        const Xp: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("ranks");
         const ranks = await Xp.findAll({ order: [["xp", "DESC"]], where: { idOfGuild: interaction.guild.id }, raw: true });
 
         if (!ranks[0]) {

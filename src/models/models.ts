@@ -1,8 +1,8 @@
 import * as Sequelize from "sequelize";
-import { sequelizeinit } from "../index";
+import { db } from "../index";
 
 export async function defModels() {
-	sequelizeinit.define("marketItems", {
+	db.define("marketItems", {
 		name: {
 			type: Sequelize.STRING,
 			unique: true,
@@ -16,7 +16,7 @@ export async function defModels() {
 		},
 	});
 
-	sequelizeinit.define("inventoryItems", {
+	db.define("inventoryItems", {
 		name: {
 			type: Sequelize.STRING,
 			unique: true,
@@ -31,40 +31,40 @@ export async function defModels() {
 		},
 	});
 
-	sequelizeinit.define("moneyAcc", {
+	db.define("moneyAcc", {
 		idOfUser: Sequelize.STRING,
 		money: Sequelize.INTEGER,
 	});
 
-	sequelizeinit.define("welChannels", {
+	db.define("welChannels", {
 		idOfGuild: Sequelize.STRING,
 		idOfChannel: Sequelize.STRING,
 	});
 
-	sequelizeinit.define("logChannels", {
+	db.define("logChannels", {
 		idOfGuild: Sequelize.STRING,
 		idOfChannel: Sequelize.STRING,
 	});
 
-	sequelizeinit.define("birthdaysChannels", {
+	db.define("birthdaysChannels", {
 		idOfGuild: Sequelize.STRING,
 		idOfChannel: Sequelize.STRING,
 	});
 
-	sequelizeinit.define("birthdays", {
+	db.define("birthdays", {
 		idOfUser: Sequelize.STRING,
 		birthday: Sequelize.STRING,
 		birthdayTimestamp: Sequelize.NUMBER,
 		idOfGuild: Sequelize.STRING,
 	});
 
-	sequelizeinit.define("ranks", {
+	db.define("ranks", {
 		idOfUser: Sequelize.STRING,
 		xp: Sequelize.INTEGER,
 		idOfGuild: Sequelize.INTEGER,
 	});
 
-	sequelizeinit.define("sessions", {
+	db.define("sessions", {
 		sid: {
 			type: Sequelize.STRING(36),
 			primaryKey: true,

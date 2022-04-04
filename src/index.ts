@@ -1,4 +1,4 @@
-﻿import { Sequelize } from "sequelize";
+﻿import { Model, Sequelize } from "sequelize";
 import Discord from "discord.js";
 import fs from "fs";
 import path from "path";
@@ -18,16 +18,12 @@ export const client: Discord.Client = new Discord.Client({ intents: [Discord.Int
 
 export const talkedRecently = new Set();
 
-export const sequelizeinit = new Sequelize("database", "username", "password", {
+export const db = new Sequelize("database", "username", "password", {
 	host: "localhost",
 	dialect: "sqlite",
 	logging: false,
-	storage: `${process.cwd()}/database/db.sqlite`,
+	storage: process.cwd() + "/database/db.sqlite",
 });
-
-export const ops = {
-	sequelize: sequelizeinit,
-};
 
 export const hypixelClient: hypixel.Client = new hypixel.Client(process.env.API_KEY);
 
@@ -35,13 +31,13 @@ export const hypixelClient: hypixel.Client = new hypixel.Client(process.env.API_
 	await eventBinder();
 	await handleRejections();
 	await client.login(Token);
+	await createAPIServer(client, db);
 	await registerCommands();
-	await createAPIServer(client, sequelizeinit);
 	await runCronJobs();
 })();
 
 async function eventBinder() {
-	const eventFiles = fs.readdirSync(__dirname + "/events/").filter((file) => file.endsWith(".ts"));
+	const eventFiles: string[] = fs.readdirSync(__dirname + "/events/").filter((file) => file.endsWith(".ts"));
 
 	for (const file of eventFiles) {
 		const event = require(`./events/${file}`);
@@ -53,7 +49,7 @@ async function eventBinder() {
 		}
 	}
 
-	log(`📦 Successfully loaded ${chalk.yellow(eventFiles.length)} events!`);
+	log(`⌛ Successfully loaded ${chalk.yellow(eventFiles.length)} events!`);
 }
 
 async function handleRejections() {
@@ -68,16 +64,16 @@ async function handleRejections() {
 	});
 }
 
-const clientInteractions: any = new Discord.Collection();
+const clientInteractions: Discord.Collection<string, NodeRequire> = new Discord.Collection();
 
 async function registerCommands() {
-	const commandFolders = fs.readdirSync(path.join(__dirname, "commands"));
+	const commandFolders: string[] = fs.readdirSync(path.join(__dirname, "commands"));
 
 	for (const folder of commandFolders) {
-		const commandFiles = fs.readdirSync(path.join(__dirname, "commands", folder)).filter((file) => file.endsWith(".ts"));
+		const commandFiles: string[] = fs.readdirSync(path.join(__dirname, "commands", folder)).filter((file) => file.endsWith(".ts"));
 
 		for (const file of commandFiles) {
-			const command = require(`./commands/${folder}/${file}`);
+			const command: NodeRequire = require(`./commands/${folder}/${file}`);
 
 			clientInteractions.set(command.name, command);
 		}
@@ -86,16 +82,16 @@ async function registerCommands() {
 
 async function runCronJobs() {
 	cron.scheduleJob("0 0 * * *", async function () {
-		const todayDate = new Date();
-		const todayDateString = `${todayDate.getMonth()}/${todayDate.getDate()}`;
+		const todayDate: Date = new Date();
+		const todayDateString: string = `${todayDate.getMonth()}/${todayDate.getDate()}`;
 
-		const findBirthdaysToday = await sequelizeinit.model("birthdays").findAll({ where: { birthday: todayDateString } });
+		const findBirthdaysToday: Model[] = await db.model("birthdays").findAll({ where: { birthday: todayDateString } });
 
 		for (let i = 0; i < findBirthdaysToday.length; i++) {
-			const guildID = findBirthdaysToday[i]["idOfGuild"];
-			const user = await client.users.fetch(findBirthdaysToday[i]["idOfUser"]);
-			const birthdayTimestamp = findBirthdaysToday[i]["birthdayTimestamp"];
-			const findRelatedChannels = await sequelizeinit.model("birthdaysChannels").findAll({ where: { idOfGuild: guildID } });
+			const guildID: string = findBirthdaysToday[i]["idOfGuild"];
+			const user: Discord.User = await client.users.fetch(findBirthdaysToday[i]["idOfUser"]);
+			const birthdayTimestamp: number = findBirthdaysToday[i]["birthdayTimestamp"];
+			const findRelatedChannels: Model[] = await db.model("birthdaysChannels").findAll({ where: { idOfGuild: guildID } });
 
 			for (let y = 0; y < findRelatedChannels.length; y++) {
 				const fetchChannel: Discord.TextChannel = (await client.channels.fetch(findRelatedChannels[y]["idOfChannel"])) as unknown as Discord.TextChannel;

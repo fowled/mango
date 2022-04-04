@@ -63,11 +63,11 @@ module.exports = {
         },
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], ops) {
-        const birthdaysChannelsModel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("birthdaysChannels");
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db) {
+        const birthdaysChannelsModel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("birthdaysChannels");
         const birthdayChannel = await birthdaysChannelsModel.findOne({ where: { idOfGuild: interaction.guild.id } });
 
-        const birthdaysModel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = ops.sequelize.model("birthdays");
+        const birthdaysModel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("birthdays");
         const fetchBirthday = await birthdaysModel.findAll({ where: { idOfUser: interaction.user.id } });
         const fetchGuildBirthday = await birthdaysModel.findOne({ where: { idOfUser: interaction.user.id, idOfGuild: interaction.guild.id } });
 
