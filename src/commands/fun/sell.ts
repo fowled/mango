@@ -30,7 +30,7 @@ module.exports = {
         },
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
         const item: string = args.slice(1, args.length).join(" ");
         const price: string = args[0];
 

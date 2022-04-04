@@ -19,28 +19,22 @@ module.exports = {
 			name: "command",
 			type: "STRING",
 			description: "Get precise help on a specified command",
-			required: false
-		}
+			required: false,
+		},
 	],
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
 		if (args[0]) {
-			const command = clientInteractions.get(args[0]);
+			const command: any = clientInteractions.get(args[0]);
 
 			if (!command) {
 				return interaction.editReply("<:no:835565213322575963> I couldn't find the command you requested. Please check the correct command name with `/help`");
 			}
 
-			const infoEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
-				.setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
-				.setDescription(`Information about the **${command.name}** command`)
-				.addField("Category", command.category, false)
-				.addField("Description", command.description, false)
-				.setColor("RANDOM")
-				.setTimestamp()
-				.setFooter(Client.user.username, Client.user.displayAvatarURL())
+			const infoEmbed: Discord.MessageEmbed = new Discord.MessageEmbed().setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL()).setDescription(`Information about the **${command.name}** command`).addField("Category", command.category, false).addField("Description", command.description, false).setColor("RANDOM").setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
 
-			const options: string[] = [], usage: string[] = [];
+			const options: string[] = [],
+				usage: string[] = [];
 
 			if (command && command.options) {
 				for (const [index, opt] of command.options.entries()) {
@@ -66,7 +60,10 @@ module.exports = {
 		}
 
 		function GetCategoryCmds(category: string) {
-			return clientInteractions.filter(cmd => cmd.category === category).map(cmd => `\`${cmd.name}\``).join(", ");
+			return clientInteractions
+				.filter((cmd: any) => cmd.category === category)
+				.map((cmd) => `\`${cmd.name}\``)
+				.join(", ");
 		}
-	}
-}
+	},
+};

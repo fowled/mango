@@ -23,7 +23,7 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
         const ID = args[0];
 
         const marketmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("marketItems");

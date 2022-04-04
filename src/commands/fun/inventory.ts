@@ -16,7 +16,7 @@ module.exports = {
     category: "fun",
     botPermissions: ["ADD_REACTIONS"],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
         const inventorymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("inventoryItems");
         const authorinventory = await inventorymodel.findAll({ where: { authorID: interaction.member.user.id } });
 

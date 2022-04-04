@@ -6,6 +6,6 @@ import { db } from "../index";
 module.exports = {
 	name: "messageCreate",
 	async execute(message: Discord.Message) {
-        if (!message.author.bot) return Xp.checkXP(message, db);
-	}
+		if (!message.author.bot) return Xp.checkXP(message, db);
+	},
 };

@@ -1,7 +1,7 @@
 import * as Discord from "discord.js";
 import * as Sequelize from "sequelize";
 
-export async function checkXP(message: Discord.Message, db) {
+export async function checkXP(message: Discord.Message, db: Sequelize.Sequelize) {
 	const Xp: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("ranks");
 
 	const level = await Xp.findOne({ where: { idOfUser: message.member.user.id, idOfGuild: message.guild.id } });

@@ -16,7 +16,7 @@ module.exports = {
     category: "moderation",
     memberPermissions: ["MANAGE_CHANNELS"],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
         const welcomechannelmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("welChannels");
         const welcomechannel = await welcomechannelmodel.findOne({ where: { idOfGuild: interaction.guild.id } });
 

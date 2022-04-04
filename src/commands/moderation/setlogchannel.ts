@@ -24,7 +24,7 @@ module.exports = {
         }
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db) {
+    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
         const logChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
         const fetchChannel = await Client.channels.fetch(logChannelID) as Discord.TextChannel;
 
