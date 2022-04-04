@@ -1,109 +1,45 @@
-import express, { Express, urlencoded } from "express";
+import { Sequelize } from "sequelize";
+import { Client } from "discord.js";
+import express, { Express, urlencoded, json } from "express";
+import SequelizeSession from "connect-session-sequelize";
 import session from "express-session";
+import chalk from "chalk";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import chalk from "chalk";
-
-import { Client } from "discord.js";
-import { Sequelize } from "sequelize";
 
 import { defModels } from "../src/models/models";
 
 import { log } from "../src/utils/Logger";
-import { fetchToken, getUser, getGuilds, getStats, manageGuild } from "./utils/requests";
-import { hasTokenExpired } from "./utils/manager";
+
+import { registerRoutes } from "./utils/routes";
+import { getUser, getGuilds } from "./utils/requests";
 
 export async function createAPIServer(client: Client, database: Sequelize) {
-	defModels();
+	await defModels();
 
-	database.sync();
+	await database.sync();
 
-	const SequelizeStore = require("connect-session-sequelize")(session.Store);
+	const SequelizeStore = SequelizeSession(session.Store);
 	const store = new SequelizeStore({ db: database, table: "sessions" });
 
 	const app: Express = express();
 
-	app.use(session({ secret: process.env.SESSION_SECRET, cookie: { secure: false }, store: store, resave: false, saveUninitialized: false }));
-
-	app.use(urlencoded({ extended: true }));
-
-	app.use(express.json());
-
-	app.use(cookieParser());
-
-	app.use(
+	app.use([
+		session({ secret: process.env.SESSION_SECRET, cookie: { secure: !process.env.SECURE_COOKIE }, store: store, resave: false, saveUninitialized: false }),
+		urlencoded({ extended: true }),
+		json(),
+		cookieParser(),
 		cors({
 			origin: [process.env.PRODUCTION_URI],
 			credentials: true,
 			exposedHeaders: ["set-cookie"],
-		})
-	);
+		}),
+	]);
 
-	app.get("/", async function (req, res) {
-		return res.send({ message: "Welcome to Mango's API!" });
-	});
+	await registerRoutes(app, client);
 
-	app.get("/callback", async function (req, res) {
-		const code: string = req.query.code as string;
-
-		const getToken = await fetchToken(code);
-		const nextWeekDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
-
-		Object.assign(req.session, {
-			token: getToken.access_token,
-			refresh_token: getToken.refresh_token,
-			date: nextWeekDate,
-			user: await getUser(getToken.access_token),
-			guilds: await getGuilds(getToken.access_token, client),
-		});
-
-		return res.redirect(process.env.PRODUCTION_URI);
-	});
-
-	app.get("/user", hasTokenExpired, async function (req, res) {
-		const authed: boolean = req.session.token ? true : false;
-		const user: {} = req.session.user;
-
-		return res.send({ authed, user });
-	});
-
-	app.get("/guilds", hasTokenExpired, async function (req, res) {
-		const authed: boolean = req.session.token ? true : false;
-		const guilds: {} = req.session.guilds;
-
-		return res.send({ authed, guilds });
-	});
-
-	app.get("/manage/:guildId", hasTokenExpired, async function (req, res) {
-		if (!req.session.token) {
-			return res.status(403).send({ message: "Unauthorized" });
-		}
-
-		return res.status(200).send({ guild: await manageGuild(req.params.guildId, client) });
-	});
-
-	app.get("/logout", async function (req, res) {
-		req.session.destroy(null);
-
-		return res.send({ message: "Nothing to see here..." });
-	});
-
-	app.get("/stats", async function (req, res) {
-		return res.send({ message: await getStats(client) });
-	});
-
-	app.use((req, res, next) => {
-		const error: Error = new Error("404: not found");
-
-		return res.status(404).json({
-			message: error.message,
-		});
-	});
-
-	const port = process.env.PORT ?? 3000;
-
-	app.listen(port, () => {
-		log(`✨ API server is up and running at ${chalk.cyan(`http://localhost:${port}!`)}`);
+	app.listen(process.env.PORT, () => {
+		log(`✨ API server is up and running at ${chalk.cyan(`http://localhost:${process.env.PORT}`)}!`);
 	});
 
 	setInterval(async function () {
@@ -116,7 +52,7 @@ async function refreshCache(client: Client, database: Sequelize) {
 	const sessionModel = database.model("sessions");
 
 	(await sessionModel.findAll()).forEach(async (elm) => {
-		const getData = elm.get("data") as any;
+		const getData: { [key: string]: any } = elm.get("data");
 
 		if (!getData.token || userIDs.includes(getData.user.id)) return;
 
@@ -125,7 +61,7 @@ async function refreshCache(client: Client, database: Sequelize) {
 		const fetchUser = await getUser(getData.token);
 		const fetchManagedGuilds = await getGuilds(getData.token, client);
 
-		await Object.assign(getData, {
+		Object.assign(getData, {
 			user: fetchUser,
 			guilds: fetchManagedGuilds,
 		});
@@ -133,5 +69,5 @@ async function refreshCache(client: Client, database: Sequelize) {
 		await sessionModel.update({ data: getData }, { where: { data: { user: { id: getData.user.id } } } });
 	});
 
-	log(`🔄 Just refreshed the ${chalk.yellow("cache")}`);
+	log(`🔄 Just refreshed the ${chalk.greenBright("cache")}!`);
 }
