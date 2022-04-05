@@ -3329,7 +3329,7 @@ __metadata:
     nodemon: ^2.0.15
     prettier: ^2.6.2
     scratchlib: ^0.4.0
-    sequelize: ^6.17.0
+    sequelize: ^6.18.0
     sqlite3: ^5.0.2
     systeminformation: ^5.11.9
     ts-node: ^10.7.0
@@ -4629,9 +4629,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sequelize@npm:^6.17.0":
-  version: 6.17.0
-  resolution: "sequelize@npm:6.17.0"
+"sequelize@npm:^6.18.0":
+  version: 6.18.0
+  resolution: "sequelize@npm:6.18.0"
   dependencies:
     "@types/debug": ^4.1.7
     "@types/validator": ^13.7.1
@@ -4666,7 +4666,7 @@ __metadata:
       optional: true
     tedious:
       optional: true
-  checksum: 54bef508cff51e1330604dfeb926dc3f0618ec28ddcc9f97c3a6d9e94d1d4ce625e66c3f40d50e91f028239a7ecb5d85aeb11ee7f402666448b25991d249b21b
+  checksum: fc540d165e673a617c16b6791bb9054b60d73e24686915b6ea55367ba3cb24b1143a8bc012796a15e1809d1fe29c5643822c7be6b0176568970945143be65a36
   languageName: node
   linkType: hard
 
