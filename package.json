@@ -44,7 +44,7 @@
 		"nodemon": "^2.0.15",
 		"prettier": "^2.6.2",
 		"scratchlib": "^0.4.0",
-		"sequelize": "^6.17.0",
+		"sequelize": "^6.18.0",
 		"sqlite3": "^5.0.2",
 		"systeminformation": "^5.11.9",
 		"ts-node": "^10.7.0",
