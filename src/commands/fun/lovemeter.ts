@@ -1,4 +1,4 @@
-import * as Discord from "discord.js";
+import Discord from "discord.js";
 
 // Fun command
 
@@ -10,40 +10,41 @@ import * as Discord from "discord.js";
  * @param {any} options some options
  */
 module.exports = {
-    name: "lovemeter",
-    description: "Calculates love % between to users",
-    category: "fun",
-    options: [
-        { 
-            name: "user",
-            type: "USER",
-            description: "The user you want to test the command with",
-            required: true
-        }
-    ],
+	name: "lovemeter",
+	description: "Calculates love % between to users",
+	category: "fun",
+	options: [
+		{
+			name: "user",
+			type: "USER",
+			description: "The user you want to test the command with",
+			required: true,
+		},
+	],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
-        const member = Client.users.cache.get(args[0]);
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+		const member = Client.users.cache.get(args[0]);
 
-        const randomNumber = Math.floor(Math.random() * 10) + 1;
-        let messageContent = "\n";
+		const randomNumber = Math.floor(Math.random() * 10) + 1;
 
-        for (let index = 0; index < randomNumber; index++) {
-            messageContent += ":revolving_hearts:";
-        }
+		let messageContent = "\n";
 
-        for (let index = 0; index < 10 - randomNumber; index++) {
-            messageContent += ":black_large_square:";
-        }
+		for (let index = 0; index < randomNumber; index++) {
+			messageContent += ":revolving_hearts:";
+		}
 
-        const lovemeter = new Discord.MessageEmbed()
-            .setTitle("Lovemeter :heart:")
-            .setAuthor(interaction.member.user.tag, interaction.member.user.avatarURL())
-            .setColor("#08ABF9")
-            .setDescription(`Current __lovemeter__ between you and *${member}*: ${messageContent} \n→ **${randomNumber * 10}**% of love`)
-            .setFooter(Client.user.username, Client.user.avatarURL())
-            .setTimestamp()
+		for (let index = 0; index < 10 - randomNumber; index++) {
+			messageContent += ":black_large_square:";
+		}
 
-        interaction.editReply({ embeds: [lovemeter] });
-    }
-}
+		const lovemeter = new Discord.MessageEmbed()
+			.setTitle("Lovemeter :heart:")
+			.setAuthor(interaction.member.user.tag, interaction.member.user.avatarURL())
+			.setColor("#08ABF9")
+			.setDescription(`Current __lovemeter__ between you and *${member}*: ${messageContent} \n→ **${randomNumber * 10}**% of love`)
+			.setFooter(Client.user.username, Client.user.avatarURL())
+			.setTimestamp();
+
+		interaction.editReply({ embeds: [lovemeter] });
+	},
+};

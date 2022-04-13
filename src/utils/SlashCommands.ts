@@ -1,34 +1,34 @@
-import * as Discord from "discord.js";
-import * as Fs from "fs";
-import * as path from "path";
+import Discord from "discord.js";
+import glob from "fast-glob";
+import path from "path";
+
+import { Command } from "../interfaces/command";
 
 export async function SlashCommands(client: Discord.Client) {
-    await client.application.commands.fetch().then(cmd => cmd.forEach(cmd => {
-        cmd.delete();
-    }));
+	await client.application.commands.fetch().then((cmd) =>
+		cmd.forEach((cmd) => {
+			cmd.delete();
+		})
+	);
 
-    const interactionFolders = Fs.readdirSync(path.join(__dirname, "..", "commands"));
+	const commandFiles = glob.sync("src/commands/**/*.ts");
 
-    for (const folder of interactionFolders) {
-        const commandFiles = Fs.readdirSync(path.join(__dirname, "..", "commands", folder)).filter(file => file.endsWith('.ts'));
+	commandFiles.map(async (file) => {
+		const command: Command = await import(path.resolve(file));
 
-        for (const file of commandFiles) {
-            const command = require(`../commands/${folder}/${file}`);
+		const commandObject = {
+			name: command.name,
+			description: command.description,
+		};
 
-            const commandObject = {
-                name: command.name,
-                description: command.description
-            }
+		if (command.options) {
+			Object.assign(commandObject, { options: command.options });
+		}
 
-            if (command.options) {
-                Object.assign(commandObject, { options: command.options });
-            }
+		if (command.subcommands) {
+			Object.assign(commandObject, { options: command.subcommands });
+		}
 
-            if (command.subcommands) {
-                Object.assign(commandObject, { options: command.subcommands });
-            }
-
-            await client.application.commands.create(commandObject);
-        }
-    }
+		await client.application.commands.create(commandObject);
+	});
 }

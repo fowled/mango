@@ -1,11 +1,12 @@
-import * as Discord from "discord.js";
+import Discord from "discord.js";
 
-import * as Xp from "../utils/Xp";
 import { db } from "../index";
+
+import { checkXP } from "../utils/Xp";
 
 module.exports = {
 	name: "messageCreate",
-	async execute(message: Discord.Message) {
-		if (!message.author.bot) return Xp.checkXP(message, db);
+	async execute(_Client: Discord.Client, message: Discord.Message) {
+		if (!message.author.bot) return checkXP(message, db);
 	},
 };

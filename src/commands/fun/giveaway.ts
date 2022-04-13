@@ -1,4 +1,4 @@
-import * as Discord from "discord.js";
+import Discord from "discord.js";
 import ms from "ms";
 
 // Fun command
@@ -22,66 +22,70 @@ module.exports = {
 		async function createGiveaway() {
 			interaction.editReply("Enter a name for the giveaway, and I'll create it for you.");
 
-			const channel: Discord.TextChannel = interaction.channel as Discord.TextChannel;
+			const channel = interaction.channel as Discord.TextChannel;
 
-			const filter = (msg: Discord.Message) => msg.author.id == interaction.member.user.id;
+			const filter = (msg: Discord.Message) => msg.author.id === interaction.member.user.id;
 
-			let giveawayName, giveawayRewards;
+			let giveawayName: string, giveawayRewards: string;
 
-			await channel.awaitMessages({ filter: filter, max: 1 })
-				.then((collected) => {
-					giveawayName = collected.first();
-					const content: string = `Ok, I just created the **${giveawayName}** giveaway! Now, please enter the rewards :wink:`;
-					return interaction.followUp(content);
-				});
+			await channel.awaitMessages({ filter: filter, max: 1 }).then((collected) => {
+				giveawayName = collected.first().content;
 
-			await channel.awaitMessages({ filter: filter, max: 1 })
-				.then((collected) => {
-					giveawayRewards = collected.last();
-					const content: string = `Ok, here are the rewards of your giveaway: **${giveawayRewards}**! Finally, please select the duration of the giveaway, eg: \`[number]m\`, \`[number]d\`, or \`[number]w\``;
-					return interaction.followUp(content);
-				});
+				const content = `Ok, I just created the **${giveawayName}** giveaway! Now, please enter the rewards :wink:`;
+
+				return interaction.followUp(content);
+			});
+
+			await channel.awaitMessages({ filter: filter, max: 1 }).then((collected) => {
+				giveawayRewards = collected.last().content;
+
+				const content = `Ok, here are the rewards of your giveaway: **${giveawayRewards}**! Finally, please select the duration of the giveaway, eg: \`[number]m\`, \`[number]d\`, or \`[number]w\``;
+
+				return interaction.followUp(content);
+			});
 
 			const durationCollector: () => Promise<void> = async () => {
-				await channel.awaitMessages({ filter: filter, max: 1, errors: ["time"] })
-					.then((collected) => {
-						const durationNumber: string = collected.last().content;
+				await channel.awaitMessages({ filter: filter, max: 1, errors: ["time"] }).then((collected) => {
+					const durationNumber = collected.last().content;
 
-						if (!ms(durationNumber)) {
-							const content: string = "This isn't a correct duration time. Please retry with a valid one.";
-							return interaction.followUp(content);
-						}
+					if (!ms(durationNumber)) {
+						const content = "This isn't a correct duration time. Please retry with a valid one.";
 
-						const channel = interaction.channel as unknown as Discord.TextChannel;
-						channel.bulkDelete(7);
+						return interaction.followUp(content);
+					}
 
-						const giveawayEmbed: Discord.MessageEmbed = new Discord.MessageEmbed()
-							.setTitle("🎉🎈 Giveaway!")
-							.setDescription(`**${giveawayName}** giveaway! \nRewards: *${giveawayRewards}* \nEnds in \`${durationNumber}\` \nReact with :thumbsup: to enter!`)
-							.setColor("RANDOM")
-							.setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
-							.setTimestamp()
-							.setFooter(Client.user.username, Client.user.displayAvatarURL())
+					const channel = interaction.channel as Discord.TextChannel;
 
-						interaction.channel.send({ embeds: [giveawayEmbed] }).then(m => {
-							m.react("👍🏻");
+					channel.bulkDelete(7);
 
-							const filter = () => {
-								return m.author.id == Client.user.id;
-							};
+					const giveawayEmbed = new Discord.MessageEmbed()
+						.setTitle("🎉🎈 Giveaway!")
+						.setDescription(`**${giveawayName}** giveaway! \nRewards: *${giveawayRewards}* \nEnds in \`${durationNumber}\` \nReact with :thumbsup: to enter!`)
+						.setColor("RANDOM")
+						.setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
+						.setTimestamp()
+						.setFooter(Client.user.username, Client.user.displayAvatarURL());
 
-							m.awaitReactions({ filter: filter, time: ms(durationNumber) }).then(collected => {
-								const users: Discord.User[][] = collected.map(u => u.users.cache.filter(u => !u.bot).map(u => u));
-								const randomUser = users[0][Math.floor(Math.random() * users[0].length)];
+					interaction.channel.send({ embeds: [giveawayEmbed] }).then((m) => {
+						m.react("👍🏻");
 
-								interaction.channel.send(`Congratulations ${randomUser} (**${randomUser.tag}** - *${randomUser.id}*) you won the giveaway! \nPrizes: \`${giveawayRewards}\` :eyes: \nLink to the giveaway: https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${m.id}`);
-							});
+						const filter = () => {
+							return m.author.id === Client.user.id;
+						};
+
+						m.awaitReactions({ filter: filter, time: ms(durationNumber) }).then((collected) => {
+							const users = collected.map((u) => u.users.cache.filter((u) => !u.bot).map((u) => u));
+							const randomUser = users[0][Math.floor(Math.random() * users[0].length)];
+
+							interaction.channel.send(
+								`Congratulations ${randomUser} (**${randomUser.tag}** - *${randomUser.id}*) you won the giveaway! \nPrizes: \`${giveawayRewards}\` :eyes: \nLink to the giveaway: https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${m.id}`
+							);
 						});
-
 					});
+				});
 			};
 
 			await durationCollector();
 		}
-	}
-}
+	},
+};

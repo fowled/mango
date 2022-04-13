@@ -1,4 +1,4 @@
-import * as Discord from "discord.js";
+import Discord from "discord.js";
 import ms from "ms";
 
 // Fun command
@@ -11,126 +11,131 @@ import ms from "ms";
  * @param {any} options some options
  */
 module.exports = {
-    name: "poll",
-    description: "Creates a poll",
-    category: "fun",
-    botPermissions: ["ADD_REACTIONS"],
-    options: [
-        {
-            name: "duration",
-            type: "STRING",
-            description: "The poll's duration",
-            required: true
-        },
+	name: "poll",
+	description: "Creates a poll",
+	category: "fun",
+	botPermissions: ["ADD_REACTIONS"],
+	options: [
+		{
+			name: "duration",
+			type: "STRING",
+			description: "The poll's duration",
+			required: true,
+		},
 
-        {
-            name: "first-option",
-            type: "STRING",
-            description: "The first required option",
-            required: true
-        },
+		{
+			name: "first-option",
+			type: "STRING",
+			description: "The first required option",
+			required: true,
+		},
 
-        {
-            name: "second-option",
-            type: "STRING",
-            description: "The second required option",
-            required: true
-        },
+		{
+			name: "second-option",
+			type: "STRING",
+			description: "The second required option",
+			required: true,
+		},
 
-        {
-            name: "third-option",
-            type: "STRING",
-            description: "The third optionnal option",
-            required: false
-        },
+		{
+			name: "third-option",
+			type: "STRING",
+			description: "The third optionnal option",
+			required: false,
+		},
 
-        {
-            name: "fourth-option",
-            type: "STRING",
-            description: "The fourth optionnal option",
-            required: false
-        },
+		{
+			name: "fourth-option",
+			type: "STRING",
+			description: "The fourth optionnal option",
+			required: false,
+		},
 
-        {
-            name: "fifth-option",
-            type: "STRING",
-            description: "The fifth optionnal option",
-            required: false
-        },
-    ],
+		{
+			name: "fifth-option",
+			type: "STRING",
+			description: "The fifth optionnal option",
+			required: false,
+		},
+	],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
-        const time = args[0];
-        args.shift();
-        const splitMessage = args;
-        const choices: string[] = [];
-        const reactions = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
-        let msgID: string;
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+		const time = args[0];
 
-        if (splitMessage.length > 6) {
-            return interaction.editReply("Not-that-fatal error: 5 args limit exceeded. Please provide less args.");
-        }
+		args.shift();
 
-        for (let i = 0; i < splitMessage.length; i++) {
-            choices.push(`${reactions[i]} - ${splitMessage[i]}`);
-        }
+		const splitMessage = args;
+		const choices: string[] = [];
+		const reactions = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 
-        const poll = new Discord.MessageEmbed()
-            .setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
-            .setTitle(`Poll by **${interaction.member.user.tag}**`)
-            .setDescription(choices.join("\n"))
-            .setColor("#00BFFF")
-            .setFooter(Client.user.username, Client.user.avatarURL())
+		let msgID: string;
 
-        interaction.editReply({ embeds: [poll] }).then(async () => {
-            fetchInteraction();
-        });
+		if (splitMessage.length > 6) {
+			return interaction.editReply("5 args limit exceeded. Please provide less args.");
+		}
 
-        function fetchInteraction() {
-            interaction.fetchReply().then((msg: Discord.Message) => {
-                addReactions(msg);
-            });
-        }
+		for (let i = 0; i < splitMessage.length; i++) {
+			choices.push(`${reactions[i]} - ${splitMessage[i]}`);
+		}
 
-        async function addReactions(msg: Discord.Message) {
-            for (let i = 0; i < splitMessage.length; i++) {
-                await msg.react(reactions[i]);
-            }
+		const poll = new Discord.MessageEmbed()
+			.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+			.setTitle(`Poll by **${interaction.member.user.tag}**`)
+			.setDescription(choices.join("\n"))
+			.setColor("#00BFFF")
+			.setFooter(Client.user.username, Client.user.avatarURL());
 
-            msgID = msg.id;
+		interaction.editReply({ embeds: [poll] }).then(async () => {
+			fetchInteraction();
+		});
 
-            setTimeout(function () {
-                createReactionCollector(msg);
-            }, 300);
-        }
+		function fetchInteraction() {
+			interaction.fetchReply().then((msg: Discord.Message) => {
+				addReactions(msg);
+			});
+		}
 
-        function createReactionCollector(msg: Discord.Message) {
-            const filter = (reaction) => {
-                return ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"].includes(reaction.emoji.name);
-            };
+		async function addReactions(msg: Discord.Message) {
+			for (let i = 0; i < splitMessage.length; i++) {
+				await msg.react(reactions[i]);
+			}
 
-            msg.awaitReactions({ filter, time: ms(time), errors: ["time"] }).catch(() => {
-                let msgContent = "";
-                let numberOfReactions = 0;
+			msgID = msg.id;
 
-                for (var i = 0; i < splitMessage.length; i++) {
-                    numberOfReactions += (Array.from(msg.reactions.cache.values())[i].count - 1);
-                }
+			setTimeout(function () {
+				createReactionCollector(msg);
+			}, 300);
+		}
 
-                for (var x = 0; x < splitMessage.length; x++) {
-                    msgContent += `${reactions[x]} - ${splitMessage[x]} - ${Array.from(msg.reactions.cache.values())[x].count - 1} votes **[${Math.round((Array.from(msg.reactions.cache.values())[x].count - 1) / numberOfReactions * 100)}%]** \n`;
-                }
+		function createReactionCollector(msg: Discord.Message) {
+			const filter = (reaction) => {
+				return ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"].includes(reaction.emoji.name);
+			};
 
-                const votes = new Discord.MessageEmbed()
-                    .setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
-                    .setTitle("Results of the poll")
-                    .setURL(`https://discordapp.com/channels/${interaction.guild.id}/${interaction.channel.id}/${msgID}`)
-                    .setDescription(msgContent)
-                    .setColor("#00BFFF")
-                    .setFooter(Client.user.username, Client.user.avatarURL())
+			msg.awaitReactions({ filter, time: ms(time), errors: ["time"] }).catch(() => {
+				let msgContent = "";
+				let numberOfReactions = 0;
 
-                interaction.channel.send({ embeds: [votes] });
-            });
-        }
-    }
-}
+				for (let i = 0; i < splitMessage.length; i++) {
+					numberOfReactions += Array.from(msg.reactions.cache.values())[i].count - 1;
+				}
+
+				for (let x = 0; x < splitMessage.length; x++) {
+					msgContent += `${reactions[x]} - ${splitMessage[x]} - ${Array.from(msg.reactions.cache.values())[x].count - 1} votes **[${Math.round(
+						((Array.from(msg.reactions.cache.values())[x].count - 1) / numberOfReactions) * 100
+					)}%]** \n`;
+				}
+
+				const votes = new Discord.MessageEmbed()
+					.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+					.setTitle("Results of the poll")
+					.setURL(`https://discordapp.com/channels/${interaction.guild.id}/${interaction.channel.id}/${msgID}`)
+					.setDescription(msgContent)
+					.setColor("#00BFFF")
+					.setFooter(Client.user.username, Client.user.avatarURL());
+
+				interaction.channel.send({ embeds: [votes] });
+			});
+		}
+	},
+};

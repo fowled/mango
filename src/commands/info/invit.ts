@@ -1,4 +1,4 @@
-import * as Discord from "discord.js";
+import Discord from "discord.js";
 
 // Guild command
 
@@ -15,13 +15,14 @@ module.exports = {
 	category: "info",
 	botPermissions: ["CREATE_INSTANT_INVITE"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
-		(await interaction.guild.fetch()).invites.create(interaction.channel.id)
-			.then((invite: Discord.Invite) => {
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+		(await interaction.guild.fetch()).invites
+			.create(interaction.channel.id)
+			.then((invite) => {
 				interaction.editReply(invite.url);
 			})
 			.catch(() => {
 				interaction.editReply("I don't have the right perms ;( Make sure I have the admin rank :wink:");
 			});
-	}
-}
+	},
+};

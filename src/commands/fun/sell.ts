@@ -1,5 +1,5 @@
-import * as Discord from "discord.js";
-import * as Sequelize from "sequelize";
+import Discord from "discord.js";
+import Sequelize from "sequelize";
 
 // Fun command
 
@@ -11,62 +11,65 @@ import * as Sequelize from "sequelize";
  * @param {any} options some options
  */
 module.exports = {
-    name: "sell",
-    description: "Sells an object to Mango's marketplace",
-    category: "fun",
-    options: [
-        {
-            name: "price",
-            type: "STRING",
-            description: "The item's price",
-            required: true
-        },
+	name: "sell",
+	description: "Sells an object to Mango's marketplace",
+	category: "fun",
+	options: [
+		{
+			name: "price",
+			type: "STRING",
+			description: "The item's price",
+			required: true,
+		},
 
-        {
-            name: "item",
-            type: "STRING",
-            description: "The item's name",
-            required: true
-        },
-    ],
+		{
+			name: "item",
+			type: "STRING",
+			description: "The item's name",
+			required: true,
+		},
+	],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
-        const item: string = args.slice(1, args.length).join(" ");
-        const price: string = args[0];
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
+		const item: string = args.slice(1, args.length).join(" ");
+		const price: string = args[0];
 
-        const marketmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("marketItems");
+		const marketmodel = db.model("marketItems");
 
-        const moneymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("moneyAcc");
-        const money = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
- 
-        if (isNaN(price as unknown as number) || price.startsWith("-")) {
-            return interaction.editReply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
-        } else if (item.includes("@")) {
-            return interaction.editReply("I can't add this item to the market because it contains a mention. Be sure to remove it.");
-        } else if (!money) {
-            return interaction.editReply("It looks like you haven't created your account! Do `/money` first :wink:");
-        } else if (item.length > 70) {
-            return interaction.editReply("Your item name is too long!");
-        }
+		const moneymodel = db.model("moneyAcc");
+		const money = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
 
-        const getMoney = money.get("money");
+		if (isNaN(price as unknown as number) || price.startsWith("-")) {
+			return interaction.editReply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
+		} else if (item.includes("@")) {
+			return interaction.editReply("I can't add this item to the market because it contains a mention. Be sure to remove it.");
+		} else if (!money) {
+			return interaction.editReply("It looks like you haven't created your account! Do `/money` first :wink:");
+		} else if (item.length > 70) {
+			return interaction.editReply("Your item name is too long!");
+		}
 
-        if (getMoney < price) {
-            return interaction.editReply(`You can't sell this item at **${price}** because you only have **${money}**$.`);
-        }
+		const getMoney = money.get("money");
 
-        const createdItem = await marketmodel.create({
-            name: item,
-            price: price,
-            seller: interaction.member.user.tag,
-            sellerID: interaction.member.user.id
-        }).catch(e => {
-            if (e.name == "SequelizeUniqueConstraintError") {
-                return interaction.editReply("This object already exists! Please choose another name.");
-            }
-        });
+		if (getMoney < price) {
+			return interaction.editReply(`You can't sell this item at **${price}** because you only have **${money}**$.`);
+		}
 
-        // @ts-ignore
-        interaction.editReply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${createdItem.get("id")}** <:yes:835565213498736650>`);
-    }
-}
+		const createdItem = await marketmodel
+			.create({
+				name: item,
+				price: price,
+				seller: interaction.member.user.tag,
+				sellerID: interaction.member.user.id,
+			})
+			.catch((e) => {
+				if (e.name === "SequelizeUniqueConstraintError") {
+					return interaction.editReply("This object already exists! Please choose another name.");
+				}
+			});
+
+		interaction.editReply(
+			`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${(createdItem as Sequelize.Model).get("id")}** <:yes:835565213498736650>`
+		);
+	},
+};

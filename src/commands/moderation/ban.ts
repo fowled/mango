@@ -1,6 +1,7 @@
-import * as Discord from "discord.js";
-import * as LogChecker from "../../utils/LogChecker";
-import * as Logger from "../../utils/Logger";
+import Discord from "discord.js";
+
+import { insertLog } from "../../utils/LogChecker";
+import { error } from "../../utils/Logger";
 
 // Moderation command
 
@@ -22,58 +23,67 @@ module.exports = {
 			name: "user",
 			type: "USER",
 			description: "The user you want to ban",
-			required: true
+			required: true,
 		},
 
 		{
 			name: "reason",
 			type: "STRING",
 			description: "The reason of the ban",
-			required: false
-		}
+			required: false,
+		},
 	],
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
-		const memberBan: Discord.GuildMember = await interaction.guild.members.fetch(args[0]);
-		const reason: string = args[1] ? args[1] : "no reason provided";
+		const memberBan = await interaction.guild.members.fetch(args[0]);
+		const reason = args[1] ? args[1] : "no reason provided";
 
 		if (memberBan) {
-			const banMessageAuthor: string = interaction.member.user.tag;
-			const banGuildName: string = interaction.member.guild.name;
-			const guildIcon: string = interaction.member.guild.iconURL();
+			const banMessageAuthor = interaction.member.user.tag;
+			const banGuildName = interaction.member.guild.name;
+			const guildIcon = interaction.member.guild.iconURL();
 			const bannedUserId = memberBan.user.id;
-			const date: Date = new Date();
+			const date = new Date();
 
-			const banMessageUser: Discord.MessageEmbed = new Discord.MessageEmbed()
-				.setTitle(`Banned!`)
+			const banMessageUser = new Discord.MessageEmbed()
+				.setTitle("Banned!")
 				.setDescription(`You have been banned from the server **${banGuildName}** by *${banMessageAuthor}* on __${date.toLocaleString()}__! Reason: *"${reason}"*`)
 				.setTimestamp()
 				.setThumbnail(guildIcon)
 				.setColor("#4292f4")
 				.setFooter(Client.user.username, Client.user.avatarURL());
+
 			Client.users.cache.get(bannedUserId).send({ embeds: [banMessageUser] });
 
 			setTimeout(() => {
-				memberBan.ban({
-					reason,
-				}).then(async () => {
-					const banMessageGuild: Discord.MessageEmbed = new Discord.MessageEmbed()
-						.setTitle(`User **${memberBan.user.username}** is now banned!`)
-						.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
-						.setDescription(`<:yes:835565213498736650> **${memberBan.user.tag}** is now banned (*${reason}*)!`)
-						.setTimestamp()
-						.setColor("#4292f4")
-						.setFooter(Client.user.username, Client.user.avatarURL());
-					interaction.editReply({ embeds: [banMessageGuild] });
+				memberBan
+					.ban({
+						reason,
+					})
+					.then(async () => {
+						const banMessageGuild = new Discord.MessageEmbed()
+							.setTitle(`User **${memberBan.user.username}** is now banned!`)
+							.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+							.setDescription(`<:yes:835565213498736650> **${memberBan.user.tag}** is now banned (*${reason}*)!`)
+							.setTimestamp()
+							.setColor("#4292f4")
+							.setFooter(Client.user.username, Client.user.avatarURL());
 
-					LogChecker.insertLog(Client, interaction.guild.id, interaction.member.user, `**${memberBan.user.tag}** has been __banned__ by ${interaction.member.user.tag} for: *${reason}* \nDuration of the punishment: infinite`);
+						interaction.editReply({ embeds: [banMessageGuild] });
 
-				}).catch(async (err: any) => {
-					Logger.error(err);
-				});
+						insertLog(
+							Client,
+							interaction.guild.id,
+							interaction.member.user,
+							`**${memberBan.user.tag}** has been __banned__ by ${interaction.member.user.tag} for: *${reason}* \nDuration of the punishment: infinite`
+						);
+					})
+					.catch(async (err: Error) => {
+						error(err);
+					});
 			}, 500);
 		} else {
 			interaction.editReply("Whodb, please select a member. Ban hammer is waiting!");
 		}
-	}
-}
+	},
+};

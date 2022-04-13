@@ -1,5 +1,5 @@
-import * as Discord from "discord.js";
-import { XMLHttpRequest } from "xmlhttprequest";
+import Discord from "discord.js";
+import fetch from "node-fetch";
 
 // Informative command
 
@@ -11,76 +11,62 @@ import { XMLHttpRequest } from "xmlhttprequest";
  * @param {any} options some options
  */
 module.exports = {
-    name: "coronavirus",
-    description: "Get COVID-19 disease's latest information",
-    category: "info",
-    options: [
-        {
-            name: "country",
-            type: "STRING",
-            description: "The country you'd like to get information from",
-            required: false
-        }
-    ],
+	name: "coronavirus",
+	description: "Get COVID-19 disease's latest information",
+	category: "info",
+	options: [
+		{
+			name: "country",
+			type: "STRING",
+			description: "The country you'd like to get information from",
+			required: false,
+		},
+	],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
-        if (!args[0]) {
-            const xhttp: XMLHttpRequest = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    const parsedRequest = JSON.parse(this.responseText);
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+		if (!args[0]) {
+			const req = await fetch("https://corona.lmao.ninja/v2/all").then((req) => req.json());
 
-                    const MessageEmbed = new Discord.MessageEmbed()
-                        .setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
-                        .setTitle("Coronavirus stats :chart_with_upwards_trend:")
-                        .setDescription("Find here COVID-19 related information")
-                        .setColor("#08ABF9")
-                        .setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f637.png")
-                        .addField("Cases", parsedRequest.cases.toString())
-                        .addField("Today cases", parsedRequest.todayCases.toString())
-                        .addField("Deaths", parsedRequest.deaths.toString())
-                        .addField("Today deaths", parsedRequest.todayDeaths.toString())
-                        .addField("Recovered", parsedRequest.recovered.toString())
-                        .addField("Critical", parsedRequest.critical.toString())
-                        .addField("Affected countries", parsedRequest.affectedCountries.toString())
-                        .setFooter(Client.user.username, Client.user.avatarURL())
-                        .setTimestamp()
+			const MessageEmbed = new Discord.MessageEmbed()
+				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL()) // global
+				.setTitle("Coronavirus stats :chart_with_upwards_trend:")
+				.setDescription("Find here COVID-19 related information")
+				.setColor("#08ABF9")
+				.setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f637.png")
+				.addField("Cases", req.cases.toString())
+				.addField("Today cases", req.todayCases.toString())
+				.addField("Deaths", req.deaths.toString())
+				.addField("Today deaths", req.todayDeaths.toString())
+				.addField("Recovered", req.recovered.toString())
+				.addField("Critical", req.critical.toString())
+				.addField("Affected countries", req.affectedCountries.toString())
+				.setFooter(Client.user.username, Client.user.avatarURL())
+				.setTimestamp();
 
-                    interaction.editReply({ embeds: [MessageEmbed] });
-                }
-            }
+			interaction.editReply({ embeds: [MessageEmbed] });
+		} else {
+			const req = await fetch(`https://corona.lmao.ninja/v2/countries/${args[0]}`).then((res) => res.json());
 
-            xhttp.open("GET", "https://corona.lmao.ninja/v2/all", true);
-            xhttp.send();
-        } else {
-            const xhttp: XMLHttpRequest = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    const parsedRequest = JSON.parse(this.responseText);
+			if (req.message) {
+				return interaction.editReply("<:no:835565213322575963> Couldn't find this country!");
+			}
 
-                    const MessageEmbed = new Discord.MessageEmbed()
-                        .setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
-                        .setTitle("Coronavirus stats :chart_with_upwards_trend:")
-                        .setDescription("Find here COVID-19 related information")
-                        .setThumbnail(parsedRequest.countryInfo.flag.toString())
-                        .setColor("#08ABF9")
-                        .addField("Cases", parsedRequest.cases.toString())
-                        .addField("Today cases", parsedRequest.todayCases.toString())
-                        .addField("Deaths", parsedRequest.deaths.toString())
-                        .addField("Today deaths", parsedRequest.todayDeaths.toString())
-                        .addField("Recovered", parsedRequest.recovered.toString())
-                        .addField("Critical", parsedRequest.critical.toString())
-                        .setFooter(Client.user.username, Client.user.avatarURL())
-                        .setTimestamp()
+			const MessageEmbed = new Discord.MessageEmbed()
+				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL()) // country
+				.setTitle("Coronavirus stats :chart_with_upwards_trend:")
+				.setDescription("Find here COVID-19 related information")
+				.setThumbnail(req.countryInfo.flag.toString())
+				.setColor("#08ABF9")
+				.addField("Cases", req.cases.toString())
+				.addField("Today cases", req.todayCases.toString())
+				.addField("Deaths", req.deaths.toString())
+				.addField("Today deaths", req.todayDeaths.toString())
+				.addField("Recovered", req.recovered.toString())
+				.addField("Critical", req.critical.toString())
+				.setFooter(Client.user.username, Client.user.avatarURL())
+				.setTimestamp();
 
-                    interaction.editReply({ embeds: [MessageEmbed] });
-                } else if (this.readyState == 4 && this.status == 404) {
-                    interaction.editReply("I didn't find that country. <:no:835565213322575963>");
-                }
-            }
-
-            xhttp.open("GET", `https://corona.lmao.ninja/v2/countries/${args[0]}`, true);
-            xhttp.send();
-        }
-    }
-}
+			interaction.editReply({ embeds: [MessageEmbed] });
+		}
+	},
+};

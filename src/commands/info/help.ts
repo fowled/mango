@@ -1,4 +1,5 @@
-import * as Discord from "discord.js";
+import Discord from "discord.js";
+
 import { clientInteractions } from "../../index";
 
 // Help command
@@ -25,13 +26,20 @@ module.exports = {
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
 		if (args[0]) {
-			const command: any = clientInteractions.get(args[0]);
+			const command = clientInteractions.get(args[0]);
 
 			if (!command) {
 				return interaction.editReply("<:no:835565213322575963> I couldn't find the command you requested. Please check the correct command name with `/help`");
 			}
 
-			const infoEmbed: Discord.MessageEmbed = new Discord.MessageEmbed().setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL()).setDescription(`Information about the **${command.name}** command`).addField("Category", command.category, false).addField("Description", command.description, false).setColor("RANDOM").setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
+			const infoEmbed = new Discord.MessageEmbed()
+				.setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
+				.setDescription(`Information about the **${command.name}** command`)
+				.addField("Category", command.category, false)
+				.addField("Description", command.description, false)
+				.setColor("RANDOM")
+				.setTimestamp()
+				.setFooter(Client.user.username, Client.user.displayAvatarURL());
 
 			const options: string[] = [],
 				usage: string[] = [];
@@ -48,10 +56,28 @@ module.exports = {
 
 			interaction.editReply({ embeds: [infoEmbed] });
 		} else {
-			const helpinteraction: Discord.MessageEmbed = new Discord.MessageEmbed()
+			const helpinteraction = new Discord.MessageEmbed()
 				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
 				.setColor("RANDOM")
-				.setDescription(`» Prefix: \`/\` \n» To get help on a specific command: \`/help [command]\` \n\n**:tools: Moderation** \n${GetCategoryCmds("moderation")} \n\n**:partying_face: Fun** \n${GetCategoryCmds("fun")} \n\n**:information_source: Information** \n${GetCategoryCmds("info")} \n\n**:computer: APIs** \n${GetCategoryCmds("api")} \n\n**:video_game: Games** \n${GetCategoryCmds("game")} \n\n» Number of commands: \`${clientInteractions.size}\` \n» Mango's developer: \`${(await Client.users.fetch("352158391038377984")).tag}\``)
+				.setDescription(
+					`» Prefix: \`/\`
+					» To get help on a specific command: \`/help [command]\` 
+					
+					**:tools: Moderation** 
+					${GetCategoryCmds("moderation")}
+
+					**:partying_face: Fun** 
+					${GetCategoryCmds("fun")}
+
+					**:information_source: Information** 
+					${GetCategoryCmds("info")}
+
+					**:video_game: Games** 
+					${GetCategoryCmds("game")}
+					
+					» Number of commands: \`${clientInteractions.size}\`
+					» Mango's developer: \`${(await Client.users.fetch("352158391038377984")).tag}\``
+				)
 				.setThumbnail(Client.user.avatarURL())
 				.setFooter(Client.user.username, Client.user.avatarURL())
 				.setTimestamp();
@@ -61,7 +87,7 @@ module.exports = {
 
 		function GetCategoryCmds(category: string) {
 			return clientInteractions
-				.filter((cmd: any) => cmd.category === category)
+				.filter((cmd) => cmd.category === category)
 				.map((cmd) => `\`${cmd.name}\``)
 				.join(", ");
 		}

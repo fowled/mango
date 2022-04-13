@@ -1,9 +1,10 @@
-import * as Discord from "discord.js";
-import * as LogChecker from "../utils/LogChecker";
+import Discord from "discord.js";
+
+import { insertLog } from "../utils/LogChecker";
 
 module.exports = {
-    name: "messageDelete",
-    execute(message: Discord.Message, Client: Discord.Client) {
-        LogChecker.insertLog(Client, message.guild.id, Client.user, `A message has been deleted - Content: \`\`\`${message.content}\`\`\``);
-    }
+	name: "messageDelete",
+	execute(Client: Discord.Client, message: Discord.Message) {
+		insertLog(Client, message.guild.id, Client.user, `A message has been deleted - Content: \`\`\`${message.content}\`\`\``);
+	},
 };

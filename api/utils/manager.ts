@@ -15,8 +15,8 @@ export async function hasTokenExpired(req: Request, res: Response, next: NextFun
 }
 
 export async function refreshToken(req: Request) {
-	const fetchToken: any = await fetchNewToken(req.session.refresh_token);
-	const nextWeekDate: Date = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+	const fetchToken = await fetchNewToken(req.session.refresh_token);
+	const nextWeekDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
 
 	Object.assign(req.session, {
 		token: fetchToken.access_token,

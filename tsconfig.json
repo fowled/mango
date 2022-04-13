@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "esnext",
-		"module": "commonjs",
+		"target": "ES2015",
+		"module": "CommonJS",
 		"lib": ["es2015", "es2016", "es2017", "esnext"],
 		"allowJs": false,
 		"checkJs": false,
@@ -12,11 +12,15 @@
 		// "rootDir": "./src",
 		"removeComments": false,
 		"strict": false,
-		"moduleResolution": "node",
+		"moduleResolution": "Node",
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"typeRoots": ["./node_modules/@types"]
 	},
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules"],
+	"ts-node": {
+		"transpileOnly": true,
+		"transpiler": "ts-node/transpilers/swc"
+	}
 }

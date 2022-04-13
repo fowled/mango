@@ -1,5 +1,5 @@
-import * as Discord from "discord.js";
-import * as Sequelize from "sequelize";
+import Discord from "discord.js";
+import Sequelize from "sequelize";
 
 import { timestamp, timestampYear } from "../../utils/Timestamp";
 
@@ -19,14 +19,14 @@ module.exports = {
 	botPermissions: ["ADD_REACTIONS"],
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], db: Sequelize.Sequelize) {
-		const birthdaysmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("birthdays");
+		const birthdaysmodel = db.model("birthdays");
 		const birthdays = await birthdaysmodel.findAll({ order: [["birthdayTimestamp", "ASC"]], where: { idOfGuild: interaction.guild.id }, raw: true });
 
 		if (!birthdays[0]) {
 			return interaction.editReply("It seems like the birthday list is empty! Start by `/birthday add`ing one.");
 		}
 
-		let page: number = 0;
+		let page = 0;
 
 		getPageContent(page);
 
@@ -37,7 +37,7 @@ module.exports = {
 		}
 
 		function createReactionCollector(m: Discord.Message) {
-			const collector: Discord.InteractionCollector<Discord.MessageComponentInteraction> = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
+			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
 
 			collector.on("collect", (i) => {
 				if (i.user.id !== interaction.member.user.id) return;
@@ -63,7 +63,7 @@ module.exports = {
 			for (let index = 0; index < itemsContent.length; index++) {
 				const date = itemsContent[index]["birthdayTimestamp"];
 				const user = itemsContent[index]["idOfUser"];
-				let fetchUser = await Client.users.fetch(user);
+				const fetchUser = await Client.users.fetch(user);
 
 				pageContent.push(`${index + (page * 10 + 1)}. ${fetchUser} • ${timestamp(date)} (${timestampYear(date)})`);
 			}
@@ -72,7 +72,12 @@ module.exports = {
 		}
 
 		async function sendContent(content: string, arg?: Discord.MessageComponentInteraction) {
-			const inventoryEmbed = new Discord.MessageEmbed().setDescription(content).setColor("#33beff").setTitle(`🎁 Birthdays list`).setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
+			const inventoryEmbed = new Discord.MessageEmbed()
+				.setDescription(content)
+				.setColor("#33beff")
+				.setTitle("🎁 Birthdays list")
+				.setTimestamp()
+				.setFooter(Client.user.username, Client.user.displayAvatarURL());
 
 			const button = new Discord.MessageActionRow().addComponents(
 				new Discord.MessageButton()
@@ -96,7 +101,7 @@ module.exports = {
 		}
 
 		function buttonChecker() {
-			const index: number = page + 1;
+			const index = page + 1;
 
 			if (birthdays.slice(index * 10, index * 10 + 10).length === 0) {
 				return true;

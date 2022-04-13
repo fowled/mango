@@ -1,5 +1,5 @@
-import * as Discord from "discord.js";
-import * as Sequelize from "sequelize";
+import Discord from "discord.js";
+import Sequelize from "sequelize";
 
 // Fun command
 
@@ -11,102 +11,97 @@ import * as Sequelize from "sequelize";
  * @param {any} options some options
  */
 module.exports = {
-    name: "levelboard",
-    description: "Replies with the server XP level leaderboard",
-    category: "fun",
-    botPermissions: ["ADD_REACTIONS"],
+	name: "levelboard",
+	description: "Replies with the server XP level leaderboard",
+	category: "fun",
+	botPermissions: ["ADD_REACTIONS"],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
-        const Xp: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("ranks");
-        const ranks = await Xp.findAll({ order: [["xp", "DESC"]], where: { idOfGuild: interaction.guild.id }, raw: true });
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], db: Sequelize.Sequelize) {
+		const Xp = db.model("ranks");
+		const ranks = await Xp.findAll({ order: [["xp", "DESC"]], where: { idOfGuild: interaction.guild.id }, raw: true });
 
-        if (!ranks[0]) {
-            return interaction.editReply("It seems that the leaderboard is currently empty.");
-        }
+		if (!ranks[0]) {
+			return interaction.editReply("It seems that the leaderboard is currently empty.");
+		}
 
-        let page: number = 0;
+		let page = 0;
 
-        getPageContent(page);
+		getPageContent(page);
 
-        async function fetchInteraction() {
-            interaction.fetchReply().then((msg: Discord.Message) => {
-                createReactionCollector(msg);
-            });
-        }
+		async function fetchInteraction() {
+			interaction.fetchReply().then((msg: Discord.Message) => {
+				createReactionCollector(msg);
+			});
+		}
 
-        async function createReactionCollector(m: Discord.Message) {
-            const collector: Discord.InteractionCollector<Discord.MessageComponentInteraction> = m.createMessageComponentCollector({ componentType: 'BUTTON', max: 1 });
+		async function createReactionCollector(m: Discord.Message) {
+			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
 
-            collector.on("collect", i => {
-                if (i.user.id !== interaction.member.user.id) return;
+			collector.on("collect", (i) => {
+				if (i.user.id !== interaction.member.user.id) return;
 
-                if (i.customId === "back") {
-                    page--;
-                } else if (i.customId === "next") {
-                    page++;
-                }
+				if (i.customId === "back") {
+					page--;
+				} else if (i.customId === "next") {
+					page++;
+				}
 
-                getPageContent(page, i);
-            });
+				getPageContent(page, i);
+			});
 
-            collector.on("end", () => {
-                return;
-            });
-        }
+			collector.on("end", () => {
+				return;
+			});
+		}
 
-        async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
-            const itemsContent = ranks.slice(page * 10, page * 10 + 10);
-            const pageContent: string[] = [];
+		async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
+			const itemsContent = ranks.slice(page * 10, page * 10 + 10);
+			const pageContent: string[] = [];
 
-            for (let i = 0; i < itemsContent.length; i++) {
-                const xp = itemsContent[i]["xp"];
-                const id = itemsContent[i]["idOfUser"];
-                const user: Discord.User = await Client.users.fetch(id);
+			for (let i = 0; i < itemsContent.length; i++) {
+				const xp = itemsContent[i]["xp"];
+				const id = itemsContent[i]["idOfUser"];
+				const user = await Client.users.fetch(id);
 
-                pageContent.push(`${i + (page * 10 + 1)}. **${user}** / *${xp}* xp → level \`${Math.floor(xp / 50)}\``);
-            }
+				pageContent.push(`${i + (page * 10 + 1)}. **${user}** / *${xp}* xp → level \`${Math.floor(xp / 50)}\``);
+			}
 
-            const levelEmbed = new Discord.MessageEmbed()
-                .setDescription(pageContent.join("\n"))
-                .setColor("#33beff")
-                .setTitle(`🎖 Levelboard`)
-                .setTimestamp()
-                .setFooter(Client.user.username, Client.user.displayAvatarURL())
+			const levelEmbed = new Discord.MessageEmbed()
+				.setDescription(pageContent.join("\n"))
+				.setColor("#33beff")
+				.setTitle("🎖 Levelboard")
+				.setTimestamp()
+				.setFooter(Client.user.username, Client.user.displayAvatarURL());
 
-            const button = new Discord.MessageActionRow()
-                .addComponents(
-                    new Discord.MessageButton()
-                        .setCustomId("back")
-                        .setLabel('◀')
-                        .setStyle('PRIMARY')
-                        .setDisabled(page === 0 ? true : false),
+			const button = new Discord.MessageActionRow().addComponents(
+				new Discord.MessageButton()
+					.setCustomId("back")
+					.setLabel("◀")
+					.setStyle("PRIMARY")
+					.setDisabled(page === 0 ? true : false),
 
-                    new Discord.MessageButton()
-                        .setCustomId("next")
-                        .setLabel('▶')
-                        .setStyle('PRIMARY')
-                        .setDisabled(buttonChecker())
-                );
+				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker())
+			);
 
-            if (!arg) {
-                interaction.editReply({ embeds: [levelEmbed], components: [button] }).then(async () => {
-                    fetchInteraction();
-                });
-            } else {
-                arg.update({ embeds: [levelEmbed], components: [button] }).then(async () => {
-                    fetchInteraction();
-                });
-            }
-        }
+			if (!arg) {
+				interaction.editReply({ embeds: [levelEmbed], components: [button] }).then(async () => {
+					fetchInteraction();
+				});
+			} else {
+				arg.update({ embeds: [levelEmbed], components: [button] }).then(async () => {
+					fetchInteraction();
+				});
+			}
+		}
 
-        function buttonChecker() {
-            const index: number = page + 1;
+		function buttonChecker() {
+			const index = page + 1;
 
-            if (ranks.slice(index * 10, index * 10 + 10).length === 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-}
+			if (ranks.slice(index * 10, index * 10 + 10).length === 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	},
+};

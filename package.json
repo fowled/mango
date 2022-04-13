@@ -4,8 +4,10 @@
 	"description": "a useful discord bot",
 	"packageManager": "yarn@3.2.0",
 	"main": "src/index.ts",
+	"type": "commonjs",
 	"scripts": {
-		"start": "yarn run nodemon src/index.ts",
+		"dev": "yarn run nodemon src/index.ts",
+		"start": "yarn run ts-node src/index.ts",
 		"pm2": "pm2 start mango.sh",
 		"test": "tsc"
 	},
@@ -39,7 +41,8 @@
 		"dotenv": "^10.0.0",
 		"express": "^4.17.3",
 		"express-session": "^1.17.2",
-		"hypixel-api-reborn": "^9.0.3",
+		"fast-glob": "^3.2.11",
+		"hypixel-api-reborn": "latest",
 		"node-schedule": "^2.1.0",
 		"nodemon": "^2.0.15",
 		"prettier": "^2.6.2",
@@ -57,10 +60,12 @@
 		"url": "git+https://github.com/mazzlabs/mango.git"
 	},
 	"devDependencies": {
+		"@swc/cli": "^0.1.57",
+		"@swc/core": "^1.2.165",
 		"@types/cors": "^2.8.12",
-		"@typescript-eslint/eslint-plugin": "^4.31.0",
-		"@typescript-eslint/parser": "^4.31.0",
+		"@typescript-eslint/eslint-plugin": "^5.18.0",
+		"@typescript-eslint/parser": "^5.18.0",
 		"eslint": "^8.12.0",
-		"typescript": "^4.6.3"
+		"typescript": "next"
 	}
 }

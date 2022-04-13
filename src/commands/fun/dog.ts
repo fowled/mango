@@ -1,5 +1,5 @@
-import * as Discord from "discord.js";
-import { XMLHttpRequest } from "xmlhttprequest";
+import Discord from "discord.js";
+import fetch from "node-fetch";
 
 // Fun command
 
@@ -11,43 +11,29 @@ import { XMLHttpRequest } from "xmlhttprequest";
  * @param {any} options some options
  */
 module.exports = {
-    name: "dog",
-    description: "Replies with a picture of a dog",
-    category: "fun",
-    botPermissions: ["ATTACH_FILES"],
+	name: "dog",
+	description: "Replies with a picture of a dog",
+	category: "fun",
+	botPermissions: ["ATTACH_FILES"],
 
-    execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
-        const xhttp = new XMLHttpRequest();
-        const emojiList: string[] = [":confused:", ":confounded:", ":disappointed_relieved:", ":frowning:"];
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+		const req = await fetch("https://api.thedogapi.com/v1/images/search").then((res) => res.json());
+		const catpic = new Discord.MessageAttachment(req[0].url);
 
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                const parsedRequest = JSON.parse(xhttp.responseText);
-                const dogPicture = new Discord.MessageAttachment(parsedRequest[0].url);
+		if (req[0].breeds.length !== 0) {
+			const embed = new Discord.MessageEmbed()
+				.setAuthor(interaction.member.user.tag, interaction.member.user.avatarURL())
+				.setColor("#0FB1FB")
+				.setDescription("Here is some info about your dog.")
+				.addField("Breed", req[0].breeds[0].name, true)
+				.addField("Life span", req[0].breeds[0].life_span, true)
+				.addField("Temperament", req[0].breeds[0].temperament)
+				.setTimestamp()
+				.setFooter(Client.user.username, Client.user.avatarURL());
 
-                const embed = new Discord.MessageEmbed()
-                    .setAuthor(interaction.member.user.tag, interaction.member.user.avatarURL())
-                    .setColor("#0FB1FB")
-                    .setDescription("Here is some info about your doggo.")
-                    .addField("Breed", getSafe(() => parsedRequest[0].breeds[0].name), true)
-                    .addField("Life span", getSafe(() => parsedRequest[0].breeds[0].life_span), true)
-                    .addField("Temperament", getSafe(() => parsedRequest[0].breeds[0].temperament))
-                    .setTimestamp()
-                    .setFooter(Client.user.username, Client.user.avatarURL());
+			return interaction.editReply({ embeds: [embed], files: [catpic] });
+		}
 
-                interaction.editReply({ embeds: [embed], files: [dogPicture] });
-            }
-        };
-
-        xhttp.open("GET", "https://api.thedogapi.com/v1/images/search", true);
-        xhttp.send();
-
-        function getSafe(fn: any) {
-            try {
-                return fn();
-            } catch (e) {
-                return `unspecified ${emojiList[Math.floor(Math.random() * emojiList.length)]}`;
-            }
-        }
-    }
-}
+		interaction.editReply({ files: [catpic] });
+	},
+};
