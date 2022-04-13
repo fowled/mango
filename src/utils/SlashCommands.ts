@@ -2,7 +2,7 @@ import Discord from "discord.js";
 import glob from "fast-glob";
 import path from "path";
 
-import { Command } from "../interfaces/command";
+import { Command } from "../interfaces/Command";
 
 export async function SlashCommands(client: Discord.Client) {
 	await client.application.commands.fetch().then((cmd) =>

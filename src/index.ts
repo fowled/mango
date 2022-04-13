@@ -10,7 +10,7 @@ import { log } from "./utils/Logger";
 import { logError } from "./utils/SendLog";
 import { timestampYear } from "./utils/Timestamp";
 
-import { Command } from "./interfaces/command";
+import { Command } from "./interfaces/Command";
 import { Event } from "./interfaces/Event";
 
 import { defineDbModels } from "./models/models";
