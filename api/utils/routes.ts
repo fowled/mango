@@ -28,13 +28,17 @@ export async function registerRoutes(app: Express, client: Client) {
 	});
 
 	app.get("/user", hasTokenExpired, async function (req: Request, res: Response) {
-		const user: {} = req.session.user;
+		// TODO: interface user
+
+		const user = req.session.user;
 
 		return res.send({ authed: req.session.token ? true : false, user });
 	});
 
 	app.get("/guilds", async function (req: Request, res: Response) {
-		const guilds: {} = req.session.guilds;
+		// TODO: interface guild
+
+		const guilds = req.session.guilds;
 
 		return res.send({ authed: req.session.token ? true : false, guilds });
 	});

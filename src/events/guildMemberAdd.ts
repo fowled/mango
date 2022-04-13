@@ -1,24 +1,26 @@
-import * as Discord from "discord.js";
-import * as Sequelize from "sequelize";
+import Discord from "discord.js";
+import canvaslib from "canvas";
+
 import { db } from "../index";
-import * as canvaslib from "canvas";
-import * as Logger from "../utils/Logger";
+
+import { error } from "../utils/Logger";
 
 module.exports = {
 	name: "guildMemberAdd",
-	async execute(member: Discord.GuildMember, Client: Discord.Client) {
-		const welcomechannelmodel: Sequelize.ModelStatic<Sequelize.Model> = db.model("welChannels");
-		const welcomechannel: Sequelize.Model = await welcomechannelmodel.findOne({ where: { idOfGuild: member.guild.id } });
+	async execute(Client: Discord.Client, member: Discord.GuildMember) {
+		const welcomechannelmodel = db.model("welChannels");
+		const welcomechannel = await welcomechannelmodel.findOne({ where: { idOfGuild: member.guild.id } });
 
 		if (!welcomechannel) return;
 
-		const channel: Discord.TextChannel = (await Client.channels.fetch(welcomechannel.get("idOfChannel") as unknown as string)) as Discord.TextChannel;
-		const fetchNumberOfMembers: number = member.guild.memberCount;
+		const channel = (await Client.channels.fetch(welcomechannel.get("idOfChannel") as string)) as Discord.TextChannel;
+		const fetchNumberOfMembers = member.guild.memberCount;
 
 		const canvas = canvaslib.createCanvas(700, 250);
 		const ctx = canvas.getContext("2d");
 
 		const background = await canvaslib.loadImage("./assets/images/background.png");
+
 		ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
 		ctx.font = "35px Caviar Dreams";
@@ -35,16 +37,21 @@ module.exports = {
 		ctx.clip();
 
 		const avatar = await canvaslib.loadImage(member.user.displayAvatarURL({ format: "jpg" }));
+
 		ctx.drawImage(avatar, 570, 15, 120, 120);
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), "welcome.png");
 
-		const embed = new Discord.MessageEmbed().setAuthor(member.user.tag, member.user.displayAvatarURL()).setDescription(`:wave: Welcome ${member} to **${member.guild.name}**!`).setImage("attachment://welcome.png").setColor("#808080");
+		const embed = new Discord.MessageEmbed()
+			.setAuthor(member.user.tag, member.user.displayAvatarURL())
+			.setDescription(`:wave: Welcome ${member} to **${member.guild.name}**!`)
+			.setImage("attachment://welcome.png")
+			.setColor("#808080");
 
 		try {
 			channel.send({ embeds: [embed], files: [attachment] });
 		} catch (err) {
-			Logger.error("Didn't find the channel to post attachment [guildMemberAdd]");
+			error("Didn't find the channel to post attachment [guildMemberAdd]");
 		}
 	},
 };

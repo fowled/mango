@@ -1,7 +1,8 @@
-import * as Sequelize from "sequelize";
+import Sequelize from "sequelize";
+
 import { db } from "../index";
 
-export async function defModels() {
+export async function defineDbModels() {
 	db.define("marketItems", {
 		name: {
 			type: Sequelize.STRING,
@@ -72,4 +73,6 @@ export async function defModels() {
 		expires: Sequelize.DATE,
 		data: Sequelize.JSON,
 	});
+
+	await db.sync();
 }

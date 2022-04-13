@@ -1,4 +1,4 @@
-import * as Discord from "discord.js";
+import Discord from "discord.js";
 
 // Ping command
 
@@ -17,7 +17,7 @@ module.exports = {
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
 		await interaction.editReply("Ping?");
 
-		const pong: Discord.MessageEmbed = new Discord.MessageEmbed()
+		const pong = new Discord.MessageEmbed()
 			.setTitle(`Latency information for ${interaction.member.user.tag}`)
 			.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
 			.setColor("RANDOM")
@@ -27,5 +27,5 @@ module.exports = {
 			.setTimestamp();
 
 		interaction.editReply({ embeds: [pong] });
-	}
-}
+	},
+};

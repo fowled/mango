@@ -1,9 +1,8 @@
-import * as Logger from "./../utils/Logger";
+import { error } from "./../utils/Logger";
 
 module.exports = {
 	name: "error",
-	execute(error: Error) {
-		Logger.error(error.message);
-	}
+	execute(err: Error) {
+		error(err.message);
+	},
 };
-

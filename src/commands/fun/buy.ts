@@ -1,5 +1,5 @@
-import * as Sequelize from "sequelize";
-import * as Discord from "discord.js";
+import Sequelize from "sequelize";
+import Discord from "discord.js";
 
 // Fun command
 
@@ -11,62 +11,62 @@ import * as Discord from "discord.js";
  * @param {any} options some options
  */
 module.exports = {
-    name: "buy",
-    description: "Buy something of the market",
-    category: "fun",
-    options: [
-        {
-            name: "id",
-            type: "STRING",
-            description: "The ID of the item you want to buy",
-            required: true
-        }
-    ],
+	name: "buy",
+	description: "Buy something of the market",
+	category: "fun",
+	options: [
+		{
+			name: "id",
+			type: "STRING",
+			description: "The ID of the item you want to buy",
+			required: true,
+		},
+	],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
-        const ID = args[0];
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
+		const ID = args[0];
 
-        const marketmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("marketItems");
-        const marketItem = await marketmodel.findOne({ where: { id: ID } });
+		const marketmodel = db.model("marketItems");
+		const marketItem = await marketmodel.findOne({ where: { id: ID } });
 
-        if (!marketItem) {
-            return interaction.editReply(`I'm sorry, but there is no item matching ID **${args[0]}**. To consult the market, do \`/market\` :wink:`);
-        }
+		if (!marketItem) {
+			return interaction.editReply(`I'm sorry, but there is no item matching ID **${args[0]}**. To consult the market, do \`/market\` :wink:`);
+		}
 
-        const itemName = marketItem.get("name");
-        const itemPrice = marketItem.get("price");
-        const itemSellerID = marketItem.get("sellerID");
+		const itemName = marketItem.get("name");
+		const itemPrice = marketItem.get("price");
+		const itemSellerID = marketItem.get("sellerID");
 
-        const moneymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("moneyAcc");
-        const authorMoney = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
+		const moneymodel = db.model("moneyAcc");
+		const authorMoney = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
 
-        if (!authorMoney) {
-            return interaction.editReply("You don't have any money! Do `/money` to start using the market.");
-        }
+		if (!authorMoney) {
+			return interaction.editReply("You don't have any money! Do `/money` to start using the market.");
+		}
 
-        const getAuthorMoney = authorMoney.get("money");
-        const sellerMoney = await moneymodel.findOne({ where: { idOfUser: itemSellerID } });
+		const getAuthorMoney = authorMoney.get("money");
+		const sellerMoney = await moneymodel.findOne({ where: { idOfUser: itemSellerID } });
 
-        if (getAuthorMoney < itemPrice) {
-            return interaction.editReply(`You must have \`${(itemPrice as unknown as number) - (getAuthorMoney as unknown as number)}\` more dollars to get this item. :frowning:`);
-        } else if (interaction.member.user.id == itemSellerID) {
-            return interaction.editReply("You can't buy your own item...");
-        }
+		if (getAuthorMoney < itemPrice) {
+			return interaction.editReply(`You must have \`${(itemPrice as unknown as number) - (getAuthorMoney as unknown as number)}\` more dollars to get this item. :frowning:`);
+		} else if (interaction.member.user.id === itemSellerID) {
+			return interaction.editReply("You can't buy your own item...");
+		}
 
-        const inventorymodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("inventoryItems");
+		const inventorymodel = db.model("inventoryItems");
 
-        inventorymodel.create({
-            name: itemName,
-            price: itemPrice,
-            sellerID: itemSellerID,
-            authorID: interaction.member.user.id
-        });
+		inventorymodel.create({
+			name: itemName,
+			price: itemPrice,
+			sellerID: itemSellerID,
+			authorID: interaction.member.user.id,
+		});
 
-        authorMoney.decrement(['money'], { by: itemPrice as unknown as number });
-        sellerMoney.increment(['money'], { by: itemPrice as unknown as number });
+		authorMoney.decrement(["money"], { by: itemPrice as number });
+		sellerMoney.increment(["money"], { by: itemPrice as number });
 
-        interaction.editReply(`Item **${itemName}** successfully bought for *${itemPrice}$*.`);
+		interaction.editReply(`Item **${itemName}** successfully bought for *${itemPrice}$*.`);
 
-        marketItem.destroy();
-    }
+		marketItem.destroy();
+	},
 };

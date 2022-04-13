@@ -1,5 +1,5 @@
-import * as Discord from "discord.js";
-import * as Sequelize from "sequelize";
+import Discord from "discord.js";
+import Sequelize from "sequelize";
 
 // Fun command
 
@@ -11,39 +11,39 @@ import * as Sequelize from "sequelize";
  * @param {any} options some options
  */
 module.exports = {
-    name: "setlogchannel",
-    description: "Sets the guild's log channel for Mango",
-    category: "moderation",
-    memberPermissions: ["MANAGE_CHANNELS"],
-    options: [
-        {
-            name: "channel",
-            type: "CHANNEL",
-            description: "The channel you want to set logs to",
-            required: false
-        }
-    ],
+	name: "setlogchannel",
+	description: "Sets the guild's log channel for Mango",
+	category: "moderation",
+	memberPermissions: ["MANAGE_CHANNELS"],
+	options: [
+		{
+			name: "channel",
+			type: "CHANNEL",
+			description: "The channel you want to set logs to",
+			required: false,
+		},
+	],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
-        const logChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
-        const fetchChannel = await Client.channels.fetch(logChannelID) as Discord.TextChannel;
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
+		const logChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
+		const fetchChannel = (await Client.channels.fetch(logChannelID)) as Discord.TextChannel;
 
-        if (fetchChannel.type !== "GUILD_TEXT") {
-            return interaction.editReply(`The channel you specified isn't a text channel. Please retry the command.`);
-        }
+		if (fetchChannel.type !== "GUILD_TEXT") {
+			return interaction.editReply("The channel you specified isn't a text channel. Please retry the command.");
+		}
 
-        const logchannelmodel: Sequelize.ModelStatic<Sequelize.Model<any, any>> = db.model("logChannels");
-        const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: interaction.guild.id } });
+		const logchannelmodel = db.model("logChannels");
+		const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: interaction.guild.id } });
 
-        if (logchannel) {
-            logchannelmodel.update({ idOfChannel: logChannelID }, { where: { idOfGuild: interaction.guild.id } });
-        } else {
-            logchannelmodel.create({
-                idOfGuild: interaction.guild.id,
-                idOfChannel: logChannelID
-            });
-        }
+		if (logchannel) {
+			logchannelmodel.update({ idOfChannel: logChannelID }, { where: { idOfGuild: interaction.guild.id } });
+		} else {
+			logchannelmodel.create({
+				idOfGuild: interaction.guild.id,
+				idOfChannel: logChannelID,
+			});
+		}
 
-        return interaction.editReply(`<:yes:835565213498736650> Successfully updated the log channel to \`#${fetchChannel.name}\`!`);
-    }
-}
+		return interaction.editReply(`<:yes:835565213498736650> Successfully updated the log channel to \`#${fetchChannel.name}\`!`);
+	},
+};

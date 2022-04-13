@@ -63,9 +63,9 @@ export async function getGuilds(token: string, client: Client) {
 
 	if (userGuilds.message) return;
 
-	for (let guild of userGuilds) {
-		const permissionsBitfield: boolean = new BitField(guild.permissions).has("32");
-		const isBotInGuild: boolean = client.guilds.resolve(guild.id) != null;
+	for (const guild of userGuilds) {
+		const permissionsBitfield = new BitField(guild.permissions).has("32");
+		const isBotInGuild = client.guilds.resolve(guild.id) !== null;
 
 		guild.bot = isBotInGuild;
 
@@ -80,7 +80,7 @@ export async function getGuilds(token: string, client: Client) {
 }
 
 export async function getStats(client: Client) {
-	const retrieveUsers: number = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
+	const retrieveUsers = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
 
 	const stats = {
 		users: retrieveUsers,
@@ -93,7 +93,7 @@ export async function getStats(client: Client) {
 export async function manageGuild(guildId: string, client: Client) {
 	let guildInfo: Guild | string = client.guilds.resolve(guildId);
 
-	if (guildInfo == null) {
+	if (guildInfo === null) {
 		guildInfo = "Bot isn't in guild.";
 	}
 

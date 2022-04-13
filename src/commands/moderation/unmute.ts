@@ -1,5 +1,5 @@
-import * as Discord from "discord.js";
-import * as LogChecker from "../../utils/LogChecker";
+import Discord from "discord.js";
+import { insertLog } from "../../utils/LogChecker";
 
 // Moderation command
 
@@ -11,35 +11,37 @@ import * as LogChecker from "../../utils/LogChecker";
  * @param {any} options some options
  */
 module.exports = {
-    name: "unmute",
-    description: "Unmutes a user",
-    category: "moderation",
-    botPermissions: ["MANAGE_ROLES"],
-    memberPermissions: ["MANAGE_ROLES", "MANAGE_MESSAGES"],
-    options: [
-        {
-            name: "user",
-            type: "USER",
-            description: "The user I have to unmute",
-            required: true
-        }
-    ],
+	name: "unmute",
+	description: "Unmutes a user",
+	category: "moderation",
+	botPermissions: ["MANAGE_ROLES"],
+	memberPermissions: ["MANAGE_ROLES", "MANAGE_MESSAGES"],
+	options: [
+		{
+			name: "user",
+			type: "USER",
+			description: "The user I have to unmute",
+			required: true,
+		},
+	],
 
-    async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
-        const memberUnmute: Discord.GuildMember = await interaction.guild.members.fetch(args[0]);
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+		const memberUnmute = await interaction.guild.members.fetch(args[0]);
 
-        const muteRole: Discord.Role = interaction.guild.roles.cache.find(role => role.name === "muted");
+		const muteRole = interaction.guild.roles.cache.find((role) => role.name === "muted");
 
-        if (!muteRole || !memberUnmute.roles.cache.has(muteRole.id)) {
-            return interaction.editReply(`It looks like that **${memberUnmute.user.tag}** isn't muted :eyes:`);
-        }
+		if (!muteRole || !memberUnmute.roles.cache.has(muteRole.id)) {
+			return interaction.editReply(`It looks like that **${memberUnmute.user.tag}** isn't muted :eyes:`);
+		}
 
-        try {
-            memberUnmute.roles.remove(muteRole);
-            interaction.editReply(`**${memberUnmute.user.tag}** has been successfully unmuted. <:yes:835565213498736650>`);
-            LogChecker.insertLog(Client, interaction.guild.id, interaction.member.user, `**${memberUnmute.user.tag}** has been __unmuted__ by ${interaction.member.user.tag}.`);
-        } catch (error) {
-            interaction.editReply("Sorry, but I got an unexcepted error while unmuting this user. " + + `\`\`\`${error.message}\`\`\``);
-        }
-    }
-}
+		try {
+			memberUnmute.roles.remove(muteRole);
+
+			interaction.editReply(`**${memberUnmute.user.tag}** has been successfully unmuted. <:yes:835565213498736650>`);
+
+			insertLog(Client, interaction.guild.id, interaction.member.user, `**${memberUnmute.user.tag}** has been __unmuted__ by ${interaction.member.user.tag}.`);
+		} catch (error) {
+			interaction.editReply("Sorry, but I got an unexcepted error while unmuting this user. " + +`\`\`\`${error.message}\`\`\``);
+		}
+	},
+};
