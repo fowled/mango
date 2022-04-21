@@ -3294,7 +3294,7 @@ __metadata:
     scratchlib: ^0.4.0
     sequelize: ^6.19.0
     sqlite3: ^5.0.4
-    systeminformation: ^5.11.10
+    systeminformation: ^5.11.12
     ts-node: ^10.7.0
     ts-node-dev: ^1.1.8
     typescript: next
@@ -4678,12 +4678,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"systeminformation@npm:^5.11.10":
-  version: 5.11.10
-  resolution: "systeminformation@npm:5.11.10"
+"systeminformation@npm:^5.11.12":
+  version: 5.11.12
+  resolution: "systeminformation@npm:5.11.12"
   bin:
     systeminformation: lib/cli.js
-  checksum: 5ad53f7ac13f92845fd74f8436ee68800f21b799db9543e9f8d548d2fb7579fce455a3824f7418e565ff119196f24e319fc4c2b9fc135a2b452e797178b0d7f7
+  checksum: 7e88b1350f1d82a3fd905ec5a101753a7cc601d799a35b7a7d5c20c9c28969165995db6a4644c51c3febe19587c1d7a1a454253db4897902b6d35f001b5b2b3c
   conditions: (os=darwin | os=linux | os=win32 | os=freebsd | os=openbsd | os=netbsd | os=sunos | os=android)
   languageName: node
   linkType: hard
