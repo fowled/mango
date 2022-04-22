@@ -61,7 +61,7 @@
 	},
 	"devDependencies": {
 		"@swc/cli": "^0.1.57",
-		"@swc/core": "^1.2.168",
+		"@swc/core": "^1.2.170",
 		"@types/cors": "^2.8.12",
 		"@typescript-eslint/eslint-plugin": "^5.20.0",
 		"@typescript-eslint/parser": "^5.20.0",
