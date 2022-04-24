@@ -48,8 +48,8 @@
 		"prettier": "^2.6.2",
 		"scratchlib": "^0.4.0",
 		"sequelize": "^6.19.0",
-		"sqlite3": "^5.0.4",
-		"systeminformation": "^5.11.12",
+		"sqlite3": "^5.0.5",
+		"systeminformation": "^5.11.14",
 		"ts-node": "^10.7.0",
 		"ts-node-dev": "^1.1.8",
 		"xmlhttprequest": "^1.8.0",
@@ -61,11 +61,11 @@
 	},
 	"devDependencies": {
 		"@swc/cli": "^0.1.57",
-		"@swc/core": "^1.2.170",
+		"@swc/core": "^1.2.171",
 		"@types/cors": "^2.8.12",
 		"@typescript-eslint/eslint-plugin": "^5.20.0",
 		"@typescript-eslint/parser": "^5.20.0",
-		"eslint": "^8.12.0",
+		"eslint": "^8.14.0",
 		"typescript": "next"
 	}
 }
