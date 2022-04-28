@@ -1,19 +1,18 @@
 import Discord from "discord.js";
 import canvaslib from "canvas";
 
-import { db } from "../index";
+import { prisma } from "../index";
 
 import { error } from "../utils/Logger";
 
 module.exports = {
 	name: "guildMemberRemove",
 	async execute(Client: Discord.Client, member: Discord.GuildMember) {
-		const welcomechannelmodel = db.model("welChannels");
-		const welcomechannel = await welcomechannelmodel.findOne({ where: { idOfGuild: member.guild.id } });
+		const welcomechannel = await prisma.welChannels.findUnique({ where: { idOfGuild: member.guild.id } });
 
 		if (!welcomechannel) return;
 
-		const channel = (await Client.channels.fetch(welcomechannel.get("idOfChannel") as string)) as Discord.TextChannel;
+		const channel = (await Client.channels.fetch(welcomechannel.idOfChannel)) as Discord.TextChannel;
 		const fetchNumberOfMembers = member.guild.memberCount;
 
 		const canvas = canvaslib.createCanvas(700, 250);

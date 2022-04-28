@@ -1,0 +1,64 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = "file:../database/dev.db"
+}
+
+model Birthdays {
+    id                Int    @id @default(autoincrement())
+    idOfUser          String
+    birthday          String
+    birthdayTimestamp Int
+    idOfGuild         String
+}
+
+model BirthdaysChannels {
+    idOfGuild   String @unique
+    idOfChannel String @unique
+}
+
+model InventoryItems {
+    name     String @unique(map: "sqlite_autoindex_inventoryItems_1")
+    price    Int
+    sellerID String
+    authorID String
+    id       Int    @id @default(autoincrement())
+}
+
+model LogChannels {
+    idOfGuild   String @unique
+    idOfChannel String @unique
+}
+
+model WelChannels {
+    idOfGuild   String @unique
+    idOfChannel String @unique
+}
+
+model MarketItems {
+    name     String @unique(map: "sqlite_autoindex_marketItems_1")
+    price    Int
+    sellerID String
+    id       Int    @id @unique @default(autoincrement())
+}
+
+model MoneyAccs {
+    idOfUser String @unique
+    money    Int
+}
+
+model Ranks {
+    idOfUser  String @unique
+    xp        Int
+    idOfGuild Int
+}
+
+model Session {
+    id        String   @id
+    sid       String   @unique
+    data      String
+    expiresAt DateTime
+}

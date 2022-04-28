@@ -1,5 +1,6 @@
 import Discord from "discord.js";
-import Sequelize from "sequelize";
+
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -16,11 +17,10 @@ module.exports = {
 	category: "fun",
 	botPermissions: ["ADD_REACTIONS"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
-		const inventorymodel = db.model("inventoryItems");
-		const authorinventory = await inventorymodel.findAll({ where: { authorID: interaction.member.user.id } });
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], prisma: PrismaClient) {
+		const inventory = await prisma.inventoryItems.findMany({ where: { authorID: interaction.member.user.id } });
 
-		if (!authorinventory[0]) {
+		if (inventory.length === 0) {
 			return interaction.editReply("Your inventory is empty! Start by doing `/market` and then buy something with the `/buy [ID of the item]` command.");
 		}
 
@@ -55,7 +55,7 @@ module.exports = {
 		}
 
 		async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
-			const itemsContent = authorinventory.slice(page * 10, page * 10 + 10);
+			const itemsContent = inventory.slice(page * 10, page * 10 + 10);
 			const pageContent: string[] = [];
 
 			for (let index = 0; index < itemsContent.length; index++) {
@@ -98,7 +98,7 @@ module.exports = {
 		function buttonChecker() {
 			const index = page + 1;
 
-			if (authorinventory.slice(index * 10, index * 10 + 10).length === 0) {
+			if (inventory.slice(index * 10, index * 10 + 10).length === 0) {
 				return true;
 			} else {
 				return false;

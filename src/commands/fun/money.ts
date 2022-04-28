@@ -1,5 +1,6 @@
 import Discord from "discord.js";
-import Sequelize from "sequelize";
+
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -15,17 +16,13 @@ module.exports = {
 	description: "Replies with your bank account's money",
 	category: "fun",
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], db: Sequelize.Sequelize) {
-		const moneymodel = db.model("moneyAcc");
-		const money = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
+		const account = await prisma.moneyAccs.findUnique({ where: { idOfUser: interaction.member.user.id } });
 
-		if (money) {
-			return interaction.editReply({ content: `:dollar: Your account currently has **${money.get("money")}$**!` });
+		if (account) {
+			return interaction.editReply({ content: `:dollar: Your account currently has **${account.money}$**!` });
 		} else {
-			moneymodel.create({
-				idOfUser: interaction.member.user.id,
-				money: 500,
-			});
+			await prisma.moneyAccs.create({ data: { idOfUser: interaction.member.user.id, money: 500 } });
 
 			return interaction.editReply("Since you are new to the bank, I just created an account with **500$** on it for you. Enjoy! :wink:");
 		}

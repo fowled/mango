@@ -1,5 +1,6 @@
 import Discord from "discord.js";
-import Sequelize from "sequelize";
+
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -30,46 +31,40 @@ module.exports = {
 		},
 	],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
-		const item: string = args.slice(1, args.length).join(" ");
-		const price: string = args[0];
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], prisma: PrismaClient) {
+		const item = args.slice(1, args.length).join(" ");
+		const price = parseInt(args[0]);
 
-		const marketmodel = db.model("marketItems");
+		const sellerAccount = await prisma.moneyAccs.findUnique({ where: { idOfUser: interaction.member.user.id } });
 
-		const moneymodel = db.model("moneyAcc");
-		const money = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
-
-		if (isNaN(price as unknown as number) || price.startsWith("-")) {
+		if (isNaN(price)) {
 			return interaction.editReply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
 		} else if (item.includes("@")) {
-			return interaction.editReply("I can't add this item to the market because it contains a mention. Be sure to remove it.");
-		} else if (!money) {
+			return interaction.editReply("I can't add this item to the market because it contains a mention. Make sure to remove it.");
+		} else if (!sellerAccount) {
 			return interaction.editReply("It looks like you haven't created your account! Do `/money` first :wink:");
 		} else if (item.length > 70) {
 			return interaction.editReply("Your item name is too long!");
 		}
 
-		const getMoney = money.get("money");
+		const getMoney = sellerAccount.money;
 
 		if (getMoney < price) {
-			return interaction.editReply(`You can't sell this item at **${price}** because you only have **${money}**$.`);
+			return interaction.editReply(`You can't sell this item at **${price}** because you only have **${getMoney}**$.`);
 		}
 
-		const createdItem = await marketmodel
+		const createdItem = await prisma.marketItems
 			.create({
-				name: item,
-				price: price,
-				seller: interaction.member.user.tag,
-				sellerID: interaction.member.user.id,
+				data: {
+					name: item,
+					price: price,
+					sellerID: interaction.member.user.id,
+				},
 			})
-			.catch((e) => {
-				if (e.name === "SequelizeUniqueConstraintError") {
-					return interaction.editReply("This object already exists! Please choose another name.");
-				}
+			.catch(() => {
+				return interaction.editReply("This object already exists! Please choose another name.");
 			});
 
-		interaction.editReply(
-			`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${(createdItem as Sequelize.Model).get("id")}** <:yes:835565213498736650>`
-		);
+		interaction.editReply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${createdItem.id}** <:yes:835565213498736650>`);
 	},
 };

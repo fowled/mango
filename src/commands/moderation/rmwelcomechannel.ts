@@ -1,5 +1,6 @@
 import Discord from "discord.js";
-import Sequelize from "sequelize";
+
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -16,16 +17,17 @@ module.exports = {
 	category: "moderation",
 	memberPermissions: ["MANAGE_CHANNELS"],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], db: Sequelize.Sequelize) {
-		const welcomechannelmodel = db.model("welChannels");
-		const welcomechannel = await welcomechannelmodel.findOne({ where: { idOfGuild: interaction.guild.id } });
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
+		const welcomechannel = await prisma.welChannels.findUnique({ where: { idOfGuild: interaction.guild.id } });
 
 		if (welcomechannel) {
-			welcomechannel.destroy();
+			await prisma.welChannels.delete({ where: { idOfGuild: interaction.guild.id } });
 		} else {
 			return interaction.editReply("I'm sorry, but you don't have any log channel for the moment. Get started by doing `/setwelcomechannel [channel]`!");
 		}
 
-		return interaction.editReply("<:yes:835565213498736650> Successfully removed the welcome channel! You won't receive welcome notifications anymore. Was that a mistake? Don't worry, do `/setwelcomechannel (#channel)` to add it again.");
+		return interaction.editReply(
+			"<:yes:835565213498736650> Successfully removed the welcome channel! You won't receive welcome notifications anymore. Was that a mistake? Do `/setwelcomechannel (#channel)` to add it back."
+		);
 	},
 };

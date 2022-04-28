@@ -1,19 +1,17 @@
-﻿import { Sequelize } from "sequelize";
-import Discord from "discord.js";
-import path from "path";
-import glob from "fast-glob";
+﻿import { PrismaClient } from "@prisma/client";
 import hypixel from "hypixel-api-reborn";
+import Discord from "discord.js";
 import cron from "node-schedule";
+import glob from "fast-glob";
 import chalk from "chalk";
+import path from "path";
 
-import { log } from "./utils/Logger";
-import { logError } from "./utils/SendLog";
 import { timestampYear } from "./utils/Timestamp";
+import { logError } from "./utils/SendLog";
+import { log } from "./utils/Logger";
 
 import { Command } from "./interfaces/Command";
 import { Event } from "./interfaces/Event";
-
-import { defineDbModels } from "./models/models";
 
 import { createAPIServer } from "../api/server";
 
@@ -25,22 +23,16 @@ export const client = new Discord.Client({
 
 export const talkedRecently = new Set();
 
-export const db = new Sequelize("database", "username", "password", {
-	host: "localhost",
-	dialect: "sqlite",
-	logging: false,
-	storage: process.cwd() + "/database/db.sqlite",
-});
+export const prisma = new PrismaClient();
 
 export const hypixelClient = new hypixel.Client(process.env.API_KEY);
 
 export const clientInteractions = new Discord.Collection<string, Command>();
 
 (async () => {
-	await defineDbModels();
 	await binder();
 	await client.login(Token);
-	await createAPIServer(client, db);
+	await createAPIServer(client, prisma);
 	await handleRejections();
 	await runCronJobs();
 })();
@@ -85,13 +77,13 @@ async function runCronJobs() {
 		const todayDate = new Date();
 		const todayDateString = `${todayDate.getMonth()}/${todayDate.getDate()}`;
 
-		const findBirthdaysToday = await db.model("birthdays").findAll({ where: { birthday: todayDateString } });
+		const findBirthdaysToday = await prisma.birthdays.findMany({ where: { birthday: todayDateString } });
 
 		for (let i = 0; i < findBirthdaysToday.length; i++) {
 			const guildID: string = findBirthdaysToday[i]["idOfGuild"];
 			const birthdayTimestamp: number = findBirthdaysToday[i]["birthdayTimestamp"];
 			const user = await client.users.fetch(findBirthdaysToday[i]["idOfUser"]);
-			const findRelatedChannels = await db.model("birthdaysChannels").findAll({ where: { idOfGuild: guildID } });
+			const findRelatedChannels = await prisma.birthdaysChannels.findMany({ where: { idOfGuild: guildID } });
 
 			for (let y = 0; y < findRelatedChannels.length; y++) {
 				const fetchChannel = (await client.channels.fetch(findRelatedChannels[y]["idOfChannel"])) as Discord.TextChannel;

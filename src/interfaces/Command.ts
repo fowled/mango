@@ -1,5 +1,6 @@
 import { Client, CommandInteraction, Message } from "discord.js";
-import { Sequelize } from "sequelize";
+
+import type { PrismaClient } from "@prisma/client";
 
 export interface Command {
 	name: string;
@@ -16,5 +17,5 @@ export interface Command {
 	];
 	botPermissions?: string[];
 	memberPermissions?: string[];
-	execute(Client: Client, interaction: CommandInteraction & Message, args: string[], db: Sequelize): Promise<void>;
+	execute(Client: Client, interaction: CommandInteraction & Message, args: string[], db: PrismaClient): Promise<void>;
 }
