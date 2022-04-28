@@ -1,5 +1,6 @@
-import Sequelize from "sequelize";
 import Discord from "discord.js";
+
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -23,50 +24,42 @@ module.exports = {
 		},
 	],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], prisma: PrismaClient) {
 		const ID = args[0];
 
-		const marketmodel = db.model("marketItems");
-		const marketItem = await marketmodel.findOne({ where: { id: ID } });
+		const item = await prisma.marketItems.findUnique({ where: { id: parseInt(ID) } });
 
-		if (!marketItem) {
+		if (!item) {
 			return interaction.editReply(`I'm sorry, but there is no item matching ID **${args[0]}**. To consult the market, do \`/market\` :wink:`);
 		}
 
-		const itemName = marketItem.get("name");
-		const itemPrice = marketItem.get("price");
-		const itemSellerID = marketItem.get("sellerID");
-
-		const moneymodel = db.model("moneyAcc");
-		const authorMoney = await moneymodel.findOne({ where: { idOfUser: interaction.member.user.id } });
+		const authorMoney = await prisma.moneyAccs.findUnique({ where: { idOfUser: interaction.member.user.id } });
+		const sellerMoney = await prisma.moneyAccs.findUnique({ where: { idOfUser: item.sellerID } });
 
 		if (!authorMoney) {
-			return interaction.editReply("You don't have any money! Do `/money` to start using the market.");
+			return interaction.editReply("You have no money! Do `/money` to start using the market.");
 		}
 
-		const getAuthorMoney = authorMoney.get("money");
-		const sellerMoney = await moneymodel.findOne({ where: { idOfUser: itemSellerID } });
-
-		if (getAuthorMoney < itemPrice) {
-			return interaction.editReply(`You must have \`${(itemPrice as unknown as number) - (getAuthorMoney as unknown as number)}\` more dollars to get this item. :frowning:`);
-		} else if (interaction.member.user.id === itemSellerID) {
+		if (authorMoney.money < item.price) {
+			return interaction.editReply(`You must have \`${item.price - authorMoney.money}\` more dollars to get this item. :frowning:`);
+		} else if (interaction.member.user.id === item.sellerID) {
 			return interaction.editReply("You can't buy your own item...");
 		}
 
-		const inventorymodel = db.model("inventoryItems");
-
-		inventorymodel.create({
-			name: itemName,
-			price: itemPrice,
-			sellerID: itemSellerID,
-			authorID: interaction.member.user.id,
+		await prisma.inventoryItems.create({
+			data: {
+				name: item.name,
+				price: item.price,
+				sellerID: item.sellerID,
+				authorID: interaction.member.user.id,
+			},
 		});
 
-		authorMoney.decrement(["money"], { by: itemPrice as number });
-		sellerMoney.increment(["money"], { by: itemPrice as number });
+		await prisma.moneyAccs.update({ where: { idOfUser: authorMoney.idOfUser }, data: { money: authorMoney.money - item.price } });
+		await prisma.moneyAccs.update({ where: { idOfUser: sellerMoney.idOfUser }, data: { money: sellerMoney.money + item.price } });
 
-		interaction.editReply(`Item **${itemName}** successfully bought for *${itemPrice}$*.`);
+		await prisma.marketItems.delete({ where: { id: item.id } });
 
-		marketItem.destroy();
+		interaction.editReply(`Item **${item.name}** successfully bought for *${item.price}$*.`);
 	},
 };

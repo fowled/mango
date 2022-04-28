@@ -1,5 +1,6 @@
 import Discord from "discord.js";
-import Sequelize from "sequelize";
+
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -15,15 +16,14 @@ module.exports = {
 	description: "Replies with your Mango level and XP",
 	category: "fun",
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], db: Sequelize.Sequelize) {
-		const Xp = db.model("ranks");
-		const fetchUser = await Xp.findOne({ where: { idOfUser: interaction.member.user.id, idOfGuild: interaction.guild.id } });
-		const userXp = fetchUser.get("xp") as number;
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
+		const fetchUser = await prisma.ranks.findFirst({ where: { idOfUser: interaction.member.user.id, idOfGuild: parseInt(interaction.guild.id) } });
+		const userXp = fetchUser.xp;
 
 		const levelEmbedinteraction = new Discord.MessageEmbed()
 			.setTitle(`${interaction.member.user.tag} level`)
 			.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
-			.setDescription(`Your level - :gem: XP: **${fetchUser.get("xp")}** | :large_orange_diamond: Level: *${Math.floor(userXp / 50)}*`)
+			.setDescription(`Your level - :gem: XP: **${fetchUser.xp}** | :large_orange_diamond: Level: *${Math.floor(userXp / 50)}*`)
 			.setColor("#019FE9")
 			.setFooter(Client.user.username, Client.user.avatarURL())
 			.setTimestamp();

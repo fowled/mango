@@ -1,5 +1,6 @@
 import Discord from "discord.js";
-import Sequelize from "sequelize";
+
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -24,7 +25,7 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], prisma: PrismaClient) {
 		const welcomeChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
 		const fetchChannel = (await Client.channels.fetch(welcomeChannelID)) as Discord.TextChannel;
 
@@ -32,15 +33,16 @@ module.exports = {
 			return interaction.editReply("The channel you specified isn't a text channel. Please retry the command.");
 		}
 
-		const welcomechannelmodel = db.model("welChannels");
-		const welcomechannel = await welcomechannelmodel.findOne({ where: { idOfGuild: interaction.guild.id } });
+		const welcomechannel = await prisma.welChannels.findUnique({ where: { idOfGuild: interaction.guild.id } });
 
 		if (welcomechannel) {
-			welcomechannelmodel.update({ idOfChannel: welcomeChannelID }, { where: { idOfGuild: interaction.guild.id } });
+			await prisma.welChannels.update({ where: { idOfGuild: interaction.guild.id }, data: { idOfChannel: welcomeChannelID } });
 		} else {
-			welcomechannelmodel.create({
-				idOfGuild: welcomeChannelID,
-				idOfChannel: interaction.channel.id,
+			await prisma.welChannels.create({
+				data: {
+					idOfGuild: welcomeChannelID,
+					idOfChannel: interaction.channel.id,
+				},
 			});
 		}
 

@@ -1,7 +1,8 @@
 import Discord from "discord.js";
-import Sequelize from "sequelize";
 
 import { timestamp } from "../../utils/Timestamp";
+
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -63,13 +64,10 @@ module.exports = {
 		},
 	],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], db: Sequelize.Sequelize) {
-		const birthdaysChannelsModel = db.model("birthdaysChannels");
-		const birthdayChannel = await birthdaysChannelsModel.findOne({ where: { idOfGuild: interaction.guild.id } });
-
-		const birthdaysModel = db.model("birthdays");
-		const fetchBirthday = await birthdaysModel.findAll({ where: { idOfUser: interaction.user.id } });
-		const fetchGuildBirthday = await birthdaysModel.findOne({ where: { idOfUser: interaction.user.id, idOfGuild: interaction.guild.id } });
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
+		const birthdayChannel = await prisma.birthdaysChannels.findUnique({ where: { idOfGuild: interaction.guild.id } });
+		const fetchBirthdays = await prisma.birthdays.findMany({ where: { idOfUser: interaction.user.id } });
+		const fetchGuildBirthday = await prisma.birthdays.findFirst({ where: { idOfGuild: interaction.guild.id, idOfUser: interaction.user.id } });
 
 		if (!birthdayChannel && interaction.options.getSubcommand() !== "setup") {
 			return interaction.editReply("Whoops! It looks like the birthday module isn't enabled on this server (yet). An admin must run `/birthday setup` first! :eyes:");
@@ -103,11 +101,13 @@ module.exports = {
 			}
 
 			if (birthdayChannel) {
-				birthdaysChannelsModel.update({ idOfChannel: channel.id }, { where: { idOfGuild: interaction.guild.id } });
+				await prisma.birthdaysChannels.update({ data: { idOfChannel: channel.id }, where: { idOfGuild: interaction.guild.id } });
 			} else {
-				birthdaysChannelsModel.create({
-					idOfGuild: interaction.guild.id,
-					idOfChannel: channel.id,
+				await prisma.birthdaysChannels.create({
+					data: {
+						idOfGuild: interaction.guild.id,
+						idOfChannel: channel.id,
+					},
 				});
 			}
 
@@ -116,9 +116,9 @@ module.exports = {
 
 		async function addBirthday() {
 			const birthdayTimestamp = Date.parse(interaction.options.getString("date"));
-
+			
 			if (fetchGuildBirthday) {
-				return interaction.editReply(`Your birthday has already been added to the database at date ${timestamp(birthdayTimestamp)}! If you'd like to change it, run \`/birthday edit\`.`);
+				return interaction.editReply(`Your birthday has already been added to the database at date ${timestamp(fetchGuildBirthday.birthdayTimestamp)}! If you'd like to change it, run \`/birthday edit\`.`);
 			}
 
 			if (isNaN(birthdayTimestamp)) {
@@ -127,18 +127,20 @@ module.exports = {
 
 			const birthdayDate = `${new Date(birthdayTimestamp).getMonth()}/${new Date(birthdayTimestamp).getDate()}`;
 
-			birthdaysModel.create({
-				idOfUser: interaction.user.id,
-				birthday: birthdayDate,
-				birthdayTimestamp: birthdayTimestamp,
-				idOfGuild: interaction.guild.id,
+			await prisma.birthdays.create({
+				data: {
+					idOfUser: interaction.user.id,
+					birthday: birthdayDate,
+					birthdayTimestamp: birthdayTimestamp,
+					idOfGuild: interaction.guild.id,
+				},
 			});
 
 			return interaction.editReply(`:tada: Your birthday has been saved to ${timestamp(birthdayTimestamp)}!`);
 		}
 
 		async function editBirthday() {
-			if (fetchBirthday.length === 0) {
+			if (fetchBirthdays.length === 0) {
 				return interaction.editReply("It looks like your birthday is currently not stored in my database. Do `/birthday add` to save it!");
 			}
 
@@ -150,18 +152,18 @@ module.exports = {
 
 			const newBirthdayDate = `${new Date(newBirthdayTimestamp).getMonth()}/${new Date(newBirthdayTimestamp).getDate()}`;
 
-			birthdaysModel.update({ birthday: newBirthdayDate, birthdayTimestamp: newBirthdayTimestamp }, { where: { idOfUser: interaction.user.id } });
+			await prisma.birthdays.updateMany({ data: { birthday: newBirthdayDate, birthdayTimestamp: newBirthdayTimestamp }, where: { idOfUser: interaction.user.id } });
 
 			return interaction.editReply(`:tada: Your birthday has been updated to ${timestamp(newBirthdayTimestamp)}!`);
 		}
 
 		async function deleteBirthday() {
-			if (fetchBirthday.length === 0) {
+			if (fetchBirthdays.length === 0) {
 				return interaction.editReply("It looks like your birthday is currently not stored in my database. Do `/birthday add` to save it!");
 			}
 
-			fetchBirthday.forEach((birthday) => {
-				birthday.destroy();
+			fetchBirthdays.forEach(async (birthday) => {
+				await prisma.birthdays.deleteMany({ where: { idOfUser: birthday.idOfUser } });
 			});
 
 			return interaction.editReply("Your birthday has been deleted from the database. Made a mistake? Add it back with `/birthday add`!");

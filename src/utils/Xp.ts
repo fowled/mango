@@ -1,19 +1,21 @@
 import Discord from "discord.js";
-import Sequelize from "sequelize";
 
-export async function checkXP(message: Discord.Message, db: Sequelize.Sequelize) {
-	const Xp = db.model("ranks");
+import type { PrismaClient } from "@prisma/client";
 
-	const level = await Xp.findOne({ where: { idOfUser: message.member.user.id, idOfGuild: message.guild.id } });
+export async function checkXP(message: Discord.Message, prisma: PrismaClient) {
+	const Xp = prisma.ranks;
+
+	const level = await Xp.findFirst({ where: { idOfUser: message.member.user.id, idOfGuild: parseInt(message.guild.id) } });
 
 	if (level) {
-		level.increment("xp");
+		await Xp.updateMany({ data: { xp: level.xp + 1 }, where: { idOfUser: message.member.user.id, idOfGuild: parseInt(message.guild.id) } });
 	} else {
-		Xp.create({
-			idOfUser: message.member.user.id,
-			nameOfUser: message.author.tag,
-			xp: 0,
-			idOfGuild: message.guild.id,
+		await Xp.create({
+			data: {
+				idOfUser: message.member.user.id,
+				xp: 0,
+				idOfGuild: parseInt(message.guild.id),
+			},
 		});
 	}
 }

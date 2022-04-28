@@ -1,5 +1,6 @@
 import Discord from "discord.js";
-import Sequelize from "sequelize";
+
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -16,11 +17,10 @@ module.exports = {
 	category: "fun",
 	botPermissions: ["ADD_REACTIONS"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
-		const inventorymodel = db.model("marketItems");
-		const marketItems = await inventorymodel.findAll({ raw: true });
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], prisma: PrismaClient) {
+		const marketItems = await prisma.marketItems.findMany();
 
-		if (!marketItems[0]) {
+		if (marketItems.length === 0) {
 			return interaction.editReply("It seems like the market is empty! Start by `/sell`ing an object :wink:");
 		}
 

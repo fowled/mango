@@ -1,7 +1,8 @@
 import Discord from "discord.js";
-import Sequelize from "sequelize";
 
 import { timestamp, timestampYear } from "../../utils/Timestamp";
+
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -18,9 +19,8 @@ module.exports = {
 	category: "fun",
 	botPermissions: ["ADD_REACTIONS"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], db: Sequelize.Sequelize) {
-		const birthdaysmodel = db.model("birthdays");
-		const birthdays = await birthdaysmodel.findAll({ order: [["birthdayTimestamp", "ASC"]], where: { idOfGuild: interaction.guild.id }, raw: true });
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
+		const birthdays = await prisma.birthdays.findMany({ orderBy: [{ birthdayTimestamp: "asc" }], where: { idOfGuild: interaction.guild.id } });
 
 		if (!birthdays[0]) {
 			return interaction.editReply("It seems like the birthday list is empty! Start by `/birthday add`ing one.");

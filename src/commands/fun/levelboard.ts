@@ -1,5 +1,6 @@
 import Discord from "discord.js";
-import Sequelize from "sequelize";
+
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -16,11 +17,10 @@ module.exports = {
 	category: "fun",
 	botPermissions: ["ADD_REACTIONS"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], db: Sequelize.Sequelize) {
-		const Xp = db.model("ranks");
-		const ranks = await Xp.findAll({ order: [["xp", "DESC"]], where: { idOfGuild: interaction.guild.id }, raw: true });
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
+		const ranks = await prisma.ranks.findMany({ orderBy: { xp: "desc" }, where: { idOfGuild: parseInt(interaction.guild.id) } });
 
-		if (!ranks[0]) {
+		if (ranks.length === 0) {
 			return interaction.editReply("It seems that the leaderboard is currently empty.");
 		}
 

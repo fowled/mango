@@ -1,5 +1,6 @@
 import Discord from "discord.js";
-import Sequelize from "sequelize";
+
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -24,7 +25,7 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], db: Sequelize.Sequelize) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], prisma: PrismaClient) {
 		const logChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
 		const fetchChannel = (await Client.channels.fetch(logChannelID)) as Discord.TextChannel;
 
@@ -32,15 +33,16 @@ module.exports = {
 			return interaction.editReply("The channel you specified isn't a text channel. Please retry the command.");
 		}
 
-		const logchannelmodel = db.model("logChannels");
-		const logchannel = await logchannelmodel.findOne({ where: { idOfGuild: interaction.guild.id } });
+		const logchannel = await prisma.logChannels.findUnique({ where: { idOfGuild: interaction.guild.id } });
 
 		if (logchannel) {
-			logchannelmodel.update({ idOfChannel: logChannelID }, { where: { idOfGuild: interaction.guild.id } });
+			await prisma.logChannels.update({ where: { idOfGuild: interaction.guild.id }, data: { idOfChannel: logChannelID } });
 		} else {
-			logchannelmodel.create({
-				idOfGuild: interaction.guild.id,
-				idOfChannel: logChannelID,
+			await prisma.logChannels.create({
+				data: {
+					idOfGuild: interaction.guild.id,
+					idOfChannel: logChannelID,
+				},
 			});
 		}
 

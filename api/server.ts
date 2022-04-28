@@ -1,10 +1,10 @@
-import { Sequelize } from "sequelize";
-import { Client } from "discord.js";
+import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import express, { urlencoded, json } from "express";
-import SequelizeSession from "connect-session-sequelize";
-import session from "express-session";
-import chalk from "chalk";
+import { PrismaClient } from "@prisma/client";
 import cookieParser from "cookie-parser";
+import session from "express-session";
+import { Client } from "discord.js";
+import chalk from "chalk";
 import cors from "cors";
 
 import { log } from "../src/utils/Logger";
@@ -14,14 +14,17 @@ import { registerRoutes } from "./utils/routes";
 
 let refreshes = 0;
 
-export async function createAPIServer(client: Client, database: Sequelize) {
-	const SequelizeStore = SequelizeSession(session.Store);
-	const store = new SequelizeStore({ db: database, table: "sessions" });
-
+export async function createAPIServer(client: Client, database: PrismaClient) {
 	const app = express();
 
 	app.use([
-		session({ secret: process.env.SESSION_SECRET, cookie: { secure: !process.env.SECURE_COOKIE }, store: store, resave: false, saveUninitialized: false }),
+		session({
+			secret: process.env.SESSION_SECRET,
+			cookie: { secure: !process.env.SECURE_COOKIE },
+			resave: false,
+			saveUninitialized: false,
+			store: new PrismaSessionStore(database as never, { dbRecordIdIsSessionId: true }),
+		}),
 		urlencoded({ extended: true }),
 		json(),
 		cookieParser(),
@@ -43,26 +46,23 @@ export async function createAPIServer(client: Client, database: Sequelize) {
 	}, 60 * 5 * 1000);
 }
 
-async function refreshCache(client: Client, database: Sequelize) {
-	const userIDs: string[] = [];
-	const sessionModel = database.model("sessions");
+async function refreshCache(client: Client, database: PrismaClient) {
+	const sessions = await database.session.findMany();
 
-	(await sessionModel.findAll()).forEach(async (elm) => {
-		const getData = elm.get("data") as { token: string; user: { id: string } };
+	sessions.forEach(async (session) => {
+		const parsedData = JSON.parse(session.data);
 
-		if (!getData.token || userIDs.includes(getData.user.id)) return;
+		if (!parsedData.token) return;
 
-		userIDs.push(getData.user.id);
+		const fetchUser = await getUser(parsedData.token);
+		const fetchManagedGuilds = await getGuilds(parsedData.token, client);
 
-		const fetchUser = await getUser(getData.token);
-		const fetchManagedGuilds = await getGuilds(getData.token, client);
-
-		Object.assign(getData, {
+		Object.assign(parsedData, {
 			user: fetchUser,
 			guilds: fetchManagedGuilds,
 		});
 
-		await sessionModel.update({ data: getData }, { where: { data: { user: { id: getData.user.id } } } });
+		await database.session.update({ data: { data: JSON.stringify(parsedData) }, where: { id: session.id } });
 	});
 
 	if (refreshes > 0) {
@@ -70,5 +70,5 @@ async function refreshCache(client: Client, database: Sequelize) {
 		process.stdout.clearScreenDown();
 	}
 
-	log(`refreshed ${chalk.greenBright("cache")} ${chalk.cyanBright(`(x${refreshes++})`)}`);
+	log(`${chalk.yellow("refreshed")} ${chalk.greenBright("cache")} ${chalk.cyanBright(`(x${refreshes++})`)}`);
 }

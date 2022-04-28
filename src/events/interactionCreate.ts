@@ -1,7 +1,6 @@
 import Discord from "discord.js";
 
-import { clientInteractions } from "../index";
-import { db } from "../index";
+import { clientInteractions, prisma } from "../index";
 
 import { logCommand } from "../utils/SendLog";
 import { error } from "../utils/Logger";
@@ -34,7 +33,7 @@ module.exports = {
 		await interaction.deferReply();
 
 		try {
-			commandInteraction.execute(Client, interaction, args, db);
+			commandInteraction.execute(Client, interaction, args, prisma);
 		} catch (err) {
 			error(err);
 		}
