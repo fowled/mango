@@ -12,8 +12,6 @@ import { log } from "../src/utils/Logger";
 import { getUser, getGuilds } from "./utils/requests";
 import { registerRoutes } from "./utils/routes";
 
-let refreshes = 0;
-
 export async function createAPIServer(client: Client, database: PrismaClient) {
 	const app = express();
 
@@ -64,11 +62,4 @@ async function refreshCache(client: Client, database: PrismaClient) {
 
 		await database.session.update({ data: { data: JSON.stringify(parsedData) }, where: { id: session.id } });
 	});
-
-	if (refreshes > 0) {
-		process.stdout.moveCursor(0, -1);
-		process.stdout.clearScreenDown();
-	}
-
-	log(`${chalk.yellow("refreshed")} ${chalk.greenBright("cache")} ${chalk.cyanBright(`(x${refreshes++})`)}`);
 }
