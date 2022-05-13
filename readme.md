@@ -1,1 +1,1 @@
-https://github.com/addmango/.github/blob/main/profile/README.md
+../mango-profile-readme/profile/README.md
