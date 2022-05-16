@@ -8,7 +8,7 @@ export async function checkXP(message: Discord.Message, prisma: PrismaClient) {
 	const level = await Xp.findFirst({ where: { idOfUser: message.member.user.id, idOfGuild: parseInt(message.guild.id) } });
 
 	if (level) {
-		await Xp.updateMany({ data: { xp: level.xp + 1 }, where: { idOfUser: message.member.user.id, idOfGuild: parseInt(message.guild.id) } });
+		await Xp.updateMany({ where: { idOfUser: message.member.user.id, idOfGuild: parseInt(message.guild.id) }, data: { xp: level.xp + 1 } });
 	} else {
 		await Xp.create({
 			data: {
