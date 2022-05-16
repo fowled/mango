@@ -1,11 +1,12 @@
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import express, { urlencoded, json } from "express";
-import { PrismaClient } from "@prisma/client";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import { Client } from "discord.js";
 import chalk from "chalk";
 import cors from "cors";
+
+import type { PrismaClient } from "@prisma/client";
+import type { Client } from "discord.js";
 
 import { log } from "../src/utils/Logger";
 
@@ -21,7 +22,7 @@ export async function createAPIServer(client: Client, database: PrismaClient) {
 			cookie: { secure: !process.env.SECURE_COOKIE },
 			resave: false,
 			saveUninitialized: false,
-			store: new PrismaSessionStore(database as never, { dbRecordIdIsSessionId: true }),
+			store: new PrismaSessionStore(database, { dbRecordIdIsSessionId: true }),
 		}),
 		urlencoded({ extended: true }),
 		json(),
@@ -60,6 +61,6 @@ async function refreshCache(client: Client, database: PrismaClient) {
 			guilds: fetchManagedGuilds,
 		});
 
-		await database.session.update({ data: { data: JSON.stringify(parsedData) }, where: { id: session.id } });
+		await database.session.update({ where: { id: session.id }, data: { data: JSON.stringify(parsedData) } });
 	});
 }
