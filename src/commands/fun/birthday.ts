@@ -101,7 +101,7 @@ module.exports = {
 			}
 
 			if (birthdayChannel) {
-				await prisma.birthdaysChannels.update({ data: { idOfChannel: channel.id }, where: { idOfGuild: interaction.guild.id } });
+				await prisma.birthdaysChannels.update({ where: { idOfGuild: interaction.guild.id }, data: { idOfChannel: channel.id } });
 			} else {
 				await prisma.birthdaysChannels.create({
 					data: {
@@ -116,9 +116,11 @@ module.exports = {
 
 		async function addBirthday() {
 			const birthdayTimestamp = Date.parse(interaction.options.getString("date"));
-			
+
 			if (fetchGuildBirthday) {
-				return interaction.editReply(`Your birthday has already been added to the database at date ${timestamp(fetchGuildBirthday.birthdayTimestamp)}! If you'd like to change it, run \`/birthday edit\`.`);
+				return interaction.editReply(
+					`Your birthday has already been added to the database at date ${timestamp(fetchGuildBirthday.birthdayTimestamp)}! If you'd like to change it, run \`/birthday edit\`.`
+				);
 			}
 
 			if (isNaN(birthdayTimestamp)) {
@@ -152,7 +154,7 @@ module.exports = {
 
 			const newBirthdayDate = `${new Date(newBirthdayTimestamp).getMonth()}/${new Date(newBirthdayTimestamp).getDate()}`;
 
-			await prisma.birthdays.updateMany({ data: { birthday: newBirthdayDate, birthdayTimestamp: newBirthdayTimestamp }, where: { idOfUser: interaction.user.id } });
+			await prisma.birthdays.updateMany({ where: { idOfUser: interaction.user.id }, data: { birthday: newBirthdayDate, birthdayTimestamp: newBirthdayTimestamp } });
 
 			return interaction.editReply(`:tada: Your birthday has been updated to ${timestamp(newBirthdayTimestamp)}!`);
 		}
