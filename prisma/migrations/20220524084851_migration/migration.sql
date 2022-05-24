@@ -16,7 +16,7 @@ CREATE TABLE "BirthdaysChannels" (
 -- CreateTable
 CREATE TABLE "InventoryItems" (
     "name" TEXT NOT NULL,
-    "price" TEXT NOT NULL,
+    "price" INTEGER NOT NULL,
     "sellerID" TEXT NOT NULL,
     "authorID" TEXT NOT NULL,
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
@@ -37,7 +37,7 @@ CREATE TABLE "WelChannels" (
 -- CreateTable
 CREATE TABLE "MarketItems" (
     "name" TEXT NOT NULL,
-    "price" TEXT NOT NULL,
+    "price" INTEGER NOT NULL,
     "sellerID" TEXT NOT NULL,
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
 );
@@ -52,7 +52,8 @@ CREATE TABLE "MoneyAccs" (
 CREATE TABLE "Ranks" (
     "idOfUser" TEXT NOT NULL,
     "xp" INTEGER NOT NULL,
-    "idOfGuild" INTEGER NOT NULL
+    "idOfGuild" INTEGER NOT NULL,
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
 );
 
 -- CreateTable
@@ -92,10 +93,13 @@ CREATE UNIQUE INDEX "sqlite_autoindex_marketItems_1" ON "MarketItems"("name");
 Pragma writable_schema=0;
 
 -- CreateIndex
+CREATE UNIQUE INDEX "MarketItems_id_key" ON "MarketItems"("id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "MoneyAccs_idOfUser_key" ON "MoneyAccs"("idOfUser");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Ranks_idOfUser_key" ON "Ranks"("idOfUser");
+CREATE UNIQUE INDEX "Ranks_id_key" ON "Ranks"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Session_sid_key" ON "Session"("sid");
