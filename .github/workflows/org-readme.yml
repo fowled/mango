@@ -1,0 +1,28 @@
+name: Update Organization README
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - README.md
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Update README
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_ACTION_TOKEN }}
+        with:
+          source_file: 'readme.md'
+          destination_repo: 'addmango/.github'
+          destination_folder: 'profile'
+          user_email: 'contact@mango.bot'
+          user_name: 'fowled'
+          commit_message: '✨ Update README'
