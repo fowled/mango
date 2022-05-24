@@ -29,6 +29,11 @@ Mango 🥭 is a verified Discord bot made in TypeScript that will help you manag
 ## 🔗 Invite
 You may invite it in your server by clicking [here](https://go.fowled.club/mango).
 
+## 🧪 Create your own
+1. Clone the repository - `git clone https://github.com/addmango/mango.git`
+2. Install dependencies - `pnpm install`
+3. Follow the instructions - `npx ts-node scripts/setup.ts`
+
 ## 📝 Contact me
 Send me a private message at `fowled#6666` or join the community server - https://discord.gg/9aT626ABdq
 
