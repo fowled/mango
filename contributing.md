@@ -8,4 +8,4 @@ You can do so [here](https://github.com/addmango/Mango/issues?q=is%3Aissue+is%3A
 ## Pull request
 Create a pull request [here](https://github.com/addmango/Mango/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc).
 
-Don't forget to select the better template your issue/pull request matches to!
+Don't forget to select the best template your issue/pull request matches to!

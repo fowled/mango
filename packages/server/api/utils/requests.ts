@@ -2,6 +2,8 @@ import fetch from "node-fetch";
 import { URLSearchParams } from "url";
 import { Guild, BitField, Client } from "discord.js";
 
+import { log } from "../../src/utils/Logger";
+
 export async function fetchToken(code: string) {
 	const fetchToken = await fetch("https://discord.com/api/oauth2/token", {
 		method: "POST",
@@ -61,7 +63,9 @@ export async function getGuilds(token: string, client: Client) {
 		},
 	}).then((res) => res.json());
 
-	if (userGuilds.message) return;
+	if (userGuilds.message) {
+		log(userGuilds.message);
+	}
 
 	for (const guild of userGuilds) {
 		const permissionsBitfield = new BitField(guild.permissions).has("32");

@@ -1,4 +1,4 @@
-name: NPM
+name: Server
 
 on:
   push:
@@ -30,6 +30,7 @@ jobs:
         cache: pnpm
     - run: pnpm install
     - run: npx prisma generate
+    - run: cd packages/server
     - run: npm run test
       env:
         CI: true
