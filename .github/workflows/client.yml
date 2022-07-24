@@ -12,7 +12,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: packages/server
+        working-directory: packages/client
 
     strategy:
       matrix:
@@ -32,7 +32,6 @@ jobs:
         node-version: "16.6.0"
         cache: pnpm
     - run: pnpm install
-    - run: npx prisma generate
     - run: npm run build
       env:
         CI: true
