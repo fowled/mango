@@ -1,4 +1,4 @@
-name: NPM
+name: Client
 
 on:
   push:
@@ -8,8 +8,11 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: packages/client
 
     strategy:
       matrix:
@@ -29,7 +32,6 @@ jobs:
         node-version: "16.6.0"
         cache: pnpm
     - run: pnpm install
-    - run: npx prisma generate
-    - run: npm run test
+    - run: npm run build
       env:
         CI: true

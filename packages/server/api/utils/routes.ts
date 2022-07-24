@@ -1,11 +1,13 @@
 import { Express, Request, Response } from "express";
 import { Client } from "discord.js";
 
+import type { PrismaClient } from "@prisma/client";
+
 import { hasTokenExpired } from "./manager";
 
 import { fetchToken, getUser, getGuilds, getStats, manageGuild } from "./requests";
 
-export async function registerRoutes(app: Express, client: Client) {
+export async function registerRoutes(app: Express, client: Client, database: PrismaClient) {
 	app.get("/", async function (_req: Request, res: Response) {
 		return res.send({ message: "Welcome to Mango's API!" });
 	});
@@ -22,25 +24,43 @@ export async function registerRoutes(app: Express, client: Client) {
 			date: nextWeekDate,
 			user: await getUser(getToken.access_token),
 			guilds: await getGuilds(getToken.access_token, client),
+			lastEdited: new Date(),
 		});
 
 		return res.redirect(process.env.PRODUCTION_URI);
 	});
 
 	app.get("/user", hasTokenExpired, async function (req: Request, res: Response) {
-		// TODO: interface user
-
 		const user = req.session.user;
 
-		return res.send({ authed: req.session.token ? true : false, user });
+		return res.status(200).send({ authed: req.session.token ? true : false, user });
 	});
 
 	app.get("/guilds", async function (req: Request, res: Response) {
-		// TODO: interface guild
+		if (!req.session.token) {
+			return res.status(403).send({ authed: false });
+		}
 
-		const guilds = req.session.guilds;
+		const findSession = await database.session.findUnique({ where: { sid: req.session.id } });
+		const parseSessionData = JSON.parse(findSession.data);
 
-		return res.send({ authed: req.session.token ? true : false, guilds });
+		const parseDate = new Date(parseSessionData.lastEdited);
+		const calculateTime = new Date(parseDate.getTime() + 5 * 60000);
+
+		let guilds: object[];
+
+		if (new Date() > calculateTime) {
+			guilds = await getGuilds(req.session.token, client);
+
+			Object.assign(req.session, {
+				guilds,
+				lastEdited: new Date(),
+			});
+		} else {
+			guilds = req.session.guilds;
+		}
+
+		return res.status(200).send({ authed: true, guilds });
 	});
 
 	app.get("/manage/:guildId", async function (req: Request, res: Response) {
@@ -48,7 +68,7 @@ export async function registerRoutes(app: Express, client: Client) {
 			return res.status(403).send({ message: "Unauthorized" });
 		}
 
-		return res.status(200).send({ guild: await manageGuild(req.params.guildId, client) });
+		return res.status(200).send(await manageGuild(req.params.guildId, client));
 	});
 
 	app.get("/logout", async function (req: Request, res: Response) {
@@ -58,7 +78,7 @@ export async function registerRoutes(app: Express, client: Client) {
 	});
 
 	app.get("/stats", async function (_req: Request, res: Response) {
-		return res.send({ message: await getStats(client) });
+		return res.send(await getStats(client));
 	});
 
 	app.get("*", async function (_req: Request, res: Response) {
