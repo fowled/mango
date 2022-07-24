@@ -8,7 +8,6 @@
 ![servers](https://img.shields.io/badge/dynamic/json?color=ff69b4&label=servers&query=message.servers&url=https%3A%2F%2Fapi.mango.bot%2Fstats)
 ![stars](https://img.shields.io/github/stars/addmango/mango)
 ![rating](https://img.shields.io/badge/rating-4.8%2F5-orange)
-![website](https://img.shields.io/badge/website-mango.bot-critical)
 
 👋 Welcome to the **https://mango.bot** organization!
 
