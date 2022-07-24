@@ -1,7 +1,8 @@
 ![logo](https://user-images.githubusercontent.com/37367577/157241712-865b2909-a499-4138-9f3c-ec6e3dceacbd.png)
 
 ![license](https://img.shields.io/github/license/addmango/mango)
-![deployment](https://img.shields.io/github/deployments/addmango/website/production?label=deployment&logo=github&logoColor=white)
+[![Client](https://github.com/addmango/mango/actions/workflows/client.yml/badge.svg)](https://github.com/addmango/mango/actions/workflows/client.yml)
+[![Server](https://github.com/addmango/mango/actions/workflows/server.yml/badge.svg)](https://github.com/addmango/mango/actions/workflows/server.yml)
 ![status](https://img.shields.io/badge/status-active-success)
 ![users](https://img.shields.io/badge/dynamic/json?color=blueviolet&label=users&query=message.users&url=https%3A%2F%2Fapi.mango.bot%2Fstats)
 ![servers](https://img.shields.io/badge/dynamic/json?color=ff69b4&label=servers&query=message.servers&url=https%3A%2F%2Fapi.mango.bot%2Fstats)
