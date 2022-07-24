@@ -2,10 +2,10 @@
 	import { Transition } from "@rgossiaux/svelte-headlessui";
 	import { ExclamationCircle } from "@steeze-ui/heroicons";
 	import { Icon } from "@steeze-ui/svelte-icon";
-
 	import { navigate } from "svelte-routing";
 
 	import Spinner from "lib/Spinner.svelte";
+
 	import { getGuildInfo } from "shared/requests";
 
 	import type { ManageGuild } from "interfaces/manage";

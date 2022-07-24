@@ -1,4 +1,4 @@
-import { PrismaSessionStore } from "@mazzlabs/prisma-session-store-fix";
+import { PrismaSessionStore as PSS } from "@mazzlabs/prisma-session-store-fix";
 import express, { urlencoded, json } from "express";
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -18,11 +18,11 @@ export async function createAPIServer(client: Client, database: PrismaClient) {
 	app.use([
 		session({
 			secret: process.env.SESSION_SECRET,
-			cookie: { secure: false, maxAge: 10 * 60 * 1000, httpOnly: false },
+			cookie: { secure: !process.env.SECURE_COOKIE, maxAge: 10 * 60 * 1000, httpOnly: true },
 			resave: false,
 			saveUninitialized: false,
 			rolling: false,
-			store: new PrismaSessionStore(database, { loggerLevel: "log" }),
+			store: new PSS(database, { loggerLevel: "log" }),
 		}),
 		urlencoded({ extended: true }),
 		json(),
