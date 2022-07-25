@@ -17,7 +17,7 @@ module.exports = {
 	category: "fun",
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
-		const fetchUser = await prisma.ranks.findFirst({ where: { idOfUser: interaction.member.user.id, idOfGuild: parseInt(interaction.guild.id) } });
+		const fetchUser = await prisma.ranks.findFirst({ where: { idOfUser: interaction.member.user.id, idOfGuild: interaction.guild.id } });
 		const userXp = fetchUser.xp;
 
 		const levelEmbedinteraction = new Discord.MessageEmbed()

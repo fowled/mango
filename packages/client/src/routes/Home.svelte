@@ -8,7 +8,7 @@
 
 	import Spinner from "lib/Spinner.svelte";
 
-	let stats;
+	let stats: { figure: number | string; description: string }[];
 
 	const features = [
 		{

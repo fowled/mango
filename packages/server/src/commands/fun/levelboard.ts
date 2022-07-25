@@ -18,7 +18,7 @@ module.exports = {
 	botPermissions: ["ADD_REACTIONS"],
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
-		const ranks = await prisma.ranks.findMany({ orderBy: { xp: "desc" }, where: { idOfGuild: parseInt(interaction.guild.id) } });
+		const ranks = await prisma.ranks.findMany({ orderBy: { xp: "desc" }, where: { idOfGuild: interaction.guild.id } });
 
 		if (ranks.length === 0) {
 			return interaction.editReply("It seems that the leaderboard is currently empty.");
@@ -66,12 +66,7 @@ module.exports = {
 				pageContent.push(`${i + (page * 10 + 1)}. **${user}** / *${xp}* xp → level \`${Math.floor(xp / 50)}\``);
 			}
 
-			const levelEmbed = new Discord.MessageEmbed()
-				.setDescription(pageContent.join("\n"))
-				.setColor("#33beff")
-				.setTitle("🎖 Levelboard")
-				.setTimestamp()
-				.setFooter(Client.user.username, Client.user.displayAvatarURL());
+			const levelEmbed = new Discord.MessageEmbed().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("🎖 Levelboard").setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
 
 			const button = new Discord.MessageActionRow().addComponents(
 				new Discord.MessageButton()
@@ -80,7 +75,7 @@ module.exports = {
 					.setStyle("PRIMARY")
 					.setDisabled(page === 0 ? true : false),
 
-				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker())
+				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker()),
 			);
 
 			if (!arg) {
