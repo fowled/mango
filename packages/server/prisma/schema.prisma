@@ -53,13 +53,13 @@ model MoneyAccs {
 model Ranks {
     idOfUser  String
     xp        Int
-    idOfGuild Int
+    idOfGuild String
     id        Int    @id @unique @default(autoincrement())
 }
 
 model Session {
-    id         String   @id
-    sid        String   @unique
-    data       String
-    expiresAt  DateTime
+    id        String   @id
+    sid       String   @unique
+    data      String
+    expiresAt DateTime
 }

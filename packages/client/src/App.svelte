@@ -3,7 +3,7 @@
 
 	import Dashboard from "routes/Dashboard.svelte";
 	import Manage from "routes/Manage.svelte";
-	import Home from "./routes/Home.svelte";
+	import Home from "routes/Home.svelte";
 
 	import Footer from "lib/Footer.svelte";
 	import Navbar from "lib/Navbar.svelte";

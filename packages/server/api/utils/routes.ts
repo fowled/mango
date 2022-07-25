@@ -3,7 +3,7 @@ import { Client } from "discord.js";
 
 import type { PrismaClient } from "@prisma/client";
 
-import { hasTokenExpired } from "./manager";
+import { hasTokenExpired, isLoggedIn } from "./manager";
 
 import { fetchToken, getUser, getGuilds, getStats, manageGuild } from "./requests";
 
@@ -30,17 +30,13 @@ export async function registerRoutes(app: Express, client: Client, database: Pri
 		return res.redirect(process.env.PRODUCTION_URI);
 	});
 
-	app.get("/user", hasTokenExpired, async function (req: Request, res: Response) {
+	app.get("/user", isLoggedIn, hasTokenExpired, async function (req: Request, res: Response) {
 		const user = req.session.user;
 
-		return res.status(200).send({ authed: req.session.token ? true : false, user });
+		return res.status(200).send(user);
 	});
 
-	app.get("/guilds", async function (req: Request, res: Response) {
-		if (!req.session.token) {
-			return res.status(403).send({ authed: false });
-		}
-
+	app.get("/guilds", isLoggedIn, async function (req: Request, res: Response) {
 		const findSession = await database.session.findUnique({ where: { sid: req.session.id } });
 		const parseSessionData = JSON.parse(findSession.data);
 
@@ -60,18 +56,14 @@ export async function registerRoutes(app: Express, client: Client, database: Pri
 			guilds = req.session.guilds;
 		}
 
-		return res.status(200).send({ authed: true, guilds });
+		return res.status(200).send(guilds);
 	});
 
-	app.get("/manage/:guildId", async function (req: Request, res: Response) {
-		if (!req.session.token) {
-			return res.status(403).send({ message: "Unauthorized" });
-		}
-
+	app.get("/manage/:guildId", isLoggedIn, async function (req: Request, res: Response) {
 		return res.status(200).send(await manageGuild(req.params.guildId, client));
 	});
 
-	app.get("/logout", async function (req: Request, res: Response) {
+	app.get("/logout", isLoggedIn, async function (req: Request, res: Response) {
 		req.session.destroy(null);
 
 		return res.send({ message: "Nothing to see here..." });

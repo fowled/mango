@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { Icon } from "@steeze-ui/svelte-icon";
 	import { Logout } from "@steeze-ui/heroicons";
-	
+
 	import { Link } from "svelte-routing";
 
 	import { getUser, logout } from "shared/requests";
-	
+
 	import Spinner from "./Spinner.svelte";
 
 	let user = getUser();
@@ -60,12 +60,12 @@
 			{#await user}
 				<Spinner divHeight="h-full" spinHeight="h-10" />
 			{:then data}
-				{#if data.authed}
+				{#if typeof user !== "string"}
 					<div class="flex space-x-3">
-						<img alt="user's avatar" src={data.user.avatar ? `https://cdn.discordapp.com/avatars/${data.user.id}/${data.user.avatar}.png?size=256` : "/assets/discord_default.png"} class="h-10 rounded-full" />
+						<img alt="user's avatar" src={data.avatar ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=256` : "/assets/discord_default.png"} class="h-10 rounded-full" />
 
 						<h1 class="flex items-center dark:text-gray-300">
-							{data.user.username}#{data.user.discriminator}
+							{data.username}#{data.discriminator}
 						</h1>
 
 						<span on:click={logOutAndRedirect} class="my-auto">

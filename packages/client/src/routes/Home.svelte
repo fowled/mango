@@ -2,20 +2,13 @@
 	import { ShieldCheck, Cake, InformationCircle, Cube, DotsCircleHorizontal } from "@steeze-ui/heroicons";
 	import { Icon } from "@steeze-ui/svelte-icon";
 	import { Link } from "svelte-routing";
+	import { onMount } from "svelte";
 
 	import { getStats } from "shared/requests";
 
 	import Spinner from "lib/Spinner.svelte";
 
-	const fetchData = async () => {
-		let stats = await getStats();
-
-		return [
-			{ figure: stats.users, description: "Users" },
-			{ figure: stats.servers, description: "Servers" },
-			{ figure: "4.8/5", description: "Rating" },
-		];
-	};
+	let stats;
 
 	const features = [
 		{
@@ -64,6 +57,16 @@
 			name: "fowled, head developer",
 		},
 	];
+
+	onMount(async () => {
+		let statsData = await getStats();
+
+		stats = [
+			{ figure: statsData.users, description: "Users" },
+			{ figure: statsData.servers, description: "Servers" },
+			{ figure: "4.8/5", description: "Rating" },
+		];
+	});
 </script>
 
 <section id="header" class="container px-4 pt-16 lg:pt-24 mx-auto xl:max-w-4xl text-center inset-0 bg-grid-slate-900/[0.04] bg-[bottom_1px_center]">
@@ -80,18 +83,18 @@
 
 	<Link to="/dashboard" class="text-white bg-gray-800 hover:bg-black focus:ring-4 font-medium rounded-lg text-sm px-5 py-3 text-center md:mr-0 dark:focus:ring-black ml-2">Open dashboard</Link>
 
-	{#await fetchData()}
-		<Spinner divHeight="h-6 mt-12" spinHeight="h-10" />
-	{:then data}
-		<div class="mt-10 border-t border-gray-200 dark:border-gray-800 text-left flex flex-wrap flex-row md:space-x-16 justify-center max-w-fit mx-auto py-5">
-			{#each data as stat}
-				<div class="flex flex-col">
+	{#if stats}
+		<div class="mt-10 border-t border-gray-200 dark:border-gray-800 text-left flex flex-wrap flex-row space-y-0 space-x-8 md:space-x-16 justify-center max-w-fit mx-auto">
+			{#each stats as stat}
+				<div class="flex flex-col pt-6">
 					<h1 class="text-3xl font-bold text-indigo-500">{stat.figure}</h1>
 					<h5 class="text-gray-700 dark:text-gray-200">{stat.description}</h5>
 				</div>
 			{/each}
 		</div>
-	{/await}
+	{:else}
+		<Spinner divHeight="h-6 mt-12" spinHeight="h-10" />
+	{/if}
 </section>
 
 <section id="features" class="relative py-16 overflow-hidden mx-auto space-y-20">

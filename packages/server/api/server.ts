@@ -18,7 +18,7 @@ export async function createAPIServer(client: Client, database: PrismaClient) {
 	app.use([
 		session({
 			secret: process.env.SESSION_SECRET,
-			cookie: { secure: !process.env.SECURE_COOKIE, maxAge: 10 * 60 * 1000, httpOnly: true },
+			cookie: { secure: !process.env.SECURE_COOKIE, maxAge: (24 * 60 * 60 * 7 * 1000) * 4, httpOnly: true },
 			resave: false,
 			saveUninitialized: false,
 			rolling: false,
