@@ -8,9 +8,21 @@ import cors from "cors";
 import type { PrismaClient } from "@prisma/client";
 import type { Client } from "discord.js";
 
+import { User, Guild } from "../../client/src/interfaces/interfaces";
+
 import { log } from "../src/utils/Logger";
 
 import { registerRoutes } from "./utils/routes";
+
+declare module "express-session" {
+	interface SessionData {
+		token: string;
+		refresh_token: string;
+		user: User;
+		guilds: Guild[];
+		date: Date;
+	}
+}
 
 export async function createAPIServer(client: Client, database: PrismaClient) {
 	const app = express();
@@ -18,7 +30,7 @@ export async function createAPIServer(client: Client, database: PrismaClient) {
 	app.use([
 		session({
 			secret: process.env.SESSION_SECRET,
-			cookie: { secure: !process.env.SECURE_COOKIE, maxAge: (24 * 60 * 60 * 7 * 1000) * 4, httpOnly: true },
+			cookie: { secure: !process.env.SECURE_COOKIE, maxAge: 24 * 60 * 60 * 7 * 1000 * 4, httpOnly: true },
 			resave: false,
 			saveUninitialized: false,
 			rolling: false,
