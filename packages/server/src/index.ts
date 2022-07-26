@@ -80,8 +80,9 @@ async function runCronJobs() {
 		const findBirthdaysToday = await prisma.birthdays.findMany({ where: { birthday: todayDateString } });
 
 		for (let i = 0; i < findBirthdaysToday.length; i++) {
-			const guildID: string = findBirthdaysToday[i]["idOfGuild"];
-			const birthdayTimestamp: number = findBirthdaysToday[i]["birthdayTimestamp"];
+			const guildID = findBirthdaysToday[i]["idOfGuild"];
+			const birthdayTimestamp = findBirthdaysToday[i]["birthdayTimestamp"];
+
 			const user = await client.users.fetch(findBirthdaysToday[i]["idOfUser"]);
 			const findRelatedChannels = await prisma.birthdaysChannels.findMany({ where: { idOfGuild: guildID } });
 
