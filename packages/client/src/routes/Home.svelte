@@ -81,7 +81,7 @@
 
 	<a href="https://go.fowled.club/mango" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Add to your server </a>
 
-	<Link to="/dashboard" class="text-white bg-gray-800 hover:bg-black focus:ring-4 font-medium rounded-lg text-sm px-5 py-3 text-center md:mr-0 dark:focus:ring-black ml-2">Open dashboard</Link>
+	<Link to="/dashboard" class="text-white bg-gray-800 hover:bg-black focus:ring-4 font-medium rounded-lg text-sm px-5 py-3 text-center md:mr-0 dark:focus:ring-black ml-2">Dashboard</Link>
 
 	{#if stats}
 		<div class="mt-10 border-t border-gray-200 dark:border-gray-800 text-left flex flex-wrap flex-row space-y-0 space-x-8 md:space-x-16 justify-center max-w-fit mx-auto">

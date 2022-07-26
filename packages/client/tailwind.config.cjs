@@ -8,5 +8,5 @@ module.exports = {
 			sans: ["Inter", "sans-serif"],
 		},
 	},
-	plugins: [],
+	plugins: [require("tailwindcss"), require("autoprefixer")],
 };

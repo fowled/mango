@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Icon } from "@steeze-ui/svelte-icon";
 	import { Logout } from "@steeze-ui/heroicons";
-
 	import { Link } from "svelte-routing";
 
 	import { getUser, logout } from "shared/requests";
@@ -61,7 +60,7 @@
 				<Spinner divHeight="h-full" spinHeight="h-10" />
 			{:then data}
 				{#if !data.message}
-					<div class="flex space-x-3">
+					<div class="flex flex-row space-x-3">
 						<img alt="user's avatar" src={data.avatar ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=256` : "/assets/discord_default.png"} class="h-10 rounded-full" />
 
 						<h1 class="flex items-center dark:text-gray-300">

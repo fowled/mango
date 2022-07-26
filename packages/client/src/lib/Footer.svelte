@@ -12,13 +12,13 @@
 
 		<p class="mt-4 text-sm text-gray-500 dark:text-gray-400 sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 dark:sm:border-gray-600 sm:mt-0">© 2022 - Mango</p>
 
-		<span class="inline-flex justify-center mt-4 space-x-2 sm:ml-auto sm:mt-0 sm:justify-start">
+		<span class="inline-flex mt-4 space-x-2 sm:ml-auto sm:mt-0 sm:justify-start max-w-fit">
 			<a href="https://twitter.com/playboifowled">
-				<Icon src={Twitter} class="h-6 text-neutral-300" />
+				<Icon src={Twitter} class="h-6 w-6 text-neutral-300" />
 			</a>
 
 			<a href="https://github.com/fowled">
-				<Icon src={Github} class="h-6 text-neutral-300" />
+				<Icon src={Github} class="h-6 w-6 text-neutral-300" />
 			</a>
 		</span>
 	</div>
