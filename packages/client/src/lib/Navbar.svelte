@@ -68,7 +68,7 @@
 						</h1>
 
 						<span on:click={logOutAndRedirect} class="my-auto">
-							<Icon src={Logout} class="self-center h-6 cursor-pointer dark:text-white" />
+							<Icon src={Logout} class="self-center h-6 w-6 cursor-pointer dark:text-white" />
 						</span>
 					</div>
 				{:else}
