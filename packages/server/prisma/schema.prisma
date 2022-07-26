@@ -11,7 +11,7 @@ model Birthdays {
     id                Int    @id @default(autoincrement())
     idOfUser          String
     birthday          String
-    birthdayTimestamp Int
+    birthdayTimestamp BigInt
     idOfGuild         String
 }
 
