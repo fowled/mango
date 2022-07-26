@@ -15,7 +15,7 @@ export async function hasTokenExpired(req: Request, _res: Response, next: NextFu
 
 export async function isLoggedIn(req: Request, res: Response, next: NextFunction) {
 	if (!req.session.token) {
-		return res.status(403).send("Unauthorized");
+		return res.status(403).send({ message: "Unauthorized" });
 	} else {
 		return next();
 	}

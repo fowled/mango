@@ -58,7 +58,7 @@
 
 		guild = await getGuildInfo(guildId);
 
-		if (!guild.name) {
+		if (guild.message) {
 			return (window.location.href = import.meta.env.VITE_REDIRECT_URI);
 		}
 

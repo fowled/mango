@@ -1,4 +1,5 @@
 export interface Guild {
+	message?: string;
 	id: string;
 	name: string;
 	icon: string;
@@ -53,6 +54,7 @@ export interface Guild {
 }
 
 export interface User {
+	message?: string;
 	id: string;
 	username: string;
 	avatar: string;

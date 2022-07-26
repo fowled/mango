@@ -13,7 +13,7 @@
 	onMount(async () => {
 		guilds = await getGuilds();
 
-		if (typeof guilds === "string") {
+		if (!guilds[0]) {
 			return (window.location.href = import.meta.env.VITE_REDIRECT_URI);
 		}
 	});

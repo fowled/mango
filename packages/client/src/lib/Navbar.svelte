@@ -60,7 +60,7 @@
 			{#await user}
 				<Spinner divHeight="h-full" spinHeight="h-10" />
 			{:then data}
-				{#if typeof user !== "string"}
+				{#if !data.message}
 					<div class="flex space-x-3">
 						<img alt="user's avatar" src={data.avatar ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=256` : "/assets/discord_default.png"} class="h-10 rounded-full" />
 
