@@ -40,7 +40,7 @@
 		"fast-glob": "^3.2.11",
 		"http-proxy": "^1.18.1",
 		"hypixel-api-reborn": "latest",
-		"inquirer": "^8.2.4",
+		"inquirer": "^9.0.0",
 		"moment": "^2.29.3",
 		"mongoose": "^6.4.6",
 		"ms": "^2.1.3",
