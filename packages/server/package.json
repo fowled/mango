@@ -21,7 +21,7 @@
 		"url": "git+https://github.com/mazzlabs/mango.git"
 	},
 	"dependencies": {
-		"@discordjs/rest": "^0.6.0",
+		"@discordjs/rest": "^1.0.0",
 		"@mazzlabs/prisma-session-store-fix": "^3.1.8",
 		"@prisma/client": "4.1.0",
 		"@sapphire/snowflake": "^3.2.2",
