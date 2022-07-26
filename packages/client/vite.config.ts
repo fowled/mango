@@ -5,6 +5,6 @@ import { defineConfig } from "vite";
 export default defineConfig({
 	plugins: [svelte(), tsconfigPaths({ loose: true, root: "./" })],
 	server: {
-		port: 3000,
+		port: 3002,
 	},
 });
