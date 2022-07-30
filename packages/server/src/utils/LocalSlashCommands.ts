@@ -9,8 +9,8 @@ export async function SlashCommands(client: Discord.Client) {
 	const guild: Discord.Guild = await client.guilds.fetch(guildID);
 
 	await guild.commands.fetch().then((cmd) =>
-		cmd.forEach((cmd) => {
-			cmd.delete();
+		cmd.forEach(async (cmd) => {
+			await cmd.delete();
 		})
 	);
 
