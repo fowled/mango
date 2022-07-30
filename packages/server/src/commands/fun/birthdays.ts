@@ -47,6 +47,8 @@ module.exports = {
 						const currentDate = new Date();
 						const birthdayDate = new Date(data.birthday);
 
+						birthdayDate.setMonth(birthdayDate.getMonth() + 1);
+
 						[currentDate, birthdayDate].forEach((date) => {
 							date.setFullYear(new Date().getFullYear());
 						});
