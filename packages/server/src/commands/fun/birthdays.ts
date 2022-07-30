@@ -2,7 +2,7 @@ import Discord from "discord.js";
 
 import { timestamp, timestampYear } from "../../utils/Timestamp";
 
-import type { PrismaClient } from "@prisma/client";
+import type { Birthdays, PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -17,46 +17,59 @@ module.exports = {
 	name: "birthdays",
 	description: "Lists all the guild birthdays",
 	category: "fun",
+	subcommands: [
+		{
+			name: "list",
+			description: "Lists all birthdays",
+			type: 1,
+		},
+		{
+			name: "upcoming",
+			description: "Lists upcoming birthdays",
+			type: 1,
+		},
+	],
 	botPermissions: ["ADD_REACTIONS"],
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
-		const birthdays = await prisma.birthdays.findMany({ orderBy: [{ birthdayTimestamp: "asc" }], where: { idOfGuild: interaction.guild.id } });
-
-		if (!birthdays[0]) {
-			return interaction.editReply("It seems like the birthday list is empty! Start by `/birthday add`ing one.");
-		}
+		let birthdays: Birthdays[] = [];
 
 		let page = 0;
 
-		getPageContent(page);
+		switch (interaction.options.getSubcommand()) {
+			case "list":
+				birthdays = await prisma.birthdays.findMany({ orderBy: [{ birthdayTimestamp: "asc" }], where: { idOfGuild: interaction.guild.id } });
+				break;
 
-		function fetchInteraction() {
-			interaction.fetchReply().then((msg: Discord.Message) => {
-				createReactionCollector(msg);
-			});
+			case "upcoming":
+				birthdays = (await prisma.birthdays.findMany({ where: { idOfGuild: interaction.guild.id } }))
+					.filter((data) => {
+						const currentDate = new Date();
+						const birthdayDate = new Date(data.birthday);
+
+						[currentDate, birthdayDate].forEach((date) => {
+							date.setFullYear(new Date().getFullYear());
+						});
+
+						if (birthdayDate.getTime() - currentDate.getTime() >= 0) {
+							return true;
+						} else {
+							return false;
+						}
+					})
+					.sort((a, b) => {
+						return new Date(a.birthday).getTime() - new Date(b.birthday).getTime();
+					});
+				break;
 		}
 
-		function createReactionCollector(m: Discord.Message) {
-			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
-
-			collector.on("collect", (i) => {
-				if (i.user.id !== interaction.member.user.id) return;
-
-				if (i.customId === "back") {
-					page--;
-				} else if (i.customId === "next") {
-					page++;
-				}
-
-				getPageContent(page, i);
-			});
-
-			collector.on("end", () => {
-				return;
-			});
+		if (birthdays.length === 0) {
+			return interaction.editReply("It seems like the birthday list is empty! You may want to `/birthday add` one.");
 		}
 
-		async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
+		await getPageContent();
+
+		async function getPageContent(arg?: Discord.MessageComponentInteraction) {
 			const itemsContent = birthdays.slice(page * 10, page * 10 + 10);
 			const pageContent: string[] = [];
 
@@ -72,12 +85,7 @@ module.exports = {
 		}
 
 		async function sendContent(content: string, arg?: Discord.MessageComponentInteraction) {
-			const inventoryEmbed = new Discord.MessageEmbed()
-				.setDescription(content)
-				.setColor("#33beff")
-				.setTitle("🎁 Birthdays list")
-				.setTimestamp()
-				.setFooter(Client.user.username, Client.user.displayAvatarURL());
+			const inventoryEmbed = new Discord.MessageEmbed().setDescription(content).setColor("#33beff").setTitle("🎁 Birthdays list").setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
 
 			const button = new Discord.MessageActionRow().addComponents(
 				new Discord.MessageButton()
@@ -86,7 +94,7 @@ module.exports = {
 					.setStyle("PRIMARY")
 					.setDisabled(page === 0 ? true : false),
 
-				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker())
+				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker()),
 			);
 
 			if (!arg) {
@@ -108,6 +116,32 @@ module.exports = {
 			} else {
 				return false;
 			}
+		}
+
+		function fetchInteraction() {
+			interaction.fetchReply().then((msg: Discord.Message) => {
+				createReactionCollector(msg);
+			});
+		}
+
+		function createReactionCollector(m: Discord.Message) {
+			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
+
+			collector.on("collect", (i) => {
+				if (i.user.id !== interaction.member.user.id) return;
+
+				if (i.customId === "back") {
+					page--;
+				} else if (i.customId === "next") {
+					page++;
+				}
+
+				getPageContent(i);
+			});
+
+			collector.on("end", () => {
+				return;
+			});
 		}
 	},
 };

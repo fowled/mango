@@ -118,9 +118,7 @@ module.exports = {
 			const birthdayTimestamp = Date.parse(interaction.options.getString("date"));
 
 			if (fetchGuildBirthday) {
-				return interaction.editReply(
-					`Your birthday has already been added to the database at date ${timestamp(fetchGuildBirthday.birthdayTimestamp)}! If you'd like to change it, run \`/birthday edit\`.`
-				);
+				return interaction.editReply(`Your birthday has already been added to the database at date ${timestamp(fetchGuildBirthday.birthdayTimestamp)}! If you'd like to change it, run \`/birthday edit\`.`);
 			}
 
 			if (isNaN(birthdayTimestamp)) {
