@@ -54,7 +54,7 @@ importers:
     specifiers:
       '@discordjs/rest': ^1.0.0
       '@mazzlabs/prisma-session-store-fix': ^3.1.8
-      '@prisma/client': 4.1.0
+      '@prisma/client': 4.1.1
       '@sapphire/snowflake': ^3.2.2
       '@swc/cli': 0.1.57
       '@swc/core': 1.2.220
@@ -100,8 +100,8 @@ importers:
       typescript: next
     dependencies:
       '@discordjs/rest': 1.0.0
-      '@mazzlabs/prisma-session-store-fix': 3.1.8_3r2fg227cdcdoyy3jfnw6y7czi
-      '@prisma/client': 4.1.0_prisma@4.0.0
+      '@mazzlabs/prisma-session-store-fix': 3.1.8_4jkcyulrsh7oa4r2o544l3p6bu
+      '@prisma/client': 4.1.1_prisma@4.0.0
       '@sapphire/snowflake': 3.2.2
       '@types/inquirer': 8.2.1
       canvas: 2.9.3
@@ -271,14 +271,14 @@ packages:
       - supports-color
     dev: false
 
-  /@mazzlabs/prisma-session-store-fix/3.1.8_3r2fg227cdcdoyy3jfnw6y7czi:
+  /@mazzlabs/prisma-session-store-fix/3.1.8_4jkcyulrsh7oa4r2o544l3p6bu:
     resolution: {integrity: sha512-MoTgcHDrq3irvF1K8dYQqwP1NVTh1GgYrGxnIgXJBxSQ8aekRSBOa5kMnD901rOmTEYV+aui7cghrkS/vydeFA==}
     engines: {node: '>=12.0'}
     peerDependencies:
       '@prisma/client': '>=2.16.1'
       express-session: '>=1.17.1'
     dependencies:
-      '@prisma/client': 4.1.0_prisma@4.0.0
+      '@prisma/client': 4.1.1_prisma@4.0.0
       cuid: 2.1.8
       express-session: 1.17.3
       ts-dedent: 2.2.0
@@ -320,8 +320,8 @@ packages:
     dev: false
     optional: true
 
-  /@prisma/client/4.1.0_prisma@4.0.0:
-    resolution: {integrity: sha512-MvfPGAd42vHTiCYxwS6N+2U3F+ukoJ48D2QRnX1zSPJHBkh1CBtshl75daKzvVfgQwSouzSQeugKDej5di+E/g==}
+  /@prisma/client/4.1.1_prisma@4.0.0:
+    resolution: {integrity: sha512-2pXuIUYxHv5H9o6QTa1VIsl4yMgsAjKQOitlo8WVTB+vo73rmMJITBPavdGUZSWUc7adMkFzEV3y5rVTUQr77Q==}
     engines: {node: '>=14.17'}
     requiresBuild: true
     peerDependencies:

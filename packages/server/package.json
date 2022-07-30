@@ -23,7 +23,7 @@
 	"dependencies": {
 		"@discordjs/rest": "^1.0.0",
 		"@mazzlabs/prisma-session-store-fix": "^3.1.8",
-		"@prisma/client": "4.1.0",
+		"@prisma/client": "4.1.1",
 		"@sapphire/snowflake": "^3.2.2",
 		"@types/inquirer": "^8.2.1",
 		"canvas": "^2.9.1",
