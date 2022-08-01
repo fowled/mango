@@ -16,24 +16,11 @@ module.exports = {
 	category: "fun",
 	botPermissions: ["ATTACH_FILES"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
 		const req = await fetch("https://api.thecatapi.com/v1/images/search").then((res) => res.json());
+		
 		const catpic = new Discord.MessageAttachment(req[0].url);
 
-		if (req[0].breeds.length !== 0) {
-			const embed = new Discord.MessageEmbed()
-				.setAuthor(interaction.member.user.tag, interaction.member.user.avatarURL())
-				.setColor("#0FB1FB")
-				.setDescription("Here is some info about your cat.")
-				.addField("Breed", req[0].breeds[0].name, true)
-				.addField("Life span", req[0].breeds[0].life_span, true)
-				.addField("Temperament", req[0].breeds[0].temperament)
-				.setTimestamp()
-				.setFooter(Client.user.username, Client.user.avatarURL());
-
-			return interaction.editReply({ embeds: [embed], files: [catpic] });
-		}
-
-		interaction.editReply({ files: [catpic] });
+		return interaction.editReply({ files: [catpic] });
 	},
 };
