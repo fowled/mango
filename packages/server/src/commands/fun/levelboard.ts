@@ -28,13 +28,13 @@ module.exports = {
 			return interaction.editReply("It seems that the leaderboard is currently empty.");
 		}
 
-		getPageContent(page);
+		getPageContent();
 
 		async function assignData() {
 			return (ranks = await prisma.ranks.findMany({ orderBy: { xp: "desc" }, where: { idOfGuild: interaction.guild.id } }));
 		}
 
-		async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
+		async function getPageContent() {
 			const itemsContent = ranks.slice(page * 10, page * 10 + 10);
 			const pageContent: string[] = [];
 
@@ -60,15 +60,9 @@ module.exports = {
 				new Discord.MessageButton().setCustomId("refresh").setLabel("🔄").setStyle("SUCCESS"),
 			);
 
-			if (!arg) {
-				interaction.editReply({ embeds: [levelEmbed], components: [button] }).then(async () => {
-					fetchInteraction();
-				});
-			} else {
-				arg.update({ embeds: [levelEmbed], components: [button] }).then(async () => {
-					fetchInteraction();
-				});
-			}
+			interaction.editReply({ embeds: [levelEmbed], components: [button] }).then(async () => {
+				fetchInteraction();
+			});
 		}
 
 		function buttonChecker() {
@@ -91,6 +85,8 @@ module.exports = {
 			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
 
 			collector.on("collect", async (i) => {
+				await i.deferUpdate();
+
 				if (i.customId === "back") {
 					page--;
 				} else if (i.customId === "next") {
@@ -99,7 +95,7 @@ module.exports = {
 
 				await assignData();
 
-				getPageContent(page, i);
+				getPageContent();
 			});
 
 			collector.on("end", () => {

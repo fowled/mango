@@ -75,7 +75,7 @@ module.exports = {
 			}
 		}
 
-		async function getPageContent(arg?: Discord.MessageComponentInteraction) {
+		async function getPageContent() {
 			const itemsContent = birthdays.slice(page * 10, page * 10 + 10);
 			const pageContent: string[] = [];
 
@@ -101,15 +101,9 @@ module.exports = {
 				new Discord.MessageButton().setCustomId("refresh").setLabel("🔄").setStyle("SUCCESS"),
 			);
 
-			if (!arg) {
-				interaction.editReply({ embeds: [birthdaysEmbed], components: [button] }).then(async () => {
-					fetchInteraction();
-				});
-			} else {
-				arg.update({ embeds: [birthdaysEmbed], components: [button] }).then(async () => {
-					fetchInteraction();
-				});
-			}
+			interaction.editReply({ embeds: [birthdaysEmbed], components: [button] }).then(async () => {
+				fetchInteraction();
+			});
 		}
 
 		function buttonChecker() {
@@ -132,6 +126,8 @@ module.exports = {
 			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
 
 			collector.on("collect", async (i) => {
+				await i.deferUpdate();
+
 				if (i.customId === "back") {
 					page--;
 				} else if (i.customId === "next") {
@@ -140,7 +136,7 @@ module.exports = {
 
 				await assignData();
 
-				getPageContent(i);
+				getPageContent();
 			});
 
 			collector.on("end", () => {

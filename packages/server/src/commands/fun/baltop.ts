@@ -28,7 +28,7 @@ module.exports = {
 			return interaction.editReply("It seems like nobody has a Mango bank account.");
 		}
 
-		getPageContent(page);
+		getPageContent();
 
 		async function assignData() {
 			return (marketUsers = await prisma.moneyAccs.findMany({ orderBy: [{ money: "desc" }] }));
@@ -36,7 +36,7 @@ module.exports = {
 
 		console.log(marketUsers);
 
-		async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
+		async function getPageContent() {
 			const itemsContent = marketUsers.slice(page * 10, page * 10 + 10);
 			const pageContent: string[] = [];
 
@@ -62,15 +62,9 @@ module.exports = {
 				new Discord.MessageButton().setCustomId("refresh").setLabel("🔄").setStyle("SUCCESS"),
 			);
 
-			if (!arg) {
-				interaction.editReply({ embeds: [usersEmbed], components: [button] }).then(async () => {
-					fetchInteraction();
-				});
-			} else {
-				arg.update({ embeds: [usersEmbed], components: [button] }).then(async () => {
-					fetchInteraction();
-				});
-			}
+			interaction.editReply({ embeds: [usersEmbed], components: [button] }).then(async () => {
+				fetchInteraction();
+			});
 		}
 
 		function buttonChecker() {
@@ -93,6 +87,8 @@ module.exports = {
 			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
 
 			collector.on("collect", async (i) => {
+				await i.deferUpdate();
+
 				if (i.customId === "back") {
 					page--;
 				} else if (i.customId === "next") {
@@ -101,7 +97,7 @@ module.exports = {
 
 				await assignData();
 
-				getPageContent(page, i);
+				getPageContent();
 			});
 
 			collector.on("end", () => {
