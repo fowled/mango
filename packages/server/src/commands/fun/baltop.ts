@@ -34,8 +34,6 @@ module.exports = {
 			return (marketUsers = await prisma.moneyAccs.findMany({ orderBy: [{ money: "desc" }] }));
 		}
 
-		console.log(marketUsers);
-
 		async function getPageContent() {
 			const itemsContent = marketUsers.slice(page * 10, page * 10 + 10);
 			const pageContent: string[] = [];

@@ -27,8 +27,6 @@ module.exports = {
 		if (!args[0]) {
 			const req = await fetch("https://disease.sh/v2/all").then((res) => res.json());
 
-			console.log(req);
-
 			const MessageEmbed = new Discord.MessageEmbed()
 				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL()) // global
 				.setTitle("Coronavirus stats :chart_with_upwards_trend:")
