@@ -39,8 +39,8 @@ module.exports = {
 
 		if (isNaN(price)) {
 			return interaction.editReply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
-		} else if (item.includes("@")) {
-			return interaction.editReply("I can't add this item to the market because it contains a mention. Make sure to remove it.");
+		} else if (item.includes("@") || price.toString().startsWith("-")) {
+			return interaction.editReply("I can't add this item to the market because it contains a mention, or you set a negative price.");
 		} else if (!sellerAccount) {
 			return interaction.editReply("It looks like you haven't created your account! Do `/money` first :wink:");
 		} else if (item.length > 70) {
