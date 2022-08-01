@@ -6,7 +6,6 @@ import glob from "fast-glob";
 import chalk from "chalk";
 import path from "path";
 
-
 import { timestampYear } from "./utils/timestamp";
 import { logError } from "./utils/sendLog";
 import { log } from "./utils/logger";

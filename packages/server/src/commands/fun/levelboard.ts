@@ -24,7 +24,7 @@ module.exports = {
 
 		await assignData();
 
-		if (!ranks) {
+		if (ranks.length === 0) {
 			return interaction.editReply("It seems that the leaderboard is currently empty.");
 		}
 
@@ -89,8 +89,6 @@ module.exports = {
 			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
 
 			collector.on("collect", async (i) => {
-				if (i.user.id !== interaction.member.user.id) return;
-
 				if (i.customId === "back") {
 					page--;
 				} else if (i.customId === "next") {

@@ -24,7 +24,7 @@ module.exports = {
 
 		await assignData();
 
-		if (!marketItems) {
+		if (marketItems.length === 0) {
 			return interaction.editReply("It seems like the market is empty! Start by `/sell`ing an object :wink:");
 		}
 
@@ -91,8 +91,6 @@ module.exports = {
 			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
 
 			collector.on("collect", async (i) => {
-				if (i.user.id !== interaction.member.user.id) return;
-
 				if (i.customId === "back") {
 					page--;
 				} else if (i.customId === "next") {

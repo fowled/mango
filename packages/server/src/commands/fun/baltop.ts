@@ -24,7 +24,7 @@ module.exports = {
 
 		await assignData();
 
-		if (!marketUsers) {
+		if (marketUsers.length === 0) {
 			return interaction.editReply("It seems like nobody has a Mango bank account.");
 		}
 
@@ -45,10 +45,10 @@ module.exports = {
 				const userId = itemsContent[index]["idOfUser"];
 				const user = await Client.users.fetch(userId);
 
-				pageContent.push(`${index + (page * 10 + 1)}. ${user} - \`${wealth}$\``);
+				pageContent.push(`${index + (page * 10 + 1)}. \`${user.tag}\` - \`${wealth}$\``);
 			}
 
-			const usersEmbed = new Discord.MessageEmbed().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("🛒 Market").setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
+			const usersEmbed = new Discord.MessageEmbed().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("👛 Top balances").setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
 
 			const button = new Discord.MessageActionRow().addComponents(
 				new Discord.MessageButton()
@@ -91,8 +91,6 @@ module.exports = {
 			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
 
 			collector.on("collect", async (i) => {
-				if (i.user.id !== interaction.member.user.id) return;
-
 				if (i.customId === "back") {
 					page--;
 				} else if (i.customId === "next") {

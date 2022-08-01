@@ -24,7 +24,7 @@ module.exports = {
 
 		await assignData();
 
-		if (!inventory) {
+		if (inventory.length === 0) {
 			return interaction.editReply("Your inventory is empty! Start by doing `/market` and then buy something with the `/buy [ID of the item]` command.");
 		}
 
