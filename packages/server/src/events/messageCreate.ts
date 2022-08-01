@@ -2,7 +2,7 @@ import Discord from "discord.js";
 
 import { prisma } from "../index";
 
-import { checkXP } from "../utils/Xp";
+import { checkXP } from "../utils/xp";
 
 module.exports = {
 	name: "messageCreate",

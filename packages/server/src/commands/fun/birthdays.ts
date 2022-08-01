@@ -32,44 +32,48 @@ module.exports = {
 	botPermissions: ["ADD_REACTIONS"],
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
-		let birthdays: Birthdays[] = [];
+		let birthdays: Birthdays[];
 
 		let page = 0;
 
-		switch (interaction.options.getSubcommand()) {
-			case "list":
-				birthdays = await prisma.birthdays.findMany({ orderBy: [{ birthdayTimestamp: "asc" }], where: { idOfGuild: interaction.guild.id } });
-				break;
-
-			case "upcoming":
-				birthdays = (await prisma.birthdays.findMany({ where: { idOfGuild: interaction.guild.id } }))
-					.filter((data) => {
-						const currentDate = new Date();
-						const birthdayDate = new Date(data.birthday);
-
-						birthdayDate.setMonth(birthdayDate.getMonth() + 1);
-
-						[currentDate, birthdayDate].forEach((date) => {
-							date.setFullYear(new Date().getFullYear());
-						});
-
-						if (birthdayDate.getTime() - currentDate.getTime() >= 0) {
-							return true;
-						} else {
-							return false;
-						}
-					})
-					.sort((a, b) => {
-						return new Date(a.birthday).getTime() - new Date(b.birthday).getTime();
-					});
-				break;
-		}
+		await assignData();
 
 		if (birthdays.length === 0) {
 			return interaction.editReply("It seems like the birthday list is empty! You may want to `/birthday add` one.");
 		}
 
 		await getPageContent();
+
+		async function assignData() {
+			switch (interaction.options.getSubcommand()) {
+				case "list":
+					birthdays = await prisma.birthdays.findMany({ orderBy: [{ birthdayTimestamp: "asc" }], where: { idOfGuild: interaction.guild.id } });
+					break;
+
+				case "upcoming":
+					birthdays = (await prisma.birthdays.findMany({ where: { idOfGuild: interaction.guild.id } }))
+						.filter((data) => {
+							const currentDate = new Date();
+							const birthdayDate = new Date(data.birthday);
+
+							birthdayDate.setMonth(birthdayDate.getMonth() + 1);
+
+							[currentDate, birthdayDate].forEach((date) => {
+								date.setFullYear(new Date().getFullYear());
+							});
+
+							if (birthdayDate.getTime() - currentDate.getTime() >= 0) {
+								return true;
+							} else {
+								return false;
+							}
+						})
+						.sort((a, b) => {
+							return new Date(a.birthday).getTime() - new Date(b.birthday).getTime();
+						});
+					break;
+			}
+		}
 
 		async function getPageContent(arg?: Discord.MessageComponentInteraction) {
 			const itemsContent = birthdays.slice(page * 10, page * 10 + 10);
@@ -83,11 +87,7 @@ module.exports = {
 				pageContent.push(`${index + (page * 10 + 1)}. ${fetchUser} • ${timestamp(date)} (${timestampYear(date)})`);
 			}
 
-			sendContent(pageContent.join("\n"), arg);
-		}
-
-		async function sendContent(content: string, arg?: Discord.MessageComponentInteraction) {
-			const inventoryEmbed = new Discord.MessageEmbed().setDescription(content).setColor("#33beff").setTitle("🎁 Birthdays list").setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
+			const birthdaysEmbed = new Discord.MessageEmbed().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("🎁 Birthdays list").setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
 
 			const button = new Discord.MessageActionRow().addComponents(
 				new Discord.MessageButton()
@@ -100,11 +100,11 @@ module.exports = {
 			);
 
 			if (!arg) {
-				interaction.editReply({ embeds: [inventoryEmbed], components: [button] }).then(async () => {
+				interaction.editReply({ embeds: [birthdaysEmbed], components: [button] }).then(async () => {
 					fetchInteraction();
 				});
 			} else {
-				arg.update({ embeds: [inventoryEmbed], components: [button] }).then(async () => {
+				arg.update({ embeds: [birthdaysEmbed], components: [button] }).then(async () => {
 					fetchInteraction();
 				});
 			}
@@ -129,14 +129,14 @@ module.exports = {
 		function createReactionCollector(m: Discord.Message) {
 			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
 
-			collector.on("collect", (i) => {
-				if (i.user.id !== interaction.member.user.id) return;
-
+			collector.on("collect", async (i) => {
 				if (i.customId === "back") {
 					page--;
 				} else if (i.customId === "next") {
 					page++;
 				}
+
+				await assignData();
 
 				getPageContent(i);
 			});

@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import { insertLog } from "../utils/LogChecker";
+import { insertLog } from "../utils/logChecker";
 
 module.exports = {
 	name: "emojiCreate",

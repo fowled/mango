@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 import { URLSearchParams } from "url";
 import { Guild, BitField, Client } from "discord.js";
 
-import { log } from "../../src/utils/Logger";
+import { log } from "../../src/utils/logger";
 
 export async function fetchToken(code: string) {
 	const fetchToken = await fetch("https://discord.com/api/oauth2/token", {

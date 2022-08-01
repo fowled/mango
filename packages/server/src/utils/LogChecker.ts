@@ -2,7 +2,7 @@ import Discord from "discord.js";
 
 import { prisma } from "../index";
 
-import { error } from "./Logger";
+import { error } from "./logger";
 
 export async function insertLog(Client: Discord.Client, guildID: string, author: Discord.User, msg: string) {
 	const logchannel = await prisma.logChannels.findUnique({ where: { idOfGuild: guildID } });

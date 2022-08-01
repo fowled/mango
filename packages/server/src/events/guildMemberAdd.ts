@@ -3,7 +3,7 @@ import canvaslib from "canvas";
 
 import { prisma } from "../index";
 
-import { error } from "../utils/Logger";
+import { error } from "../utils/logger";
 
 module.exports = {
 	name: "guildMemberAdd",

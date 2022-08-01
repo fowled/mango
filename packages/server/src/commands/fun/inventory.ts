@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import type { PrismaClient } from "@prisma/client";
+import type { InventoryItems, PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -17,41 +17,21 @@ module.exports = {
 	category: "fun",
 	botPermissions: ["ADD_REACTIONS"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], prisma: PrismaClient) {
-		const inventory = await prisma.inventoryItems.findMany({ where: { authorID: interaction.member.user.id } });
-
-		if (inventory.length === 0) {
-			return interaction.editReply("Your inventory is empty! Start by doing `/market` and then buy something with the `/buy [ID of the item]` command.");
-		}
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
+		let inventory: InventoryItems[];
 
 		let page = 0;
 
-		getPageContent(page);
+		await assignData();
 
-		function fetchInteraction() {
-			interaction.fetchReply().then((msg: Discord.Message) => {
-				createReactionCollector(msg);
-			});
+		if (!inventory) {
+			return interaction.editReply("Your inventory is empty! Start by doing `/market` and then buy something with the `/buy [ID of the item]` command.");
 		}
 
-		function createReactionCollector(m: Discord.Message) {
-			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
+		getPageContent(page);
 
-			collector.on("collect", (i) => {
-				if (i.user.id !== interaction.member.user.id) return;
-
-				if (i.customId === "back") {
-					page--;
-				} else if (i.customId === "next") {
-					page++;
-				}
-
-				getPageContent(page, i);
-			});
-
-			collector.on("end", () => {
-				return;
-			});
+		async function assignData() {
+			return (inventory = await prisma.inventoryItems.findMany({ where: { authorID: interaction.member.user.id } }));
 		}
 
 		async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
@@ -67,12 +47,7 @@ module.exports = {
 				pageContent.push(`${index + (page * 10 + 1)}. \`${itemName}\` - \`${itemPrice}$\` | Sold by \`${user.tag}\``);
 			}
 
-			const inventoryEmbed = new Discord.MessageEmbed()
-				.setDescription(pageContent.join("\n"))
-				.setColor("#33beff")
-				.setTitle("🛒 Inventory")
-				.setTimestamp()
-				.setFooter(Client.user.username, Client.user.displayAvatarURL());
+			const inventoryEmbed = new Discord.MessageEmbed().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("🛒 Inventory").setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
 
 			const button = new Discord.MessageActionRow().addComponents(
 				new Discord.MessageButton()
@@ -81,7 +56,7 @@ module.exports = {
 					.setStyle("PRIMARY")
 					.setDisabled(page === 0 ? true : false),
 
-				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker())
+				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker()),
 			);
 
 			if (!arg) {
@@ -103,6 +78,34 @@ module.exports = {
 			} else {
 				return false;
 			}
+		}
+
+		function fetchInteraction() {
+			interaction.fetchReply().then((msg: Discord.Message) => {
+				createReactionCollector(msg);
+			});
+		}
+
+		function createReactionCollector(m: Discord.Message) {
+			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
+
+			collector.on("collect", async (i) => {
+				if (i.user.id !== interaction.member.user.id) return;
+
+				if (i.customId === "back") {
+					page--;
+				} else if (i.customId === "next") {
+					page++;
+				}
+
+				await assignData();
+
+				getPageContent(page, i);
+			});
+
+			collector.on("end", () => {
+				return;
+			});
 		}
 	},
 };

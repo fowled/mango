@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import type { PrismaClient } from "@prisma/client";
+import type { MarketItems, PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -17,41 +17,21 @@ module.exports = {
 	category: "fun",
 	botPermissions: ["ADD_REACTIONS"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], prisma: PrismaClient) {
-		const marketItems = await prisma.marketItems.findMany();
-
-		if (marketItems.length === 0) {
-			return interaction.editReply("It seems like the market is empty! Start by `/sell`ing an object :wink:");
-		}
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
+		let marketItems: MarketItems[];
 
 		let page = 0;
 
-		getPageContent(page);
+		await assignData();
 
-		function fetchInteraction() {
-			interaction.fetchReply().then((msg: Discord.Message) => {
-				createReactionCollector(msg);
-			});
+		if (!marketItems) {
+			return interaction.editReply("It seems like the market is empty! Start by `/sell`ing an object :wink:");
 		}
 
-		function createReactionCollector(m: Discord.Message) {
-			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
+		getPageContent(page);
 
-			collector.on("collect", (i) => {
-				if (i.user.id !== interaction.member.user.id) return;
-
-				if (i.customId === "back") {
-					page--;
-				} else if (i.customId === "next") {
-					page++;
-				}
-
-				getPageContent(page, i);
-			});
-
-			collector.on("end", () => {
-				return;
-			});
+		async function assignData() {
+			return (marketItems = await prisma.marketItems.findMany());
 		}
 
 		async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
@@ -68,12 +48,7 @@ module.exports = {
 				pageContent.push(`${index + (page * 10 + 1)}. \`${itemName}\` - \`${itemPrice}$\` | Sold by \`${user.tag}\` » \`${itemId}\``);
 			}
 
-			const inventoryEmbed = new Discord.MessageEmbed()
-				.setDescription(pageContent.join("\n"))
-				.setColor("#33beff")
-				.setTitle("🛒 Market")
-				.setTimestamp()
-				.setFooter(Client.user.username, Client.user.displayAvatarURL());
+			const marketEmbed = new Discord.MessageEmbed().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("🛒 Market").setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
 
 			const button = new Discord.MessageActionRow().addComponents(
 				new Discord.MessageButton()
@@ -82,15 +57,15 @@ module.exports = {
 					.setStyle("PRIMARY")
 					.setDisabled(page === 0 ? true : false),
 
-				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker())
+				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker()),
 			);
 
 			if (!arg) {
-				interaction.editReply({ embeds: [inventoryEmbed], components: [button] }).then(async () => {
+				interaction.editReply({ embeds: [marketEmbed], components: [button] }).then(async () => {
 					fetchInteraction();
 				});
 			} else {
-				arg.update({ embeds: [inventoryEmbed], components: [button] }).then(async () => {
+				arg.update({ embeds: [marketEmbed], components: [button] }).then(async () => {
 					fetchInteraction();
 				});
 			}
@@ -104,6 +79,34 @@ module.exports = {
 			} else {
 				return false;
 			}
+		}
+
+		function fetchInteraction() {
+			interaction.fetchReply().then((msg: Discord.Message) => {
+				createReactionCollector(msg);
+			});
+		}
+
+		function createReactionCollector(m: Discord.Message) {
+			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
+
+			collector.on("collect", async (i) => {
+				if (i.user.id !== interaction.member.user.id) return;
+
+				if (i.customId === "back") {
+					page--;
+				} else if (i.customId === "next") {
+					page++;
+				}
+
+				await assignData();
+
+				getPageContent(page, i);
+			});
+
+			collector.on("end", () => {
+				return;
+			});
 		}
 	},
 };

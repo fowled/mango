@@ -2,8 +2,8 @@ import Discord from "discord.js";
 
 import { clientInteractions, prisma } from "../index";
 
-import { logCommand } from "../utils/SendLog";
-import { error } from "../utils/Logger";
+import { logCommand } from "../utils/sendLog";
+import { error } from "../utils/logger";
 
 module.exports = {
 	name: "interactionCreate",

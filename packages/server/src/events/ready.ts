@@ -1,7 +1,7 @@
 import Discord from "discord.js";
 import chalk from "chalk";
 
-import { log } from "./../utils/Logger";
+import { log } from "../utils/logger";
 
 module.exports = {
 	name: "ready",

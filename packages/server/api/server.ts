@@ -10,7 +10,7 @@ import type { Client } from "discord.js";
 
 import { User, Guild } from "../../client/src/interfaces/interfaces";
 
-import { log } from "../src/utils/Logger";
+import { log } from "../src/utils/logger";
 
 import { registerRoutes } from "./utils/routes";
 

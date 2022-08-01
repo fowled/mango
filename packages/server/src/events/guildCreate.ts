@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import { error } from "../utils/Logger";
+import { error } from "../utils/logger";
 
 module.exports = {
 	name: "guildCreate",

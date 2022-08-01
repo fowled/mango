@@ -4,13 +4,9 @@ import path from "path";
 
 import { Command } from "../interfaces/Command";
 
-export async function SlashCommands(client: Discord.Client) {
-	await client.application.commands.fetch().then((cmd) =>
-		cmd.forEach((cmd) => {
-			cmd.delete();
-		})
-	);
+import { log } from "./logger";
 
+export async function create(client: Discord.Client) {
 	const commandFiles = glob.sync("src/commands/**/*.ts");
 
 	commandFiles.map(async (file) => {
@@ -30,5 +26,17 @@ export async function SlashCommands(client: Discord.Client) {
 		}
 
 		await client.application.commands.create(commandObject);
+
+		log(`${command.name} has been created`);
 	});
+}
+
+export async function remove(client: Discord.Client) {
+	await client.application.commands.fetch().then((cmd) =>
+		cmd.forEach(async (cmd) => {
+			await cmd.delete();
+
+			log(`${cmd.name} has been deleted`);
+		}),
+	);
 }
