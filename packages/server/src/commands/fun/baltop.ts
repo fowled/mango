@@ -58,6 +58,8 @@ module.exports = {
 					.setDisabled(page === 0 ? true : false),
 
 				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker()),
+
+				new Discord.MessageButton().setCustomId("refresh").setLabel("🔄").setStyle("SUCCESS"),
 			);
 
 			if (!arg) {

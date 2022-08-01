@@ -31,7 +31,7 @@ module.exports = {
 		getPageContent(page);
 
 		async function assignData() {
-			return ranks = await prisma.ranks.findMany({ orderBy: { xp: "desc" }, where: { idOfGuild: interaction.guild.id } });
+			return (ranks = await prisma.ranks.findMany({ orderBy: { xp: "desc" }, where: { idOfGuild: interaction.guild.id } }));
 		}
 
 		async function getPageContent(page: number, arg?: Discord.MessageComponentInteraction) {
@@ -56,6 +56,8 @@ module.exports = {
 					.setDisabled(page === 0 ? true : false),
 
 				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker()),
+
+				new Discord.MessageButton().setCustomId("refresh").setLabel("🔄").setStyle("SUCCESS"),
 			);
 
 			if (!arg) {
