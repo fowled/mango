@@ -25,7 +25,9 @@ module.exports = {
 
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
 		if (!args[0]) {
-			const req = await fetch("https://corona.lmao.ninja/v2/all").then((req) => req.json());
+			const req = await fetch("https://disease.sh/v2/all").then((res) => res.json());
+
+			console.log(req);
 
 			const MessageEmbed = new Discord.MessageEmbed()
 				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL()) // global
@@ -45,7 +47,7 @@ module.exports = {
 
 			interaction.editReply({ embeds: [MessageEmbed] });
 		} else {
-			const req = await fetch(`https://corona.lmao.ninja/v2/countries/${args[0]}`).then((res) => res.json());
+			const req = await fetch(`https://disease.sh/v2/countries/${args[0]}`).then((res) => res.json());
 
 			if (req.message) {
 				return interaction.editReply("<:no:835565213322575963> Couldn't find this country!");
