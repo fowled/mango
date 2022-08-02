@@ -6,7 +6,7 @@ import { insertLog } from "../../utils/logChecker";
 /**
  * Deletes several messages at once.
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -25,7 +25,7 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
 		const channel = interaction.channel as Discord.TextChannel;
 
 		if (args.length > 0) {
@@ -37,7 +37,7 @@ module.exports = {
 					})
 					.catch(() => interaction.editReply("I don't have the permission to delete messages."));
 
-				insertLog(Client, interaction.guild.id, interaction.member.user, `**${args[0]}** messages got deleted in *${interaction.channel}* by ${interaction.member.user.tag}`);
+				insertLog(Client, interaction.guild.id, interaction.user, `**${args[0]}** messages got deleted in *${interaction.channel}* by ${interaction.user.tag}`);
 			} else {
 				interaction.editReply("Invlid number provided. Only provided number between 1 and 100");
 			}

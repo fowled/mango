@@ -1,4 +1,4 @@
-import Discord from "discord.js";
+import Discord, { GuildMember } from "discord.js";
 
 import { timestamp } from "../../utils/timestamp";
 
@@ -7,7 +7,7 @@ import { timestamp } from "../../utils/timestamp";
 /**
  * Shows some user information.
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -24,8 +24,8 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
-		const selectedUser = args[0] ? await interaction.guild.members.fetch(args[0]) : interaction.member;
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
+		const selectedUser = args[0] ? await interaction.guild.members.fetch(args[0]) : (interaction.member as GuildMember);
 
 		if (selectedUser) {
 			const userinfoMessageEmbed = new Discord.MessageEmbed()
@@ -46,7 +46,7 @@ module.exports = {
 								.filter((role) => role.name !== "@everyone")
 								.map((el) => el.name)
 								.join(", "),
-					false
+					false,
 				)
 				.setColor("RANDOM")
 				.setFooter(Client.user.username, Client.user.avatarURL());

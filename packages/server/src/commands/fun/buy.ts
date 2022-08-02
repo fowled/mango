@@ -7,7 +7,7 @@ import type { PrismaClient } from "@prisma/client";
 /**
  * Buys something on the black market (lmfao)
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -24,7 +24,7 @@ module.exports = {
 		},
 	],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], prisma: PrismaClient) {
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[], prisma: PrismaClient) {
 		const ID = args[0];
 
 		const item = await prisma.marketItems.findUnique({ where: { id: parseInt(ID) } });
@@ -33,7 +33,7 @@ module.exports = {
 			return interaction.editReply(`I'm sorry, but there is no item matching ID **${args[0]}**. To consult the market, do \`/market\` :wink:`);
 		}
 
-		const authorMoney = await prisma.moneyAccs.findUnique({ where: { idOfUser: interaction.member.user.id } });
+		const authorMoney = await prisma.moneyAccs.findUnique({ where: { idOfUser: interaction.user.id } });
 		const sellerMoney = await prisma.moneyAccs.findUnique({ where: { idOfUser: item.sellerID } });
 
 		if (!authorMoney) {
@@ -42,7 +42,7 @@ module.exports = {
 
 		if (authorMoney.money < item.price) {
 			return interaction.editReply(`You must have \`${item.price - authorMoney.money}\` more dollars to get this item. :frowning:`);
-		} else if (interaction.member.user.id === item.sellerID) {
+		} else if (interaction.user.id === item.sellerID) {
 			return interaction.editReply("You can't buy your own item...");
 		}
 
@@ -51,7 +51,7 @@ module.exports = {
 				name: item.name,
 				price: item.price,
 				sellerID: item.sellerID,
-				authorID: interaction.member.user.id,
+				authorID: interaction.user.id,
 			},
 		});
 

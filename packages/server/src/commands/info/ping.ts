@@ -5,7 +5,7 @@ import Discord from "discord.js";
 /**
  * Tests the bot ping.
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -14,12 +14,12 @@ module.exports = {
 	description: "Get info on Mango's latency",
 	category: "info",
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction) {
 		await interaction.editReply("Ping?");
 
 		const pong = new Discord.MessageEmbed()
-			.setTitle(`Latency information for ${interaction.member.user.tag}`)
-			.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+			.setTitle(`Latency information for ${interaction.user.tag}`)
+			.setAuthor(interaction.user.username, interaction.user.avatarURL())
 			.setColor("RANDOM")
 			.setDescription("Latency information")
 			.addField("API latency", `**${Math.round(Client.ws.ping)}** ms.`, true)

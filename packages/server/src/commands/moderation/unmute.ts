@@ -6,7 +6,7 @@ import { insertLog } from "../../utils/logChecker";
 /**
  * Mutes a user
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -25,7 +25,7 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
 		const memberUnmute = await interaction.guild.members.fetch(args[0]);
 
 		const muteRole = interaction.guild.roles.cache.find((role) => role.name === "muted");
@@ -39,7 +39,7 @@ module.exports = {
 
 			interaction.editReply(`**${memberUnmute.user.tag}** has been successfully unmuted. <:yes:835565213498736650>`);
 
-			insertLog(Client, interaction.guild.id, interaction.member.user, `**${memberUnmute.user.tag}** has been __unmuted__ by ${interaction.member.user.tag}.`);
+			insertLog(Client, interaction.guild.id, interaction.user, `**${memberUnmute.user.tag}** has been __unmuted__ by ${interaction.user.tag}.`);
 		} catch (error) {
 			interaction.editReply("Sorry, but I got an unexcepted error while unmuting this user. " + +`\`\`\`${error.message}\`\`\``);
 		}

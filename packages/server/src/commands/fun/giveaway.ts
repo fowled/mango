@@ -6,7 +6,7 @@ import ms from "ms";
 /**
  * Creates a giveaway
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -16,7 +16,7 @@ module.exports = {
 	category: "fun",
 	botPermissions: ["ADD_REACTIONS"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction) {
 		createGiveaway();
 
 		async function createGiveaway() {
@@ -24,7 +24,7 @@ module.exports = {
 
 			const channel = interaction.channel as Discord.TextChannel;
 
-			const filter = (msg: Discord.Message) => msg.author.id === interaction.member.user.id;
+			const filter = (msg: Discord.Message) => msg.author.id === interaction.user.id;
 
 			let giveawayName: string, giveawayRewards: string;
 
@@ -62,7 +62,7 @@ module.exports = {
 						.setTitle("🎉🎈 Giveaway!")
 						.setDescription(`**${giveawayName}** giveaway! \nRewards: *${giveawayRewards}* \nEnds in \`${durationNumber}\` \nReact with :thumbsup: to enter!`)
 						.setColor("RANDOM")
-						.setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
+						.setAuthor(interaction.user.username, interaction.user.displayAvatarURL())
 						.setTimestamp()
 						.setFooter(Client.user.username, Client.user.displayAvatarURL());
 

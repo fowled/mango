@@ -6,7 +6,7 @@ import canvaslib from "canvas";
 /**
  * Sends a mug, with the message author's profile pic
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -24,10 +24,10 @@ module.exports = {
 		},
 	],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
 		const canvas = canvaslib.createCanvas(300, 250);
 		const ctx = canvas.getContext("2d");
-		const user = args[0] ? interaction.mentions.users.first() : interaction.member.user;
+		const user = args[0] ? await interaction.guild.members.fetch(args[0]) : interaction.user;
 
 		const background = await canvaslib.loadImage("./assets/images/mug.png");
 

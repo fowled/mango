@@ -2,13 +2,15 @@ import Discord from "discord.js";
 
 import { clientInteractions, prisma } from "../index";
 
-import { logCommand } from "../utils/sendLog";
-import { error } from "../utils/logger";
+import { logCommand } from "../utils/SendLog";
+import { error } from "../utils/Logger";
 
 module.exports = {
 	name: "interactionCreate",
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
-		if (interaction.isButton()) return;
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction) {
+		if (interaction.isButton()) {
+			return await interaction.deferUpdate();
+		}
 
 		const args = interaction.options.data.filter((data) => data.type !== "SUB_COMMAND").map((opt) => opt.value.toString());
 		const command = interaction.commandName;
@@ -16,7 +18,7 @@ module.exports = {
 		if (!interaction.isCommand() && !clientInteractions.has(command)) return;
 
 		const commandInteraction = clientInteractions.get(command);
-		const interactionMember = interaction.member;
+		const interactionMember = interaction.member as Discord.GuildMember;
 
 		if (commandInteraction.memberPermissions && !interactionMember.permissions.has(commandInteraction.memberPermissions as Discord.PermissionResolvable)) {
 			return interaction.reply({

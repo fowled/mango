@@ -6,7 +6,7 @@ import canvaslib from "canvas";
 /**
  * Draws something.
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -24,7 +24,7 @@ module.exports = {
 		},
 	],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
 		if (args[0].length > 45) {
 			return interaction.editReply("Your text is too long! Please retry the command.");
 		}
@@ -44,14 +44,14 @@ module.exports = {
 		ctx.font = "35px Caviar Dreams";
 		ctx.fillStyle = "#ffffff";
 		ctx.textAlign = "left";
-		ctx.fillText(`${interaction.member.user.username} said:`, 10, canvas.height / 2);
+		ctx.fillText(`${interaction.user.username} said:`, 10, canvas.height / 2);
 
 		ctx.beginPath();
 		ctx.arc(630, 75, 60, 0, Math.PI * 2, true);
 		ctx.closePath();
 		ctx.clip();
 
-		const avatar = await canvaslib.loadImage(interaction.member.user.displayAvatarURL({ format: "jpg" }));
+		const avatar = await canvaslib.loadImage(interaction.user.displayAvatarURL({ format: "jpg" }));
 
 		ctx.drawImage(avatar, 570, 15, 120, 120);
 

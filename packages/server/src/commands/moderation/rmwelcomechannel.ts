@@ -7,7 +7,7 @@ import type { PrismaClient } from "@prisma/client";
 /**
  * Saves the ID of the channel you want logs in.
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -17,7 +17,7 @@ module.exports = {
 	category: "moderation",
 	memberPermissions: ["MANAGE_CHANNELS"],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction, _args: string[], prisma: PrismaClient) {
 		const welcomechannel = await prisma.welChannels.findUnique({ where: { idOfGuild: interaction.guild.id } });
 
 		if (welcomechannel) {

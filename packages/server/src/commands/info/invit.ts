@@ -5,7 +5,7 @@ import Discord from "discord.js";
 /**
  * Generates an invitation in the server.
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -15,7 +15,7 @@ module.exports = {
 	category: "info",
 	botPermissions: ["CREATE_INSTANT_INVITE"],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction) {
 		(await interaction.guild.fetch()).invites
 			.create(interaction.channel.id)
 			.then((invite) => {

@@ -7,7 +7,7 @@ import { insertLog } from "../../utils/logChecker";
 /**
  * Locks a channel
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -33,7 +33,7 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
 		const role = await interaction.guild.roles.fetch(args[0]);
 		const messageChannel = !args[1] ? (interaction.channel as Discord.GuildChannel) : await interaction.guild.channels.fetch(args[1]);
 
@@ -54,6 +54,6 @@ module.exports = {
 				interaction.editReply("An error occured. <:no:835565213322575963> ```\n" + err + "```");
 			});
 
-		insertLog(Client, interaction.guild.id, interaction.member.user, `**${interaction.channel}** (\`${(interaction.channel as Discord.TextChannel).name}\`) has been unlocked by *${interaction.member.user.tag}*`);
+		insertLog(Client, interaction.guild.id, interaction.user, `**${interaction.channel}** (\`${(interaction.channel as Discord.TextChannel).name}\`) has been unlocked by *${interaction.user.tag}*`);
 	},
 };

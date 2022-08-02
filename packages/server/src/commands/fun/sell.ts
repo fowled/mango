@@ -7,7 +7,7 @@ import type { PrismaClient } from "@prisma/client";
 /**
  * Sells something to the black market (lmfao)
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -31,11 +31,11 @@ module.exports = {
 		},
 	],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[], prisma: PrismaClient) {
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[], prisma: PrismaClient) {
 		const item = args.slice(1, args.length).join(" ");
 		const price = parseInt(args[0]);
 
-		const sellerAccount = await prisma.moneyAccs.findUnique({ where: { idOfUser: interaction.member.user.id } });
+		const sellerAccount = await prisma.moneyAccs.findUnique({ where: { idOfUser: interaction.user.id } });
 
 		if (isNaN(price)) {
 			return interaction.editReply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
@@ -58,7 +58,7 @@ module.exports = {
 				data: {
 					name: item,
 					price: price,
-					sellerID: interaction.member.user.id,
+					sellerID: interaction.user.id,
 				},
 			})
 			.catch(() => {

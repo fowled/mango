@@ -6,7 +6,7 @@ import fs from "fs";
 /**
  * Re-creating the hangman game but it's in Discord
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -15,7 +15,7 @@ module.exports = {
 	description: "Play a hangman game directly from your Discord channel",
 	category: "game",
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction) {
 		const wordsToFind: string[] = [];
 		const data = fs.readFileSync("assets/docs/words.txt", "utf-8");
 
@@ -29,11 +29,11 @@ module.exports = {
 		let guessesNumber = 0;
 		let stars = "";
 
-		const filter = (m: Discord.Message) => m.author.id === interaction.member.user.id;
+		const filter = (m: Discord.Message) => m.author.id === interaction.user.id;
 
 		replaceWithStars();
 
-		const startEmbed = new Discord.MessageEmbed().setAuthor(interaction.member.user.username, interaction.member.user.avatarURL()).setColor("#1E90FF").setDescription(`Hangman game generated. Try to guess the word. You have 10 guesses. \nWord to find: \`${stars}\``).setFooter(Client.user.username, Client.user.avatarURL());
+		const startEmbed = new Discord.MessageEmbed().setAuthor(interaction.user.username, interaction.user.avatarURL()).setColor("#1E90FF").setDescription(`Hangman game generated. Try to guess the word. You have 10 guesses. \nWord to find: \`${stars}\``).setFooter(Client.user.username, Client.user.avatarURL());
 
 		await interaction.editReply({ embeds: [startEmbed] }).then(() => {
 			createMessageCollector();
@@ -44,14 +44,14 @@ module.exports = {
 				if (checkLetter(collected.first().content.toLowerCase())) {
 					replaceWithStars(collected.first().content.toLowerCase());
 
-					const correctLetter = new Discord.MessageEmbed().setAuthor(interaction.member.user.username, interaction.member.user.avatarURL()).setColor("#1E90FF").setDescription(`Congrats, you found a letter. \`${stars}\``).setFooter(Client.user.username, Client.user.avatarURL());
+					const correctLetter = new Discord.MessageEmbed().setAuthor(interaction.user.username, interaction.user.avatarURL()).setColor("#1E90FF").setDescription(`Congrats, you found a letter. \`${stars}\``).setFooter(Client.user.username, Client.user.avatarURL());
 
 					interaction.editReply({ embeds: [correctLetter] });
 				} else if (checkLetter(collected.first().content.toLowerCase()) === false) {
 					guessesNumber++;
 
 					const incorrectLetter = new Discord.MessageEmbed()
-						.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+						.setAuthor(interaction.user.username, interaction.user.avatarURL())
 						.setColor("#ff0000")
 						.setDescription(`Nope, wrong letter. You have ${10 - guessesNumber} guesses left. \`${stars}\``)
 						.setFooter(Client.user.username, Client.user.avatarURL());
@@ -62,7 +62,7 @@ module.exports = {
 				} else if (checkLetter(collected.first().content.toLowerCase()) === null) {
 					guessesNumber++;
 
-					const alreadyFound = new Discord.MessageEmbed().setAuthor(interaction.member.user.username, interaction.member.user.avatarURL()).setColor("#1E90FF").setDescription(`You already found that letter! \`${stars}\``).setFooter(Client.user.username, Client.user.avatarURL());
+					const alreadyFound = new Discord.MessageEmbed().setAuthor(interaction.user.username, interaction.user.avatarURL()).setColor("#1E90FF").setDescription(`You already found that letter! \`${stars}\``).setFooter(Client.user.username, Client.user.avatarURL());
 
 					interaction.editReply({ embeds: [alreadyFound] });
 				}
@@ -70,16 +70,16 @@ module.exports = {
 				if (checkIfWin()) {
 					collected.first().delete();
 					const youWon = new Discord.MessageEmbed()
-						.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+						.setAuthor(interaction.user.username, interaction.user.avatarURL())
 						.setColor("#ffff00")
-						.setDescription(`**${interaction.member.user.tag}** You won! Congratulations. :clap: \nAttempts left: *${10 - guessesNumber}* - word found: \`${thatOneWord}\`.`)
+						.setDescription(`**${interaction.user.tag}** You won! Congratulations. :clap: \nAttempts left: *${10 - guessesNumber}* - word found: \`${thatOneWord}\`.`)
 						.setFooter(Client.user.username, Client.user.avatarURL());
 
 					return interaction.editReply({ embeds: [youWon] });
 				} else if (guessesNumber >= 10) {
 					collected.first().delete();
 
-					const youLost = new Discord.MessageEmbed().setAuthor(interaction.member.user.username, interaction.member.user.avatarURL()).setColor("#ff0000").setDescription(`**${interaction.member.user.tag}** I'm sorry, but you lost. \nWord to guess was: \`${thatOneWord}\`.`).setFooter(Client.user.username, Client.user.avatarURL());
+					const youLost = new Discord.MessageEmbed().setAuthor(interaction.user.username, interaction.user.avatarURL()).setColor("#ff0000").setDescription(`**${interaction.user.tag}** I'm sorry, but you lost. \nWord to guess was: \`${thatOneWord}\`.`).setFooter(Client.user.username, Client.user.avatarURL());
 
 					return interaction.editReply({ embeds: [youLost] });
 				} else {

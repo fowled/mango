@@ -7,7 +7,7 @@ import type { MoneyAccs, PrismaClient } from "@prisma/client";
 /**
  * Shows the richest Mango users
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -17,7 +17,7 @@ module.exports = {
 	category: "fun",
 	botPermissions: ["ADD_REACTIONS"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, _args: string[], prisma: PrismaClient) {
 		let marketUsers: MoneyAccs[];
 
 		let page = 0;
@@ -85,8 +85,6 @@ module.exports = {
 			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
 
 			collector.on("collect", async (i) => {
-				await i.deferUpdate();
-
 				if (i.customId === "back") {
 					page--;
 				} else if (i.customId === "next") {

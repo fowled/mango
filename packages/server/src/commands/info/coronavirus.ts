@@ -6,7 +6,7 @@ import fetch from "node-fetch";
 /**
  * Replies with stats about the COVID-19 epidemic
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -23,12 +23,12 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
 		if (!args[0]) {
 			const req = await fetch("https://disease.sh/v2/all").then((res) => res.json());
 
 			const MessageEmbed = new Discord.MessageEmbed()
-				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL()) // global
+				.setAuthor(interaction.user.username, interaction.user.avatarURL()) // global
 				.setTitle("Coronavirus stats :chart_with_upwards_trend:")
 				.setDescription("Find here COVID-19 related information")
 				.setColor("#08ABF9")
@@ -52,7 +52,7 @@ module.exports = {
 			}
 
 			const MessageEmbed = new Discord.MessageEmbed()
-				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL()) // country
+				.setAuthor(interaction.user.username, interaction.user.avatarURL()) // country
 				.setTitle("Coronavirus stats :chart_with_upwards_trend:")
 				.setDescription("Find here COVID-19 related information")
 				.setThumbnail(req.countryInfo.flag.toString())

@@ -9,7 +9,7 @@ import type { PrismaClient } from "@prisma/client";
 /**
  * Birthday module!
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -64,7 +64,7 @@ module.exports = {
 		},
 	],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, _args: string[], prisma: PrismaClient) {
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction, _args: string[], prisma: PrismaClient) {
 		const birthdayChannel = await prisma.birthdaysChannels.findUnique({ where: { idOfGuild: interaction.guild.id } });
 		const fetchBirthdays = await prisma.birthdays.findMany({ where: { idOfUser: interaction.user.id } });
 		const fetchGuildBirthday = await prisma.birthdays.findFirst({ where: { idOfGuild: interaction.guild.id, idOfUser: interaction.user.id } });

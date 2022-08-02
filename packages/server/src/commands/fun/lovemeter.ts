@@ -5,7 +5,7 @@ import Discord from "discord.js";
 /**
  * A love meter between 2 members
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -22,7 +22,7 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
 		const member = Client.users.cache.get(args[0]);
 
 		const randomNumber = Math.floor(Math.random() * 10) + 1;
@@ -39,7 +39,7 @@ module.exports = {
 
 		const lovemeter = new Discord.MessageEmbed()
 			.setTitle("Lovemeter :heart:")
-			.setAuthor(interaction.member.user.tag, interaction.member.user.avatarURL())
+			.setAuthor(interaction.user.tag, interaction.user.avatarURL())
 			.setColor("#08ABF9")
 			.setDescription(`Current __lovemeter__ between you and *${member}*: ${messageContent} \n→ **${randomNumber * 10}**% of love`)
 			.setFooter(Client.user.username, Client.user.avatarURL())

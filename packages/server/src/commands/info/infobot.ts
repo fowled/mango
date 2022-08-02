@@ -7,7 +7,7 @@ import moment from "moment";
 /**
  * Replies with some info about the bot host
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -17,7 +17,7 @@ module.exports = {
 	description: "Get info about Mango's infrastructure",
 	category: "info",
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction) {
 		const discordVersion = (await import("discord.js")).version;
 		let ramInfo: si.Systeminformation.MemData, os: si.Systeminformation.OsData;
 
@@ -25,7 +25,7 @@ module.exports = {
 		await si.osInfo().then((data) => (os = data));
 
 		const info = new Discord.MessageEmbed()
-			.setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
+			.setAuthor(interaction.user.username, interaction.user.displayAvatarURL())
 			.setDescription("About **Mango's infrastructure**")
 			.addField("Node version", process.version)
 			.addField("Discord.js version", discordVersion)

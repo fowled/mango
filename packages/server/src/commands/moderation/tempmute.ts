@@ -8,7 +8,7 @@ import { insertLog } from "../../utils/logChecker";
 /**
  * Mutes a user
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -41,7 +41,7 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
 		const memberMute = await interaction.guild.members.fetch(args[0]);
 
 		if (!memberMute) {
@@ -84,7 +84,7 @@ module.exports = {
 
 		interaction.editReply(`**${memberMute.user.tag}** has been muted for *${ms(ms(mutetime))}*. <:yes:835565213498736650>`);
 
-		insertLog(Client, interaction.guild.id, interaction.member.user, `**${memberMute.user.tag}** has been __tempmuted__ by ${interaction.member.user.tag} for: *${reason}* \nDuration of the punishment: ${ms(ms(mutetime))}`);
+		insertLog(Client, interaction.guild.id, interaction.user, `**${memberMute.user.tag}** has been __tempmuted__ by ${interaction.user.tag} for: *${reason}* \nDuration of the punishment: ${ms(ms(mutetime))}`);
 
 		setTimeout(async function () {
 			memberMute.roles.remove(muteRole);

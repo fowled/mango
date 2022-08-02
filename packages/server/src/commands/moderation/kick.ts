@@ -7,7 +7,7 @@ import { insertLog } from "../../utils/logChecker";
 /**
  * Kicks user.
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -33,14 +33,14 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
 		const memberKick = await interaction.guild.members.fetch(args[0]);
 		const reason = args[1] ? args[1] : "no reason provided";
 
 		if (memberKick) {
-			const kickMessageAuthor = interaction.member.user.username;
-			const kickGuildName = interaction.member.guild.name;
-			const guildIcon = interaction.member.guild.iconURL();
+			const kickMessageAuthor = interaction.user.username;
+			const kickGuildName = interaction.guild.name;
+			const guildIcon = interaction.guild.iconURL();
 			const date = new Date();
 
 			const kickMessageUser = new Discord.MessageEmbed()
@@ -59,7 +59,7 @@ module.exports = {
 					.then(async () => {
 						const kickMessageGuild = new Discord.MessageEmbed()
 							.setTitle(`User ${memberKick.user.username} has been kicked from the guild!`)
-							.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+							.setAuthor(interaction.user.username, interaction.user.avatarURL())
 							.setDescription(`<:yes:835565213498736650> **${memberKick.user.tag}** is now kicked (*${reason}*)!`)
 							.setTimestamp()
 							.setColor("#4292f4")
@@ -70,14 +70,14 @@ module.exports = {
 						insertLog(
 							Client,
 							interaction.guild.id,
-							interaction.member.user,
-							`**${memberKick.user.tag}** has been __kicked__ by ${interaction.member.user.tag} for: *${reason}* \nDuration of the punishment: infinite`
+							interaction.user,
+							`**${memberKick.user.tag}** has been __kicked__ by ${interaction.user.tag} for: *${reason}* \nDuration of the punishment: infinite`
 						);
 					})
 					.catch(() => {
 						const kickMessageError = new Discord.MessageEmbed()
 							.setTitle("Error")
-							.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+							.setAuthor(interaction.user.username, interaction.user.avatarURL())
 							.setDescription(`An error has occured while kicking **${memberKick.user.tag}**; missing permissions. Make sure I have admin perms, then I promise I'll take the hammer!`)
 							.setTimestamp()
 							.setColor("#FF0000")

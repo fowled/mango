@@ -8,7 +8,7 @@ import { hypixelClient } from "../../index";
 /**
  * Shows information about a Hypixel player.
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -88,7 +88,7 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction) {
 		let player: Player;
 
 		try {
@@ -124,7 +124,7 @@ module.exports = {
 			const lastLoggedOn = Math.round(new Date(player.lastLoginTimestamp).getTime() / 1000);
 
 			const embed = new Discord.MessageEmbed()
-				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+				.setAuthor(interaction.user.username, interaction.user.avatarURL())
 				.setColor("RANDOM")
 				.setTitle(player.rank !== "Default" ? `[${player.rank}] ${player.nickname}` : player.nickname)
 				.setThumbnail(`https://crafatar.com/avatars/${player.uuid}?size=256&default=MHF_Steve&overlay`)
@@ -145,7 +145,7 @@ module.exports = {
 
 		function skywars() {
 			const embed = new Discord.MessageEmbed()
-				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+				.setAuthor(interaction.user.username, interaction.user.avatarURL())
 				.setColor("RANDOM")
 				.setTitle(`Skywars • [${player.stats.skywars.level}⭐] ${player.nickname}`)
 				.setThumbnail(`https://crafatar.com/avatars/${player.uuid}?size=256&default=MHF_Steve&overlay`)
@@ -166,7 +166,7 @@ module.exports = {
 
 		function bedwars() {
 			const embed = new Discord.MessageEmbed()
-				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+				.setAuthor(interaction.user.username, interaction.user.avatarURL())
 				.setColor("RANDOM")
 				.setTitle(`Bedwars • [${player.stats.bedwars.level}⭐] ${player.nickname}`)
 				.setThumbnail(`https://crafatar.com/avatars/${player.uuid}?size=256&default=MHF_Steve&overlay`)
@@ -187,7 +187,7 @@ module.exports = {
 
 		function duels() {
 			const embed = new Discord.MessageEmbed()
-				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+				.setAuthor(interaction.user.username, interaction.user.avatarURL())
 				.setColor("RANDOM")
 				.setTitle(`Duels • [${player.stats.duels.division}] ${player.nickname}`)
 				.setThumbnail(`https://crafatar.com/avatars/${player.uuid}?size=256&default=MHF_Steve&overlay`)
@@ -217,7 +217,7 @@ module.exports = {
 
 		function arcade() {
 			const embed = new Discord.MessageEmbed()
-				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+				.setAuthor(interaction.user.username, interaction.user.avatarURL())
 				.setColor("RANDOM")
 				.setTitle(`Arcade • ${player.nickname}`)
 				.setThumbnail(`https://crafatar.com/avatars/${player.uuid}?size=256&default=MHF_Steve&overlay`)

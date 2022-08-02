@@ -7,7 +7,7 @@ import { timestamp } from "../../utils/timestamp";
 /**
  * Shows information about a server.
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -16,12 +16,12 @@ module.exports = {
 	description: "Get useful information from a server",
 	category: "info",
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction) {
 		const guildPicture: string = interaction.guild.iconURL();
 
 		let afkChannel: string;
 
-		if (interaction.member.guild.afkChannel) {
+		if (interaction.guild.afkChannel) {
 			afkChannel = `#<${interaction.guild.afkChannel}>`;
 		} else {
 			afkChannel = "None.";

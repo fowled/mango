@@ -6,7 +6,7 @@ import fs from "fs";
 /**
  * Re-creating the hangman game but it's in Discord
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -16,7 +16,7 @@ module.exports = {
 	category: "game",
 	botPermissions: ["ADD_REACTIONS", "MANAGE_MESSAGES"],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction) {
 		const wordsToFind: string[] = [];
 		const data = fs.readFileSync("assets/docs/words.txt", "utf-8");
 
@@ -31,14 +31,11 @@ module.exports = {
 
 		let guessesNumber = 0;
 		let stars = "";
-		let secondMessage: Discord.CommandInteraction & Discord.Message;
+		let secondMessage: Discord.Message;
 
 		replaceWithStars();
 
-		const firstMessageEmbed = new Discord.MessageEmbed()
-			.setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
-			.setDescription("The game is currently initializating - please wait for the reactions to register.")
-			.setColor("#1E90FF");
+		const firstMessageEmbed = new Discord.MessageEmbed().setAuthor(interaction.user.username, interaction.user.displayAvatarURL()).setDescription("The game is currently initializating - please wait for the reactions to register.").setColor("#1E90FF");
 
 		interaction.editReply({ embeds: [firstMessageEmbed] }).then(() => {
 			fetchInteraction();
@@ -57,7 +54,7 @@ module.exports = {
 
 			const statusMessageEmbed = new Discord.MessageEmbed().setDescription(`Word: \`${stars}\``).setColor("#1E90FF");
 
-			interaction.channel.send({ embeds: [statusMessageEmbed] }).then(async (msg: Discord.Message & Discord.CommandInteraction) => {
+			interaction.channel.send({ embeds: [statusMessageEmbed] }).then(async (msg: Discord.Message) => {
 				for (const char of reactionstwo) {
 					await msg.react(char);
 				}
@@ -68,25 +65,24 @@ module.exports = {
 			});
 		}
 
-		async function applyReactionCollectors(...args: [Discord.Message & Discord.CommandInteraction, Discord.CommandInteraction & Discord.Message]) {
+		async function applyReactionCollectors(...args: [Discord.Message & Discord.CommandInteraction, Discord.Message]) {
 			for (let i = 0; i < args.length; i++) {
 				createReactionCollector(args[i]);
 			}
 		}
 
-		function createReactionCollector(msg: Discord.Message & Discord.CommandInteraction) {
+		function createReactionCollector(msg: Discord.Message | (Discord.Message & Discord.CommandInteraction)) {
 			const filter = (_reaction: Discord.MessageReaction, user: Discord.User) => {
-				return user.id === interaction.member.user.id;
+				return user.id === interaction.user.id;
 			};
 
-			msg
-				.awaitReactions({ filter, max: 1 })
+			msg.awaitReactions({ filter, max: 1 })
 				.then((collected) => {
 					if (checkLetter(emojiToLetter(collected.first().emoji.name))) {
 						replaceWithStars(emojiToLetter(collected.first().emoji.name));
 
 						const correctLetter = new Discord.MessageEmbed()
-							.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+							.setAuthor(interaction.user.username, interaction.user.avatarURL())
 							.setDescription(`<:yes:835565213498736650> Good job - you just found the \`${emojiToLetter(collected.first().emoji.name)}\` letter!`)
 							.setColor("#3AD919");
 
@@ -99,7 +95,7 @@ module.exports = {
 						guessesNumber++;
 
 						const incorrectLetter = new Discord.MessageEmbed()
-							.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+							.setAuthor(interaction.user.username, interaction.user.avatarURL())
 							.setDescription(`<:no:835565213322575963> Wrong letter \`${emojiToLetter(collected.first().emoji.name)}\`. Remaining attempts: **${10 - guessesNumber}**.`)
 							.setColor("#ff0000");
 
@@ -110,16 +106,13 @@ module.exports = {
 
 					if (checkIfWin()) {
 						const youWon = new Discord.MessageEmbed()
-							.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+							.setAuthor(interaction.user.username, interaction.user.avatarURL())
 							.setDescription(`GG - you won the game with *${10 - guessesNumber} attempts* left!`)
 							.setColor("#ffff00");
 
 						return interaction.editReply({ embeds: [youWon] });
 					} else if (guessesNumber >= 10) {
-						const youLost = new Discord.MessageEmbed()
-							.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
-							.setDescription(`You lost! Word was \`${thatOneWord}\`.`)
-							.setColor("#ff0000");
+						const youLost = new Discord.MessageEmbed().setAuthor(interaction.user.username, interaction.user.avatarURL()).setDescription(`You lost! Word was \`${thatOneWord}\`.`).setColor("#ff0000");
 
 						return interaction.editReply({ embeds: [youLost] });
 					}

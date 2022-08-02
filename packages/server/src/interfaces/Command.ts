@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, Message } from "discord.js";
+import { Client, CommandInteraction } from "discord.js";
 
 import type { PrismaClient } from "@prisma/client";
 
@@ -17,5 +17,5 @@ export interface Command {
 	];
 	botPermissions?: string[];
 	memberPermissions?: string[];
-	execute(Client: Client, interaction: CommandInteraction & Message, args: string[], db: PrismaClient): Promise<void>;
+	execute(Client: Client, interaction: CommandInteraction, args: string[], db: PrismaClient): Promise<void>;
 }

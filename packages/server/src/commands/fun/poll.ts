@@ -6,7 +6,7 @@ import ms from "ms";
 /**
  * answers with the guild's level leaderboard (levelboard)
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -59,7 +59,7 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
 		const time = args[0];
 
 		args.shift();
@@ -79,8 +79,8 @@ module.exports = {
 		}
 
 		const poll = new Discord.MessageEmbed()
-			.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
-			.setTitle(`Poll by **${interaction.member.user.tag}**`)
+			.setAuthor(interaction.user.username, interaction.user.avatarURL())
+			.setTitle(`Poll by **${interaction.user.tag}**`)
 			.setDescription(choices.join("\n"))
 			.setColor("#00BFFF")
 			.setFooter(Client.user.username, Client.user.avatarURL());
@@ -127,7 +127,7 @@ module.exports = {
 				}
 
 				const votes = new Discord.MessageEmbed()
-					.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+					.setAuthor(interaction.user.username, interaction.user.avatarURL())
 					.setTitle("Results of the poll")
 					.setURL(`https://discordapp.com/channels/${interaction.guild.id}/${interaction.channel.id}/${msgID}`)
 					.setDescription(msgContent)

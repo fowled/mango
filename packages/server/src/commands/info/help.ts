@@ -7,7 +7,7 @@ import { clientInteractions } from "../../index";
 /**
  * Answers with the infohelp message in dm.
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -24,7 +24,7 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
 		if (args[0]) {
 			const command = clientInteractions.get(args[0]);
 
@@ -33,7 +33,7 @@ module.exports = {
 			}
 
 			const infoEmbed = new Discord.MessageEmbed()
-				.setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
+				.setAuthor(interaction.user.username, interaction.user.displayAvatarURL())
 				.setDescription(`Information about the **${command.name}** command`)
 				.addField("Category", command.category, false)
 				.addField("Description", command.description, false)
@@ -57,7 +57,7 @@ module.exports = {
 			interaction.editReply({ embeds: [infoEmbed] });
 		} else {
 			const helpinteraction = new Discord.MessageEmbed()
-				.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+				.setAuthor(interaction.user.username, interaction.user.avatarURL())
 				.setColor("RANDOM")
 				.setDescription(
 					`» Prefix: \`/\`

@@ -8,7 +8,7 @@ import { error } from "../../utils/logger";
 /**
  * Bans a user.
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -34,14 +34,14 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message, args: string[]) {
+	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
 		const memberBan = await interaction.guild.members.fetch(args[0]);
 		const reason = args[1] ? args[1] : "no reason provided";
 
 		if (memberBan) {
-			const banMessageAuthor = interaction.member.user.tag;
-			const banGuildName = interaction.member.guild.name;
-			const guildIcon = interaction.member.guild.iconURL();
+			const banMessageAuthor = interaction.user.tag;
+			const banGuildName = interaction.guild.name;
+			const guildIcon = interaction.guild.iconURL();
 			const bannedUserId = memberBan.user.id;
 			const date = new Date();
 
@@ -63,7 +63,7 @@ module.exports = {
 					.then(async () => {
 						const banMessageGuild = new Discord.MessageEmbed()
 							.setTitle(`User **${memberBan.user.username}** is now banned!`)
-							.setAuthor(interaction.member.user.username, interaction.member.user.avatarURL())
+							.setAuthor(interaction.user.username, interaction.user.avatarURL())
 							.setDescription(`<:yes:835565213498736650> **${memberBan.user.tag}** is now banned (*${reason}*)!`)
 							.setTimestamp()
 							.setColor("#4292f4")
@@ -74,8 +74,8 @@ module.exports = {
 						insertLog(
 							Client,
 							interaction.guild.id,
-							interaction.member.user,
-							`**${memberBan.user.tag}** has been __banned__ by ${interaction.member.user.tag} for: *${reason}* \nDuration of the punishment: infinite`
+							interaction.user,
+							`**${memberBan.user.tag}** has been __banned__ by ${interaction.user.tag} for: *${reason}* \nDuration of the punishment: infinite`
 						);
 					})
 					.catch(async (err: Error) => {

@@ -5,7 +5,7 @@ import Discord, { MessageReaction } from "discord.js";
 /**
  * Re-creating the tic-tac-toe game but it's in Discord
  * @param {Discord.Client} Client the client
- * @param {Discord.CommandInteraction & Discord.Message} Interaction the slash command that contains the interaction name
+ * @param {Discord.CommandInteraction} Interaction the slash command that contains the interaction name
  * @param {string[]} args the command args
  * @param {any} options some options
  */
@@ -15,13 +15,13 @@ module.exports = {
 	category: "game",
 	botPermissions: ["ADD_REACTIONS"],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction & Discord.Message) {
+	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction) {
 		const grid = {};
 		let turn = "J1";
 		let secondPlayer: Discord.User;
 
 		const filter = (reaction: MessageReaction, user: { id: string }) => {
-			return user.id !== interaction.member.user.id;
+			return user.id !== interaction.user.id;
 		};
 
 		interaction.editReply("> Waiting for the 2nd player to approve... (click on the reaction to begin the game)").then(() => {
@@ -83,13 +83,13 @@ module.exports = {
 
 		function createReactionCollector(msg: Discord.Message) {
 			const filter = (_reaction: MessageReaction, user: { id: string }) => {
-				return user.id === interaction.member.user.id || user.id === secondPlayer.id;
+				return user.id === interaction.user.id || user.id === secondPlayer.id;
 			};
 
 			msg
 				.awaitReactions({ filter: filter, max: 1 })
 				.then(async (collected) => {
-					if ((secondPlayer === collected.first().users.cache.last() && turn !== "J2") || (interaction.member.user === collected.first().users.cache.last() && turn !== "J1")) {
+					if ((secondPlayer === collected.first().users.cache.last() && turn !== "J2") || (interaction.user === collected.first().users.cache.last() && turn !== "J1")) {
 						collected.last().users.remove(collected.first().users.cache.last().id);
 						return createReactionCollector(msg);
 					}
