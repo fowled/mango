@@ -53,7 +53,7 @@
 
 		forms = [
 			{ name: "quote", content, default: content, maxLength: 200 },
-			{ name: "yes", content: quote.content, default: content, maxLength: 250 },
+			{ name: "yes", content, default: content, maxLength: 250 },
 		];
 
 		guild = await getGuildInfo(guildId);

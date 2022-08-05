@@ -20,7 +20,8 @@ module.exports = {
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, _args: string[], prisma: PrismaClient) {
 		let marketUsers: MoneyAccs[];
 
-		let page = 0;
+		let page = 0,
+			replyId: string;
 
 		await assignData();
 
@@ -28,7 +29,9 @@ module.exports = {
 			return interaction.editReply("It seems like nobody has a Mango bank account.");
 		}
 
-		getPageContent();
+		await getPageContent();
+
+		await createReactionCollector();
 
 		async function assignData() {
 			return (marketUsers = await prisma.moneyAccs.findMany({ orderBy: [{ money: "desc" }] }));
@@ -60,9 +63,13 @@ module.exports = {
 				new Discord.MessageButton().setCustomId("refresh").setLabel("🔄").setStyle("SUCCESS"),
 			);
 
-			interaction.editReply({ embeds: [usersEmbed], components: [button] }).then(async () => {
-				fetchInteraction();
-			});
+			if (replyId) {
+				return interaction.channel.messages.fetch(replyId).then((msg) => msg.edit({ embeds: [usersEmbed], components: [button] }));
+			} else {
+				await interaction.editReply({ embeds: [usersEmbed], components: [button] });
+
+				replyId = await interaction.fetchReply().then((msg) => msg.id);
+			}
 		}
 
 		function buttonChecker() {
@@ -75,29 +82,25 @@ module.exports = {
 			}
 		}
 
-		function fetchInteraction() {
+		async function createReactionCollector() {
 			interaction.fetchReply().then((msg: Discord.Message) => {
-				createReactionCollector(msg);
-			});
-		}
+				const collector = msg.createMessageComponentCollector({ componentType: "BUTTON" });
 
-		function createReactionCollector(m: Discord.Message) {
-			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
+				collector.on("collect", async (i) => {
+					if (i.customId === "back") {
+						page--;
+					} else if (i.customId === "next") {
+						page++;
+					}
 
-			collector.on("collect", async (i) => {
-				if (i.customId === "back") {
-					page--;
-				} else if (i.customId === "next") {
-					page++;
-				}
+					await assignData();
 
-				await assignData();
+					getPageContent();
+				});
 
-				getPageContent();
-			});
-
-			collector.on("end", () => {
-				return;
+				collector.on("end", () => {
+					return;
+				});
 			});
 		}
 	},

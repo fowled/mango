@@ -20,7 +20,8 @@ module.exports = {
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, _args: string[], prisma: PrismaClient) {
 		let marketItems: MarketItems[];
 
-		let page = 0;
+		let page = 0,
+			replyId: string;
 
 		await assignData();
 
@@ -28,13 +29,15 @@ module.exports = {
 			return interaction.editReply("It seems like the market is empty! Start by `/sell`ing an object :wink:");
 		}
 
-		getPageContent(page);
+		await getPageContent();
+
+		await createReactionCollector();
 
 		async function assignData() {
 			return (marketItems = await prisma.marketItems.findMany());
 		}
 
-		async function getPageContent(page: number) {
+		async function getPageContent() {
 			const itemsContent = marketItems.slice(page * 10, page * 10 + 10);
 			const pageContent: string[] = [];
 
@@ -62,9 +65,13 @@ module.exports = {
 				new Discord.MessageButton().setCustomId("refresh").setLabel("🔄").setStyle("SUCCESS"),
 			);
 
-			interaction.editReply({ embeds: [marketEmbed], components: [button] }).then(async () => {
-				fetchInteraction();
-			});
+			if (replyId) {
+				return interaction.channel.messages.fetch(replyId).then((msg) => msg.edit({ embeds: [marketEmbed], components: [button] }));
+			} else {
+				await interaction.editReply({ embeds: [marketEmbed], components: [button] });
+
+				replyId = await interaction.fetchReply().then((msg) => msg.id);
+			}
 		}
 
 		function buttonChecker() {
@@ -77,29 +84,25 @@ module.exports = {
 			}
 		}
 
-		function fetchInteraction() {
+		async function createReactionCollector() {
 			interaction.fetchReply().then((msg: Discord.Message) => {
-				createReactionCollector(msg);
-			});
-		}
+				const collector = msg.createMessageComponentCollector({ componentType: "BUTTON" });
 
-		function createReactionCollector(m: Discord.Message) {
-			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
+				collector.on("collect", async (i) => {
+					if (i.customId === "back") {
+						page--;
+					} else if (i.customId === "next") {
+						page++;
+					}
 
-			collector.on("collect", async (i) => {
-				if (i.customId === "back") {
-					page--;
-				} else if (i.customId === "next") {
-					page++;
-				}
+					await assignData();
 
-				await assignData();
+					getPageContent();
+				});
 
-				getPageContent(page);
-			});
-
-			collector.on("end", () => {
-				return;
+				collector.on("end", () => {
+					return;
+				});
 			});
 		}
 	},

@@ -8,11 +8,11 @@ import cors from "cors";
 import type { PrismaClient } from "@prisma/client";
 import type { Client } from "discord.js";
 
-import { User, Guild } from "../../client/src/interfaces/interfaces";
+import { User, Guild } from "../../../client/src/interfaces/interfaces";
 
-import { log } from "../src/utils/logger";
+import { log } from "../utils/logger";
 
-import { registerRoutes } from "./utils/routes";
+import { registerRoutes } from "./routes";
 
 declare module "express-session" {
 	interface SessionData {

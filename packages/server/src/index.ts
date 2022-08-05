@@ -13,7 +13,7 @@ import { log } from "./utils/logger";
 import { Command } from "./interfaces/Command";
 import { Event } from "./interfaces/Event";
 
-import { createAPIServer } from "../api/server";
+import { createAPIServer } from "./api/server";
 
 import { Token } from "./token";
 

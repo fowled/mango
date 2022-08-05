@@ -34,7 +34,8 @@ module.exports = {
 	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, _args: string[], prisma: PrismaClient) {
 		let birthdays: Birthdays[];
 
-		let page = 0;
+		let page = 0,
+			replyId: string;
 
 		await assignData();
 
@@ -43,6 +44,8 @@ module.exports = {
 		}
 
 		await getPageContent();
+
+		await createReactionCollector();
 
 		async function assignData() {
 			switch (interaction.options.getSubcommand()) {
@@ -101,9 +104,13 @@ module.exports = {
 				new Discord.MessageButton().setCustomId("refresh").setLabel("🔄").setStyle("SUCCESS"),
 			);
 
-			interaction.editReply({ embeds: [birthdaysEmbed], components: [button] }).then(async () => {
-				fetchInteraction();
-			});
+			if (replyId) {
+				return interaction.channel.messages.fetch(replyId).then((msg) => msg.edit({ embeds: [birthdaysEmbed], components: [button] }));
+			} else {
+				await interaction.editReply({ embeds: [birthdaysEmbed], components: [button] });
+
+				replyId = await interaction.fetchReply().then((msg) => msg.id);
+			}
 		}
 
 		function buttonChecker() {
@@ -116,29 +123,25 @@ module.exports = {
 			}
 		}
 
-		function fetchInteraction() {
+		async function createReactionCollector() {
 			interaction.fetchReply().then((msg: Discord.Message) => {
-				createReactionCollector(msg);
-			});
-		}
+				const collector = msg.createMessageComponentCollector({ componentType: "BUTTON" });
 
-		function createReactionCollector(m: Discord.Message) {
-			const collector = m.createMessageComponentCollector({ componentType: "BUTTON", max: 1 });
+				collector.on("collect", async (i) => {
+					if (i.customId === "back") {
+						page--;
+					} else if (i.customId === "next") {
+						page++;
+					}
 
-			collector.on("collect", async (i) => {
-				if (i.customId === "back") {
-					page--;
-				} else if (i.customId === "next") {
-					page++;
-				}
+					await assignData();
 
-				await assignData();
+					getPageContent();
+				});
 
-				getPageContent();
-			});
-
-			collector.on("end", () => {
-				return;
+				collector.on("end", () => {
+					return;
+				});
 			});
 		}
 	},
