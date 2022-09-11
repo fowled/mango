@@ -1,10 +1,8 @@
-import { svelte } from "@sveltejs/vite-plugin-svelte";
 import tsconfigPaths from "vite-tsconfig-paths";
+import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-	plugins: [svelte(), tsconfigPaths({ loose: true, root: "./" })],
-	server: {
-		port: 3002,
-	},
+	plugins: [vue(), tsconfigPaths({ loose: true, root: "./" })],
+	server: { port: 3002 },
 });

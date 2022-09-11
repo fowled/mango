@@ -8,9 +8,9 @@ import cors from "cors";
 import type { PrismaClient } from "@prisma/client";
 import type { Client } from "discord.js";
 
-import { User, Guild } from "../../../client/src/interfaces/interfaces";
+import { User, Guild } from "@client/types/interfaces";
 
-import { log } from "../utils/logger";
+import { log } from "utils/logger";
 
 import { registerRoutes } from "./routes";
 

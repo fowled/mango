@@ -1,6 +1,6 @@
 import Discord, { GuildMember } from "discord.js";
 
-import { timestamp } from "../../utils/timestamp";
+import { timestamp } from "utils/timestamp";
 
 // Member command
 

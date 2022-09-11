@@ -1,6 +1,9 @@
 {
 	"compilerOptions": {
-		"baseUrl": ".",
+		"baseUrl": "./src",
+		"paths": {
+			"@client/*": ["../../client/src/*"]
+		},
 		"target": "ES2015",
 		"module": "CommonJS",
 		"lib": ["es2015", "es2016", "es2017", "esnext"],
@@ -9,8 +12,6 @@
 		"declaration": false,
 		"declarationMap": false,
 		"sourceMap": false,
-		// "outDir": "./out",
-		// "rootDir": "./src",
 		"removeComments": false,
 		"strict": false,
 		"moduleResolution": "Node",

@@ -1,5 +1,6 @@
 import Discord from "discord.js";
-import { insertLog } from "../../utils/logChecker";
+
+import { insertLog } from "utils/logChecker";
 
 // Moderation command
 

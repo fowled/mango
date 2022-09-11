@@ -51,6 +51,8 @@ export interface Guild {
 	discoverySplashURL: string;
 	bannerURL: string;
 	bot?: boolean;
+	welcome?: string;
+	birthdays?: string;
 }
 
 export interface User {
