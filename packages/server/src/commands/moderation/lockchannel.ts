@@ -1,7 +1,7 @@
 import Discord from "discord.js";
 
-import { error } from "../../utils/logger";
-import { insertLog } from "../../utils/logChecker";
+import { error } from "utils/logger";
+import { insertLog } from "utils/logChecker";
 
 // Mod command
 

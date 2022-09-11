@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import { clientInteractions } from "../../index";
+import { clientInteractions } from "index";
 
 // Help command
 

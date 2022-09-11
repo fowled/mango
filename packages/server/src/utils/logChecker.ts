@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import { prisma } from "../index";
+import { prisma } from "index";
 
 import { error } from "./logger";
 

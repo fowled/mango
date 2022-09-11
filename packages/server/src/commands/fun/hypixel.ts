@@ -1,7 +1,7 @@
 import Discord from "discord.js";
 import { Player } from "hypixel-api-reborn";
 
-import { hypixelClient } from "../../index";
+import { hypixelClient } from "index";
 
 // Fun command
 

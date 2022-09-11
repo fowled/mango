@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import { timestamp } from "../../utils/timestamp";
+import { timestamp } from "utils/timestamp";
 
 import type { PrismaClient } from "@prisma/client";
 

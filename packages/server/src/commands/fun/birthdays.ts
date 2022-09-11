@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import { timestamp, timestampYear } from "../../utils/timestamp";
+import { timestamp, timestampYear } from "utils/timestamp";
 
 import type { Birthdays, PrismaClient } from "@prisma/client";
 

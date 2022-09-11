@@ -4,7 +4,7 @@ import { BitField, Client } from "discord.js";
 
 import { log } from "./logger";
 
-import { prisma } from "../index";
+import { prisma } from "index";
 
 export async function fetchToken(code: string) {
 	const fetchToken = await fetch("https://discord.com/api/oauth2/token", {

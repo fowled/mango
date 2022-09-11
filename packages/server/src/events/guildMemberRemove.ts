@@ -1,9 +1,9 @@
 import Discord from "discord.js";
 import canvaslib from "canvas";
 
-import { prisma } from "../index";
+import { prisma } from "index";
 
-import { error } from "../utils/logger";
+import { error } from "utils/logger";
 
 module.exports = {
 	name: "guildMemberRemove",

@@ -3,9 +3,9 @@ import { Client } from "discord.js";
 
 import type { PrismaClient } from "@prisma/client";
 
-import { hasTokenExpired, isLoggedIn } from "../utils/manager";
+import { hasTokenExpired, isLoggedIn } from "utils/manager";
 
-import { fetchToken, getUser, getGuilds, getStats, manageGuild } from "../utils/requests";
+import { fetchToken, getUser, getGuilds, getStats, manageGuild } from "utils/requests";
 
 export async function registerRoutes(app: Express, client: Client, database: PrismaClient) {
 	app.get("/", async function (_req: Request, res: Response) {

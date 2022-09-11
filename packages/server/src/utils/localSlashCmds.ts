@@ -3,7 +3,7 @@ import Discord from "discord.js";
 import glob from "fast-glob";
 import path from "path";
 
-import { Command } from "../interfaces/Command";
+import { Command } from "interfaces/Command";
 
 import { log } from "./logger";
 
