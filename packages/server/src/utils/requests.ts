@@ -1,8 +1,10 @@
 import fetch from "node-fetch";
 import { URLSearchParams } from "url";
-import { Guild, BitField, Client } from "discord.js";
+import { BitField, Client } from "discord.js";
 
 import { log } from "./logger";
+
+import { prisma } from "../index";
 
 export async function fetchToken(code: string) {
 	const fetchToken = await fetch("https://discord.com/api/oauth2/token", {
@@ -84,7 +86,11 @@ export async function getGuilds(token: string, client: Client) {
 }
 
 export async function getStats(client: Client) {
-	const retrieveUsers = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
+	const retrieveUsers = client.guilds.cache.reduce((acc, guild) => {
+		if (!guild.available) return;
+
+		return acc + guild.memberCount;
+	}, 0);
 
 	const stats = {
 		users: retrieveUsers,
@@ -95,11 +101,14 @@ export async function getStats(client: Client) {
 }
 
 export async function manageGuild(guildId: string, client: Client) {
-	let guildInfo: Guild | string = client.guilds.resolve(guildId);
+	const [welcomeChannel, birthdaysChannel] = await Promise.all([await prisma.welChannels.findUnique({ where: { idOfGuild: guildId } }), await prisma.birthdaysChannels.findUnique({ where: { idOfGuild: guildId } })]);
 
-	if (guildInfo === null) {
-		guildInfo = "Bot isn't in guild.";
-	}
+	const guild = client.guilds.resolve(guildId);
 
-	return guildInfo;
+	Object.assign(guild, {
+		welcome: welcomeChannel?.idOfChannel ?? "unspecified",
+		birthdays: birthdaysChannel?.idOfChannel ?? "unspecified",
+	});
+
+	return guild;
 }

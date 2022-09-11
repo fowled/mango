@@ -1,4 +1,4 @@
-import type { Guild, User } from "interfaces/interfaces";
+import type { Guild, User } from "types/interfaces";
 
 async function requestManager(url: string) {
 	return await fetch(url, { credentials: "include" }).then((res) => res.json());

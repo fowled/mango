@@ -60,6 +60,10 @@ export async function registerRoutes(app: Express, client: Client, database: Pri
 	});
 
 	app.get("/manage/:guildId", isLoggedIn, async function (req: Request, res: Response) {
+		if (client.guilds.resolve(req.params.guildId) === null) {
+			return res.status(403).send({ message: "Bot isn't in guild." });
+		}
+
 		return res.status(200).send(await manageGuild(req.params.guildId, client));
 	});
 
