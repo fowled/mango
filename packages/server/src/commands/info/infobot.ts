@@ -32,14 +32,22 @@ module.exports = {
 			.addField("OS", os.distro)
 			.addField("Memory", `${(ramInfo.total / 104853.2055).toFixed()} mb`)
 			.addField("Uptime", moment.duration(Client.uptime).humanize())
-			.addField("Stats", `» \`${collectUsers()}\` users \n» \`${Client.guilds.cache.size}\` guilds`)
+			.addField("Stats", `» \`${await collectUsers()}\` users \n» \`${Client.guilds.cache.size}\` guilds`)
 			.setColor("RANDOM")
 			.setTimestamp()
 			.setFooter(Client.user.username, Client.user.displayAvatarURL());
 		interaction.editReply({ embeds: [info] });
 
-		function collectUsers() {
-			return Client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
+		async function collectUsers() {
+			let usersCount = 0;
+
+			await Client.guilds.cache.map((guild) => {
+				if (guild.memberCount === undefined) return;
+
+				return usersCount += guild.memberCount;
+			});
+
+			return usersCount;
 		}
 	},
 };
