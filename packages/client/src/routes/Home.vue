@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ShieldCheckIcon, CakeIcon, InformationCircleIcon, CubeIcon, EllipsisHorizontalCircleIcon } from "@heroicons/vue/24/outline";
+import { RouterLink } from "vue-router";
 
 import { getStats } from "shared/requests";
 
-import { RouterLink } from "vue-router";
+import Navbar from "lib/Navbar.vue";
+import Footer from "lib/Footer.vue";
 
 const gatherStats = await getStats();
 
@@ -63,6 +65,8 @@ const features = [
 </script>
 
 <template>
+	<Navbar />
+
 	<section id="header" class="container px-4 pt-16 lg:pt-24 mx-auto xl:max-w-4xl text-center inset-0 bg-grid-slate-900/[0.04] bg-[bottom_1px_center]">
 		<h1 class="text-4xl font-extrabold tracking-tight dark:text-gray-100 text-gray-800 sm:leading-none md:text-5xl lg:text-6xl">Enhance your Discord server with lots of useful features.</h1>
 
@@ -140,4 +144,6 @@ const features = [
 			</div>
 		</div>
 	</section>
+
+	<Footer />
 </template>

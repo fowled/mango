@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import Spinner from "lib/Spinner.vue";
+import Navbar from "lib/Navbar.vue";
+import Footer from "lib/Footer.vue";
 
 import { getGuilds } from "shared/requests";
 
 const guilds = await getGuilds();
 
-if (!guilds) {
+if (!guilds[0]) {
 	window.location.href = import.meta.env.VITE_REDIRECT_URI;
 }
 </script>
 
 <template>
-	<Spinner v-if="guilds?.length === 0" div-height="h-[75vh]" spin-height="h-10" />
+	<Navbar />
 
-	<section v-else id="dashboard" class="dark:text-white container mx-auto text-center mt-12">
+	<section id="dashboard" class="dark:text-white container mx-auto text-center mt-12">
 		<p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl">Select a server to get started!</p>
 
 		<ul class="flex flex-wrap flex-col sm:flex-row justify-center mx-auto sm:gap-x-12 mt-14 sm:space-x-4 space-x-0 sm:space-y-0 pb-12">
@@ -30,4 +31,6 @@ if (!guilds) {
 			</router-link>
 		</ul>
 	</section>
+
+	<Footer />
 </template>
