@@ -23,6 +23,7 @@
 	"exclude": ["node_modules"],
 	"ts-node": {
 		"transpileOnly": true,
-		"transpiler": "ts-node/transpilers/swc"
+		"transpiler": "ts-node/transpilers/swc",
+	        "require": ["tsconfig-paths/register"]
 	}
 }
