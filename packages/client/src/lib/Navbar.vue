@@ -64,7 +64,7 @@ onMounted(() => {
 
 					<h1 class="flex items-center dark:text-gray-300">{{ user.username }}#{{ user.discriminator }}</h1>
 
-					<span v-on:click="logOutAndRedirect" class="my-auto">
+					<span @click="logOutAndRedirect" class="my-auto">
 						<ArrowRightOnRectangleIcon class="self-center h-6 w-6 cursor-pointer dark:text-white" />
 					</span>
 				</div>

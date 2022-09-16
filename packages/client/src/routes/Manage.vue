@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ExclamationCircleIcon } from "@heroicons/vue/24/outline";
 import { TransitionRoot } from "@headlessui/vue";
-
 import { useRoute } from "vue-router";
 import { reactive, ref } from "vue";
 
@@ -27,7 +26,7 @@ const forms = reactive([
 const handleChange = () => {
 	let areFormsEqual = true;
 
-	forms.forEach((form) => {
+	forms.forEach(async (form) => {
 		if (form.content !== guild[form.name as keyof typeof guild.bot]) {
 			return (areFormsEqual = false);
 		}
@@ -68,7 +67,7 @@ const saveChanges = () => {
 			<div v-for="form in forms" class="space-y-2">
 				<span class="block text-sm"> {{ form.name }} • {{ form.content!.length }}/{{ form.maxLength }} </span>
 
-				<textarea :name="form.name" :oninput="handleChange" v-model="form.content" :spellCheck="false" :maxLength="form.maxLength" class="h-40 resize-none text-sm p-3 overflow-hidden focus:outline-none shadow-sm rounded-md dark:bg-slate-800 dark:ring-0" />
+				<textarea :name="form.name" @input="handleChange" v-model="form.content" :spellCheck="false" :maxLength="form.maxLength" class="h-40 resize-none text-sm p-3 overflow-hidden focus:outline-none shadow-sm rounded-md dark:bg-slate-800 dark:ring-0" />
 			</div>
 		</div>
 
@@ -91,9 +90,9 @@ const saveChanges = () => {
 					<p class="ml-3 font-medium text-white truncate">You have unsaved changes!</p>
 				</div>
 
-				<span class="sm:flex cursor-pointer hidden order-3 items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white" :on:click="resetChanges" role="button"> Reset </span>
+				<span class="sm:flex cursor-pointer hidden order-3 items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white" @click="resetChanges" role="button"> Reset </span>
 
-				<span class="flex cursor-pointer ml-2 order-4 items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50" :on:click="saveChanges" role="button"> Save changes </span>
+				<span class="flex cursor-pointer ml-2 order-4 items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50" @click="saveChanges" role="button"> Save changes </span>
 			</div>
 		</transition-root>
 	</section>
