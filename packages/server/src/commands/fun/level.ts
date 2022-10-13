@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import type { PrismaClient } from "@prisma/client";
+import type {PrismaClient} from "@prisma/client";
 
 // Fun command
 
@@ -12,22 +12,27 @@ import type { PrismaClient } from "@prisma/client";
  * @param {any} options some options
  */
 module.exports = {
-	name: "level",
-	description: "Replies with your Mango level and XP",
-	category: "fun",
+    name: "level",
+    description: "Replies with your Mango level and XP",
+    category: "fun",
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, _args: string[], prisma: PrismaClient) {
-		const fetchUser = await prisma.ranks.findFirst({ where: { idOfUser: interaction.user.id, idOfGuild: interaction.guild.id } });
-		const userXp = fetchUser.xp;
+    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
+        const fetchUser = await prisma.ranks.findFirst({
+            where: {
+                idOfUser: interaction.user.id,
+                idOfGuild: interaction.guild.id
+            }
+        });
+        const userXp = fetchUser.xp;
 
-		const levelEmbedinteraction = new Discord.MessageEmbed()
-			.setTitle(`${interaction.user.tag} level`)
-			.setAuthor(interaction.user.username, interaction.user.avatarURL())
-			.setDescription(`Your level - :gem: XP: **${fetchUser.xp}** | :large_orange_diamond: Level: *${Math.floor(userXp / 50)}*`)
-			.setColor("#019FE9")
-			.setFooter(Client.user.username, Client.user.avatarURL())
-			.setTimestamp();
+        const levelEmbedinteraction = new Discord.EmbedBuilder()
+            .setTitle(`${interaction.user.tag} level`)
+            .setAuthor({name: interaction.user.username, iconURL: interaction.user.avatarURL()})
+            .setDescription(`Your level - :gem: XP: **${fetchUser.xp}** | :large_orange_diamond: Level: *${Math.floor(userXp / 50)}*`)
+            .setColor("#019FE9")
+            .setFooter({text: Client.user.username, iconURL: Client.user.avatarURL()})
+            .setTimestamp();
 
-		interaction.editReply({ embeds: [levelEmbedinteraction] });
-	},
+        interaction.editReply({embeds: [levelEmbedinteraction]});
+    },
 };

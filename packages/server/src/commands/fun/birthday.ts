@@ -64,7 +64,7 @@ module.exports = {
 		},
 	],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction, _args: string[], prisma: PrismaClient) {
+	async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
 		const birthdayChannel = await prisma.birthdaysChannels.findUnique({ where: { idOfGuild: interaction.guild.id } });
 		const fetchBirthdays = await prisma.birthdays.findMany({ where: { idOfUser: interaction.user.id } });
 		const fetchGuildBirthday = await prisma.birthdays.findFirst({ where: { idOfGuild: interaction.guild.id, idOfUser: interaction.user.id } });
@@ -94,9 +94,9 @@ module.exports = {
 		async function setupBirthday() {
 			const channel = interaction.options.getChannel("channel");
 
-			if (!interaction.memberPermissions.has("ADMINISTRATOR")) {
+			if (!interaction.memberPermissions.has("Administrator")) {
 				return interaction.editReply("<:no:835565213322575963> This command is admin-only!");
-			} else if (channel.type !== "GUILD_TEXT") {
+			} else if (channel.type !== Discord.ChannelType.GuildText) {
 				return interaction.editReply("The channel you specified isn't a text channel. Please retry the command.");
 			}
 
@@ -162,11 +162,11 @@ module.exports = {
 				return interaction.editReply("It looks like your birthday is currently not stored in my database. Do `/birthday add` to save it!");
 			}
 
-			fetchBirthdays.forEach(async (birthday) => {
+			for (const birthday of fetchBirthdays) {
 				await prisma.birthdays.deleteMany({ where: { idOfUser: birthday.idOfUser } });
-			});
+			}
 
-			return interaction.editReply("Your birthday has been deleted from the database. Made a mistake? Add it back with `/birthday add`!");
+            return interaction.editReply("Your birthday has been deleted from the database. Made a mistake? Add it back with `/birthday add`!");
 		}
 	},
 };

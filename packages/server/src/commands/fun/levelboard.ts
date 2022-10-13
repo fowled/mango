@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import type { PrismaClient, Ranks } from "@prisma/client";
+import type {PrismaClient, Ranks} from "@prisma/client";
 
 // Fun command
 
@@ -12,96 +12,105 @@ import type { PrismaClient, Ranks } from "@prisma/client";
  * @param {any} options some options
  */
 module.exports = {
-	name: "levelboard",
-	description: "Replies with the server XP level leaderboard",
-	category: "fun",
-	botPermissions: ["ADD_REACTIONS"],
+    name: "levelboard",
+    description: "Replies with the server XP level leaderboard",
+    category: "fun",
+    botPermissions: ["ADD_REACTIONS"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, _args: string[], prisma: PrismaClient) {
-		let ranks: Ranks[];
+    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
+        let ranks: Ranks[];
 
-		let page = 0,
-			replyId: string;
+        let page = 0,
+            replyId: string;
 
-		await assignData();
+        await assignData();
 
-		if (ranks.length === 0) {
-			return interaction.editReply("It seems that the leaderboard is currently empty.");
-		}
+        if (ranks.length === 0) {
+            return interaction.editReply("It seems that the leaderboard is currently empty.");
+        }
 
-		await getPageContent();
+        await getPageContent();
 
-		await createReactionCollector();
+        await createReactionCollector();
 
-		async function assignData() {
-			return (ranks = await prisma.ranks.findMany({ orderBy: { xp: "desc" }, where: { idOfGuild: interaction.guild.id } }));
-		}
+        async function assignData() {
+            return (ranks = await prisma.ranks.findMany({
+                orderBy: {xp: "desc"},
+                where: {idOfGuild: interaction.guild.id}
+            }));
+        }
 
-		async function getPageContent() {
-			const itemsContent = ranks.slice(page * 10, page * 10 + 10);
-			const pageContent: string[] = [];
+        async function getPageContent() {
+            const itemsContent = ranks.slice(page * 10, page * 10 + 10);
+            const pageContent: string[] = [];
 
-			for (let i = 0; i < itemsContent.length; i++) {
-				const xp = itemsContent[i]["xp"];
-				const id = itemsContent[i]["idOfUser"];
-				const user = await Client.users.fetch(id);
+            for (let i = 0; i < itemsContent.length; i++) {
+                const xp = itemsContent[i]["xp"];
+                const id = itemsContent[i]["idOfUser"];
+                const user = await Client.users.fetch(id);
 
-				pageContent.push(`${i + (page * 10 + 1)}. **${user}** / *${xp}* xp → level \`${Math.floor(xp / 50)}\``);
-			}
+                pageContent.push(`${i + (page * 10 + 1)}. **${user}** / *${xp}* xp → level \`${Math.floor(xp / 50)}\``);
+            }
 
-			const levelEmbed = new Discord.MessageEmbed().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("🎖 Levelboard").setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
+            const levelEmbed = new Discord.EmbedBuilder().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("🎖 Levelboard").setTimestamp().setFooter({
+                text: Client.user.username,
+                iconURL: Client.user.displayAvatarURL()
+            });
 
-			const button = new Discord.MessageActionRow().addComponents(
-				new Discord.MessageButton()
-					.setCustomId("back")
-					.setLabel("◀")
-					.setStyle("PRIMARY")
-					.setDisabled(page === 0 ? true : false),
+            const button = new Discord.ActionRowBuilder<Discord.ButtonBuilder>().addComponents(
+                new Discord.ButtonBuilder()
+                    .setCustomId("back")
+                    .setLabel("◀")
+                    .setStyle(Discord.ButtonStyle.Primary)
+                    .setDisabled(page === 0),
 
-				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker()),
+                new Discord.ButtonBuilder().setCustomId("next").setLabel("▶").setStyle(Discord.ButtonStyle.Primary).setDisabled(buttonChecker()),
 
-				new Discord.MessageButton().setCustomId("refresh").setLabel("🔄").setStyle("SUCCESS"),
-			);
+                new Discord.ButtonBuilder().setCustomId("refresh").setLabel("🔄").setStyle(Discord.ButtonStyle.Primary),
+            );
 
-			if (replyId) {
-				return interaction.channel.messages.fetch(replyId).then((msg) => msg.edit({ embeds: [levelEmbed], components: [button] }));
-			} else {
-				await interaction.editReply({ embeds: [levelEmbed], components: [button] });
+            if (replyId) {
+                return interaction.channel.messages.fetch(replyId).then((msg) => msg.edit({
+                    embeds: [levelEmbed],
+                    components: [button]
+                }));
+            } else {
+                await interaction.editReply({embeds: [levelEmbed], components: [button]});
 
-				replyId = await interaction.fetchReply().then((msg) => msg.id);
-			}
-		}
+                replyId = await interaction.fetchReply().then((msg) => msg.id);
+            }
+        }
 
-		function buttonChecker() {
-			const index = page + 1;
+        function buttonChecker() {
+            const index = page + 1;
 
-			if (ranks.slice(index * 10, index * 10 + 10).length === 0) {
-				return true;
-			} else {
-				return false;
-			}
-		}
+            if (ranks.slice(index * 10, index * 10 + 10).length === 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
-		async function createReactionCollector() {
-			interaction.fetchReply().then((msg: Discord.Message) => {
-				const collector = msg.createMessageComponentCollector({ componentType: "BUTTON" });
+        async function createReactionCollector() {
+            interaction.fetchReply().then((msg: Discord.Message) => {
+                const collector = msg.createMessageComponentCollector({componentType: Discord.ComponentType.Button});
 
-				collector.on("collect", async (i) => {
-					if (i.customId === "back") {
-						page--;
-					} else if (i.customId === "next") {
-						page++;
-					}
+                collector.on("collect", async (i) => {
+                    if (i.customId === "back") {
+                        page--;
+                    } else if (i.customId === "next") {
+                        page++;
+                    }
 
-					await assignData();
+                    await assignData();
 
-					getPageContent();
-				});
+                    await getPageContent();
+                });
 
-				collector.on("end", () => {
-					return;
-				});
-			});
-		}
-	},
+                collector.on("end", () => {
+                    return;
+                });
+            });
+        }
+    },
 };

@@ -24,7 +24,7 @@ module.exports = {
 		},
 	],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[], prisma: PrismaClient) {
+	async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[], prisma: PrismaClient) {
 		const ID = args[0];
 
 		const item = await prisma.marketItems.findUnique({ where: { id: parseInt(ID) } });

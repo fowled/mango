@@ -11,62 +11,66 @@ import fetch from "node-fetch";
  * @param {any} options some options
  */
 module.exports = {
-	name: "coronavirus",
-	description: "Get COVID-19 disease's latest information",
-	category: "info",
-	options: [
-		{
-			name: "country",
-			type: "STRING",
-			description: "The country you'd like to get information from",
-			required: false,
-		},
-	],
+    name: "coronavirus",
+    description: "Get COVID-19 disease's latest information",
+    category: "info",
+    options: [
+        {
+            name: "country",
+            type: "STRING",
+            description: "The country you'd like to get information from",
+            required: false,
+        },
+    ],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
-		if (!args[0]) {
-			const req = await fetch("https://disease.sh/v2/all").then((res) => res.json());
+    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[]) {
+        if (!args[0]) {
+            const req = await fetch("https://disease.sh/v2/all").then((res) => res.json());
 
-			const MessageEmbed = new Discord.MessageEmbed()
-				.setAuthor(interaction.user.username, interaction.user.avatarURL()) // global
-				.setTitle("Coronavirus stats :chart_with_upwards_trend:")
-				.setDescription("Find here COVID-19 related information")
-				.setColor("#08ABF9")
-				.setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f637.png")
-				.addField("Cases", req.cases.toString())
-				.addField("Today cases", req.todayCases.toString())
-				.addField("Deaths", req.deaths.toString())
-				.addField("Today deaths", req.todayDeaths.toString())
-				.addField("Recovered", req.recovered.toString())
-				.addField("Critical", req.critical.toString())
-				.addField("Affected countries", req.affectedCountries.toString())
-				.setFooter(Client.user.username, Client.user.avatarURL())
-				.setTimestamp();
+            const MessageEmbed = new Discord.EmbedBuilder()
+                .setAuthor({name: interaction.user.username, iconURL: interaction.user.avatarURL()})
+                .setTitle("Coronavirus stats :chart_with_upwards_trend:")
+                .setDescription("Find here COVID-19 related information")
+                .setColor("#08ABF9")
+                .setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f637.png")
+                .addFields(
+                    {name: "Cases", value: req.cases.toString()},
+                    {name: "Today cases", value: req.todayCases.toString()},
+                    {name: "Deaths", value: req.deaths.toString()},
+                    {name: "Today deaths", value: req.todayDeaths.toString()},
+                    {name: "Recovered", value: req.recovered.toString()},
+                    {name: "Critical", value: req.critical.toString()},
+                    {name: "Affected countries", value: req.affectedCountries.toString()}
+                )
+                .setFooter({text: Client.user.username, iconURL: Client.user.avatarURL()})
+                .setTimestamp();
 
-			interaction.editReply({ embeds: [MessageEmbed] });
-		} else {
-			const req = await fetch(`https://disease.sh/v2/countries/${args[0]}`).then((res) => res.json());
+            interaction.editReply({embeds: [MessageEmbed]});
+        } else {
+            const req = await fetch(`https://disease.sh/v2/countries/${args[0]}`).then((res) => res.json());
 
-			if (req.message) {
-				return interaction.editReply("<:no:835565213322575963> Couldn't find this country!");
-			}
+            if (req.message) {
+                return interaction.editReply("<:no:835565213322575963> Couldn't find this country!");
+            }
 
-			const MessageEmbed = new Discord.MessageEmbed()
-				.setAuthor(interaction.user.username, interaction.user.avatarURL()) // country
-				.setTitle("Coronavirus stats :chart_with_upwards_trend:")
-				.setDescription("Find here COVID-19 related information")
-				.setThumbnail(req.countryInfo.flag.toString())
-				.setColor("#08ABF9")
-				.addField("Cases", req.cases.toString())
-				.addField("Today cases", req.todayCases.toString())
-				.addField("Deaths", req.deaths.toString())
-				.addField("Today deaths", req.todayDeaths.toString())
-				.addField("Recovered", req.recovered.toString())
-				.addField("Critical", req.critical.toString())
-				.setFooter(Client.user.username, Client.user.avatarURL())
-				.setTimestamp();
+            const MessageEmbed = new Discord.EmbedBuilder()
+                .setAuthor({name: interaction.user.username, iconURL: interaction.user.avatarURL()}) // country
+                .setTitle("Coronavirus stats :chart_with_upwards_trend:")
+                .setDescription("Find here COVID-19 related information")
+                .setThumbnail(req.countryInfo.flag.toString())
+                .setColor("#08ABF9")
+                .addFields(
+                    {name: "Cases", value: req.cases.toString()},
+                    {name: "Today cases", value: req.todayCases.toString()},
+                    {name: "Deaths", value: req.deaths.toString()},
+                    {name: "Today deaths", value: req.todayDeaths.toString()},
+                    {name: "Recovered", value: req.recovered.toString()},
+                    {name: "Critical", value: req.critical.toString()}
+                )
+                .setFooter({text: Client.user.username, iconURL: Client.user.avatarURL()})
+                .setTimestamp();
 
-			interaction.editReply({ embeds: [MessageEmbed] });
-		}
-	},
+            interaction.editReply({embeds: [MessageEmbed]});
+        }
+    },
 };

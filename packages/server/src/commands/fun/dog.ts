@@ -16,10 +16,10 @@ module.exports = {
 	category: "fun",
 	botPermissions: ["ATTACH_FILES"],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction) {
+	async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction) {
 		const req = await fetch("https://api.thedogapi.com/v1/images/search").then((res) => res.json());
 
-		const catpic = new Discord.MessageAttachment(req[0].url);
+		const catpic = new Discord.AttachmentBuilder(req[0].url);
 
 		return interaction.editReply({ files: [catpic] });
 	},

@@ -10,19 +10,19 @@ import Discord from "discord.js";
  * @param {any} options some options
  */
 module.exports = {
-	name: "invit",
-	description: "Create an invitation link",
-	category: "info",
-	botPermissions: ["CREATE_INSTANT_INVITE"],
+    name: "invit",
+    description: "Create an invitation link",
+    category: "info",
+    botPermissions: ["CREATE_INSTANT_INVITE"],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction) {
-		(await interaction.guild.fetch()).invites
-			.create(interaction.channel.id)
-			.then((invite) => {
-				interaction.editReply(invite.url);
-			})
-			.catch(() => {
-				interaction.editReply("I don't have the right perms ;( Make sure I have the admin rank :wink:");
-			});
-	},
+    async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction) {
+        (await interaction.guild.fetch()).invites
+            .create(interaction.channel.id)
+            .then((invite) => {
+                interaction.editReply(invite.url);
+            })
+            .catch(() => {
+                interaction.editReply("I don't have the right perms ;( Make sure I have the admin rank :wink:");
+            });
+    },
 };

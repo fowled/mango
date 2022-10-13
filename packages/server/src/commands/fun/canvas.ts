@@ -24,7 +24,7 @@ module.exports = {
 		},
 	],
 
-	async execute(_Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
+	async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[]) {
 		if (args[0].length > 45) {
 			return interaction.editReply("Your text is too long! Please retry the command.");
 		}
@@ -51,11 +51,11 @@ module.exports = {
 		ctx.closePath();
 		ctx.clip();
 
-		const avatar = await canvaslib.loadImage(interaction.user.displayAvatarURL({ format: "jpg" }));
+		const avatar = await canvaslib.loadImage(interaction.user.displayAvatarURL({ extension: "jpg" }));
 
 		ctx.drawImage(avatar, 570, 15, 120, 120);
 
-		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), "canvas.png");
+        const attachment = new Discord.AttachmentBuilder(canvas.toBuffer());
 
 		interaction.editReply({ files: [attachment] });
 	},

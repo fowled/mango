@@ -9,7 +9,7 @@ import { fetchToken, getUser, getGuilds, getStats, manageGuild } from "utils/req
 
 export async function registerRoutes(app: Express, client: Client, database: PrismaClient) {
 	app.get("/", async function (_req: Request, res: Response) {
-		return res.send({ message: "Welcome to Mango's API!" });
+        return res.send({ message: "Welcome to Mango's API!" });
 	});
 
 	app.get("/callback", async function (req: Request, res: Response) {

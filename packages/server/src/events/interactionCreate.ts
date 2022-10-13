@@ -1,52 +1,54 @@
 import Discord from "discord.js";
 
-import { clientInteractions, prisma } from "index";
+import {clientInteractions, prisma} from "index";
 
-import { logCommand } from "utils/sendLog";
-import { error } from "utils/logger";
+import {logCommand} from "utils/sendLog";
+import {error} from "utils/logger";
 
 module.exports = {
-	name: "interactionCreate",
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction) {
-		if (interaction.isButton()) {
-			return await interaction.deferUpdate();
-		}
+    name: "interactionCreate",
+    async execute(Client: Discord.Client, interaction: Discord.BaseInteraction) {
+        if (!interaction.isChatInputCommand()) return;
 
-		const args = interaction.options.data.filter((data) => data.type !== "SUB_COMMAND").map((opt) => opt.value.toString());
-		const command = interaction.commandName;
+        if ((interaction as never as Discord.ButtonInteraction).isButton()) {
+            return await interaction.deferReply();
+        }
 
-		if (!interaction.isCommand() && !clientInteractions.has(command)) return;
+        const args = interaction.options.data.filter((data) => data.type !== Discord.ApplicationCommandOptionType.Subcommand).map((opt) => opt.value.toString());
+        const command = interaction.commandName;
 
-		const commandInteraction = clientInteractions.get(command);
-		const interactionMember = interaction.member as Discord.GuildMember;
+        if (!interaction.isCommand() && !clientInteractions.has(command)) return;
 
-		if (commandInteraction.memberPermissions && !interactionMember.permissions.has(commandInteraction.memberPermissions as Discord.PermissionResolvable)) {
-			return interaction.reply({
-				content: `<:no:835565213322575963> Sorry, but it looks like you're missing one of the following permissions: \`${commandInteraction.memberPermissions.join(", ")}\``,
-				ephemeral: true,
-			});
-		} else if (commandInteraction.botPermissions && !interaction.guild.me.permissions.has(commandInteraction.botPermissions as Discord.PermissionResolvable)) {
-			return interaction.reply({
-				content: `<:no:835565213322575963> It looks like I'm missing one of the following permissions: \`${commandInteraction.botPermissions.join(", ")}\``,
-				ephemeral: true,
-			});
-		}
+        const commandInteraction = clientInteractions.get(command);
+        const interactionMember = interaction.member as Discord.GuildMember;
 
-		await interaction.deferReply();
+        if (commandInteraction.memberPermissions && !interactionMember.permissions.has(commandInteraction.memberPermissions as Discord.PermissionResolvable)) {
+            return interaction.reply({
+                content: `<:no:835565213322575963> Sorry, but it looks like you're missing one of the following permissions: \`${commandInteraction.memberPermissions.join(", ")}\``,
+                ephemeral: true,
+            });
+        } else if (commandInteraction.botPermissions && !(await interaction.guild.members.fetchMe()).permissions.has(commandInteraction.botPermissions as Discord.PermissionResolvable)) {
+            return interaction.reply({
+                content: `<:no:835565213322575963> It looks like I'm missing one of the following permissions: \`${commandInteraction.botPermissions.join(", ")}\``,
+                ephemeral: true,
+            });
+        }
 
-		try {
-			commandInteraction.execute(Client, interaction, args, prisma);
-		} catch (err) {
-			error(err);
-		}
+        await interaction.deferReply();
 
-		const commandEmbed = new Discord.MessageEmbed()
-			.setDescription(`**${interaction.user.tag}** just ran the \`${interaction.commandName}\` command in *${interaction.guild.name}*.`)
-			.setAuthor(interaction.user.username, interaction.user.displayAvatarURL())
-			.setColor("NOT_QUITE_BLACK")
-			.setTimestamp()
-			.setFooter(Client.user.username, Client.user.displayAvatarURL());
+        try {
+            commandInteraction.execute(Client, interaction, args, prisma);
+        } catch (err) {
+            error(err);
+        }
 
-		logCommand(Client, commandEmbed);
-	},
+        const commandEmbed = new Discord.EmbedBuilder()
+            .setDescription(`**${interaction.user.tag}** just ran the \`${interaction.commandName}\` command in *${interaction.guild.name}*.`)
+            .setAuthor({name: interaction.user.username, iconURL: interaction.user.displayAvatarURL()})
+            .setColor("NotQuiteBlack")
+            .setTimestamp()
+            .setFooter({text: Client.user.username, iconURL: Client.user.displayAvatarURL()});
+
+        logCommand(Client, commandEmbed);
+    },
 };

@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import type { PrismaClient } from "@prisma/client";
+import type {PrismaClient} from "@prisma/client";
 
 // Fun command
 
@@ -12,40 +12,43 @@ import type { PrismaClient } from "@prisma/client";
  * @param {any} options some options
  */
 module.exports = {
-	name: "setwelcomechannel",
-	description: "Sets guild's welcome channel for Mango",
-	category: "moderation",
-	memberPermissions: ["MANAGE_CHANNELS"],
-	options: [
-		{
-			name: "channel",
-			type: "CHANNEL",
-			description: "The channel you want to set welcome channels to",
-			required: false,
-		},
-	],
+    name: "setwelcomechannel",
+    description: "Sets guild's welcome channel for Mango",
+    category: "moderation",
+    memberPermissions: ["MANAGE_CHANNELS"],
+    options: [
+        {
+            name: "channel",
+            type: "CHANNEL",
+            description: "The channel you want to set welcome channels to",
+            required: false,
+        },
+    ],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[], prisma: PrismaClient) {
-		const welcomeChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
-		const fetchChannel = (await Client.channels.fetch(welcomeChannelID)) as Discord.TextChannel;
+    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[], prisma: PrismaClient) {
+        const welcomeChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
+        const fetchChannel = (await Client.channels.fetch(welcomeChannelID)) as Discord.TextChannel;
 
-		if (fetchChannel.type !== "GUILD_TEXT") {
-			return interaction.editReply("The channel you specified isn't a text channel. Please retry the command.");
-		}
+        if (fetchChannel.type !== Discord.ChannelType.GuildText) {
+            return interaction.editReply("The channel you specified isn't a text channel. Please retry the command.");
+        }
 
-		const welcomechannel = await prisma.welChannels.findUnique({ where: { idOfGuild: interaction.guild.id } });
+        const welcomechannel = await prisma.welChannels.findUnique({where: {idOfGuild: interaction.guild.id}});
 
-		if (welcomechannel) {
-			await prisma.welChannels.update({ where: { idOfGuild: interaction.guild.id }, data: { idOfChannel: welcomeChannelID } });
-		} else {
-			await prisma.welChannels.create({
-				data: {
-					idOfGuild: welcomeChannelID,
-					idOfChannel: interaction.channel.id,
-				},
-			});
-		}
+        if (welcomechannel) {
+            await prisma.welChannels.update({
+                where: {idOfGuild: interaction.guild.id},
+                data: {idOfChannel: welcomeChannelID}
+            });
+        } else {
+            await prisma.welChannels.create({
+                data: {
+                    idOfGuild: welcomeChannelID,
+                    idOfChannel: interaction.channel.id,
+                },
+            });
+        }
 
-		return interaction.editReply(`<:yes:835565213498736650> Successfully updated the welcome channel to \`#${fetchChannel.name}\`!`);
-	},
+        return interaction.editReply(`<:yes:835565213498736650> Successfully updated the welcome channel to \`#${fetchChannel.name}\`!`);
+    },
 };

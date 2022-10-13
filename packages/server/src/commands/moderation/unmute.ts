@@ -26,7 +26,7 @@ module.exports = {
 		},
 	],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, args: string[]) {
+	async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[]) {
 		const memberUnmute = await interaction.guild.members.fetch(args[0]);
 
 		const muteRole = interaction.guild.roles.cache.find((role) => role.name === "muted");
@@ -40,7 +40,7 @@ module.exports = {
 
 			interaction.editReply(`**${memberUnmute.user.tag}** has been successfully unmuted. <:yes:835565213498736650>`);
 
-			insertLog(Client, interaction.guild.id, interaction.user, `**${memberUnmute.user.tag}** has been __unmuted__ by ${interaction.user.tag}.`);
+			await insertLog(Client, interaction.guild.id, interaction.user, `**${memberUnmute.user.tag}** has been __unmuted__ by ${interaction.user.tag}.`);
 		} catch (error) {
 			interaction.editReply("Sorry, but I got an unexcepted error while unmuting this user. " + +`\`\`\`${error.message}\`\`\``);
 		}

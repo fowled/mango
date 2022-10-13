@@ -1,4 +1,4 @@
-import Discord from "discord.js";
+import Discord, { ButtonBuilder, ButtonStyle, ComponentType } from "discord.js";
 
 import type { MoneyAccs, PrismaClient } from "@prisma/client";
 
@@ -17,7 +17,7 @@ module.exports = {
 	category: "fun",
 	botPermissions: ["ADD_REACTIONS"],
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction, _args: string[], prisma: PrismaClient) {
+    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
 		let marketUsers: MoneyAccs[];
 
 		let page = 0,
@@ -49,18 +49,18 @@ module.exports = {
 				pageContent.push(`${index + (page * 10 + 1)}. \`${user.tag}\` - \`${wealth}$\``);
 			}
 
-			const usersEmbed = new Discord.MessageEmbed().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("👛 Top balances").setTimestamp().setFooter(Client.user.username, Client.user.displayAvatarURL());
+			const usersEmbed = new Discord.EmbedBuilder().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("👛 Top balances").setTimestamp().setFooter({ text: Client.user.username, iconURL: Client.user.displayAvatarURL() });
 
-			const button = new Discord.MessageActionRow().addComponents(
-				new Discord.MessageButton()
+			const button = new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
+				new Discord.ButtonBuilder()
 					.setCustomId("back")
 					.setLabel("◀")
-					.setStyle("PRIMARY")
-					.setDisabled(page === 0 ? true : false),
+					.setStyle(ButtonStyle.Primary)
+					.setDisabled(page === 0),
 
-				new Discord.MessageButton().setCustomId("next").setLabel("▶").setStyle("PRIMARY").setDisabled(buttonChecker()),
+				new Discord.ButtonBuilder().setCustomId("next").setLabel("▶").setStyle(ButtonStyle.Primary).setDisabled(buttonChecker()),
 
-				new Discord.MessageButton().setCustomId("refresh").setLabel("🔄").setStyle("SUCCESS"),
+				new Discord.ButtonBuilder().setCustomId("refresh").setLabel("🔄").setStyle(ButtonStyle.Success),
 			);
 
 			if (replyId) {
@@ -75,16 +75,12 @@ module.exports = {
 		function buttonChecker() {
 			const index = page + 1;
 
-			if (marketUsers.slice(index * 10, index * 10 + 10).length === 0) {
-				return true;
-			} else {
-				return false;
-			}
+			return marketUsers.slice(index * 10, index * 10 + 10).length === 0;
 		}
 
 		async function createReactionCollector() {
 			interaction.fetchReply().then((msg: Discord.Message) => {
-				const collector = msg.createMessageComponentCollector({ componentType: "BUTTON" });
+				const collector = msg.createMessageComponentCollector({ componentType: ComponentType.Button });
 
 				collector.on("collect", async (i) => {
 					if (i.customId === "back") {
@@ -95,7 +91,7 @@ module.exports = {
 
 					await assignData();
 
-					getPageContent();
+					await getPageContent();
 				});
 
 				collector.on("end", () => {

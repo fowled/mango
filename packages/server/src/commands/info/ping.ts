@@ -10,22 +10,22 @@ import Discord from "discord.js";
  * @param {any} options some options
  */
 module.exports = {
-	name: "ping",
-	description: "Get info on Mango's latency",
-	category: "info",
+    name: "ping",
+    description: "Get info on Mango's latency",
+    category: "info",
 
-	async execute(Client: Discord.Client, interaction: Discord.CommandInteraction) {
-		await interaction.editReply("Ping?");
+    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction) {
+        await interaction.editReply("Ping?");
 
-		const pong = new Discord.MessageEmbed()
-			.setTitle(`Latency information for ${interaction.user.tag}`)
-			.setAuthor(interaction.user.username, interaction.user.avatarURL())
-			.setColor("RANDOM")
-			.setDescription("Latency information")
-			.addField("API latency", `**${Math.round(Client.ws.ping)}** ms.`, true)
-			.setFooter(Client.user.username, Client.user.avatarURL())
-			.setTimestamp();
+        const pong = new Discord.EmbedBuilder()
+            .setTitle(`Latency information for ${interaction.user.tag}`)
+            .setAuthor({name: interaction.user.username, iconURL: interaction.user.avatarURL()})
+            .setColor("Random")
+            .setDescription("Latency information")
+            .addFields({name: "API latency", value: `**${Math.round(Client.ws.ping)}** ms.`})
+            .setFooter({text: Client.user.username, iconURL: Client.user.avatarURL()})
+            .setTimestamp();
 
-		interaction.editReply({ embeds: [pong] });
-	},
+        interaction.editReply({embeds: [pong]});
+    },
 };
