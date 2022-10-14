@@ -20,6 +20,12 @@ module.exports = {
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
         let ranks: Ranks[];
 
+        const medals = {
+            1: "🥇",
+            2: "🥈",
+            3: "🥉"
+        }
+
         let page = 0,
             replyId: string;
 
@@ -42,15 +48,17 @@ module.exports = {
 
         async function getPageContent() {
             const itemsContent = ranks.slice(page * 10, page * 10 + 10);
-            const pageContent: string[] = [];
+            const pageContent: string[] = ["```ansi"];
 
             for (let i = 0; i < itemsContent.length; i++) {
                 const xp = itemsContent[i]["xp"];
                 const id = itemsContent[i]["idOfUser"];
                 const user = await Client.users.fetch(id);
 
-                pageContent.push(`${i + (page * 10 + 1)}. **${user}** / *${xp}* xp → level \`${Math.floor(xp / 50)}\``);
+                pageContent.push(`\u001b[1;34m${medals[i + (page * 10 + 1)] ?? i + (page * 10 + 1) + "."} \u001b[1;33m${user.username}\u001b[0;30m#${user.discriminator} \u001b[0m» \u001b[1;35m${xp} XP \u001b[0;30m(\u001b[1;36mlevel ${Math.floor(xp / 50)}\u001b[0;30m)`);
             }
+
+            pageContent.push("```")
 
             const levelEmbed = new Discord.EmbedBuilder().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("🎖 Levelboard").setTimestamp().setFooter({
                 text: Client.user.username,
@@ -66,7 +74,7 @@ module.exports = {
 
                 new Discord.ButtonBuilder().setCustomId("next").setLabel("▶").setStyle(Discord.ButtonStyle.Primary).setDisabled(buttonChecker()),
 
-                new Discord.ButtonBuilder().setCustomId("refresh").setLabel("🔄").setStyle(Discord.ButtonStyle.Primary),
+                new Discord.ButtonBuilder().setCustomId("refresh").setLabel("🔄").setStyle(Discord.ButtonStyle.Success),
             );
 
             if (replyId) {

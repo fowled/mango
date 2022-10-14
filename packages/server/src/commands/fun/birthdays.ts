@@ -1,4 +1,5 @@
 import Discord from "discord.js";
+import moment from "moment";
 
 import { timestamp, timestampYear } from "utils/timestamp";
 
@@ -76,15 +77,17 @@ module.exports = {
 
 		async function getPageContent() {
 			const itemsContent = birthdays.slice(page * 10, page * 10 + 10);
-			const pageContent: string[] = [];
+			const pageContent: string[] = ["```ansi"];
 
 			for (let index = 0; index < itemsContent.length; index++) {
-				const date = itemsContent[index]["birthdayTimestamp"];
+				const date = itemsContent[index]["birthdayTimestamp"] as never as string;
 				const user = itemsContent[index]["idOfUser"];
 				const fetchUser = await Client.users.fetch(user);
 
-				pageContent.push(`${index + (page * 10 + 1)}. ${fetchUser} • ${timestamp(date)} (${timestampYear(date)})`);
+                pageContent.push(`\u001b[1;34m${index + (page * 10 + 1)}. \u001b[1;33m${fetchUser.username}\u001b[0;30m#${fetchUser.discriminator} \u001b[0m» \u001b[1;35m${moment(parseInt(date)).format("MM/DD/YYYY")} \u001b[0;30m(\u001b[1;36m${moment(parseInt(date)).fromNow()}\u001b[0;30m)`);
 			}
+
+            pageContent.push("```")
 
             const birthdaysEmbed = new Discord.EmbedBuilder().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("🎁 Birthdays list").setTimestamp().setFooter({text: Client.user.username, iconURL: Client.user.displayAvatarURL()});
 

@@ -39,7 +39,7 @@ module.exports = {
 
         async function getPageContent() {
             const itemsContent = marketItems.slice(page * 10, page * 10 + 10);
-            const pageContent: string[] = [];
+            const pageContent: string[] = ["```ansi"];
 
             for (let index = 0; index < itemsContent.length; index++) {
                 const itemName = itemsContent[index]["name"];
@@ -48,8 +48,10 @@ module.exports = {
                 const itemId = itemsContent[index]["id"];
                 const user: Discord.User = await Client.users.fetch(itemSeller);
 
-                pageContent.push(`${index + (page * 10 + 1)}. \`${itemName}\` - \`${itemPrice}$\` | Sold by \`${user.tag}\` » \`${itemId}\``);
+                pageContent.push(`\u001b[1;34m${index + (page * 10 + 1)}. \u001b[1;35m${itemName} \u001b[0;30m(\u001b[1;36m${itemPrice}$\u001b[0;30m) \u001b[0m→ \u001b[1;33m${user.username}\u001b[0;30m#${user.discriminator} \u001b[0m» \u001b[0;32m/buy \u001b[1;31m${itemId}`);
             }
+
+            pageContent.push("```");
 
             const marketEmbed = new Discord.EmbedBuilder().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("🛒 Market").setTimestamp().setFooter({
                 text: Client.user.username,
@@ -63,9 +65,16 @@ module.exports = {
                     .setStyle(Discord.ButtonStyle.Primary)
                     .setDisabled(page === 0),
 
-                new Discord.ButtonBuilder().setCustomId("next").setLabel("▶").setStyle(Discord.ButtonStyle.Primary).setDisabled(buttonChecker()),
+                new Discord.ButtonBuilder()
+                    .setCustomId("next")
+                    .setLabel("▶")
+                    .setStyle(Discord.ButtonStyle.Primary)
+                    .setDisabled(buttonChecker()),
 
-                new Discord.ButtonBuilder().setCustomId("refresh").setLabel("🔄").setStyle(Discord.ButtonStyle.Success),
+                new Discord.ButtonBuilder()
+                    .setCustomId("refresh")
+                    .setLabel("🔄")
+                    .setStyle(Discord.ButtonStyle.Success),
             );
 
             if (replyId) {

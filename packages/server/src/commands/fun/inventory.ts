@@ -39,7 +39,7 @@ module.exports = {
 
         async function getPageContent() {
             const itemsContent = inventory.slice(page * 10, page * 10 + 10);
-            const pageContent: string[] = [];
+            const pageContent: string[] = ["```ansi"];
 
             for (let index = 0; index < itemsContent.length; index++) {
                 const itemName = itemsContent[index]["name"];
@@ -47,13 +47,20 @@ module.exports = {
                 const itemSeller = itemsContent[index]["sellerID"];
                 const user = await Client.users.fetch(itemSeller);
 
-                pageContent.push(`${index + (page * 10 + 1)}. \`${itemName}\` - \`${itemPrice}$\` | Sold by \`${user.tag}\``);
+                pageContent.push(`\u001b[1;34m${index + (page * 10 + 1)}.\u001b[1;35m ${itemName}\u001b[0;30m (\u001b[1;36m${itemPrice}$\u001b[0;30m)\u001b[0m ←\u001b[1;33m ${user.username}\u001b[0;30m#${user.discriminator}`);
             }
 
-            const inventoryEmbed = new Discord.EmbedBuilder().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("🛒 Inventory").setTimestamp().setFooter({
-                text: Client.user.username,
-                iconURL: Client.user.displayAvatarURL()
-            });
+            pageContent.push("```")
+
+            const inventoryEmbed = new Discord.EmbedBuilder()
+                .setDescription(pageContent.join("\n"))
+                .setColor("#33beff")
+                .setTitle("🛒 Inventory")
+                .setTimestamp()
+                .setFooter({
+                    text: Client.user.username,
+                    iconURL: Client.user.displayAvatarURL()
+                });
 
             const button = new Discord.ActionRowBuilder<Discord.ButtonBuilder>().addComponents(
                 new Discord.ButtonBuilder()
@@ -62,9 +69,16 @@ module.exports = {
                     .setStyle(Discord.ButtonStyle.Primary)
                     .setDisabled(page === 0),
 
-                new Discord.ButtonBuilder().setCustomId("next").setLabel("▶").setStyle(Discord.ButtonStyle.Primary).setDisabled(buttonChecker()),
+                new Discord.ButtonBuilder()
+                    .setCustomId("next")
+                    .setLabel("▶")
+                    .setStyle(Discord.ButtonStyle.Primary)
+                    .setDisabled(buttonChecker()),
 
-                new Discord.ButtonBuilder().setCustomId("refresh").setLabel("🔄").setStyle(Discord.ButtonStyle.Success),
+                new Discord.ButtonBuilder()
+                    .setCustomId("refresh")
+                    .setLabel("🔄")
+                    .setStyle(Discord.ButtonStyle.Success),
             );
 
             if (replyId) {
