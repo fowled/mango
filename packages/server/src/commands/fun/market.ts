@@ -15,7 +15,7 @@ module.exports = {
     name: "market",
     description: "Replies with the current Mango's marketplace",
     category: "fun",
-    botPermissions: ["ADD_REACTIONS"],
+    botPermissions: ["AddReactions"],
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
         let marketItems: MarketItems[];

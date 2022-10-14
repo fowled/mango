@@ -15,7 +15,7 @@ module.exports = {
     name: "inventory",
     description: "Shows your inventory",
     category: "fun",
-    botPermissions: ["ADD_REACTIONS"],
+    botPermissions: ["AddReactions"],
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
         let inventory: InventoryItems[];

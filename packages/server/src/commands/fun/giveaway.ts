@@ -14,7 +14,7 @@ module.exports = {
     name: "giveaway",
     description: "Creates a giveaway!",
     category: "fun",
-    botPermissions: ["ADD_REACTIONS"],
+    botPermissions: ["AddReactions"],
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction) {
         createGiveaway();

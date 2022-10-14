@@ -15,7 +15,7 @@ module.exports = {
     name: "setlogchannel",
     description: "Sets the guild's log channel for Mango",
     category: "moderation",
-    memberPermissions: ["MANAGE_CHANNELS"],
+    memberPermissions: ["ManageChannels"],
     options: [
         {
             name: "channel",

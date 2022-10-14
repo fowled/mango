@@ -8,11 +8,11 @@ import {error} from "utils/logger";
 module.exports = {
     name: "interactionCreate",
     async execute(Client: Discord.Client, interaction: Discord.BaseInteraction) {
-        if (!interaction.isChatInputCommand()) return;
-
-        if ((interaction as never as Discord.ButtonInteraction).isButton()) {
-            return await interaction.deferReply();
+        if (interaction.isButton()) {
+            return await interaction.deferUpdate();
         }
+
+        if (!interaction.isChatInputCommand()) return;
 
         const args = interaction.options.data.filter((data) => data.type !== Discord.ApplicationCommandOptionType.Subcommand).map((opt) => opt.value.toString());
         const command = interaction.commandName;

@@ -13,7 +13,7 @@ module.exports = {
     name: "invit",
     description: "Create an invitation link",
     category: "info",
-    botPermissions: ["CREATE_INSTANT_INVITE"],
+    botPermissions: ["CreateInstantInvite"],
 
     async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction) {
         (await interaction.guild.fetch()).invites

@@ -15,7 +15,7 @@ module.exports = {
 	name: "baltop",
 	description: "Shows the richest Mango users",
 	category: "fun",
-	botPermissions: ["ADD_REACTIONS"],
+	botPermissions: ["AddReactions"],
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
 		let marketUsers: MoneyAccs[];

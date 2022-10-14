@@ -15,7 +15,7 @@ module.exports = {
     name: "rmwelcomechannel",
     description: "Removes the guild's welcome channel for Mango",
     category: "moderation",
-    memberPermissions: ["MANAGE_CHANNELS"],
+    memberPermissions: ["ManageChannels"],
 
     async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
         const welcomechannel = await prisma.welChannels.findUnique({where: {idOfGuild: interaction.guild.id}});

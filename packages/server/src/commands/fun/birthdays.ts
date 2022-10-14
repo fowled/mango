@@ -29,7 +29,7 @@ module.exports = {
 			type: 1,
 		},
 	],
-	botPermissions: ["ADD_REACTIONS"],
+	botPermissions: ["AddReactions"],
 
 	async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
 		let birthdays: Birthdays[];

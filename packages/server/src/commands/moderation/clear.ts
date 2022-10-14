@@ -15,8 +15,8 @@ module.exports = {
     name: "clear",
     description: "Deletes several messages at once",
     category: "moderation",
-    botPermissions: ["MANAGE_MESSAGES"],
-    memberPermissions: ["MANAGE_MESSAGES"],
+    botPermissions: ["ManageMessages"],
+    memberPermissions: ["ManageMessages"],
     options: [
         {
             name: "number",

@@ -7,7 +7,7 @@
     "dev": "npx nodemon src/index.ts",
     "start": "npx ts-node src/index.ts",
     "pm2": "pm2 start mango.sh",
-    "test": "tsc"
+    "test": "npx tsc"
   },
   "author": "fowled",
   "license": "MIT",
@@ -56,7 +56,6 @@
     "sqlite3": "^5.0.8",
     "systeminformation": "^5.11.15",
     "ts-node": "^10.7.0",
-    "tsc": "^2.0.4",
     "tsconfig-paths": "^4.1.0"
   },
   "devDependencies": {

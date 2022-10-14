@@ -16,8 +16,8 @@ module.exports = {
     name: "tempmute",
     description: "Temporarily mutes a user",
     category: "moderation",
-    botPermissions: ["MANAGE_ROLES"],
-    memberPermissions: ["MANAGE_ROLES", "MANAGE_MESSAGES"],
+    botPermissions: ["ManageRoles"],
+    memberPermissions: ["ManageRoles", "ManageMessages"],
     options: [
         {
             name: "user",

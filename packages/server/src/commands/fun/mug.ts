@@ -14,7 +14,7 @@ module.exports = {
     name: "mug",
     description: "Replies with a beautiful mug of the tagged user profile picture, or your own!",
     category: "fun",
-    botPermissions: ["ATTACH_FILES"],
+    botPermissions: ["AttachFiles"],
     options: [
         {
             name: "user",

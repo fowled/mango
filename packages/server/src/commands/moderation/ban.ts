@@ -16,8 +16,8 @@ module.exports = {
     name: "ban",
     description: "Bans a user",
     category: "moderation",
-    botPermissions: ["BAN_MEMBERS"],
-    memberPermissions: ["BAN_MEMBERS"],
+    botPermissions: ["BanMembers"],
+    memberPermissions: ["BanMembers"],
     options: [
         {
             name: "user",

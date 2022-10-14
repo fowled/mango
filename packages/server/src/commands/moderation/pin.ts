@@ -13,8 +13,8 @@ module.exports = {
     name: "pin",
     description: "Pins a message",
     category: "moderation",
-    botPermissions: ["MANAGE_MESSAGES"],
-    memberPermissions: ["MANAGE_MESSAGES"],
+    botPermissions: ["ManageMessages"],
+    memberPermissions: ["ManageMessages"],
     options: [
         {
             name: "id",

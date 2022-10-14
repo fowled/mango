@@ -15,7 +15,7 @@ module.exports = {
     name: "levelboard",
     description: "Replies with the server XP level leaderboard",
     category: "fun",
-    botPermissions: ["ADD_REACTIONS"],
+    botPermissions: ["AddReactions"],
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
         let ranks: Ranks[];

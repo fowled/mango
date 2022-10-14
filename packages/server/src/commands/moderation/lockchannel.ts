@@ -16,8 +16,8 @@ module.exports = {
     name: "lockchannel",
     description: "Locks a channel",
     category: "moderation",
-    botPermissions: ["MANAGE_CHANNELS"],
-    memberPermissions: ["MANAGE_CHANNELS"],
+    botPermissions: ["ManageChannels"],
+    memberPermissions: ["ManageChannels"],
     options: [
         {
             name: "role",

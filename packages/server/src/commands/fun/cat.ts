@@ -14,7 +14,7 @@ module.exports = {
 	name: "cat",
 	description: "Replies with a picture of a cat",
 	category: "fun",
-	botPermissions: ["ATTACH_FILES"],
+	botPermissions: ["AttachFiles"],
 
 	async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction) {
 		const req = await fetch("https://api.thecatapi.com/v1/images/search").then((res) => res.json());

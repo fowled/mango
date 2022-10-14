@@ -15,7 +15,7 @@ module.exports = {
     name: "rmlogchannel",
     description: "Removes the guild's log channel for Mango",
     category: "moderation",
-    memberPermissions: ["MANAGE_CHANNELS"],
+    memberPermissions: ["ManageChannels"],
 
     async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
         const logchannel = await prisma.logChannels.findUnique({where: {idOfGuild: interaction.guild.id}});

@@ -14,7 +14,7 @@ module.exports = {
 	name: "canvas",
 	description: "Write something on beautiful picture",
 	category: "fun",
-	botPermissions: ["ATTACH_FILES"],
+	botPermissions: ["AttachFiles"],
 	options: [
 		{
 			name: "text",
