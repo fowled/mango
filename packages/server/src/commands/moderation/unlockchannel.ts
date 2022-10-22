@@ -1,7 +1,7 @@
-import Discord from "discord.js";
+import Discord from 'discord.js';
 
-import {insertLog} from "utils/logChecker";
-import {error} from "utils/logger";
+import { insertLog } from 'utils/logChecker';
+import { error } from 'utils/logger';
 
 // Mod command
 
@@ -13,30 +13,30 @@ import {error} from "utils/logger";
  * @param {any} options some options
  */
 module.exports = {
-    name: "unlockchannel",
-    description: "Unlocks a channel",
-    category: "moderation",
-    botPermissions: ["ManageChannels"],
-    memberPermissions: ["ManageChannels"],
+    name: 'unlockchannel',
+    description: 'Unlocks a channel',
+    category: 'moderation',
+    botPermissions: ['ManageChannels'],
+    memberPermissions: ['ManageChannels'],
     options: [
         {
-            name: "role",
-            type: "MENTIONABLE",
-            description: "The role you want to unlock the channel to",
+            name: 'role',
+            type: 'MENTIONABLE',
+            description: 'The role you want to unlock the channel to',
             required: true,
         },
 
         {
-            name: "channel",
-            type: "CHANNEL",
-            description: "The channel that will be unlocked",
+            name: 'channel',
+            type: 'CHANNEL',
+            description: 'The channel that will be unlocked',
             required: false,
         },
     ],
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[]) {
         const role = await interaction.guild.roles.fetch(args[0]);
-        const messageChannel = !args[1] ? (interaction.channel as Discord.GuildChannel) : await interaction.guild.channels.fetch(args[1]) as Discord.GuildChannel;
+        const messageChannel = !args[1] ? (interaction.channel as Discord.GuildChannel) : ((await interaction.guild.channels.fetch(args[1])) as Discord.GuildChannel);
 
         if (!role) {
             return interaction.editReply("I didn't find the role you specified. <:no:835565213322575963>");
@@ -44,7 +44,7 @@ module.exports = {
 
         messageChannel.permissionOverwrites
             .create(role, {
-                "SendMessages": true,
+                SendMessages: true,
             })
             .then(() => {
                 interaction.editReply(`<:yes:835565213498736650> ${messageChannel} has been unlocked for ${role}.`);
@@ -52,7 +52,7 @@ module.exports = {
             .catch((err) => {
                 error(err);
 
-                interaction.editReply("An error occured. <:no:835565213322575963> ```\n" + err + "```");
+                interaction.editReply('An error occured. <:no:835565213322575963> ```\n' + err + '```');
             });
 
         await insertLog(Client, interaction.guild.id, interaction.user, `**${interaction.channel}** (\`${(interaction.channel as Discord.TextChannel).name}\`) has been unlocked by *${interaction.user.tag}*`);

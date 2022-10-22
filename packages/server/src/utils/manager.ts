@@ -1,33 +1,33 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
 
-import { fetchNewToken } from "./requests";
+import { fetchNewToken } from './requests';
 
 export async function hasTokenExpired(req: Request, _res: Response, next: NextFunction) {
-	const todayDate = new Date();
-	const sessionExpirationDate = new Date(req.session.date);
+    const todayDate = new Date();
+    const sessionExpirationDate = new Date(req.session.date);
 
-	if (todayDate > sessionExpirationDate) {
-		await refreshToken(req);
-	}
+    if (todayDate > sessionExpirationDate) {
+        await refreshToken(req);
+    }
 
-	return next();
+    return next();
 }
 
 export async function isLoggedIn(req: Request, res: Response, next: NextFunction) {
-	if (!req.session.token) {
-		return res.status(403).send({ message: "Unauthorized" });
-	} else {
-		return next();
-	}
+    if (!req.session.token) {
+        return res.status(403).send({ message: 'Unauthorized' });
+    } else {
+        return next();
+    }
 }
 
 export async function refreshToken(req: Request) {
-	const fetchToken = await fetchNewToken(req.session.refresh_token);
-	const nextWeekDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+    const fetchToken = await fetchNewToken(req.session.refresh_token);
+    const nextWeekDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
 
-	Object.assign(req.session, {
-		token: fetchToken.access_token,
-		refresh_token: fetchToken.refresh_token,
-		date: nextWeekDate,
-	});
+    Object.assign(req.session, {
+        token: fetchToken.access_token,
+        refresh_token: fetchToken.refresh_token,
+        date: nextWeekDate,
+    });
 }

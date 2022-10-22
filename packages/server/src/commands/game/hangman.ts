@@ -1,5 +1,5 @@
-import Discord from "discord.js";
-import fs from "fs";
+import Discord from 'discord.js';
+import fs from 'fs';
 
 // Fun command
 
@@ -11,15 +11,15 @@ import fs from "fs";
  * @param {any} options some options
  */
 module.exports = {
-    name: "hangman",
-    description: "Play a hangman game directly from your Discord channel",
-    category: "game",
+    name: 'hangman',
+    description: 'Play a hangman game directly from your Discord channel',
+    category: 'game',
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction) {
         const wordsToFind: string[] = [];
-        const data = fs.readFileSync("assets/docs/words.txt", "utf-8");
+        const data = fs.readFileSync('assets/docs/words.txt', 'utf-8');
 
-        for (const word of data.split("\n")) {
+        for (const word of data.split('\n')) {
             wordsToFind.push(word);
         }
 
@@ -27,85 +27,113 @@ module.exports = {
         const guessedLetters: string[] = [];
 
         let guessesNumber = 0;
-        let stars = "";
+        let stars = '';
 
         const filter = (m: Discord.Message) => m.author.id === interaction.user.id;
 
         replaceWithStars();
 
-        const startEmbed = new Discord.EmbedBuilder().setAuthor({
-            name: interaction.user.username,
-            iconURL: interaction.user.avatarURL()
-        }).setColor("#1E90FF").setDescription(`Hangman game generated. Try to guess the word. You have 10 guesses. \nWord to find: \`${stars}\``).setFooter({
-            text: Client.user.username,
-            iconURL: Client.user.avatarURL()
-        });
+        const startEmbed = new Discord.EmbedBuilder()
+            .setAuthor({
+                name: interaction.user.username,
+                iconURL: interaction.user.avatarURL(),
+            })
+            .setColor('#1E90FF')
+            .setDescription(`Hangman game generated. Try to guess the word. You have 10 guesses. \nWord to find: \`${stars}\``)
+            .setFooter({
+                text: Client.user.username,
+                iconURL: Client.user.avatarURL(),
+            });
 
-        await interaction.editReply({embeds: [startEmbed]}).then(() => {
+        await interaction.editReply({ embeds: [startEmbed] }).then(() => {
             createMessageCollector();
         });
 
         function createMessageCollector() {
-            interaction.channel.awaitMessages({filter, max: 1}).then((collected) => {
+            interaction.channel.awaitMessages({ filter, max: 1 }).then((collected) => {
                 if (checkLetter(collected.first().content.toLowerCase())) {
                     replaceWithStars(collected.first().content.toLowerCase());
 
-                    const correctLetter = new Discord.EmbedBuilder().setAuthor({
-                        name: interaction.user.username,
-                        iconURL: interaction.user.avatarURL()
-                    }).setColor("#1E90FF").setDescription(`Congrats, you found a letter. \`${stars}\``).setFooter({
-                        text: Client.user.username,
-                        iconURL: Client.user.avatarURL()
-                    });
+                    const correctLetter = new Discord.EmbedBuilder()
+                        .setAuthor({
+                            name: interaction.user.username,
+                            iconURL: interaction.user.avatarURL(),
+                        })
+                        .setColor('#1E90FF')
+                        .setDescription(`Congrats, you found a letter. \`${stars}\``)
+                        .setFooter({
+                            text: Client.user.username,
+                            iconURL: Client.user.avatarURL(),
+                        });
 
-                    interaction.editReply({embeds: [correctLetter]});
+                    interaction.editReply({ embeds: [correctLetter] });
                 } else if (checkLetter(collected.first().content.toLowerCase()) === false) {
                     guessesNumber++;
 
                     const incorrectLetter = new Discord.EmbedBuilder()
-                        .setAuthor({name: interaction.user.username, iconURL: interaction.user.avatarURL()})
-                        .setColor("#ff0000")
+                        .setAuthor({
+                            name: interaction.user.username,
+                            iconURL: interaction.user.avatarURL(),
+                        })
+                        .setColor('#ff0000')
                         .setDescription(`Nope, wrong letter. You have ${10 - guessesNumber} guesses left. \`${stars}\``)
-                        .setFooter({text: Client.user.username, iconURL: Client.user.avatarURL()});
+                        .setFooter({
+                            text: Client.user.username,
+                            iconURL: Client.user.avatarURL(),
+                        });
 
-                    interaction.editReply({embeds: [incorrectLetter]});
+                    interaction.editReply({ embeds: [incorrectLetter] });
 
                     guessedLetters.push(collected.first().content);
                 } else if (checkLetter(collected.first().content.toLowerCase()) === null) {
                     guessesNumber++;
 
-                    const alreadyFound = new Discord.EmbedBuilder().setAuthor({
-                        name: interaction.user.username,
-                        iconURL: interaction.user.avatarURL()
-                    }).setColor("#1E90FF").setDescription(`You already found that letter! \`${stars}\``).setFooter({
-                        text: Client.user.username,
-                        iconURL: Client.user.avatarURL()
-                    });
+                    const alreadyFound = new Discord.EmbedBuilder()
+                        .setAuthor({
+                            name: interaction.user.username,
+                            iconURL: interaction.user.avatarURL(),
+                        })
+                        .setColor('#1E90FF')
+                        .setDescription(`You already found that letter! \`${stars}\``)
+                        .setFooter({
+                            text: Client.user.username,
+                            iconURL: Client.user.avatarURL(),
+                        });
 
-                    interaction.editReply({embeds: [alreadyFound]});
+                    interaction.editReply({ embeds: [alreadyFound] });
                 }
 
                 if (checkIfWin()) {
                     collected.first().delete();
                     const youWon = new Discord.EmbedBuilder()
-                        .setAuthor({name: interaction.user.username, iconURL: interaction.user.avatarURL()})
-                        .setColor("#ffff00")
+                        .setAuthor({
+                            name: interaction.user.username,
+                            iconURL: interaction.user.avatarURL(),
+                        })
+                        .setColor('#ffff00')
                         .setDescription(`**${interaction.user.tag}** You won! Congratulations. :clap: \nAttempts left: *${10 - guessesNumber}* - word found: \`${thatOneWord}\`.`)
-                        .setFooter({text: Client.user.username, iconURL: Client.user.avatarURL()});
+                        .setFooter({
+                            text: Client.user.username,
+                            iconURL: Client.user.avatarURL(),
+                        });
 
-                    return interaction.editReply({embeds: [youWon]});
+                    return interaction.editReply({ embeds: [youWon] });
                 } else if (guessesNumber >= 10) {
                     collected.first().delete();
 
-                    const youLost = new Discord.EmbedBuilder().setAuthor({
-                        name: interaction.user.username,
-                        iconURL: interaction.user.avatarURL()
-                    }).setColor("#ff0000").setDescription(`**${interaction.user.tag}** I'm sorry, but you lost. \nWord to guess was: \`${thatOneWord}\`.`).setFooter({
-                        text: Client.user.username,
-                        iconURL: Client.user.avatarURL()
-                    });
+                    const youLost = new Discord.EmbedBuilder()
+                        .setAuthor({
+                            name: interaction.user.username,
+                            iconURL: interaction.user.avatarURL(),
+                        })
+                        .setColor('#ff0000')
+                        .setDescription(`**${interaction.user.tag}** I'm sorry, but you lost. \nWord to guess was: \`${thatOneWord}\`.`)
+                        .setFooter({
+                            text: Client.user.username,
+                            iconURL: Client.user.avatarURL(),
+                        });
 
-                    return interaction.editReply({embeds: [youLost]});
+                    return interaction.editReply({ embeds: [youLost] });
                 } else {
                     collected.first().delete();
 
@@ -117,16 +145,16 @@ module.exports = {
         function replaceWithStars(letter?: string) {
             if (guessedLetters.length === 0) {
                 for (let i = 0; i < thatOneWord.length; i++) {
-                    stars += "*";
+                    stars += '*';
                 }
             } else {
-                let replace = "";
+                let replace = '';
 
                 for (let i = 0; i < thatOneWord.length; i++) {
-                    if (thatOneWord.split("")[i] === letter) {
+                    if (thatOneWord.split('')[i] === letter) {
                         replace += letter;
                     } else {
-                        replace += stars.split("")[i];
+                        replace += stars.split('')[i];
                     }
                 }
 
@@ -137,7 +165,7 @@ module.exports = {
         }
 
         function checkLetter(letter: string) {
-            if (!guessedLetters.includes(letter) && thatOneWord.split("").includes(letter)) {
+            if (!guessedLetters.includes(letter) && thatOneWord.split('').includes(letter)) {
                 guessedLetters.push(letter);
 
                 return true;

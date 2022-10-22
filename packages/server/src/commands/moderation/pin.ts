@@ -1,4 +1,4 @@
-import Discord from "discord.js";
+import Discord from 'discord.js';
 
 // Moderation command
 
@@ -10,32 +10,32 @@ import Discord from "discord.js";
  * @param {any} options some options
  */
 module.exports = {
-    name: "pin",
-    description: "Pins a message",
-    category: "moderation",
-    botPermissions: ["ManageMessages"],
-    memberPermissions: ["ManageMessages"],
+    name: 'pin',
+    description: 'Pins a message',
+    category: 'moderation',
+    botPermissions: ['ManageMessages'],
+    memberPermissions: ['ManageMessages'],
     options: [
         {
-            name: "id",
-            type: "STRING",
-            description: "The ID of the message to pin",
+            name: 'id',
+            type: 'STRING',
+            description: 'The ID of the message to pin',
             required: true,
         },
     ],
 
     async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[]) {
-        await interaction.editReply("Trying to pin the interaction...");
+        await interaction.editReply('Trying to pin the interaction...');
 
         interaction.channel.messages
             .fetch(args[0])
             .then((pininteraction: Discord.Message) => {
                 pininteraction.pin().then(() => {
-                    interaction.editReply("Successfully pinned the message!");
+                    interaction.editReply('Successfully pinned the message!');
                 });
             })
             .catch(() => {
-                interaction.editReply("An error occured, make sure I have the pin permission.");
+                interaction.editReply('An error occured, make sure I have the pin permission.');
             });
     },
 };

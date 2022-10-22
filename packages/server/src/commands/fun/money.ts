@@ -1,6 +1,6 @@
-import Discord from "discord.js";
+import Discord from 'discord.js';
 
-import type {PrismaClient} from "@prisma/client";
+import type { PrismaClient } from '@prisma/client';
 
 // Fun command
 
@@ -12,19 +12,25 @@ import type {PrismaClient} from "@prisma/client";
  * @param {any} options some options
  */
 module.exports = {
-    name: "money",
+    name: 'money',
     description: "Replies with your bank account's money",
-    category: "fun",
+    category: 'fun',
 
     async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
-        const account = await prisma.moneyAccs.findUnique({where: {idOfUser: interaction.user.id}});
+        const account = await prisma.moneyAccs.findUnique({
+            where: { idOfUser: interaction.user.id },
+        });
 
         if (account) {
-            return interaction.editReply({content: `:dollar: Your account currently has **${account.money}$**!`});
+            return interaction.editReply({
+                content: `:dollar: Your account currently has **${account.money}$**!`,
+            });
         } else {
-            await prisma.moneyAccs.create({data: {idOfUser: interaction.user.id, money: 500}});
+            await prisma.moneyAccs.create({
+                data: { idOfUser: interaction.user.id, money: 500 },
+            });
 
-            return interaction.editReply("Since you are new to the bank, I just created an account with **500$** on it for you. Enjoy! :wink:");
+            return interaction.editReply('Since you are new to the bank, I just created an account with **500$** on it for you. Enjoy! :wink:');
         }
     },
 };

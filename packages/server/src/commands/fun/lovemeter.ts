@@ -1,4 +1,4 @@
-import Discord from "discord.js";
+import Discord from 'discord.js';
 
 // Fun command
 
@@ -10,14 +10,14 @@ import Discord from "discord.js";
  * @param {any} options some options
  */
 module.exports = {
-    name: "lovemeter",
-    description: "Calculates love % between to users",
-    category: "fun",
+    name: 'lovemeter',
+    description: 'Calculates love % between to users',
+    category: 'fun',
     options: [
         {
-            name: "user",
-            type: "USER",
-            description: "The user you want to test the command with",
+            name: 'user',
+            type: 'USER',
+            description: 'The user you want to test the command with',
             required: true,
         },
     ],
@@ -27,24 +27,30 @@ module.exports = {
 
         const randomNumber = Math.floor(Math.random() * 10) + 1;
 
-        let messageContent = "\n";
+        let messageContent = '\n';
 
         for (let index = 0; index < randomNumber; index++) {
-            messageContent += ":revolving_hearts:";
+            messageContent += ':revolving_hearts:';
         }
 
         for (let index = 0; index < 10 - randomNumber; index++) {
-            messageContent += ":black_large_square:";
+            messageContent += ':black_large_square:';
         }
 
         const lovemeter = new Discord.EmbedBuilder()
-            .setTitle("Lovemeter :heart:")
-            .setAuthor({name: interaction.user.tag, iconURL: interaction.user.avatarURL()})
-            .setColor("#08ABF9")
+            .setTitle('Lovemeter :heart:')
+            .setAuthor({
+                name: interaction.user.tag,
+                iconURL: interaction.user.avatarURL(),
+            })
+            .setColor('#08ABF9')
             .setDescription(`Current __lovemeter__ between you and *${member}*: ${messageContent} \n→ **${randomNumber * 10}**% of love`)
-            .setFooter({text: Client.user.username, iconURL: Client.user.avatarURL()})
+            .setFooter({
+                text: Client.user.username,
+                iconURL: Client.user.avatarURL(),
+            })
             .setTimestamp();
 
-        interaction.editReply({embeds: [lovemeter]});
+        interaction.editReply({ embeds: [lovemeter] });
     },
 };

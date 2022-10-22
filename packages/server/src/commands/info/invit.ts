@@ -1,4 +1,4 @@
-import Discord from "discord.js";
+import Discord from 'discord.js';
 
 // Guild command
 
@@ -10,10 +10,10 @@ import Discord from "discord.js";
  * @param {any} options some options
  */
 module.exports = {
-    name: "invit",
-    description: "Create an invitation link",
-    category: "info",
-    botPermissions: ["CreateInstantInvite"],
+    name: 'invit',
+    description: 'Create an invitation link',
+    category: 'info',
+    botPermissions: ['CreateInstantInvite'],
 
     async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction) {
         (await interaction.guild.fetch()).invites

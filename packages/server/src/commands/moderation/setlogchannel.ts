@@ -1,6 +1,6 @@
-import Discord from "discord.js";
+import Discord from 'discord.js';
 
-import type {PrismaClient} from "@prisma/client";
+import type { PrismaClient } from '@prisma/client';
 
 // Fun command
 
@@ -12,33 +12,35 @@ import type {PrismaClient} from "@prisma/client";
  * @param {any} options some options
  */
 module.exports = {
-    name: "setlogchannel",
+    name: 'setlogchannel',
     description: "Sets the guild's log channel for Mango",
-    category: "moderation",
-    memberPermissions: ["ManageChannels"],
+    category: 'moderation',
+    memberPermissions: ['ManageChannels'],
     options: [
         {
-            name: "channel",
-            type: "CHANNEL",
-            description: "The channel you want to set logs to",
+            name: 'channel',
+            type: 'CHANNEL',
+            description: 'The channel you want to set logs to',
             required: false,
         },
     ],
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[], prisma: PrismaClient) {
-        const logChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
+        const logChannelID = args[0] ? args[0].replace(/\D+/g, '') : interaction.channel.id;
         const fetchChannel = (await Client.channels.fetch(logChannelID)) as Discord.TextChannel;
 
         if (fetchChannel.type !== Discord.ChannelType.GuildText) {
             return interaction.editReply("The channel you specified isn't a text channel. Please retry the command.");
         }
 
-        const logchannel = await prisma.logChannels.findUnique({where: {idOfGuild: interaction.guild.id}});
+        const logchannel = await prisma.logChannels.findUnique({
+            where: { idOfGuild: interaction.guild.id },
+        });
 
         if (logchannel) {
             await prisma.logChannels.update({
-                where: {idOfGuild: interaction.guild.id},
-                data: {idOfChannel: logChannelID}
+                where: { idOfGuild: interaction.guild.id },
+                data: { idOfChannel: logChannelID },
             });
         } else {
             await prisma.logChannels.create({

@@ -1,13 +1,13 @@
-import Discord from "discord.js";
-import glob from "fast-glob";
-import path from "path";
+import Discord from 'discord.js';
+import glob from 'fast-glob';
+import path from 'path';
 
-import {Command} from "interfaces/Command";
+import { Command } from 'interfaces/Command';
 
-import {log} from "./logger";
+import { log } from './logger';
 
 export async function create(client: Discord.Client) {
-    const commandFiles = glob.sync("src/commands/**/*.ts");
+    const commandFiles = glob.sync('src/commands/**/*.ts');
 
     commandFiles.map(async (file) => {
         const command: Command = await import(path.resolve(file));
@@ -18,11 +18,11 @@ export async function create(client: Discord.Client) {
         };
 
         if (command.options) {
-            Object.assign(commandObject, {options: command.options});
+            Object.assign(commandObject, { options: command.options });
         }
 
         if (command.subcommands) {
-            Object.assign(commandObject, {options: command.subcommands});
+            Object.assign(commandObject, { options: command.subcommands });
         }
 
         await client.application.commands.create(commandObject);

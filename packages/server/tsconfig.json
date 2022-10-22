@@ -1,29 +1,29 @@
 {
-	"compilerOptions": {
-		"baseUrl": "./src",
-		"paths": {
-			"@client/*": ["../../client/src/*"]
-		},
-		"target": "ES2015",
-		"module": "CommonJS",
-		"lib": ["es2015", "es2016", "es2017", "esnext"],
-		"allowJs": false,
-		"checkJs": false,
-		"declaration": false,
-		"declarationMap": false,
-		"sourceMap": false,
-		"removeComments": false,
-		"strict": false,
-		"moduleResolution": "Node",
-		"esModuleInterop": true,
-		"resolveJsonModule": true,
-		"skipLibCheck": true,
-		"typeRoots": ["./node_modules/@types"]
-	},
-	"exclude": ["node_modules"],
-	"ts-node": {
-		"transpileOnly": true,
-		"transpiler": "ts-node/transpilers/swc",
-	        "require": ["tsconfig-paths/register"]
-	}
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "@client/*": ["../../client/src/*"]
+        },
+        "target": "ES2015",
+        "module": "CommonJS",
+        "lib": ["es2015", "es2016", "es2017", "esnext"],
+        "allowJs": false,
+        "checkJs": false,
+        "declaration": false,
+        "declarationMap": false,
+        "sourceMap": false,
+        "removeComments": false,
+        "strict": false,
+        "moduleResolution": "Node",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "typeRoots": ["./node_modules/@types"]
+    },
+    "exclude": ["node_modules"],
+    "ts-node": {
+        "transpileOnly": true,
+        "transpiler": "ts-node/transpilers/swc",
+        "require": ["tsconfig-paths/register"]
+    }
 }
