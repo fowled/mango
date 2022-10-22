@@ -106,7 +106,7 @@ importers:
       '@typescript-eslint/parser': 5.31.0_4ecevqy5kyktjtncsxjz7r7cpy
       typescript: 4.9.0-dev.20221013
 
-  client:
+  website:
     specifiers:
       '@headlessui/vue': ^1.7.0
       '@heroicons/vue': ^2.0.10
@@ -127,57 +127,19 @@ importers:
       '@headlessui/vue': 1.7.0_vue@3.2.39
       '@heroicons/vue': 2.0.10_vue@3.2.39
       feather-icons: 4.28.0
-      pinia: 2.0.22_uxrvejtcwrakwzzo6hlouuo2vq
+      pinia: 2.0.22_au6dg7fdzqoqm3u7yvxyyjrfmi
       vite-tsconfig-paths: 3.5.0_vite@3.1.0
       vue: 3.2.39
       vue-feather: 2.0.0_c66s3l7t26go53mcmcep6pvxpe
       vue-router: 4.1.5_vue@3.2.39
-      vue-tsc: 1.0.8_typescript@4.7.4
+      vue-tsc: 1.0.8_typescript@4.8.4
     devDependencies:
       '@vitejs/plugin-vue': 3.1.0_vite@3.1.0+vue@3.2.39
       autoprefixer: 10.4.8_postcss@8.4.16
       postcss: 8.4.16
       tailwindcss: 3.1.8_postcss@8.4.16
-      typescript: 4.7.4
-      vite: 3.1.0
-
-  server:
-    specifiers:
-      '@mazzlabs/prisma-session-store-fix': ^3.1.8
-      '@prisma/client': 4.4.0
-      '@swc/core': 1.2.220
-      '@types/cookie-parser': 1.4.3
-      '@types/cors': 2.8.12
-      '@types/express': 4.17.13
-      '@types/express-session': 1.17.5
-      '@types/node': 16.11.47
-      chalk: 4.1.2
-      cookie-parser: ^1.4.6
-      cors: ^2.8.5
-      discord.js: ^14.6.0
-      express: ^4.18.1
-      express-session: ^1.17.3
-      node-fetch: ^2.6.7
-      tsconfig-paths: ^4.1.0
-      typescript: ^4.8.4
-    dependencies:
-      '@mazzlabs/prisma-session-store-fix': 3.1.8_ywyqx7acfmjuax6ygli2ihk5mm
-      '@prisma/client': 4.4.0
-      '@swc/core': 1.2.220
-      '@types/cookie-parser': 1.4.3
-      '@types/cors': 2.8.12
-      '@types/express': 4.17.13
-      '@types/express-session': 1.17.5
-      '@types/node': 16.11.47
-      chalk: 4.1.2
-      cookie-parser: 1.4.6
-      cors: 2.8.5
-      discord.js: 14.6.0
-      express: 4.18.1
-      express-session: 1.17.3
-      node-fetch: 2.6.7
-      tsconfig-paths: 4.1.0
       typescript: 4.8.4
+      vite: 3.1.0
 
 packages:
 
@@ -400,19 +362,6 @@ packages:
     dev: false
     optional: true
 
-  /@prisma/client/4.4.0:
-    resolution: {integrity: sha512-ciKOP246x1xwr04G9ajHlJ4pkmtu9Q6esVyqVBO0QJihaKQIUvbPjClp17IsRJyxqNpFm4ScbOc/s9DUzKHINQ==}
-    engines: {node: '>=14.17'}
-    requiresBuild: true
-    peerDependencies:
-      prisma: '*'
-    peerDependenciesMeta:
-      prisma:
-        optional: true
-    dependencies:
-      '@prisma/engines-version': 4.4.0-66.f352a33b70356f46311da8b00d83386dd9f145d6
-    dev: false
-
   /@prisma/client/4.4.0_prisma@4.4.0:
     resolution: {integrity: sha512-ciKOP246x1xwr04G9ajHlJ4pkmtu9Q6esVyqVBO0QJihaKQIUvbPjClp17IsRJyxqNpFm4ScbOc/s9DUzKHINQ==}
     engines: {node: '>=14.17'}
@@ -627,19 +576,23 @@ packages:
     dependencies:
       '@types/connect': 3.4.35
       '@types/node': 18.6.1
+    dev: true
 
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
       '@types/node': 18.6.1
+    dev: true
 
   /@types/cookie-parser/1.4.3:
     resolution: {integrity: sha512-CqSKwFwefj4PzZ5n/iwad/bow2hTCh0FlNAeWLtQM3JA/NX/iYagIpWG2cf1bQKQ2c9gU2log5VUCrn7LDOs0w==}
     dependencies:
       '@types/express': 4.17.13
+    dev: true
 
   /@types/cors/2.8.12:
     resolution: {integrity: sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==}
+    dev: true
 
   /@types/debug/4.1.7:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
@@ -653,11 +606,13 @@ packages:
       '@types/node': 18.6.1
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
+    dev: true
 
   /@types/express-session/1.17.5:
     resolution: {integrity: sha512-l0DhkvNVfyUPEEis8fcwbd46VptfA/jmMwHfob2TfDMf3HyPLiB9mKD71LXhz5TMUobODXPD27zXSwtFQLHm+w==}
     dependencies:
       '@types/express': 4.17.13
+    dev: true
 
   /@types/express/4.17.13:
     resolution: {integrity: sha512-6bSZTPaTIACxn48l50SR+axgrqm6qXFIxrdAKaG6PaJk3+zuUr35hBlgT7vOmJcum+OEaIBLtHV/qloEAFITeA==}
@@ -666,6 +621,7 @@ packages:
       '@types/express-serve-static-core': 4.17.29
       '@types/qs': 6.9.7
       '@types/serve-static': 1.13.10
+    dev: true
 
   /@types/inquirer/8.2.1:
     resolution: {integrity: sha512-wKW3SKIUMmltbykg4I5JzCVzUhkuD9trD6efAmYgN2MrSntY0SMRQzEnD3mkyJ/rv9NLbTC7g3hKKE86YwEDLw==}
@@ -680,6 +636,7 @@ packages:
 
   /@types/mime/1.3.2:
     resolution: {integrity: sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==}
+    dev: true
 
   /@types/ms/0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
@@ -710,15 +667,18 @@ packages:
 
   /@types/qs/6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
+    dev: true
 
   /@types/range-parser/1.2.4:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
+    dev: true
 
   /@types/serve-static/1.13.10:
     resolution: {integrity: sha512-nCkHGI4w7ZgAdNkrEu0bv+4xNV/XDqW+DydknebMOQwkpDGx8G+HTlj7R7ABI8i8nKxVw0wtKPi1D+lPOkh4YQ==}
     dependencies:
       '@types/mime': 1.3.2
       '@types/node': 18.6.1
+    dev: true
 
   /@types/through/0.0.30:
     resolution: {integrity: sha512-FvnCJljyxhPM3gkRgWmxmDZyAQSiBQQWLI0A0VFL0K7W1oRUrPJSqNO0NvTnLkBcotdlp3lKvaT0JrnyRDkzOg==}
@@ -3344,7 +3304,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /pinia/2.0.22_uxrvejtcwrakwzzo6hlouuo2vq:
+  /pinia/2.0.22_au6dg7fdzqoqm3u7yvxyyjrfmi:
     resolution: {integrity: sha512-u+b8/BC+tmvo3ACbYO2w5NfxHWFOjvvw9DQnyT0dW8aUMCPRQT5QnfZ5R5W2MzZBMTeZRMQI7V/QFbafmM9QHw==}
     peerDependencies:
       '@vue/composition-api': ^1.4.0
@@ -3357,7 +3317,7 @@ packages:
         optional: true
     dependencies:
       '@vue/devtools-api': 6.2.1
-      typescript: 4.7.4
+      typescript: 4.8.4
       vue: 3.2.39
       vue-demi: 0.13.11_vue@3.2.39
     dev: false
@@ -3696,7 +3656,7 @@ packages:
       http-proxy: 1.18.1
       mime-db: 1.52.0
       node-fetch: 2.6.7
-      typescript: 4.7.4
+      typescript: 4.8.4
     transitivePeerDependencies:
       - debug
       - encoding
@@ -4219,16 +4179,10 @@ packages:
       mime-types: 2.1.35
     dev: false
 
-  /typescript/4.7.4:
-    resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}
-    engines: {node: '>=4.2.0'}
-    hasBin: true
-
   /typescript/4.8.4:
     resolution: {integrity: sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==}
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: false
 
   /typescript/4.9.0-dev.20221013:
     resolution: {integrity: sha512-4Bo+yrQ+bCi8y2jB4oUajM4uxhluhGgTV0gESr/H8tvpOUqM0kT9swHxlc5fTXnzJFxQi8dbUg5rIfIQXakW2g==}
@@ -4396,7 +4350,7 @@ packages:
       he: 1.2.0
     dev: false
 
-  /vue-tsc/1.0.8_typescript@4.7.4:
+  /vue-tsc/1.0.8_typescript@4.8.4:
     resolution: {integrity: sha512-+0sJ+QVH7SHLt8mV/uIw4xlHDk1mWigZkMFugfZTv8rlHpM3S2tCVZ0BWEGclT/0rKdO8j+St+mljpvhWPN/eQ==}
     hasBin: true
     peerDependencies:
@@ -4404,7 +4358,7 @@ packages:
     dependencies:
       '@volar/vue-language-core': 1.0.8
       '@volar/vue-typescript': 1.0.8
-      typescript: 4.7.4
+      typescript: 4.8.4
     dev: false
 
   /vue/3.2.39:
