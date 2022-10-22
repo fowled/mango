@@ -5,42 +5,7 @@ importers:
   .:
     specifiers: {}
 
-  packages/client:
-    specifiers:
-      '@headlessui/vue': ^1.7.0
-      '@heroicons/vue': ^2.0.10
-      '@vitejs/plugin-vue': ^3.1.0
-      autoprefixer: ^10.4.8
-      feather-icons: 4.28.0
-      pinia: ^2.0.22
-      postcss: ^8.4.16
-      tailwindcss: ^3.1.8
-      typescript: ^4.6.4
-      vite: ^3.1.0
-      vite-tsconfig-paths: ^3.5.0
-      vue: ^3.2.37
-      vue-feather: ^2.0.0
-      vue-router: '4'
-      vue-tsc: ^1.0.8
-    dependencies:
-      '@headlessui/vue': 1.7.0_vue@3.2.39
-      '@heroicons/vue': 2.0.10_vue@3.2.39
-      feather-icons: 4.28.0
-      pinia: 2.0.22_uxrvejtcwrakwzzo6hlouuo2vq
-      vite-tsconfig-paths: 3.5.0_vite@3.1.0
-      vue: 3.2.39
-      vue-feather: 2.0.0_c66s3l7t26go53mcmcep6pvxpe
-      vue-router: 4.1.5_vue@3.2.39
-      vue-tsc: 1.0.8_typescript@4.7.4
-    devDependencies:
-      '@vitejs/plugin-vue': 3.1.0_vite@3.1.0+vue@3.2.39
-      autoprefixer: 10.4.8_postcss@8.4.16
-      postcss: 8.4.16
-      tailwindcss: 3.1.8_postcss@8.4.16
-      typescript: 4.7.4
-      vite: 3.1.0
-
-  packages/server:
+  app:
     specifiers:
       '@discordjs/rest': ^1.0.0
       '@mazzlabs/prisma-session-store-fix': ^3.1.8
@@ -91,7 +56,7 @@ importers:
       tsconfig-paths: ^4.1.0
       typescript: 4.9.0-dev.20221013
     dependencies:
-      '@discordjs/rest': 1.0.0
+      '@discordjs/rest': 1.3.0
       '@mazzlabs/prisma-session-store-fix': 3.1.8_ywyqx7acfmjuax6ygli2ihk5mm
       '@prisma/client': 4.4.0_prisma@4.4.0
       '@sapphire/snowflake': 3.2.2
@@ -141,6 +106,79 @@ importers:
       '@typescript-eslint/parser': 5.31.0_4ecevqy5kyktjtncsxjz7r7cpy
       typescript: 4.9.0-dev.20221013
 
+  client:
+    specifiers:
+      '@headlessui/vue': ^1.7.0
+      '@heroicons/vue': ^2.0.10
+      '@vitejs/plugin-vue': ^3.1.0
+      autoprefixer: ^10.4.8
+      feather-icons: 4.28.0
+      pinia: ^2.0.22
+      postcss: ^8.4.16
+      tailwindcss: ^3.1.8
+      typescript: ^4.6.4
+      vite: ^3.1.0
+      vite-tsconfig-paths: ^3.5.0
+      vue: ^3.2.37
+      vue-feather: ^2.0.0
+      vue-router: '4'
+      vue-tsc: ^1.0.8
+    dependencies:
+      '@headlessui/vue': 1.7.0_vue@3.2.39
+      '@heroicons/vue': 2.0.10_vue@3.2.39
+      feather-icons: 4.28.0
+      pinia: 2.0.22_uxrvejtcwrakwzzo6hlouuo2vq
+      vite-tsconfig-paths: 3.5.0_vite@3.1.0
+      vue: 3.2.39
+      vue-feather: 2.0.0_c66s3l7t26go53mcmcep6pvxpe
+      vue-router: 4.1.5_vue@3.2.39
+      vue-tsc: 1.0.8_typescript@4.7.4
+    devDependencies:
+      '@vitejs/plugin-vue': 3.1.0_vite@3.1.0+vue@3.2.39
+      autoprefixer: 10.4.8_postcss@8.4.16
+      postcss: 8.4.16
+      tailwindcss: 3.1.8_postcss@8.4.16
+      typescript: 4.7.4
+      vite: 3.1.0
+
+  server:
+    specifiers:
+      '@mazzlabs/prisma-session-store-fix': ^3.1.8
+      '@prisma/client': 4.4.0
+      '@swc/core': 1.2.220
+      '@types/cookie-parser': 1.4.3
+      '@types/cors': 2.8.12
+      '@types/express': 4.17.13
+      '@types/express-session': 1.17.5
+      '@types/node': 16.11.47
+      chalk: 4.1.2
+      cookie-parser: ^1.4.6
+      cors: ^2.8.5
+      discord.js: ^14.6.0
+      express: ^4.18.1
+      express-session: ^1.17.3
+      node-fetch: ^2.6.7
+      tsconfig-paths: ^4.1.0
+      typescript: ^4.8.4
+    dependencies:
+      '@mazzlabs/prisma-session-store-fix': 3.1.8_ywyqx7acfmjuax6ygli2ihk5mm
+      '@prisma/client': 4.4.0
+      '@swc/core': 1.2.220
+      '@types/cookie-parser': 1.4.3
+      '@types/cors': 2.8.12
+      '@types/express': 4.17.13
+      '@types/express-session': 1.17.5
+      '@types/node': 16.11.47
+      chalk: 4.1.2
+      cookie-parser: 1.4.6
+      cors: 2.8.5
+      discord.js: 14.6.0
+      express: 4.18.1
+      express-session: 1.17.3
+      node-fetch: 2.6.7
+      tsconfig-paths: 4.1.0
+      typescript: 4.8.4
+
 packages:
 
   /@babel/helper-string-parser/7.18.10:
@@ -189,27 +227,9 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@discordjs/collection/1.0.0:
-    resolution: {integrity: sha512-nAxDQYE5dNAzEGQ7HU20sujDsG5vLowUKCEqZkKUIlrXERZFTt/60zKUj/g4+AVCGeq+pXC5hivMaNtiC+PY5Q==}
-    engines: {node: '>=16.9.0'}
-    dev: false
-
   /@discordjs/collection/1.2.0:
     resolution: {integrity: sha512-VvrrtGb7vbfPHzbhGq9qZB5o8FOB+kfazrxdt0OtxzSkoBuw9dURMkCwWizZ00+rDpiK2HmLHBZX+y6JsG9khw==}
     engines: {node: '>=16.9.0'}
-    dev: false
-
-  /@discordjs/rest/1.0.0:
-    resolution: {integrity: sha512-uDAvnE0P2a8axMdD4C51EGjvCRQ2HZk2Yxf6vHWZgIqG87D8DGKMPwmquIxrrB07MjV+rwci2ObU+mGhGP+bJg==}
-    engines: {node: '>=16.9.0'}
-    dependencies:
-      '@discordjs/collection': 1.0.0
-      '@sapphire/async-queue': 1.3.2
-      '@sapphire/snowflake': 3.2.2
-      discord-api-types: 0.36.3
-      file-type: 17.1.3
-      tslib: 2.4.0
-      undici: 5.8.0
     dev: false
 
   /@discordjs/rest/1.3.0:
@@ -380,6 +400,19 @@ packages:
     dev: false
     optional: true
 
+  /@prisma/client/4.4.0:
+    resolution: {integrity: sha512-ciKOP246x1xwr04G9ajHlJ4pkmtu9Q6esVyqVBO0QJihaKQIUvbPjClp17IsRJyxqNpFm4ScbOc/s9DUzKHINQ==}
+    engines: {node: '>=14.17'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 4.4.0-66.f352a33b70356f46311da8b00d83386dd9f145d6
+    dev: false
+
   /@prisma/client/4.4.0_prisma@4.4.0:
     resolution: {integrity: sha512-ciKOP246x1xwr04G9ajHlJ4pkmtu9Q6esVyqVBO0QJihaKQIUvbPjClp17IsRJyxqNpFm4ScbOc/s9DUzKHINQ==}
     engines: {node: '>=14.17'}
@@ -401,11 +434,6 @@ packages:
   /@prisma/engines/4.4.0:
     resolution: {integrity: sha512-Fpykccxlt9MHrAs/QpPGpI2nOiRxuLA+LiApgA59ibbf24YICZIMWd3SI2YD+q0IAIso0jCGiHhirAIbxK3RyQ==}
     requiresBuild: true
-    dev: false
-
-  /@sapphire/async-queue/1.3.2:
-    resolution: {integrity: sha512-rUpMLATsoAMnlN3gecAcr9Ecnw1vG7zi5Xr+IX22YzRzi1k9PF9vKzoT8RuEJbiIszjcimu3rveqUnvwDopz8g==}
-    engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dev: false
 
   /@sapphire/async-queue/1.5.0:
@@ -599,23 +627,19 @@ packages:
     dependencies:
       '@types/connect': 3.4.35
       '@types/node': 18.6.1
-    dev: true
 
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
       '@types/node': 18.6.1
-    dev: true
 
   /@types/cookie-parser/1.4.3:
     resolution: {integrity: sha512-CqSKwFwefj4PzZ5n/iwad/bow2hTCh0FlNAeWLtQM3JA/NX/iYagIpWG2cf1bQKQ2c9gU2log5VUCrn7LDOs0w==}
     dependencies:
       '@types/express': 4.17.13
-    dev: true
 
   /@types/cors/2.8.12:
     resolution: {integrity: sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==}
-    dev: true
 
   /@types/debug/4.1.7:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
@@ -629,13 +653,11 @@ packages:
       '@types/node': 18.6.1
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
-    dev: true
 
   /@types/express-session/1.17.5:
     resolution: {integrity: sha512-l0DhkvNVfyUPEEis8fcwbd46VptfA/jmMwHfob2TfDMf3HyPLiB9mKD71LXhz5TMUobODXPD27zXSwtFQLHm+w==}
     dependencies:
       '@types/express': 4.17.13
-    dev: true
 
   /@types/express/4.17.13:
     resolution: {integrity: sha512-6bSZTPaTIACxn48l50SR+axgrqm6qXFIxrdAKaG6PaJk3+zuUr35hBlgT7vOmJcum+OEaIBLtHV/qloEAFITeA==}
@@ -644,7 +666,6 @@ packages:
       '@types/express-serve-static-core': 4.17.29
       '@types/qs': 6.9.7
       '@types/serve-static': 1.13.10
-    dev: true
 
   /@types/inquirer/8.2.1:
     resolution: {integrity: sha512-wKW3SKIUMmltbykg4I5JzCVzUhkuD9trD6efAmYgN2MrSntY0SMRQzEnD3mkyJ/rv9NLbTC7g3hKKE86YwEDLw==}
@@ -659,7 +680,6 @@ packages:
 
   /@types/mime/1.3.2:
     resolution: {integrity: sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==}
-    dev: true
 
   /@types/ms/0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
@@ -690,18 +710,15 @@ packages:
 
   /@types/qs/6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
-    dev: true
 
   /@types/range-parser/1.2.4:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
-    dev: true
 
   /@types/serve-static/1.13.10:
     resolution: {integrity: sha512-nCkHGI4w7ZgAdNkrEu0bv+4xNV/XDqW+DydknebMOQwkpDGx8G+HTlj7R7ABI8i8nKxVw0wtKPi1D+lPOkh4YQ==}
     dependencies:
       '@types/mime': 1.3.2
       '@types/node': 18.6.1
-    dev: true
 
   /@types/through/0.0.30:
     resolution: {integrity: sha512-FvnCJljyxhPM3gkRgWmxmDZyAQSiBQQWLI0A0VFL0K7W1oRUrPJSqNO0NvTnLkBcotdlp3lKvaT0JrnyRDkzOg==}
@@ -1084,12 +1101,6 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
     dev: true
-
-  /acorn/8.7.1:
-    resolution: {integrity: sha512-Xx54uLJQZ19lKygFXOWsscKUbsBZW0CPykPhVQdhIeIwrbPmJzqeASDInc8nKBnp/JT6igTs82qPXz069H8I/A==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
-    dev: false
 
   /acorn/8.8.0:
     resolution: {integrity: sha512-QOxyigPVrpZ2GXT+PFyZTl6TtOFc5egxHIP9IlQ+RbupQuX4RkT/Bee4/kQuC02Xkzg84JcT7oLYtDIQxp+v7w==}
@@ -1710,10 +1721,6 @@ packages:
     dependencies:
       path-type: 4.0.0
 
-  /discord-api-types/0.36.3:
-    resolution: {integrity: sha512-bz/NDyG0KBo/tY14vSkrwQ/n3HKPf87a0WFW/1M9+tXYK+vp5Z5EksawfCWo2zkAc6o7CClc0eff1Pjrqznlwg==}
-    dev: false
-
   /discord-api-types/0.37.12:
     resolution: {integrity: sha512-SMBP4V6/A9mE7shBQAiTxNWnQlYTdiKMGvc7G23neayxaTJeFYh5FviJSWUa0BTdXcph1h/jT03Nbyv5XgZkzw==}
     dev: false
@@ -2244,15 +2251,6 @@ packages:
     engines: {node: ^10.12.0 || >=12.0.0}
     dependencies:
       flat-cache: 3.0.4
-
-  /file-type/17.1.3:
-    resolution: {integrity: sha512-MFVSozBIhvnx2dkxlf+010Xqn6+ojlMUT9LXQiPNoOijgRtXNMghWdGK0u2o1RoCqzHoVsw65IL8ZBcQ4MhIrw==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dependencies:
-      readable-web-to-node-stream: 3.0.2
-      strtok3: 7.0.0-alpha.8
-      token-types: 5.0.0-alpha.2
-    dev: false
 
   /file-type/18.0.0:
     resolution: {integrity: sha512-jjMwFpnW8PKofLE/4ohlhqwDk5k0NC6iy0UHAJFKoY1fQeGMN0GDdLgHQrvCbSpMwbqzoCZhRI5dETCZna5qVA==}
@@ -3330,11 +3328,6 @@ packages:
     engines: {node: '>=14.16'}
     dev: false
 
-  /peek-readable/5.0.0-alpha.5:
-    resolution: {integrity: sha512-pJohF/tDwV3ntnT5+EkUo4E700q/j/OCDuPxtM+5/kFGjyOai/sK4/We4Cy1MB2OiTQliWU5DxPvYIKQAdPqAA==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dev: false
-
   /pg-connection-string/2.5.0:
     resolution: {integrity: sha512-r5o/V/ORTA6TmUnyWZR9nCj1klXCO2CEKNRlVuJptZe85QuhFayC7WeMic7ndayT5IRIR0S0xFxFi2ousartlQ==}
     dev: false
@@ -4003,14 +3996,6 @@ packages:
       peek-readable: 5.0.0
     dev: false
 
-  /strtok3/7.0.0-alpha.8:
-    resolution: {integrity: sha512-u+k19v+rTxBjGYxncRQjGvZYwYvEd0uP3D+uHKe/s4WB1eXS5ZwpZsTlBu5xSS4zEd89mTXECXg6WW3FSeV8cA==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dependencies:
-      '@tokenizer/token': 0.3.0
-      peek-readable: 5.0.0-alpha.5
-    dev: false
-
   /supports-color/5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
     engines: {node: '>=4'}
@@ -4109,14 +4094,6 @@ packages:
     engines: {node: '>=0.6'}
     dev: false
 
-  /token-types/5.0.0-alpha.2:
-    resolution: {integrity: sha512-EsG9UxAW4M6VATrEEjhPFTKEUi1OiJqTUMIZOGBN49fGxYjZB36k0p7to3HZSmWRoHm1QfZgrg3e02fpqAt5fQ==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dependencies:
-      '@tokenizer/token': 0.3.0
-      ieee754: 1.2.1
-    dev: false
-
   /token-types/5.0.1:
     resolution: {integrity: sha512-Y2fmSnZjQdDb9W4w4r1tswlMHylzWIeOKpx0aZH9BgGtACHhrk3OkT52AzwcuqTRBZtvvnTjDBh8eynMulu8Vg==}
     engines: {node: '>=14.16'}
@@ -4177,7 +4154,7 @@ packages:
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
       '@types/node': 16.11.47
-      acorn: 8.7.1
+      acorn: 8.8.0
       acorn-walk: 8.2.0
       arg: 4.1.3
       create-require: 1.1.1
@@ -4186,14 +4163,6 @@ packages:
       typescript: 4.9.0-dev.20221013
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
-    dev: false
-
-  /tsconfig-paths/4.0.0:
-    resolution: {integrity: sha512-SLBg2GBKlR6bVtMgJJlud/o3waplKtL7skmLkExomIiaAtLGtVsoXIqP3SYdjbcH9lq/KVv7pMZeCBpLYOit6Q==}
-    dependencies:
-      json5: 2.2.1
-      minimist: 1.2.6
-      strip-bom: 3.0.0
     dev: false
 
   /tsconfig-paths/4.1.0:
@@ -4255,6 +4224,12 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
 
+  /typescript/4.8.4:
+    resolution: {integrity: sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: false
+
   /typescript/4.9.0-dev.20221013:
     resolution: {integrity: sha512-4Bo+yrQ+bCi8y2jB4oUajM4uxhluhGgTV0gESr/H8tvpOUqM0kT9swHxlc5fTXnzJFxQi8dbUg5rIfIQXakW2g==}
     engines: {node: '>=4.2.0'}
@@ -4276,11 +4251,6 @@ packages:
     engines: {node: '>=12.18'}
     dependencies:
       busboy: 1.6.0
-    dev: false
-
-  /undici/5.8.0:
-    resolution: {integrity: sha512-1F7Vtcez5w/LwH2G2tGnFIihuWUlc58YidwLiCv+jR2Z50x0tNXpRRw7eOIJ+GvqCqIkg9SB7NWAJ/T9TLfv8Q==}
-    engines: {node: '>=12.18'}
     dev: false
 
   /unique-filename/1.1.1:
@@ -4353,7 +4323,7 @@ packages:
       debug: 4.3.4
       globrex: 0.1.2
       recrawl-sync: 2.2.2
-      tsconfig-paths: 4.0.0
+      tsconfig-paths: 4.1.0
       vite: 3.1.0
     transitivePeerDependencies:
       - supports-color

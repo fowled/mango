@@ -1,24 +1,25 @@
-﻿import { PrismaClient } from '@prisma/client';
-import hypixel from 'hypixel-api-reborn';
-import Discord from 'discord.js';
-import cron from 'node-schedule';
-import glob from 'fast-glob';
-import chalk from 'chalk';
-import path from 'path';
+﻿import { PrismaClient } from "@prisma/client";
+import hypixel from "hypixel-api-reborn";
+import Discord from "discord.js";
+import cron from "node-schedule";
+import glob from "fast-glob";
+import dotenv from "dotenv";
+import chalk from "chalk";
+import path from "path";
 
-import { timestampYear } from 'utils/timestamp';
-import { logError } from 'utils/sendLog';
-import { log } from 'utils/logger';
+import { timestampYear } from "utils/timestamp";
+import { logError } from "utils/sendLog";
+import { log } from "utils/logger";
 
-import { Command } from 'interfaces/Command';
-import { Event } from 'interfaces/Event';
+import { Command } from "interfaces/Command";
+import { Event } from "interfaces/Event";
 
-import { createAPIServer } from 'api/server';
+import { createAPIServer } from "server";
 
-import { Token } from 'token';
+dotenv.config();
 
 export const client = new Discord.Client({
-    intents: ['Guilds', 'GuildMembers', 'GuildMessages', 'GuildMessageReactions'],
+    intents: ["Guilds", "GuildMembers", "GuildMessages", "GuildMessageReactions"],
 });
 
 export const talkedRecently = new Set();
@@ -31,15 +32,15 @@ export const clientInteractions = new Discord.Collection<string, Command>();
 
 (async () => {
     await binder();
-    await client.login(Token);
+    await client.login(process.env.TOKEN);
     await createAPIServer(client, prisma);
     await handleRejections();
     await runCronJobs();
 })();
 
 async function binder() {
-    const eventFiles = glob.sync('src/events/*.ts');
-    const commandFiles = glob.sync('src/commands/**/*.ts');
+    const eventFiles = glob.sync("src/events/*.ts");
+    const commandFiles = glob.sync("src/commands/**/*.ts");
 
     eventFiles.map(async (file) => {
         const event: Event = await import(path.resolve(file));
@@ -57,26 +58,26 @@ async function binder() {
         clientInteractions.set(command.name, command);
     });
 
-    log(`${chalk.yellow('loaded')} all ${chalk.redBright('commands')} & ${chalk.redBright('events')}`);
+    log(`${chalk.yellow("loaded")} all ${chalk.redBright("commands")} & ${chalk.redBright("events")}`);
 }
 
 async function handleRejections() {
-    process.on('unhandledRejection', (error: Error) => {
+    process.on("unhandledRejection", (error: Error) => {
         const errorEmbed = new Discord.EmbedBuilder()
-            .setDescription('<:no:835565213322575963> An error has been detected... \n' + `\`\`\`${error.stack}\`\`\``)
+            .setDescription("<:no:835565213322575963> An error has been detected... \n" + `\`\`\`${error.stack}\`\`\``)
             .setTimestamp()
             .setFooter({
                 text: client.user.username,
                 iconURL: client.user.displayAvatarURL(),
             })
-            .setColor('DarkRed');
+            .setColor("DarkRed");
 
         logError(client, errorEmbed);
     });
 }
 
 async function runCronJobs() {
-    cron.scheduleJob('0 0 * * *', async function () {
+    cron.scheduleJob("0 0 * * *", async function () {
         const todayDate = new Date();
         const todayDateString = `${todayDate.getMonth()}/${todayDate.getDate()}`;
 
