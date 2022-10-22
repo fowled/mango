@@ -146,4 +146,4 @@ const features = [
 	</section>
 
 	<Footer />
-</template>
+</template>	

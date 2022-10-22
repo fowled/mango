@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import { createApp } from "vue";
 
 import Dashboard from "routes/Dashboard.vue";
+import Privacy from "routes/Privacy.vue";
 import Manage from "routes/Manage.vue";
+import Terms from "routes/Terms.vue";
 import Home from "routes/Home.vue";
 
 import App from "App.vue";
@@ -11,6 +13,8 @@ const routes = [
 	{ path: "/", component: Home },
 	{ path: "/dashboard", component: Dashboard },
 	{ path: "/manage/:guildId", component: Manage },
+	{ path: "/terms", component: Terms },
+	{ path: "/privacy-policy", component: Privacy }
 ];
 
 export const router = createRouter({
