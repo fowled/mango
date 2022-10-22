@@ -4,9 +4,8 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"postinstall": "pnpm add -g vue-tsc vite",
 		"dev": "vite",
-		"build": "vue-tsc --noEmit && vite build",
+		"build": "npx vue-tsc --noEmit && npx vite build",
 		"preview": "vite preview"
 	},
 	"dependencies": {
