@@ -1,7 +1,7 @@
-import Discord from 'discord.js';
+import Discord from "discord.js";
 
-import { error } from 'utils/logger';
-import { insertLog } from 'utils/logChecker';
+import { error } from "utils/logger";
+import { insertLog } from "utils/logChecker";
 
 // Mod command
 
@@ -13,23 +13,23 @@ import { insertLog } from 'utils/logChecker';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'lockchannel',
-    description: 'Locks a channel',
-    category: 'moderation',
-    botPermissions: ['ManageChannels'],
-    memberPermissions: ['ManageChannels'],
+    name: "lockchannel",
+    description: "Locks a channel",
+    category: "moderation",
+    botPermissions: ["ManageChannels"],
+    memberPermissions: ["ManageChannels"],
     options: [
         {
-            name: 'role',
-            type: 'MENTIONABLE',
-            description: 'The role you want to lock the channel to',
+            name: "role",
+            type: "MENTIONABLE",
+            description: "The role you want to lock the channel to",
             required: true,
         },
 
         {
-            name: 'channel',
-            type: 'CHANNEL',
-            description: 'The channel that will be locked',
+            name: "channel",
+            type: "CHANNEL",
+            description: "The channel that will be locked",
             required: false,
         },
     ],
@@ -52,7 +52,7 @@ module.exports = {
             .catch((err) => {
                 error(err);
 
-                interaction.editReply('An error occured. <:no:835565213322575963> ```\n' + err + '```');
+                interaction.editReply("An error occured. <:no:835565213322575963> ```\n" + err + "```");
             });
 
         await insertLog(Client, interaction.guild.id, interaction.user, `**${interaction.channel}** (\`${(interaction.channel as Discord.TextChannel).name}\`) has been locked by *${interaction.user.tag}*`);

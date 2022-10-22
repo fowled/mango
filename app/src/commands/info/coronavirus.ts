@@ -1,5 +1,5 @@
-import Discord from 'discord.js';
-import fetch from 'node-fetch';
+import Discord from "discord.js";
+import fetch from "node-fetch";
 
 // Informative command
 
@@ -11,13 +11,13 @@ import fetch from 'node-fetch';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'coronavirus',
+    name: "coronavirus",
     description: "Get COVID-19 disease's latest information",
-    category: 'info',
+    category: "info",
     options: [
         {
-            name: 'country',
-            type: 'STRING',
+            name: "country",
+            type: "STRING",
             description: "The country you'd like to get information from",
             required: false,
         },
@@ -25,26 +25,26 @@ module.exports = {
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[]) {
         if (!args[0]) {
-            const req = await fetch('https://disease.sh/v2/all').then((res) => res.json());
+            const req = await fetch("https://disease.sh/v2/all").then((res) => res.json());
 
             const MessageEmbed = new Discord.EmbedBuilder()
                 .setAuthor({
                     name: interaction.user.username,
                     iconURL: interaction.user.avatarURL(),
                 })
-                .setTitle('Coronavirus stats :chart_with_upwards_trend:')
-                .setDescription('Find here COVID-19 related information')
-                .setColor('#08ABF9')
-                .setThumbnail('https://images.emojiterra.com/twitter/v12/512px/1f637.png')
+                .setTitle("Coronavirus stats :chart_with_upwards_trend:")
+                .setDescription("Find here COVID-19 related information")
+                .setColor("#08ABF9")
+                .setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f637.png")
                 .addFields(
-                    { name: 'Cases', value: req.cases.toString() },
-                    { name: 'Today cases', value: req.todayCases.toString() },
-                    { name: 'Deaths', value: req.deaths.toString() },
-                    { name: 'Today deaths', value: req.todayDeaths.toString() },
-                    { name: 'Recovered', value: req.recovered.toString() },
-                    { name: 'Critical', value: req.critical.toString() },
+                    { name: "Cases", value: req.cases.toString() },
+                    { name: "Today cases", value: req.todayCases.toString() },
+                    { name: "Deaths", value: req.deaths.toString() },
+                    { name: "Today deaths", value: req.todayDeaths.toString() },
+                    { name: "Recovered", value: req.recovered.toString() },
+                    { name: "Critical", value: req.critical.toString() },
                     {
-                        name: 'Affected countries',
+                        name: "Affected countries",
                         value: req.affectedCountries.toString(),
                     },
                 )
@@ -67,17 +67,17 @@ module.exports = {
                     name: interaction.user.username,
                     iconURL: interaction.user.avatarURL(),
                 }) // country
-                .setTitle('Coronavirus stats :chart_with_upwards_trend:')
-                .setDescription('Find here COVID-19 related information')
+                .setTitle("Coronavirus stats :chart_with_upwards_trend:")
+                .setDescription("Find here COVID-19 related information")
                 .setThumbnail(req.countryInfo.flag.toString())
-                .setColor('#08ABF9')
+                .setColor("#08ABF9")
                 .addFields(
-                    { name: 'Cases', value: req.cases.toString() },
-                    { name: 'Today cases', value: req.todayCases.toString() },
-                    { name: 'Deaths', value: req.deaths.toString() },
-                    { name: 'Today deaths', value: req.todayDeaths.toString() },
-                    { name: 'Recovered', value: req.recovered.toString() },
-                    { name: 'Critical', value: req.critical.toString() },
+                    { name: "Cases", value: req.cases.toString() },
+                    { name: "Today cases", value: req.todayCases.toString() },
+                    { name: "Deaths", value: req.deaths.toString() },
+                    { name: "Today deaths", value: req.todayDeaths.toString() },
+                    { name: "Recovered", value: req.recovered.toString() },
+                    { name: "Critical", value: req.critical.toString() },
                 )
                 .setFooter({
                     text: Client.user.username,

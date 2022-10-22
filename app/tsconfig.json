@@ -2,7 +2,7 @@
     "compilerOptions": {
         "baseUrl": "./src",
         "paths": {
-            "@website/*": ["../../website/src/*"],
+            "@website/*": ["../../website/src/*"]
         },
         "target": "ES2015",
         "module": "CommonJS",

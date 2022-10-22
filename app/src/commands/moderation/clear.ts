@@ -1,6 +1,6 @@
-import Discord from 'discord.js';
+import Discord from "discord.js";
 
-import { insertLog } from 'utils/logChecker';
+import { insertLog } from "utils/logChecker";
 
 // Mod command
 
@@ -12,16 +12,16 @@ import { insertLog } from 'utils/logChecker';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'clear',
-    description: 'Deletes several messages at once',
-    category: 'moderation',
-    botPermissions: ['ManageMessages'],
-    memberPermissions: ['ManageMessages'],
+    name: "clear",
+    description: "Deletes several messages at once",
+    category: "moderation",
+    botPermissions: ["ManageMessages"],
+    memberPermissions: ["ManageMessages"],
     options: [
         {
-            name: 'number',
-            type: 'STRING',
-            description: 'The number of messages to delete',
+            name: "number",
+            type: "STRING",
+            description: "The number of messages to delete",
             required: true,
         },
     ],
@@ -40,10 +40,10 @@ module.exports = {
 
                 await insertLog(Client, interaction.guild.id, interaction.user, `**${args[0]}** messages got deleted in *${interaction.channel}* by ${interaction.user.tag}`);
             } else {
-                interaction.editReply('Invlid number provided. Only provided number between 1 and 100');
+                interaction.editReply("Invlid number provided. Only provided number between 1 and 100");
             }
         } else {
-            interaction.editReply('Please enter the number of messages to delete!');
+            interaction.editReply("Please enter the number of messages to delete!");
         }
     },
 };

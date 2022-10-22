@@ -1,5 +1,5 @@
-import Discord from 'discord.js';
-import fs from 'fs';
+import Discord from "discord.js";
+import fs from "fs";
 
 // Fun command
 
@@ -11,26 +11,26 @@ import fs from 'fs';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'reachangman',
-    description: 'Play a hangman game with reactions',
-    category: 'game',
-    botPermissions: ['AddReactions', 'ManageMessages'],
+    name: "reachangman",
+    description: "Play a hangman game with reactions",
+    category: "game",
+    botPermissions: ["AddReactions", "ManageMessages"],
 
     async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction) {
         const wordsToFind: string[] = [];
-        const data = fs.readFileSync('assets/docs/words.txt', 'utf-8');
+        const data = fs.readFileSync("assets/docs/words.txt", "utf-8");
 
-        for (const word of data.split('\n')) {
+        for (const word of data.split("\n")) {
             wordsToFind.push(word);
         }
 
         const thatOneWord = wordsToFind[Math.floor(Math.random() * wordsToFind.length)].trim();
-        const reactions = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲'];
-        const reactionstwo = ['🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿'];
+        const reactions = ["🇦", "🇧", "🇨", "🇩", "🇪", "🇫", "🇬", "🇭", "🇮", "🇯", "🇰", "🇱", "🇲"];
+        const reactionstwo = ["🇳", "🇴", "🇵", "🇶", "🇷", "🇸", "🇹", "🇺", "🇻", "🇼", "🇽", "🇾", "🇿"];
         const guessedLetters: string[] = [];
 
         let guessesNumber = 0;
-        let stars = '';
+        let stars = "";
         let secondMessage: Discord.Message;
 
         replaceWithStars();
@@ -40,8 +40,8 @@ module.exports = {
                 name: interaction.user.username,
                 iconURL: interaction.user.displayAvatarURL(),
             })
-            .setDescription('The game is currently initializating - please wait for the reactions to register.')
-            .setColor('#1E90FF');
+            .setDescription("The game is currently initializating - please wait for the reactions to register.")
+            .setColor("#1E90FF");
 
         interaction.editReply({ embeds: [firstMessageEmbed] }).then(() => {
             fetchInteraction();
@@ -58,7 +58,7 @@ module.exports = {
                 firstmsg.react(char);
             }
 
-            const statusMessageEmbed = new Discord.EmbedBuilder().setDescription(`Word: \`${stars}\``).setColor('#1E90FF');
+            const statusMessageEmbed = new Discord.EmbedBuilder().setDescription(`Word: \`${stars}\``).setColor("#1E90FF");
 
             interaction.channel.send({ embeds: [statusMessageEmbed] }).then(async (msg: Discord.Message) => {
                 for (const char of reactionstwo) {
@@ -93,11 +93,11 @@ module.exports = {
                                 iconURL: interaction.user.avatarURL(),
                             })
                             .setDescription(`<:yes:835565213498736650> Good job - you just found the \`${emojiToLetter(collected.first().emoji.name)}\` letter!`)
-                            .setColor('#3AD919');
+                            .setColor("#3AD919");
 
                         interaction.editReply({ embeds: [correctLetter] });
 
-                        const status = new Discord.EmbedBuilder().setDescription(`Word: \`${stars}\``).setColor('#1E90FF');
+                        const status = new Discord.EmbedBuilder().setDescription(`Word: \`${stars}\``).setColor("#1E90FF");
 
                         secondMessage.edit({ embeds: [status] });
                     } else if (checkLetter(emojiToLetter(collected.first().emoji.name)) === false) {
@@ -109,7 +109,7 @@ module.exports = {
                                 iconURL: interaction.user.avatarURL(),
                             })
                             .setDescription(`<:no:835565213322575963> Wrong letter \`${emojiToLetter(collected.first().emoji.name)}\`. Remaining attempts: **${10 - guessesNumber}**.`)
-                            .setColor('#ff0000');
+                            .setColor("#ff0000");
 
                         interaction.editReply({ embeds: [incorrectLetter] });
 
@@ -123,7 +123,7 @@ module.exports = {
                                 iconURL: interaction.user.avatarURL(),
                             })
                             .setDescription(`GG - you won the game with *${10 - guessesNumber} attempts* left!`)
-                            .setColor('#ffff00');
+                            .setColor("#ffff00");
 
                         return interaction.editReply({ embeds: [youWon] });
                     } else if (guessesNumber >= 10) {
@@ -133,7 +133,7 @@ module.exports = {
                                 iconURL: interaction.user.avatarURL(),
                             })
                             .setDescription(`You lost! Word was \`${thatOneWord}\`.`)
-                            .setColor('#ff0000');
+                            .setColor("#ff0000");
 
                         return interaction.editReply({ embeds: [youLost] });
                     }
@@ -148,7 +148,7 @@ module.exports = {
         }
 
         function checkLetter(letter: string) {
-            if (!guessedLetters.includes(letter) && thatOneWord.split('').includes(letter)) {
+            if (!guessedLetters.includes(letter) && thatOneWord.split("").includes(letter)) {
                 guessedLetters.push(letter);
 
                 return true;
@@ -162,16 +162,16 @@ module.exports = {
         function replaceWithStars(letter?: string) {
             if (guessedLetters.length === 0) {
                 for (let i = 0; i < thatOneWord.length; i++) {
-                    stars += '*';
+                    stars += "*";
                 }
             } else {
-                let replace = '';
+                let replace = "";
 
                 for (let i = 0; i < thatOneWord.length; i++) {
-                    if (thatOneWord.split('')[i] === letter) {
+                    if (thatOneWord.split("")[i] === letter) {
                         replace += letter;
                     } else {
-                        replace += stars.split('')[i];
+                        replace += stars.split("")[i];
                     }
                 }
 
@@ -186,8 +186,8 @@ module.exports = {
         }
 
         function emojiToLetter(emoji: string) {
-            const unicodeChars = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿'];
-            const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+            const unicodeChars = ["🇦", "🇧", "🇨", "🇩", "🇪", "🇫", "🇬", "🇭", "🇮", "🇯", "🇰", "🇱", "🇲", "🇳", "🇴", "🇵", "🇶", "🇷", "🇸", "🇹", "🇺", "🇻", "🇼", "🇽", "🇾", "🇿"];
+            const chars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
             const index = unicodeChars.indexOf(emoji);
 
             return chars[index];

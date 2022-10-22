@@ -1,6 +1,6 @@
-import Discord from 'discord.js';
+import Discord from "discord.js";
 
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -12,21 +12,21 @@ import type { PrismaClient } from '@prisma/client';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'setwelcomechannel',
+    name: "setwelcomechannel",
     description: "Sets guild's welcome channel for Mango",
-    category: 'moderation',
-    memberPermissions: ['ManageChannels'],
+    category: "moderation",
+    memberPermissions: ["ManageChannels"],
     options: [
         {
-            name: 'channel',
-            type: 'CHANNEL',
-            description: 'The channel you want to set welcome channels to',
+            name: "channel",
+            type: "CHANNEL",
+            description: "The channel you want to set welcome channels to",
             required: false,
         },
     ],
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[], prisma: PrismaClient) {
-        const welcomeChannelID = args[0] ? args[0].replace(/\D+/g, '') : interaction.channel.id;
+        const welcomeChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
         const fetchChannel = (await Client.channels.fetch(welcomeChannelID)) as Discord.TextChannel;
 
         if (fetchChannel.type !== Discord.ChannelType.GuildText) {

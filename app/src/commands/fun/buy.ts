@@ -1,6 +1,6 @@
-import Discord from 'discord.js';
+import Discord from "discord.js";
 
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -12,14 +12,14 @@ import type { PrismaClient } from '@prisma/client';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'buy',
-    description: 'Buy something of the market',
-    category: 'fun',
+    name: "buy",
+    description: "Buy something of the market",
+    category: "fun",
     options: [
         {
-            name: 'id',
-            type: 'STRING',
-            description: 'The ID of the item you want to buy',
+            name: "id",
+            type: "STRING",
+            description: "The ID of the item you want to buy",
             required: true,
         },
     ],
@@ -43,7 +43,7 @@ module.exports = {
         });
 
         if (!authorMoney) {
-            return interaction.editReply('You have no money! Do `/money` to start using the market.');
+            return interaction.editReply("You have no money! Do `/money` to start using the market.");
         }
 
         if (authorMoney.money < item.price) {

@@ -1,6 +1,6 @@
-import Discord from 'discord.js';
+import Discord from "discord.js";
 
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from "@prisma/client";
 
 export async function checkXP(message: Discord.Message, prisma: PrismaClient) {
     const Xp = prisma.ranks;

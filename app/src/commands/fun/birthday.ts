@@ -1,8 +1,8 @@
-import Discord from 'discord.js';
+import Discord from "discord.js";
 
-import { timestamp } from 'utils/timestamp';
+import { timestamp } from "utils/timestamp";
 
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -14,52 +14,52 @@ import type { PrismaClient } from '@prisma/client';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'birthday',
+    name: "birthday",
     description: "Adds your birthday to Mango's database",
-    category: 'fun',
+    category: "fun",
     subcommands: [
         {
-            name: 'setup',
-            description: 'Setup the birthday module (admin only)',
+            name: "setup",
+            description: "Setup the birthday module (admin only)",
             type: 1,
             options: [
                 {
-                    name: 'channel',
-                    type: 'CHANNEL',
-                    description: 'The channel you want birthdays in',
+                    name: "channel",
+                    type: "CHANNEL",
+                    description: "The channel you want birthdays in",
                     required: true,
                 },
             ],
         },
         {
-            name: 'add',
-            description: 'Adds your birthday',
+            name: "add",
+            description: "Adds your birthday",
             type: 1,
             options: [
                 {
-                    name: 'date',
-                    type: 'STRING',
-                    description: 'Adds your birthday do the database',
+                    name: "date",
+                    type: "STRING",
+                    description: "Adds your birthday do the database",
                     required: true,
                 },
             ],
         },
         {
-            name: 'edit',
-            description: 'Edits your birthday',
+            name: "edit",
+            description: "Edits your birthday",
             type: 1,
             options: [
                 {
-                    name: 'new_date',
-                    type: 'STRING',
-                    description: 'Edits your birthday do the database',
+                    name: "new_date",
+                    type: "STRING",
+                    description: "Edits your birthday do the database",
                     required: true,
                 },
             ],
         },
         {
-            name: 'delete',
-            description: 'Deletes your birthday',
+            name: "delete",
+            description: "Deletes your birthday",
             type: 1,
         },
     ],
@@ -75,33 +75,33 @@ module.exports = {
             where: { idOfGuild: interaction.guild.id, idOfUser: interaction.user.id },
         });
 
-        if (!birthdayChannel && interaction.options.getSubcommand() !== 'setup') {
+        if (!birthdayChannel && interaction.options.getSubcommand() !== "setup") {
             return interaction.editReply("Whoops! It looks like the birthday module isn't enabled on this server (yet). An admin must run `/birthday setup` first! :eyes:");
         }
 
         switch (interaction.options.getSubcommand()) {
-            case 'setup':
+            case "setup":
                 await setupBirthday();
                 break;
 
-            case 'add':
+            case "add":
                 await addBirthday();
                 break;
 
-            case 'edit':
+            case "edit":
                 await editBirthday();
                 break;
 
-            case 'delete':
+            case "delete":
                 await deleteBirthday();
                 break;
         }
 
         async function setupBirthday() {
-            const channel = interaction.options.getChannel('channel');
+            const channel = interaction.options.getChannel("channel");
 
-            if (!interaction.memberPermissions.has('Administrator')) {
-                return interaction.editReply('<:no:835565213322575963> This command is admin-only!');
+            if (!interaction.memberPermissions.has("Administrator")) {
+                return interaction.editReply("<:no:835565213322575963> This command is admin-only!");
             } else if (channel.type !== Discord.ChannelType.GuildText) {
                 return interaction.editReply("The channel you specified isn't a text channel. Please retry the command.");
             }
@@ -124,14 +124,14 @@ module.exports = {
         }
 
         async function addBirthday() {
-            const birthdayTimestamp = Date.parse(interaction.options.getString('date'));
+            const birthdayTimestamp = Date.parse(interaction.options.getString("date"));
 
             if (fetchGuildBirthday) {
                 return interaction.editReply(`Your birthday has already been added to the database at date ${timestamp(fetchGuildBirthday.birthdayTimestamp)}! If you'd like to change it, run \`/birthday edit\`.`);
             }
 
             if (isNaN(birthdayTimestamp)) {
-                return interaction.editReply('Could not parse the specified string to a date. Please retry the command using this scheme: `MM/DD/YYYY`.');
+                return interaction.editReply("Could not parse the specified string to a date. Please retry the command using this scheme: `MM/DD/YYYY`.");
             }
 
             const birthdayDate = `${new Date(birthdayTimestamp).getMonth()}/${new Date(birthdayTimestamp).getDate()}`;
@@ -150,13 +150,13 @@ module.exports = {
 
         async function editBirthday() {
             if (fetchBirthdays.length === 0) {
-                return interaction.editReply('It looks like your birthday is currently not stored in my database. Do `/birthday add` to save it!');
+                return interaction.editReply("It looks like your birthday is currently not stored in my database. Do `/birthday add` to save it!");
             }
 
-            const newBirthdayTimestamp = Date.parse(interaction.options.getString('new_date'));
+            const newBirthdayTimestamp = Date.parse(interaction.options.getString("new_date"));
 
             if (isNaN(newBirthdayTimestamp)) {
-                return interaction.editReply('Could not parse the specified string to a date. Please retry the command using this scheme: `MM/DD/YYYY` or `MM/DD`.');
+                return interaction.editReply("Could not parse the specified string to a date. Please retry the command using this scheme: `MM/DD/YYYY` or `MM/DD`.");
             }
 
             const newBirthdayDate = `${new Date(newBirthdayTimestamp).getMonth()}/${new Date(newBirthdayTimestamp).getDate()}`;
@@ -174,7 +174,7 @@ module.exports = {
 
         async function deleteBirthday() {
             if (fetchBirthdays.length === 0) {
-                return interaction.editReply('It looks like your birthday is currently not stored in my database. Do `/birthday add` to save it!');
+                return interaction.editReply("It looks like your birthday is currently not stored in my database. Do `/birthday add` to save it!");
             }
 
             for (const birthday of fetchBirthdays) {
@@ -183,7 +183,7 @@ module.exports = {
                 });
             }
 
-            return interaction.editReply('Your birthday has been deleted from the database. Made a mistake? Add it back with `/birthday add`!');
+            return interaction.editReply("Your birthday has been deleted from the database. Made a mistake? Add it back with `/birthday add`!");
         }
     },
 };

@@ -1,6 +1,6 @@
-import Discord from 'discord.js';
+import Discord from "discord.js";
 
-import { clientInteractions } from 'index';
+import { clientInteractions } from "index";
 
 // Help command
 
@@ -12,14 +12,14 @@ import { clientInteractions } from 'index';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'help',
+    name: "help",
     description: "Showcasing all of Mango's commands",
-    category: 'info',
+    category: "info",
     options: [
         {
-            name: 'command',
-            type: 'STRING',
-            description: 'Get precise help on a specified command',
+            name: "command",
+            type: "STRING",
+            description: "Get precise help on a specified command",
             required: false,
         },
     ],
@@ -38,8 +38,8 @@ module.exports = {
                     iconURL: interaction.user.displayAvatarURL(),
                 })
                 .setDescription(`Information about the **${command.name}** command`)
-                .addFields({ name: 'Category', value: command.category }, { name: 'Description', value: command.description })
-                .setColor('Random')
+                .addFields({ name: "Category", value: command.category }, { name: "Description", value: command.description })
+                .setColor("Random")
                 .setTimestamp()
                 .setFooter({
                     text: Client.user.username,
@@ -51,11 +51,11 @@ module.exports = {
 
             if (command && command.options) {
                 for (const [index, opt] of command.options.entries()) {
-                    options.push(`${index + 1}. <${opt.name}> - ${opt.description} - ${opt.required ? 'required' : 'not required'}`);
+                    options.push(`${index + 1}. <${opt.name}> - ${opt.description} - ${opt.required ? "required" : "not required"}`);
                     usage.push(`<${opt.name}>`);
                 }
 
-                infoEmbed.addFields({ name: 'Args', value: '```md\n' + options.join('\n') + '```' }, { name: 'Usage', value: `\`/${command.name} ${usage.join(' ')}\`` });
+                infoEmbed.addFields({ name: "Args", value: "```md\n" + options.join("\n") + "```" }, { name: "Usage", value: `\`/${command.name} ${usage.join(" ")}\`` });
             }
 
             interaction.editReply({ embeds: [infoEmbed] });
@@ -65,25 +65,25 @@ module.exports = {
                     name: interaction.user.username,
                     iconURL: interaction.user.avatarURL(),
                 })
-                .setColor('Random')
+                .setColor("Random")
                 .setDescription(
                     `» Prefix: \`/\`
 					» To get help on a specific command: \`/help [command]\` 
 					
 					**:tools: Moderation** 
-					${GetCategoryCmds('moderation')}
+					${GetCategoryCmds("moderation")}
 
 					**:partying_face: Fun** 
-					${GetCategoryCmds('fun')}
+					${GetCategoryCmds("fun")}
 
 					**:information_source: Information** 
-					${GetCategoryCmds('info')}
+					${GetCategoryCmds("info")}
 
 					**:video_game: Games** 
-					${GetCategoryCmds('game')}
+					${GetCategoryCmds("game")}
 					
 					» Number of commands: \`${clientInteractions.size}\`
-					» Mango's developer: \`${(await Client.users.fetch('352158391038377984')).tag}\``,
+					» Mango's developer: \`${(await Client.users.fetch("352158391038377984")).tag}\``,
                 )
                 .setThumbnail(Client.user.avatarURL())
                 .setFooter({
@@ -99,7 +99,7 @@ module.exports = {
             return clientInteractions
                 .filter((cmd) => cmd.category === category)
                 .map((cmd) => `\`${cmd.name}\``)
-                .join(', ');
+                .join(", ");
         }
     },
 };

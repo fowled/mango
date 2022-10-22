@@ -1,6 +1,6 @@
-import { Client, CommandInteraction } from 'discord.js';
+import { Client, CommandInteraction } from "discord.js";
 
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from "@prisma/client";
 
 export interface Command {
     name: string;

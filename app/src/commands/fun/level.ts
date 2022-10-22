@@ -1,6 +1,6 @@
-import Discord from 'discord.js';
+import Discord from "discord.js";
 
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -12,9 +12,9 @@ import type { PrismaClient } from '@prisma/client';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'level',
-    description: 'Replies with your Mango level and XP',
-    category: 'fun',
+    name: "level",
+    description: "Replies with your Mango level and XP",
+    category: "fun",
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
         const fetchUser = await prisma.ranks.findFirst({
@@ -32,7 +32,7 @@ module.exports = {
                 iconURL: interaction.user.avatarURL(),
             })
             .setDescription(`Your level - :gem: XP: **${fetchUser.xp}** | :large_orange_diamond: Level: *${Math.floor(userXp / 50)}*`)
-            .setColor('#019FE9')
+            .setColor("#019FE9")
             .setFooter({
                 text: Client.user.username,
                 iconURL: Client.user.avatarURL(),

@@ -1,7 +1,7 @@
-import Discord from 'discord.js';
-import moment from 'moment';
+import Discord from "discord.js";
+import moment from "moment";
 
-import type { Birthdays, PrismaClient } from '@prisma/client';
+import type { Birthdays, PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -13,22 +13,22 @@ import type { Birthdays, PrismaClient } from '@prisma/client';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'birthdays',
-    description: 'Lists all the guild birthdays',
-    category: 'fun',
+    name: "birthdays",
+    description: "Lists all the guild birthdays",
+    category: "fun",
     subcommands: [
         {
-            name: 'list',
-            description: 'Lists all birthdays',
+            name: "list",
+            description: "Lists all birthdays",
             type: 1,
         },
         {
-            name: 'upcoming',
-            description: 'Lists upcoming birthdays',
+            name: "upcoming",
+            description: "Lists upcoming birthdays",
             type: 1,
         },
     ],
-    botPermissions: ['AddReactions'],
+    botPermissions: ["AddReactions"],
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
         let birthdays: Birthdays[];
@@ -39,7 +39,7 @@ module.exports = {
         await assignData();
 
         if (birthdays.length === 0) {
-            return interaction.editReply('It seems like the birthday list is empty! You may want to `/birthday add` one.');
+            return interaction.editReply("It seems like the birthday list is empty! You may want to `/birthday add` one.");
         }
 
         await getPageContent();
@@ -48,14 +48,14 @@ module.exports = {
 
         async function assignData() {
             switch (interaction.options.getSubcommand()) {
-                case 'list':
+                case "list":
                     birthdays = await prisma.birthdays.findMany({
-                        orderBy: [{ birthdayTimestamp: 'asc' }],
+                        orderBy: [{ birthdayTimestamp: "asc" }],
                         where: { idOfGuild: interaction.guild.id },
                     });
                     break;
 
-                case 'upcoming':
+                case "upcoming":
                     birthdays = (
                         await prisma.birthdays.findMany({
                             where: { idOfGuild: interaction.guild.id },
@@ -81,7 +81,7 @@ module.exports = {
 
         async function getPageContent() {
             const itemsContent = birthdays.slice(page * 10, page * 10 + 10);
-            const pageContent: string[] = ['```ansi'];
+            const pageContent: string[] = ["```ansi"];
 
             for (const [index, item] of itemsContent.entries()) {
                 const date = item.birthdayTimestamp as never as string;
@@ -89,27 +89,27 @@ module.exports = {
                 const fetchUser = await Client.users.fetch(user);
 
                 pageContent.push(
-                    `\u001b[1;34m${index + (page * 10 + 1)}. \u001b[1;33m${fetchUser.username}\u001b[0;30m#${fetchUser.discriminator} \u001b[0m» \u001b[1;35m${moment(parseInt(date)).format('MM/DD/YYYY')} \u001b[0;30m(\u001b[1;36m${moment(parseInt(date)).fromNow(true)} old\u001b[0;30m)`,
+                    `\u001b[1;34m${index + (page * 10 + 1)}. \u001b[1;33m${fetchUser.username}\u001b[0;30m#${fetchUser.discriminator} \u001b[0m» \u001b[1;35m${moment(parseInt(date)).format("MM/DD/YYYY")} \u001b[0;30m(\u001b[1;36m${moment(parseInt(date)).fromNow(true)} old\u001b[0;30m)`,
                 );
             }
 
-            pageContent.push('```');
+            pageContent.push("```");
 
-            const birthdaysEmbed = new Discord.EmbedBuilder().setDescription(pageContent.join('\n')).setColor('#33beff').setTitle('🎁 Birthdays list').setTimestamp().setFooter({
+            const birthdaysEmbed = new Discord.EmbedBuilder().setDescription(pageContent.join("\n")).setColor("#33beff").setTitle("🎁 Birthdays list").setTimestamp().setFooter({
                 text: Client.user.username,
                 iconURL: Client.user.displayAvatarURL(),
             });
 
             const button = new Discord.ActionRowBuilder<Discord.ButtonBuilder>().addComponents(
                 new Discord.ButtonBuilder()
-                    .setCustomId('back')
-                    .setLabel('◀')
+                    .setCustomId("back")
+                    .setLabel("◀")
                     .setStyle(Discord.ButtonStyle.Primary)
                     .setDisabled(page === 0),
 
-                new Discord.ButtonBuilder().setCustomId('next').setLabel('▶').setStyle(Discord.ButtonStyle.Primary).setDisabled(buttonChecker()),
+                new Discord.ButtonBuilder().setCustomId("next").setLabel("▶").setStyle(Discord.ButtonStyle.Primary).setDisabled(buttonChecker()),
 
-                new Discord.ButtonBuilder().setCustomId('refresh').setLabel('🔄').setStyle(Discord.ButtonStyle.Success),
+                new Discord.ButtonBuilder().setCustomId("refresh").setLabel("🔄").setStyle(Discord.ButtonStyle.Success),
             );
 
             if (replyId) {
@@ -136,10 +136,10 @@ module.exports = {
                     componentType: Discord.ComponentType.Button,
                 });
 
-                collector.on('collect', async (i) => {
-                    if (i.customId === 'back') {
+                collector.on("collect", async (i) => {
+                    if (i.customId === "back") {
                         page--;
-                    } else if (i.customId === 'next') {
+                    } else if (i.customId === "next") {
                         page++;
                     }
 
@@ -148,7 +148,7 @@ module.exports = {
                     await getPageContent();
                 });
 
-                collector.on('end', () => {
+                collector.on("end", () => {
                     return;
                 });
             });

@@ -1,4 +1,4 @@
-import Discord from 'discord.js';
+import Discord from "discord.js";
 
 // Ping command
 
@@ -10,12 +10,12 @@ import Discord from 'discord.js';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'ping',
+    name: "ping",
     description: "Get info on Mango's latency",
-    category: 'info',
+    category: "info",
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction) {
-        await interaction.editReply('Ping?');
+        await interaction.editReply("Ping?");
 
         const pong = new Discord.EmbedBuilder()
             .setTitle(`Latency information for ${interaction.user.tag}`)
@@ -23,10 +23,10 @@ module.exports = {
                 name: interaction.user.username,
                 iconURL: interaction.user.avatarURL(),
             })
-            .setColor('Random')
-            .setDescription('Latency information')
+            .setColor("Random")
+            .setDescription("Latency information")
             .addFields({
-                name: 'API latency',
+                name: "API latency",
                 value: `**${Math.round(Client.ws.ping)}** ms.`,
             })
             .setFooter({

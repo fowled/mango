@@ -1,6 +1,6 @@
-import Discord from 'discord.js';
+import Discord from "discord.js";
 
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from "@prisma/client";
 
 // Fun command
 
@@ -12,10 +12,10 @@ import type { PrismaClient } from '@prisma/client';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'rmwelcomechannel',
+    name: "rmwelcomechannel",
     description: "Removes the guild's welcome channel for Mango",
-    category: 'moderation',
-    memberPermissions: ['ManageChannels'],
+    category: "moderation",
+    memberPermissions: ["ManageChannels"],
 
     async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
         const welcomechannel = await prisma.welChannels.findUnique({

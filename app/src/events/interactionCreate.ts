@@ -1,12 +1,12 @@
-import Discord from 'discord.js';
+import Discord from "discord.js";
 
-import { clientInteractions, prisma } from 'index';
+import { clientInteractions, prisma } from "index";
 
-import { logCommand } from 'utils/sendLog';
-import { error } from 'utils/logger';
+import { logCommand } from "utils/sendLog";
+import { error } from "utils/logger";
 
 module.exports = {
-    name: 'interactionCreate',
+    name: "interactionCreate",
     async execute(Client: Discord.Client, interaction: Discord.BaseInteraction) {
         if (interaction.isButton()) {
             return await interaction.deferUpdate();
@@ -24,12 +24,12 @@ module.exports = {
 
         if (commandInteraction.memberPermissions && !interactionMember.permissions.has(commandInteraction.memberPermissions as Discord.PermissionResolvable)) {
             return interaction.reply({
-                content: `<:no:835565213322575963> Sorry, but it looks like you're missing one of the following permissions: \`${commandInteraction.memberPermissions.join(', ')}\``,
+                content: `<:no:835565213322575963> Sorry, but it looks like you're missing one of the following permissions: \`${commandInteraction.memberPermissions.join(", ")}\``,
                 ephemeral: true,
             });
         } else if (commandInteraction.botPermissions && !(await interaction.guild.members.fetchMe()).permissions.has(commandInteraction.botPermissions as Discord.PermissionResolvable)) {
             return interaction.reply({
-                content: `<:no:835565213322575963> It looks like I'm missing one of the following permissions: \`${commandInteraction.botPermissions.join(', ')}\``,
+                content: `<:no:835565213322575963> It looks like I'm missing one of the following permissions: \`${commandInteraction.botPermissions.join(", ")}\``,
                 ephemeral: true,
             });
         }
@@ -48,7 +48,7 @@ module.exports = {
                 name: interaction.user.username,
                 iconURL: interaction.user.displayAvatarURL(),
             })
-            .setColor('NotQuiteBlack')
+            .setColor("NotQuiteBlack")
             .setTimestamp()
             .setFooter({
                 text: Client.user.username,

@@ -1,6 +1,6 @@
-import Discord, { GuildMember } from 'discord.js';
+import Discord, { GuildMember } from "discord.js";
 
-import { timestamp } from 'utils/timestamp';
+import { timestamp } from "utils/timestamp";
 
 // Member command
 
@@ -12,13 +12,13 @@ import { timestamp } from 'utils/timestamp';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'userinfo',
-    description: 'Get useful information from a user',
-    category: 'info',
+    name: "userinfo",
+    description: "Get useful information from a user",
+    category: "info",
     options: [
         {
-            name: 'user',
-            type: 'USER',
+            name: "user",
+            type: "USER",
             description: "The user you'd like to get information from",
             required: false,
         },
@@ -36,45 +36,45 @@ module.exports = {
                 .setThumbnail(selectedUser.user.avatarURL())
                 .setTimestamp()
                 .addFields(
-                    { name: 'ID', value: `\`${selectedUser.user.id}\``, inline: true },
+                    { name: "ID", value: `\`${selectedUser.user.id}\``, inline: true },
                     {
-                        name: 'Game',
-                        value: selectedUser.presence ? selectedUser.presence.activities.toString() : 'none',
+                        name: "Game",
+                        value: selectedUser.presence ? selectedUser.presence.activities.toString() : "none",
                         inline: true,
                     },
                     {
-                        name: 'Joined on',
+                        name: "Joined on",
                         value: timestamp(selectedUser.joinedAt.getTime()),
                         inline: true,
                     },
                     {
-                        name: 'Created on',
+                        name: "Created on",
                         value: timestamp(selectedUser.user.createdAt.getTime()),
                         inline: true,
                     },
                     {
-                        name: 'Permissions',
-                        value: selectedUser.permissions.toArray().length === 0 ? 'No permission' : `${selectedUser.permissions.toArray().length} permissions`,
+                        name: "Permissions",
+                        value: selectedUser.permissions.toArray().length === 0 ? "No permission" : `${selectedUser.permissions.toArray().length} permissions`,
                         inline: true,
                     },
                     {
-                        name: 'Boosting',
-                        value: selectedUser.premiumSince ? `<t:${Math.round(selectedUser.premiumSince.getTime() / 1000)}:d>` : 'No',
+                        name: "Boosting",
+                        value: selectedUser.premiumSince ? `<t:${Math.round(selectedUser.premiumSince.getTime() / 1000)}:d>` : "No",
                         inline: true,
                     },
                     {
-                        name: 'Roles',
+                        name: "Roles",
                         value:
                             selectedUser.roles.cache.size === 1
-                                ? 'No role'
+                                ? "No role"
                                 : selectedUser.roles.cache
-                                      .filter((role) => role.name !== '@everyone')
+                                      .filter((role) => role.name !== "@everyone")
                                       .map((el) => el.name)
-                                      .join(', '),
+                                      .join(", "),
                         inline: false,
                     },
                 )
-                .setColor('Random')
+                .setColor("Random")
                 .setFooter({
                     text: Client.user.username,
                     iconURL: Client.user.avatarURL(),
@@ -82,7 +82,7 @@ module.exports = {
 
             interaction.editReply({ embeds: [userinfoMessageEmbed] });
         } else {
-            interaction.editReply('Tagged user is not in the server :frowning:');
+            interaction.editReply("Tagged user is not in the server :frowning:");
         }
     },
 };

@@ -1,7 +1,7 @@
-import Discord from 'discord.js';
-import { Player } from 'hypixel-api-reborn';
+import Discord from "discord.js";
+import { Player } from "hypixel-api-reborn";
 
-import { hypixelClient } from 'index';
+import { hypixelClient } from "index";
 
 // Fun command
 
@@ -13,18 +13,18 @@ import { hypixelClient } from 'index';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'hypixel',
-    description: 'Shows information about a Hypixel player',
-    category: 'fun',
+    name: "hypixel",
+    description: "Shows information about a Hypixel player",
+    category: "fun",
     subcommands: [
         {
-            name: 'general',
-            description: 'Shows information about a Hypixel player',
+            name: "general",
+            description: "Shows information about a Hypixel player",
             type: 1,
             options: [
                 {
-                    name: 'player',
-                    type: 'STRING',
+                    name: "player",
+                    type: "STRING",
                     description: "The player's username or UUID",
                     required: true,
                 },
@@ -32,13 +32,13 @@ module.exports = {
         },
 
         {
-            name: 'skywars',
+            name: "skywars",
             description: "Shows information about a Hypixel player's skywars stats",
             type: 1,
             options: [
                 {
-                    name: 'player',
-                    type: 'STRING',
+                    name: "player",
+                    type: "STRING",
                     description: "The player's username or UUID",
                     required: true,
                 },
@@ -46,13 +46,13 @@ module.exports = {
         },
 
         {
-            name: 'bedwars',
+            name: "bedwars",
             description: "Shows information about a Hypixel player's bedwars stats",
             type: 1,
             options: [
                 {
-                    name: 'player',
-                    type: 'STRING',
+                    name: "player",
+                    type: "STRING",
                     description: "The player's username or UUID",
                     required: true,
                 },
@@ -60,13 +60,13 @@ module.exports = {
         },
 
         {
-            name: 'duels',
+            name: "duels",
             description: "Shows information about a Hypixel player's duels stats",
             type: 1,
             options: [
                 {
-                    name: 'player',
-                    type: 'STRING',
+                    name: "player",
+                    type: "STRING",
                     description: "The player's username or UUID",
                     required: true,
                 },
@@ -74,13 +74,13 @@ module.exports = {
         },
 
         {
-            name: 'arcade',
+            name: "arcade",
             description: "Shows information about a Hypixel player's arcade stats",
             type: 1,
             options: [
                 {
-                    name: 'player',
-                    type: 'STRING',
+                    name: "player",
+                    type: "STRING",
                     description: "The player's username or UUID",
                     required: true,
                 },
@@ -92,29 +92,29 @@ module.exports = {
         let player: Player;
 
         try {
-            player = await hypixelClient.getPlayer(interaction.options.get('player').value as string, { guild: true });
+            player = await hypixelClient.getPlayer(interaction.options.get("player").value as string, { guild: true });
         } catch (err) {
-            return interaction.editReply(`<:no:835565213322575963> Couldn't find the player with nickname \`${interaction.options.get('player').value}\`.`);
+            return interaction.editReply(`<:no:835565213322575963> Couldn't find the player with nickname \`${interaction.options.get("player").value}\`.`);
         }
 
         switch (interaction.options.getSubcommand()) {
-            case 'general':
+            case "general":
                 general();
                 break;
 
-            case 'skywars':
+            case "skywars":
                 skywars();
                 break;
 
-            case 'bedwars':
+            case "bedwars":
                 bedwars();
                 break;
 
-            case 'duels':
+            case "duels":
                 duels();
                 break;
 
-            case 'arcade':
+            case "arcade":
                 arcade();
                 break;
         }
@@ -128,46 +128,46 @@ module.exports = {
                     name: interaction.user.username,
                     iconURL: interaction.user.avatarURL(),
                 })
-                .setColor('Random')
-                .setTitle(player.rank !== 'Default' ? `[${player.rank}] ${player.nickname}` : player.nickname)
+                .setColor("Random")
+                .setTitle(player.rank !== "Default" ? `[${player.rank}] ${player.nickname}` : player.nickname)
                 .setThumbnail(`https://crafatar.com/avatars/${player.uuid}?size=256&default=MHF_Steve&overlay`)
                 .setURL(`https://shmeado.club/player/stats/${player.nickname}`)
                 .addFields(
                     {
-                        name: 'Network level',
+                        name: "Network level",
                         value: `Level \`${player.level}\``,
                         inline: true,
                     },
                     {
-                        name: 'Guild',
-                        value: player.guild ? `\`${player.guild.name}\`` : 'not in a guild',
+                        name: "Guild",
+                        value: player.guild ? `\`${player.guild.name}\`` : "not in a guild",
                         inline: true,
                     },
                     {
-                        name: 'Status',
-                        value: player.isOnline ? 'online' : 'offline',
+                        name: "Status",
+                        value: player.isOnline ? "online" : "offline",
                         inline: true,
                     },
                     {
-                        name: 'First logged on',
+                        name: "First logged on",
                         value: `<t:${firstLoggedOn}:d>`,
                         inline: true,
                     },
                     {
-                        name: 'Last logged on',
-                        value: player.lastLoginTimestamp ? `<t:${lastLoggedOn}:d>` : 'unknown',
+                        name: "Last logged on",
+                        value: player.lastLoginTimestamp ? `<t:${lastLoggedOn}:d>` : "unknown",
                         inline: true,
                     },
-                    { name: 'Karma', value: `\`${player.karma}\``, inline: true },
+                    { name: "Karma", value: `\`${player.karma}\``, inline: true },
                     {
-                        name: 'Recent game',
-                        value: player.recentlyPlayedGame?.name || 'unknown',
+                        name: "Recent game",
+                        value: player.recentlyPlayedGame?.name || "unknown",
                         inline: true,
                     },
-                    { name: 'Language', value: player.userLanguage, inline: true },
+                    { name: "Language", value: player.userLanguage, inline: true },
                     {
-                        name: 'Version',
-                        value: player.mcVersion || 'unknown',
+                        name: "Version",
+                        value: player.mcVersion || "unknown",
                         inline: true,
                     },
                 )
@@ -185,53 +185,53 @@ module.exports = {
                     name: interaction.user.username,
                     iconURL: interaction.user.avatarURL(),
                 })
-                .setColor('Random')
+                .setColor("Random")
                 .setTitle(`Skywars • [${player.stats.skywars.level}⭐] ${player.nickname}`)
                 .setThumbnail(`https://crafatar.com/avatars/${player.uuid}?size=256&default=MHF_Steve&overlay`)
                 .setURL(`https://shmeado.club/player/stats/${player.nickname}/skywars/table/`)
                 .addFields(
                     {
-                        name: 'Skywars wins',
+                        name: "Skywars wins",
                         value: `\`${player.stats.skywars.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Skywars kills',
+                        name: "Skywars kills",
                         value: `\`${player.stats.skywars.kills}\``,
                         inline: true,
                     },
                     {
-                        name: 'Skywars losses',
+                        name: "Skywars losses",
                         value: `\`${player.stats.skywars.losses}\``,
                         inline: true,
                     },
                     {
-                        name: 'Win/Loss',
+                        name: "Win/Loss",
                         value: `\`${player.stats.skywars.WLRatio}\``,
                         inline: true,
                     },
                     {
-                        name: 'Kill/Death',
+                        name: "Kill/Death",
                         value: `\`${player.stats.skywars.KDRatio}\``,
                         inline: true,
                     },
                     {
-                        name: 'Angel of death',
+                        name: "Angel of death",
                         value: `\`${player.stats.skywars.angelOfDeathLevel}\``,
                         inline: true,
                     },
                     {
-                        name: 'Skywars Heads',
+                        name: "Skywars Heads",
                         value: `\`${player.stats.skywars.heads}\``,
                         inline: true,
                     },
                     {
-                        name: 'Skywars Coins',
+                        name: "Skywars Coins",
                         value: `\`${player.stats.skywars.coins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Skywars Tokens',
+                        name: "Skywars Tokens",
                         value: `\`${player.stats.skywars.tokens}\``,
                         inline: true,
                     },
@@ -250,53 +250,53 @@ module.exports = {
                     name: interaction.user.username,
                     iconURL: interaction.user.avatarURL(),
                 })
-                .setColor('Random')
+                .setColor("Random")
                 .setTitle(`Bedwars • [${player.stats.bedwars.level}⭐] ${player.nickname}`)
                 .setThumbnail(`https://crafatar.com/avatars/${player.uuid}?size=256&default=MHF_Steve&overlay`)
                 .setURL(`https://shmeado.club/player/stats/${player.nickname}/bedwars/table/`)
                 .addFields(
                     {
-                        name: 'Bedwars wins',
+                        name: "Bedwars wins",
                         value: `\`${player.stats.bedwars.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Bedwars final kills',
+                        name: "Bedwars final kills",
                         value: `\`${player.stats.bedwars.finalKills}\``,
                         inline: true,
                     },
                     {
-                        name: 'Bedwars losses',
+                        name: "Bedwars losses",
                         value: `\`${player.stats.bedwars.losses}\``,
                         inline: true,
                     },
                     {
-                        name: 'Win/Loss',
+                        name: "Win/Loss",
                         value: `\`${player.stats.bedwars.WLRatio}\``,
                         inline: true,
                     },
                     {
-                        name: 'Final kill/Death',
+                        name: "Final kill/Death",
                         value: `\`${player.stats.bedwars.finalKDRatio}\``,
                         inline: true,
                     },
                     {
-                        name: 'Beds destroyed',
+                        name: "Beds destroyed",
                         value: `\`${player.stats.bedwars.beds.broken}\``,
                         inline: true,
                     },
                     {
-                        name: 'Bedwars coins',
+                        name: "Bedwars coins",
                         value: `\`${player.stats.bedwars.coins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Bedwars prestige',
+                        name: "Bedwars prestige",
                         value: `\`${player.stats.bedwars.prestige}\``,
                         inline: true,
                     },
                     {
-                        name: 'Bedwars winstreak',
+                        name: "Bedwars winstreak",
                         value: `\`${player.stats.bedwars.winstreak}\``,
                         inline: true,
                     },
@@ -315,98 +315,98 @@ module.exports = {
                     name: interaction.user.username,
                     iconURL: interaction.user.avatarURL(),
                 })
-                .setColor('Random')
+                .setColor("Random")
                 .setTitle(`Duels • [${player.stats.duels.division}] ${player.nickname}`)
                 .setThumbnail(`https://crafatar.com/avatars/${player.uuid}?size=256&default=MHF_Steve&overlay`)
                 .setURL(`https://shmeado.club/player/stats/${player.nickname}/bedwars/table/`)
                 .addFields(
                     {
-                        name: 'Wins',
+                        name: "Wins",
                         value: `\`${player.stats.duels.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Losses',
+                        name: "Losses",
                         value: `\`${player.stats.duels.losses}\``,
                         inline: true,
                     },
                     {
-                        name: 'Win/Loss',
+                        name: "Win/Loss",
                         value: `\`${player.stats.duels.WLRatio}\``,
                         inline: true,
                     },
                     {
-                        name: 'UHC wins',
+                        name: "UHC wins",
                         value: `\`${player.stats.duels.uhc.overall.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Classic wins',
+                        name: "Classic wins",
                         value: `\`${player.stats.duels.classic.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Skywars wins',
+                        name: "Skywars wins",
                         value: `\`${player.stats.duels.skywars.overall.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Sumo wins',
+                        name: "Sumo wins",
                         value: `\`${player.stats.duels.sumo.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Bridge wins',
+                        name: "Bridge wins",
                         value: `\`${player.stats.duels.bridge.overall.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Nodebuff wins',
+                        name: "Nodebuff wins",
                         value: `\`${player.stats.duels.nodebuff.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'OP wins',
+                        name: "OP wins",
                         value: `\`${player.stats.duels.op.overall.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Bow wins',
+                        name: "Bow wins",
                         value: `\`${player.stats.duels.bow.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Bowspleef wins',
+                        name: "Bowspleef wins",
                         value: `\`${player.stats.duels.bowspleef.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Blitz wins',
+                        name: "Blitz wins",
                         value: `\`${player.stats.duels.blitz.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Mega walls wins',
+                        name: "Mega walls wins",
                         value: `\`${player.stats.duels.blitz.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Combo wins',
+                        name: "Combo wins",
                         value: `\`${player.stats.duels.combo.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Parkour wins',
+                        name: "Parkour wins",
                         value: `\`${player.stats.duels.parkour.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Boxing wins',
+                        name: "Boxing wins",
                         value: `\`${player.stats.duels.boxing.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Arena kills',
+                        name: "Arena kills",
                         value: `\`${player.stats.duels.arena.kills}\``,
                         inline: true,
                     },
@@ -425,113 +425,113 @@ module.exports = {
                     name: interaction.user.username,
                     iconURL: interaction.user.avatarURL(),
                 })
-                .setColor('Random')
+                .setColor("Random")
                 .setTitle(`Arcade • ${player.nickname}`)
                 .setThumbnail(`https://crafatar.com/avatars/${player.uuid}?size=256&default=MHF_Steve&overlay`)
                 .setURL(`https://shmeado.club/player/stats/${player.nickname}/bedwars/table/`)
                 .addFields(
                     {
-                        name: 'Coins',
+                        name: "Coins",
                         value: `\`${player.stats.arcade.coins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Party games wins',
+                        name: "Party games wins",
                         value: `\`${player.stats.arcade.partyGames.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Blocking dead wins',
+                        name: "Blocking dead wins",
                         value: `\`${player.stats.arcade.blockingDead.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'CTW captures',
+                        name: "CTW captures",
                         value: `\`${player.stats.arcade.captureTheWool.captures}\``,
                         inline: true,
                     },
                     {
-                        name: 'Dragon wars wins',
+                        name: "Dragon wars wins",
                         value: `\`${player.stats.arcade.dragonWars.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'DTH wins',
+                        name: "DTH wins",
                         value: `\`${player.stats.arcade.drawTheirThing.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Easter sim. wins',
+                        name: "Easter sim. wins",
                         value: `\`${player.stats.arcade.easterSimulator.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Ender spleef wins',
+                        name: "Ender spleef wins",
                         value: `\`${player.stats.arcade.enderSpleef.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Farm hunt wins',
+                        name: "Farm hunt wins",
                         value: `\`${player.stats.arcade.farmHunt.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Galaxy wars wins',
+                        name: "Galaxy wars wins",
                         value: `\`${player.stats.arcade.galaxyWars.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Grinch sim. wins',
+                        name: "Grinch sim. wins",
                         value: `\`${player.stats.arcade.grinchSimulator.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Hole in the wall wins',
+                        name: "Hole in the wall wins",
                         value: `\`${player.stats.arcade.holeInTheWall.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Hypixel sports wins',
+                        name: "Hypixel sports wins",
                         value: `\`${player.stats.arcade.hypixelSports.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Mini walls wins',
+                        name: "Mini walls wins",
                         value: `\`${player.stats.arcade.miniWalls.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'OITQ wins',
+                        name: "OITQ wins",
                         value: `\`${player.stats.arcade.oitq.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Santa says wins',
+                        name: "Santa says wins",
                         value: `\`${player.stats.arcade.santaSays.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Santa sim. wins',
+                        name: "Santa sim. wins",
                         value: `\`${player.stats.arcade.santaSimulator.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Scuba sim. wins',
+                        name: "Scuba sim. wins",
                         value: `\`${player.stats.arcade.scubaSimulator.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Simon says wins',
+                        name: "Simon says wins",
                         value: `\`${player.stats.arcade.simonSays.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Soccer wins',
+                        name: "Soccer wins",
                         value: `\`${player.stats.arcade.soccer.wins}\``,
                         inline: true,
                     },
                     {
-                        name: 'Throw out wins',
+                        name: "Throw out wins",
                         value: `\`${player.stats.arcade.throwOut.wins}\``,
                         inline: true,
                     },

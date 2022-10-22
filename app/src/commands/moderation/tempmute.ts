@@ -1,7 +1,7 @@
-import Discord from 'discord.js';
-import ms from 'ms';
+import Discord from "discord.js";
+import ms from "ms";
 
-import { insertLog } from 'utils/logChecker';
+import { insertLog } from "utils/logChecker";
 
 // Moderation command
 
@@ -13,30 +13,30 @@ import { insertLog } from 'utils/logChecker';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'tempmute',
-    description: 'Temporarily mutes a user',
-    category: 'moderation',
-    botPermissions: ['ManageRoles'],
-    memberPermissions: ['ManageRoles', 'ManageMessages'],
+    name: "tempmute",
+    description: "Temporarily mutes a user",
+    category: "moderation",
+    botPermissions: ["ManageRoles"],
+    memberPermissions: ["ManageRoles", "ManageMessages"],
     options: [
         {
-            name: 'user',
-            type: 'USER',
-            description: 'The user I have to mute',
+            name: "user",
+            type: "USER",
+            description: "The user I have to mute",
             required: true,
         },
 
         {
-            name: 'duration',
-            type: 'STRING',
-            description: 'The mute duration',
+            name: "duration",
+            type: "STRING",
+            description: "The mute duration",
             required: true,
         },
 
         {
-            name: 'reason',
-            type: 'STRING',
-            description: 'The reason of the mute',
+            name: "reason",
+            type: "STRING",
+            description: "The reason of the mute",
             required: false,
         },
     ],
@@ -45,18 +45,18 @@ module.exports = {
         const memberMute = await interaction.guild.members.fetch(args[0]);
 
         if (!memberMute) {
-            return interaction.editReply('You specified an invalid user to mute. Please tag him in order to mute them.');
+            return interaction.editReply("You specified an invalid user to mute. Please tag him in order to mute them.");
         }
 
-        let muteRole = interaction.guild.roles.cache.find((role) => role.name === 'muted');
+        let muteRole = interaction.guild.roles.cache.find((role) => role.name === "muted");
 
         if (!muteRole) {
             try {
                 muteRole = await interaction.guild.roles.create({
-                    name: 'muted',
+                    name: "muted",
                     mentionable: false,
                     permissions: [],
-                    color: '#524F4F',
+                    color: "#524F4F",
                 });
 
                 for (let i = 0; i < interaction.guild.channels.cache.size; i++) {
@@ -68,7 +68,7 @@ module.exports = {
                     });
                 }
             } catch (error) {
-                interaction.editReply('Sorry, but I got an unexcepted error while creating the role. ' + `\`\`\`${error.message}\`\`\``);
+                interaction.editReply("Sorry, but I got an unexcepted error while creating the role. " + `\`\`\`${error.message}\`\`\``);
             }
         }
 
@@ -78,7 +78,7 @@ module.exports = {
             return interaction.editReply("This isn't a correct duration time. Please retry with a valid one.");
         }
 
-        const reason = args[2] === undefined ? 'no reason specified.' : interaction.type === Discord.InteractionType.ApplicationCommand ? args[2] : args.slice(1, args.length).join(' ');
+        const reason = args[2] === undefined ? "no reason specified." : interaction.type === Discord.InteractionType.ApplicationCommand ? args[2] : args.slice(1, args.length).join(" ");
 
         await memberMute.roles.add(muteRole).catch(() => {
             return interaction.editReply("Looks like I'm missing permissions. Check them in the server settings.");

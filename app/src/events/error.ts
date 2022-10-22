@@ -1,7 +1,7 @@
-import { error } from 'utils/logger';
+import { error } from "utils/logger";
 
 module.exports = {
-    name: 'error',
+    name: "error",
     execute(err: Error) {
         error(err.message);
     },

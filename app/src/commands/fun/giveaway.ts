@@ -1,5 +1,5 @@
-import Discord from 'discord.js';
-import ms from 'ms';
+import Discord from "discord.js";
+import ms from "ms";
 
 // Fun command
 
@@ -11,10 +11,10 @@ import ms from 'ms';
  * @param {any} options some options
  */
 module.exports = {
-    name: 'giveaway',
-    description: 'Creates a giveaway!',
-    category: 'fun',
-    botPermissions: ['AddReactions'],
+    name: "giveaway",
+    description: "Creates a giveaway!",
+    category: "fun",
+    botPermissions: ["AddReactions"],
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction) {
         createGiveaway();
@@ -45,7 +45,7 @@ module.exports = {
             });
 
             const durationCollector: () => Promise<void> = async () => {
-                await channel.awaitMessages({ filter: filter, max: 1, errors: ['time'] }).then((collected) => {
+                await channel.awaitMessages({ filter: filter, max: 1, errors: ["time"] }).then((collected) => {
                     const durationNumber = collected.last().content;
 
                     if (!ms(durationNumber)) {
@@ -59,9 +59,9 @@ module.exports = {
                     channel.bulkDelete(7);
 
                     const giveawayEmbed = new Discord.EmbedBuilder()
-                        .setTitle('🎉🎈 Giveaway!')
+                        .setTitle("🎉🎈 Giveaway!")
                         .setDescription(`**${giveawayName}** giveaway! \nRewards: *${giveawayRewards}* \nEnds in \`${durationNumber}\` \nReact with :thumbsup: to enter!`)
-                        .setColor('Random')
+                        .setColor("Random")
                         .setAuthor({
                             name: interaction.user.username,
                             iconURL: interaction.user.displayAvatarURL(),
@@ -73,7 +73,7 @@ module.exports = {
                         });
 
                     interaction.channel.send({ embeds: [giveawayEmbed] }).then((m) => {
-                        m.react('👍🏻');
+                        m.react("👍🏻");
 
                         const filter = () => {
                             return m.author.id === Client.user.id;

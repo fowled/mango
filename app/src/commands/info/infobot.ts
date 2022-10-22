@@ -1,6 +1,6 @@
-import Discord from 'discord.js';
-import si from 'systeminformation';
-import moment from 'moment';
+import Discord from "discord.js";
+import si from "systeminformation";
+import moment from "moment";
 
 // Infobot command
 
@@ -13,12 +13,12 @@ import moment from 'moment';
  */
 
 module.exports = {
-    name: 'infobot',
+    name: "infobot",
     description: "Get info about Mango's infrastructure",
-    category: 'info',
+    category: "info",
 
     async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction) {
-        const discordVersion = (await import('discord.js')).version;
+        const discordVersion = (await import("discord.js")).version;
         let ramInfo: si.Systeminformation.MemData, os: si.Systeminformation.OsData;
 
         await si.mem().then((data) => (ramInfo = data));
@@ -31,20 +31,20 @@ module.exports = {
             })
             .setDescription("About **Mango's infrastructure**")
             .addFields(
-                { name: 'Node version', value: process.version },
-                { name: 'Discord.js version', value: discordVersion },
-                { name: 'OS', value: os.distro },
+                { name: "Node version", value: process.version },
+                { name: "Discord.js version", value: discordVersion },
+                { name: "OS", value: os.distro },
                 {
-                    name: 'Memory',
+                    name: "Memory",
                     value: `${(ramInfo.total / 104853.2055).toFixed()} mb`,
                 },
-                { name: 'Uptime', value: moment.duration(Client.uptime).humanize() },
+                { name: "Uptime", value: moment.duration(Client.uptime).humanize() },
                 {
-                    name: 'Stats',
+                    name: "Stats",
                     value: `» \`${await collectUsers()}\` users \n» \`${Client.guilds.cache.size}\` guilds`,
                 },
             )
-            .setColor('Random')
+            .setColor("Random")
             .setTimestamp()
             .setFooter({
                 text: Client.user.username,
