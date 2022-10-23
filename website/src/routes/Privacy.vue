@@ -5,7 +5,7 @@ import Navbar from "lib/Navbar.vue";
 <template>
     <Navbar />
 
-    <div class="mx-auto w-6/12 my-14 text-justify dark:text-white">
+    <div class="mx-auto w-10/12 lg:w-8/12 xl:w-6/12 my-14 dark:text-white">
         <h1 class="font-bold text-4xl">Privacy Policy for Mangobot Incorporated</h1>
 
         <p class="mt-10">
