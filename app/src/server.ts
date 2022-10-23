@@ -3,6 +3,7 @@ import { PrismaSessionStore } from "@mazzlabs/prisma-session-store-fix";
 import { Client, BitField } from "discord.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import fetch from "node-fetch";
 import chalk from "chalk";
 import cors from "cors";
 
