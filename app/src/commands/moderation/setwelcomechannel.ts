@@ -1,6 +1,8 @@
 import Discord from "discord.js";
 
-import type { PrismaClient } from "@prisma/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import type { Database } from "interfaces/DB";
 
 // Fun command
 
@@ -25,7 +27,7 @@ module.exports = {
         },
     ],
 
-    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[], prisma: PrismaClient) {
+    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[], supabase: SupabaseClient<Database>) {
         const welcomeChannelID = args[0] ? args[0].replace(/\D+/g, "") : interaction.channel.id;
         const fetchChannel = (await Client.channels.fetch(welcomeChannelID)) as Discord.TextChannel;
 
@@ -33,23 +35,7 @@ module.exports = {
             return interaction.editReply("The channel you specified isn't a text channel. Please retry the command.");
         }
 
-        const welcomechannel = await prisma.welChannels.findUnique({
-            where: { idOfGuild: interaction.guild.id },
-        });
-
-        if (welcomechannel) {
-            await prisma.welChannels.update({
-                where: { idOfGuild: interaction.guild.id },
-                data: { idOfChannel: welcomeChannelID },
-            });
-        } else {
-            await prisma.welChannels.create({
-                data: {
-                    idOfGuild: welcomeChannelID,
-                    idOfChannel: interaction.channel.id,
-                },
-            });
-        }
+        await supabase.from("guilds").update({ welcome: welcomeChannelID }).like("guild_id", interaction.guild.id);
 
         return interaction.editReply(`<:yes:835565213498736650> Successfully updated the welcome channel to \`#${fetchChannel.name}\`!`);
     },

@@ -1,6 +1,8 @@
 import Discord, { ButtonBuilder, ButtonStyle, ComponentType } from "discord.js";
 
-import type { MoneyAccs, PrismaClient } from "@prisma/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import type { Database } from "interfaces/DB";
 
 // Fun command
 
@@ -17,8 +19,8 @@ module.exports = {
     category: "fun",
     botPermissions: ["AddReactions"],
 
-    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
-        let marketUsers: MoneyAccs[];
+    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], supabase: SupabaseClient<Database>) {
+        let marketUsers: Database["public"]["Tables"]["users"]["Row"][];
 
         const medals = {
             1: "🥇",
@@ -31,7 +33,7 @@ module.exports = {
 
         await assignData();
 
-        if (marketUsers.length === 0) {
+        if (!marketUsers?.length) {
             return interaction.editReply("It seems like nobody has a Mango bank account.");
         }
 
@@ -40,9 +42,9 @@ module.exports = {
         await createReactionCollector();
 
         async function assignData() {
-            return (marketUsers = await prisma.moneyAccs.findMany({
-                orderBy: [{ money: "desc" }],
-            }));
+            let query = await supabase.from("users").select().order("money", { ascending: false });
+
+            return marketUsers = query.data;
         }
 
         async function getPageContent() {
@@ -51,7 +53,7 @@ module.exports = {
 
             for (let index = 0; index < itemsContent.length; index++) {
                 const wealth = itemsContent[index]["money"];
-                const userId = itemsContent[index]["idOfUser"];
+                const userId = itemsContent[index]["user_id"];
                 const user = await Client.users.fetch(userId);
 
                 pageContent.push(`\u001b[1;34m${medals[index + (page * 10 + 1)] ?? index + (page * 10 + 1) + "."} \u001b[1;33m${user.username}\u001b[0;30m#${user.discriminator}\u001b[0m »\u001b[1;36m ${wealth}$`);

@@ -1,13 +1,13 @@
 import Discord from "discord.js";
 
-import { clientInteractions, prisma } from "index";
+import { clientInteractions, supabase } from "index";
 
 import { logCommand } from "utils/sendLog";
 import { error } from "utils/logger";
 
 module.exports = {
     name: "interactionCreate",
-    async execute(Client: Discord.Client, interaction: Discord.BaseInteraction) {
+    execute: async function(Client: Discord.Client, interaction: Discord.BaseInteraction) {
         if (interaction.isButton()) {
             return await interaction.deferUpdate();
         }
@@ -21,6 +21,24 @@ module.exports = {
 
         const commandInteraction = clientInteractions.get(command);
         const interactionMember = interaction.member as Discord.GuildMember;
+        const cachedIds = [];
+
+        if (!(interaction.user.id in cachedIds)) {
+            const fetchDBAccount = await supabase.from("users").select("user_id").eq("user_id", interaction.user.id).single();
+
+            if (!fetchDBAccount.data) {
+                await supabase.from("users").insert({
+                    user_id: interaction.user.id,
+                    money: 500,
+                    guilds: await fetchCommonServers(),
+                    inventory: [],
+                });
+            } else {
+                await supabase.from("users").update({ guilds: await fetchCommonServers() }).like("user_id", interaction.user.id);
+            }
+
+            cachedIds.push(interaction.user.id);
+        }
 
         if (commandInteraction.memberPermissions && !interactionMember.permissions.has(commandInteraction.memberPermissions as Discord.PermissionResolvable)) {
             return interaction.reply({
@@ -37,7 +55,7 @@ module.exports = {
         await interaction.deferReply();
 
         try {
-            commandInteraction.execute(Client, interaction, args, prisma);
+            await commandInteraction.execute(Client, interaction, args, supabase);
         } catch (err) {
             error(err);
         }
@@ -56,5 +74,11 @@ module.exports = {
             });
 
         logCommand(Client, commandEmbed);
+
+        async function fetchCommonServers() {
+            return Client.guilds.cache.filter(async (guild) => {
+                return (await guild.members.fetch(interaction.user.id));
+            }).map(guild => guild.id);
+        }
     },
 };

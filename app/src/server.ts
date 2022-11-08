@@ -1,4 +1,4 @@
-import express, { urlencoded, json, Request, Response, NextFunction } from "express";
+/* import express, { urlencoded, json, Request, Response, NextFunction } from "express";
 import { PrismaSessionStore } from "@mazzlabs/prisma-session-store-fix";
 import { Client, BitField } from "discord.js";
 import cookieParser from "cookie-parser";
@@ -7,8 +7,9 @@ import fetch from "node-fetch";
 import chalk from "chalk";
 import cors from "cors";
 
-import type { PrismaClient } from "@prisma/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
+import type { Database } from "interfaces/DB";
 import { User, Guild } from "@website/types/interfaces";
 
 import { log } from "utils/logger";
@@ -272,3 +273,4 @@ export async function createAPIServer(client: Client, database: PrismaClient) {
         });
     }
 }
+*/

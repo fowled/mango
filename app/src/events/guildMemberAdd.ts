@@ -1,20 +1,18 @@
 import Discord from "discord.js";
 import canvaslib from "canvas";
 
-import { prisma } from "index";
+import { supabase } from "index";
 
 import { error } from "utils/logger";
 
 module.exports = {
     name: "guildMemberAdd",
     async execute(Client: Discord.Client, member: Discord.GuildMember) {
-        const welcomechannel = await prisma.welChannels.findUnique({
-            where: { idOfGuild: member.guild.id },
-        });
+        const welcomechannel = await supabase.from("guilds").select().like("guild_id", member.guild.id).single();
 
         if (!welcomechannel) return;
 
-        const channel = (await Client.channels.fetch(welcomechannel.idOfChannel)) as Discord.TextChannel;
+        const channel = (await Client.channels.fetch(welcomechannel.data.welcome)) as Discord.TextChannel;
         const fetchNumberOfMembers = member.guild.memberCount;
 
         const canvas = canvaslib.createCanvas(700, 250);
@@ -55,7 +53,7 @@ module.exports = {
             .setColor("#808080");
 
         try {
-            channel.send({ embeds: [embed], files: [attachment] });
+            await channel.send({ embeds: [embed], files: [attachment] });
         } catch (err) {
             error("Didn't find the channel to post attachment [guildMemberAdd]");
         }

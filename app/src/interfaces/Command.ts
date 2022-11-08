@@ -1,6 +1,8 @@
 import { Client, CommandInteraction } from "discord.js";
 
-import type { PrismaClient } from "@prisma/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import type { Database } from "interfaces/DB";
 
 export interface Command {
     name: string;
@@ -17,5 +19,5 @@ export interface Command {
     ];
     botPermissions?: string[];
     memberPermissions?: string[];
-    execute(Client: Client, interaction: CommandInteraction, args: string[], db: PrismaClient): Promise<void>;
+    execute(Client: Client, interaction: CommandInteraction, args: string[], db: SupabaseClient<Database, "public">): Promise<void>;
 }

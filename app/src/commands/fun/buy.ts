@@ -1,6 +1,8 @@
 import Discord from "discord.js";
 
-import type { PrismaClient } from "@prisma/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import type { Database } from "interfaces/DB";
 
 // Fun command
 
@@ -24,54 +26,33 @@ module.exports = {
         },
     ],
 
-    async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[], prisma: PrismaClient) {
+    async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[], supabase: SupabaseClient<Database>) {
         const ID = args[0];
 
-        const item = await prisma.marketItems.findUnique({
-            where: { id: parseInt(ID) },
-        });
+        const item = await supabase.from("market").select().eq("id", ID).single();
 
         if (!item) {
             return interaction.editReply(`I'm sorry, but there is no item matching ID **${args[0]}**. To consult the market, do \`/market\` :wink:`);
         }
 
-        const authorMoney = await prisma.moneyAccs.findUnique({
-            where: { idOfUser: interaction.user.id },
-        });
-        const sellerMoney = await prisma.moneyAccs.findUnique({
-            where: { idOfUser: item.sellerID },
-        });
+        const authorMoney = await supabase.from("users").select().like("user_id", interaction.user.id).single();
+        const sellerMoney = await supabase.from("users").select().like("user_id", item.data.sellerID).single();
 
-        if (!authorMoney) {
-            return interaction.editReply("You have no money! Do `/money` to start using the market.");
-        }
-
-        if (authorMoney.money < item.price) {
-            return interaction.editReply(`You must have \`${item.price - authorMoney.money}\` more dollars to get this item. :frowning:`);
-        } else if (interaction.user.id === item.sellerID) {
+        if (authorMoney.data.money < item.data.price) {
+            return interaction.editReply(`You must have \`${item.data.price - authorMoney.data.money}\` more dollars to get this item. :frowning:`);
+        } else if (interaction.user.id === item.data.sellerID) {
             return interaction.editReply("You can't buy your own item...");
         }
 
-        await prisma.inventoryItems.create({
-            data: {
-                name: item.name,
-                price: item.price,
-                sellerID: item.sellerID,
-                authorID: interaction.user.id,
-            },
-        });
 
-        await prisma.moneyAccs.update({
-            where: { idOfUser: authorMoney.idOfUser },
-            data: { money: authorMoney.money - item.price },
-        });
-        await prisma.moneyAccs.update({
-            where: { idOfUser: sellerMoney.idOfUser },
-            data: { money: sellerMoney.money + item.price },
-        });
-
-        await prisma.marketItems.delete({ where: { id: item.id } });
-
-        interaction.editReply(`Item **${item.name}** successfully bought for *${item.price}$*.`);
+        await Promise.all(
+            [
+                await supabase.from("users").update({ inventory: [...authorMoney.data.inventory, item.data.id] }).like("user_id", interaction.user.id),
+                await supabase.from("users").update({ money: authorMoney.data.money - item.data.price }).like("user_id", interaction.user.id),
+                await supabase.from("users").update({ money: sellerMoney.data.money + item.data.price }).like("user_id", sellerMoney.data.user_id),
+                await supabase.from("market").update({ sold: true }).eq("id", item.data.id),
+                await interaction.editReply(`Item **${item.data.name}** successfully bought for *${item.data.price}$*.`),
+            ],
+        );
     },
 };

@@ -1,7 +1,9 @@
 import Discord from "discord.js";
 import moment from "moment";
 
-import type { Birthdays, PrismaClient } from "@prisma/client";
+import type { SupabaseClient, PostgrestResponse } from "@supabase/supabase-js";
+
+import type { Database } from "interfaces/DB";
 
 // Fun command
 
@@ -30,15 +32,15 @@ module.exports = {
     ],
     botPermissions: ["AddReactions"],
 
-    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
-        let birthdays: Birthdays[];
+    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], supabase: SupabaseClient<Database>) {
+        let birthdays: Database["public"]["Tables"]["users"]["Row"][];
 
         let page = 0,
             replyId: string;
 
         await assignData();
 
-        if (birthdays.length === 0) {
+        if (!birthdays?.length) {
             return interaction.editReply("It seems like the birthday list is empty! You may want to `/birthday add` one.");
         }
 
@@ -47,34 +49,35 @@ module.exports = {
         await createReactionCollector();
 
         async function assignData() {
+            let query: PostgrestResponse<Database["public"]["Tables"]["users"]["Row"]>;
+
             switch (interaction.options.getSubcommand()) {
                 case "list":
-                    birthdays = await prisma.birthdays.findMany({
-                        orderBy: [{ birthdayTimestamp: "asc" }],
-                        where: { idOfGuild: interaction.guild.id },
-                    });
+                    query = await supabase.from("users").select().contains("guilds[]", [interaction.guild.id]).order("birthday", { ascending: true }).neq("birthday", null);
+
+                    birthdays = query.data;
                     break;
 
                 case "upcoming":
-                    birthdays = (
-                        await prisma.birthdays.findMany({
-                            where: { idOfGuild: interaction.guild.id },
-                        })
-                    )
-                        .filter((data) => {
-                            const currentDate = new Date();
-                            const birthdayDate = new Date(data.birthday);
+                    query = await supabase.from("users").select().contains("guilds[]", [interaction.guild.id]).order("birthday", { ascending: true }).neq("birthday", null);
 
-                            birthdayDate.setMonth(birthdayDate.getMonth() + 1);
-                            [currentDate, birthdayDate].forEach((date) => {
-                                date.setFullYear(new Date().getFullYear());
-                            });
+                    if (!query.data?.length) return;
 
-                            return birthdayDate.getTime() - currentDate.getTime() >= 0;
-                        })
-                        .sort((a, b) => {
-                            return new Date(a.birthday).getTime() - new Date(b.birthday).getTime();
+                    birthdays = query.data.filter((data) => {
+                        const currentDate = new Date();
+                        const birthdayDate = new Date(data.birthday);
+
+                        birthdayDate.setMonth(birthdayDate.getMonth() + 1);
+
+                        [currentDate, birthdayDate].forEach((date) => {
+                            date.setFullYear(new Date().getFullYear());
                         });
+
+                        return birthdayDate.getTime() - currentDate.getTime() >= 0;
+                    }).sort((a, b) => {
+                        return new Date(a.birthday).getTime() - new Date(b.birthday).getTime();
+                    });
+
                     break;
             }
         }
@@ -84,12 +87,13 @@ module.exports = {
             const pageContent: string[] = ["```ansi"];
 
             for (const [index, item] of itemsContent.entries()) {
-                const date = item.birthdayTimestamp as never as string;
-                const user = item.idOfUser;
+                const date = item.birthday;
+                const user = item.user_id;
+
                 const fetchUser = await Client.users.fetch(user);
 
                 pageContent.push(
-                    `\u001b[1;34m${index + (page * 10 + 1)}. \u001b[1;33m${fetchUser.username}\u001b[0;30m#${fetchUser.discriminator} \u001b[0m» \u001b[1;35m${moment(parseInt(date)).format("MM/DD/YYYY")} \u001b[0;30m(\u001b[1;36m${moment(parseInt(date)).fromNow(true)} old\u001b[0;30m)`,
+                    `\u001b[1;34m${index + (page * 10 + 1)}. \u001b[1;33m${fetchUser.username}\u001b[0;30m#${fetchUser.discriminator} \u001b[0m» \u001b[1;35m${moment(date).format("MM/DD/YYYY")} \u001b[0;30m(\u001b[1;36m${moment(date).fromNow(true)} old\u001b[0;30m)`,
                 );
             }
 
@@ -113,7 +117,10 @@ module.exports = {
             );
 
             if (replyId) {
-                return interaction.channel.messages.fetch(replyId).then((msg) => msg.edit({ embeds: [birthdaysEmbed], components: [button] }));
+                return interaction.channel.messages.fetch(replyId).then((msg) => msg.edit({
+                    embeds: [birthdaysEmbed],
+                    components: [button],
+                }));
             } else {
                 await interaction.editReply({
                     embeds: [birthdaysEmbed],

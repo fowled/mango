@@ -1,6 +1,8 @@
 import Discord from "discord.js";
 
-import type { InventoryItems, PrismaClient } from "@prisma/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import { Database } from "../../interfaces/DB";
 
 // Fun command
 
@@ -17,15 +19,15 @@ module.exports = {
     category: "fun",
     botPermissions: ["AddReactions"],
 
-    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
-        let inventory: InventoryItems[];
+    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], supabase: SupabaseClient<Database>) {
+        let inventory: Database["public"]["Tables"]["market"]["Row"][];
 
         let page = 0,
             replyId: string;
 
         await assignData();
 
-        if (inventory.length === 0) {
+        if (!inventory.length) {
             return interaction.editReply("Your inventory is empty! Start by doing `/market` and then buy something with the `/buy [ID of the item]` command.");
         }
 
@@ -34,9 +36,11 @@ module.exports = {
         await createReactionCollector();
 
         async function assignData() {
-            return (inventory = await prisma.inventoryItems.findMany({
-                where: { authorID: interaction.user.id },
-            }));
+            let getInventoryItems = await supabase.from("users").select("inventory").like("user_id", interaction.user.id).single();
+
+            let query = await supabase.from("market").select().in("id", getInventoryItems.data.inventory).eq("sold", true);
+
+            return inventory = query.data;
         }
 
         async function getPageContent() {
