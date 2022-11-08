@@ -1,6 +1,8 @@
 import Discord from "discord.js";
 
-import type { PrismaClient } from "@prisma/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import type { Database } from "interfaces/DB";
 
 // Fun command
 
@@ -17,15 +19,11 @@ module.exports = {
     category: "moderation",
     memberPermissions: ["ManageChannels"],
 
-    async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
-        const welcomechannel = await prisma.welChannels.findUnique({
-            where: { idOfGuild: interaction.guild.id },
-        });
+    async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], supabase: SupabaseClient<Database>) {
+        const welcomechannel = await supabase.from("guilds").select().like("guild_id", interaction.guild.id).single();
 
-        if (welcomechannel) {
-            await prisma.welChannels.delete({
-                where: { idOfGuild: interaction.guild.id },
-            });
+        if (welcomechannel.data.welcome) {
+            await supabase.from("guilds").update({ welcome: null }).like("guild_id", interaction.guild.id);
         } else {
             return interaction.editReply("I'm sorry, but you don't have any log channel for the moment. Get started by doing `/setwelcomechannel [channel]`!");
         }

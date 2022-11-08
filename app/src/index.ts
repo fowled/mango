@@ -1,6 +1,6 @@
-﻿import { PrismaClient } from "@prisma/client";
+﻿import { createClient } from "@supabase/supabase-js";
+import Discord, { TextChannel } from "discord.js";
 import hypixel from "hypixel-api-reborn";
-import Discord from "discord.js";
 import cron from "node-schedule";
 import glob from "fast-glob";
 import dotenv from "dotenv";
@@ -14,7 +14,7 @@ import { log } from "utils/logger";
 import { Command } from "interfaces/Command";
 import { Event } from "interfaces/Event";
 
-import { createAPIServer } from "server";
+import { Database } from "interfaces/DB";
 
 dotenv.config();
 
@@ -22,9 +22,7 @@ export const client = new Discord.Client({
     intents: ["Guilds", "GuildMembers", "GuildMessages", "GuildMessageReactions"],
 });
 
-export const talkedRecently = new Set();
-
-export const prisma = new PrismaClient();
+export const supabase = createClient<Database>(process.env.SUPABASE_URL, process.env.SUPABASE_API_KEY);
 
 export const hypixelClient = new hypixel.Client(process.env.API_KEY);
 
@@ -33,7 +31,6 @@ export const clientInteractions = new Discord.Collection<string, Command>();
 (async () => {
     await binder();
     await client.login(process.env.TOKEN);
-    await createAPIServer(client, prisma);
     await handleRejections();
     await runCronJobs();
 })();
@@ -77,28 +74,26 @@ async function handleRejections() {
 }
 
 async function runCronJobs() {
-    cron.scheduleJob("0 0 * * *", async function () {
-        const todayDate = new Date();
-        const todayDateString = `${todayDate.getMonth()}/${todayDate.getDate()}`;
+    cron.scheduleJob("51 13 * * *", async function() {
+        const findBirthdaysToday = await supabase.rpc("get_today_birthdays");
 
-        const findBirthdaysToday = await prisma.birthdays.findMany({
-            where: { birthday: todayDateString },
-        });
+        if (findBirthdaysToday.data.length === 0) return;
 
-        for (const birthday of findBirthdaysToday) {
-            const guildID = birthday.idOfGuild;
-            const birthdayTimestamp = birthday.birthdayTimestamp;
+        for (const data of findBirthdaysToday.data) {
+            if (!data.guilds) return;
 
-            const user = await client.users.fetch(birthday.idOfUser);
+            for (const guildId of data.guilds) {
+                const fetchGuildFromDB = await supabase.from("guilds").select().like("guild_id", guildId).single();
 
-            const findRelatedChannels = await prisma.birthdaysChannels.findMany({
-                where: { idOfGuild: guildID },
-            });
+                if (!fetchGuildFromDB.data?.birthdays) return;
 
-            for (const channel of findRelatedChannels) {
-                const fetchChannel = (await client.channels.fetch(channel.idOfChannel)) as Discord.TextChannel;
+                const fetchGuild = await client.guilds.fetch(BigInt(guildId).toString());
+                const fetchChannel = await fetchGuild.channels.fetch(BigInt(fetchGuildFromDB.data.birthdays).toString()) as TextChannel;
+                const fetchUser = await client.users.fetch(data.user_id);
 
-                await fetchChannel.send(`:partying_face: Happy birthday ${user}! According to my database, you were born ${timestampYear(birthdayTimestamp)}.`);
+                const getBirthday = new Date(data.birthday).getTime();
+
+                await fetchChannel.send(`:partying_face: Happy birthday ${fetchUser}! According to my database, you were born ${timestampYear(getBirthday)}.`);
             }
         }
     });

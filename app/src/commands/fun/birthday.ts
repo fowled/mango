@@ -2,7 +2,9 @@ import Discord from "discord.js";
 
 import { timestamp } from "utils/timestamp";
 
-import type { PrismaClient } from "@prisma/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import type { Database } from "interfaces/DB";
 
 // Fun command
 
@@ -64,16 +66,9 @@ module.exports = {
         },
     ],
 
-    async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
-        const birthdayChannel = await prisma.birthdaysChannels.findUnique({
-            where: { idOfGuild: interaction.guild.id },
-        });
-        const fetchBirthdays = await prisma.birthdays.findMany({
-            where: { idOfUser: interaction.user.id },
-        });
-        const fetchGuildBirthday = await prisma.birthdays.findFirst({
-            where: { idOfGuild: interaction.guild.id, idOfUser: interaction.user.id },
-        });
+    async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], supabase: SupabaseClient<Database>) {
+        const birthdayChannel = await supabase.from("guilds").select("birthdays").like("guild_id", interaction.guild.id).single();
+        const fetchGuildBirthday = await supabase.from("users").select().like("user_id", interaction.member.user.id).single();
 
         if (!birthdayChannel && interaction.options.getSubcommand() !== "setup") {
             return interaction.editReply("Whoops! It looks like the birthday module isn't enabled on this server (yet). An admin must run `/birthday setup` first! :eyes:");
@@ -106,82 +101,58 @@ module.exports = {
                 return interaction.editReply("The channel you specified isn't a text channel. Please retry the command.");
             }
 
-            if (birthdayChannel) {
-                await prisma.birthdaysChannels.update({
-                    where: { idOfGuild: interaction.guild.id },
-                    data: { idOfChannel: channel.id },
-                });
-            } else {
-                await prisma.birthdaysChannels.create({
-                    data: {
-                        idOfGuild: interaction.guild.id,
-                        idOfChannel: channel.id,
-                    },
-                });
-            }
+            await supabase.from("guilds").update({ birthdays: channel.id }).like("guild_id", interaction.guild.id);
 
             return interaction.editReply(`<:yes:835565213498736650> Successfully updated the birthday channel to \`#${channel.name}\`!`);
         }
 
         async function addBirthday() {
-            const birthdayTimestamp = Date.parse(interaction.options.getString("date"));
+            const birthdayTimestamp = new Date(interaction.options.getString("date"));
+            const parseSavedDate = new Date(fetchGuildBirthday.data.birthday).getTime();
 
-            if (fetchGuildBirthday) {
-                return interaction.editReply(`Your birthday has already been added to the database at date ${timestamp(fetchGuildBirthday.birthdayTimestamp)}! If you'd like to change it, run \`/birthday edit\`.`);
+            if (birthdayTimestamp.getTimezoneOffset() === -60) {
+                birthdayTimestamp.setHours(1);
             }
 
-            if (isNaN(birthdayTimestamp)) {
+            if (fetchGuildBirthday.data.birthday) {
+                return interaction.editReply(`Your birthday has already been added to the database at date ${timestamp(parseSavedDate)}! If you'd like to change it, run \`/birthday edit\`.`);
+            }
+
+            if (isNaN(birthdayTimestamp.getTime())) {
                 return interaction.editReply("Could not parse the specified string to a date. Please retry the command using this scheme: `MM/DD/YYYY`.");
             }
 
-            const birthdayDate = `${new Date(birthdayTimestamp).getMonth()}/${new Date(birthdayTimestamp).getDate()}`;
+            await supabase.from("users").update({ birthday: birthdayTimestamp.toLocaleDateString() }).like("user_id", interaction.user.id);
 
-            await prisma.birthdays.create({
-                data: {
-                    idOfUser: interaction.user.id,
-                    birthday: birthdayDate,
-                    birthdayTimestamp: birthdayTimestamp,
-                    idOfGuild: interaction.guild.id,
-                },
-            });
-
-            return interaction.editReply(`:tada: Your birthday has been saved to ${timestamp(birthdayTimestamp)}!`);
+            return interaction.editReply(`:tada: Your birthday has been saved to ${timestamp(birthdayTimestamp.getTime())}!`);
         }
 
         async function editBirthday() {
-            if (fetchBirthdays.length === 0) {
+            if (!fetchGuildBirthday.data.birthday) {
                 return interaction.editReply("It looks like your birthday is currently not stored in my database. Do `/birthday add` to save it!");
             }
 
-            const newBirthdayTimestamp = Date.parse(interaction.options.getString("new_date"));
+            const newBirthdayTimestamp = new Date(interaction.options.getString("new_date"));
 
-            if (isNaN(newBirthdayTimestamp)) {
+            if (newBirthdayTimestamp.getTimezoneOffset() === -60) {
+                newBirthdayTimestamp.setHours(1);
+            }
+
+            if (isNaN(newBirthdayTimestamp.getTime())) {
                 return interaction.editReply("Could not parse the specified string to a date. Please retry the command using this scheme: `MM/DD/YYYY` or `MM/DD`.");
             }
 
-            const newBirthdayDate = `${new Date(newBirthdayTimestamp).getMonth()}/${new Date(newBirthdayTimestamp).getDate()}`;
+            await supabase.from("users").update({ birthday: newBirthdayTimestamp.toLocaleDateString() }).like("user_id", interaction.user.id);
 
-            await prisma.birthdays.updateMany({
-                where: { idOfUser: interaction.user.id },
-                data: {
-                    birthday: newBirthdayDate,
-                    birthdayTimestamp: newBirthdayTimestamp,
-                },
-            });
-
-            return interaction.editReply(`:tada: Your birthday has been updated to ${timestamp(newBirthdayTimestamp)}!`);
+            return interaction.editReply(`:tada: Your birthday has been updated to ${timestamp(newBirthdayTimestamp.getTime())}!`);
         }
 
         async function deleteBirthday() {
-            if (fetchBirthdays.length === 0) {
+            if (!fetchGuildBirthday.data.birthday) {
                 return interaction.editReply("It looks like your birthday is currently not stored in my database. Do `/birthday add` to save it!");
             }
 
-            for (const birthday of fetchBirthdays) {
-                await prisma.birthdays.deleteMany({
-                    where: { idOfUser: birthday.idOfUser },
-                });
-            }
+            await supabase.from("users").update({ birthday: null }).like("user_id", interaction.user.id);
 
             return interaction.editReply("Your birthday has been deleted from the database. Made a mistake? Add it back with `/birthday add`!");
         }

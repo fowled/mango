@@ -1,6 +1,8 @@
 import Discord from "discord.js";
 
-import type { PrismaClient } from "@prisma/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import type { Database } from "interfaces/DB";
 
 // Fun command
 
@@ -31,16 +33,14 @@ module.exports = {
         },
     ],
 
-    async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[], prisma: PrismaClient) {
+    async execute(_Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, args: string[], supabase: SupabaseClient<Database>) {
         const item = args.slice(1, args.length).join(" ");
         const price = parseInt(args[0]);
 
-        const sellerAccount = await prisma.moneyAccs.findUnique({
-            where: { idOfUser: interaction.user.id },
-        });
+        const sellerAccount = await supabase.from("users").select().like("user_id", interaction.user.id).single();
 
         if (isNaN(price)) {
-            return interaction.editReply(`**${price}** isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
+            return interaction.editReply(`The price you specified isn't a number. Please retry and remove every symbol of the price, eg: \`240$\` → \`240\``);
         } else if (item.includes("@") || price.toString().startsWith("-")) {
             return interaction.editReply("I can't add this item to the market because it contains a mention, or you set a negative price.");
         } else if (!sellerAccount) {
@@ -49,24 +49,24 @@ module.exports = {
             return interaction.editReply("Your item name is too long!");
         }
 
-        const getMoney = sellerAccount.money;
+        const getMoney = sellerAccount.data.money;
+
+        const findSimilarItems = await supabase.from("market").select("name").like("name", item).eq("sold", false);
+
+        if (findSimilarItems.data.length > 0) {
+            return interaction.editReply("Looks like an item already has that name. Please try another one.");
+        }
 
         if (getMoney < price) {
             return interaction.editReply(`You can't sell this item at **${price}** because you only have **${getMoney}**$.`);
         }
 
-        const createdItem = await prisma.marketItems
-            .create({
-                data: {
-                    name: item,
-                    price: price,
-                    sellerID: interaction.user.id,
-                },
-            })
-            .catch(() => {
-                return interaction.editReply("This object already exists! Please choose another name.");
-            });
+        const createdItem = await supabase.from("market").insert({
+            name: item,
+            price,
+            sellerID: interaction.user.id,
+        }).select();
 
-        interaction.editReply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${createdItem.id}** <:yes:835565213498736650>`);
+        await interaction.editReply(`The item \`${item}\` with price \`${price}\`$ was succesfully added to the market. ID of your item: **${createdItem.data.shift().id}** <:yes:835565213498736650>`);
     },
 };

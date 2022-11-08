@@ -1,6 +1,8 @@
 import Discord from "discord.js";
 
-import type { MarketItems, PrismaClient } from "@prisma/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import type { Database } from "interfaces/DB";
 
 // Fun command
 
@@ -17,15 +19,15 @@ module.exports = {
     category: "fun",
     botPermissions: ["AddReactions"],
 
-    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], prisma: PrismaClient) {
-        let marketItems: MarketItems[];
+    async execute(Client: Discord.Client, interaction: Discord.ChatInputCommandInteraction, _args: string[], supabase: SupabaseClient<Database>) {
+        let marketItems: Database["public"]["Tables"]["market"]["Row"][];
 
         let page = 0,
             replyId: string;
 
         await assignData();
 
-        if (marketItems.length === 0) {
+        if (!marketItems?.length) {
             return interaction.editReply("It seems like the market is empty! Start by `/sell`ing an object :wink:");
         }
 
@@ -34,7 +36,9 @@ module.exports = {
         await createReactionCollector();
 
         async function assignData() {
-            return (marketItems = await prisma.marketItems.findMany());
+            let query = await supabase.from("market").select().eq("sold", false);
+
+            return marketItems = query.data;
         }
 
         async function getPageContent() {
@@ -46,6 +50,7 @@ module.exports = {
                 const itemPrice = item.price;
                 const itemSeller = item.sellerID;
                 const itemId = item.id;
+
                 const user: Discord.User = await Client.users.fetch(itemSeller);
 
                 pageContent.push(`\u001b[1;34m${index + (page * 10 + 1)}. \u001b[1;35m${itemName} \u001b[0;30m(\u001b[1;36m${itemPrice}$\u001b[0;30m) \u001b[0m→ \u001b[1;33m${user.username}\u001b[0;30m#${user.discriminator} \u001b[0m» \u001b[0;32m/buy \u001b[1;31m${itemId}`);
