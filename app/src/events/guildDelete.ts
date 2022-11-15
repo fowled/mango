@@ -9,10 +9,10 @@ module.exports = {
 
         const findPeopleInGuild = await supabase.from("users").select().contains("guilds", [guild.id]);
 
-        for (const user of findPeopleInGuild.data) {
+        await Promise.all(findPeopleInGuild.data.map(async (user) => {
             const removeGuild = user.guilds.filter(item => item !== guild.id);
 
             await supabase.from("users").update({ guilds: removeGuild }).like("user_id", user.user_id);
-        }
+        }));
     },
 };

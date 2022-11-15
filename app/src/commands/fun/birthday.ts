@@ -27,7 +27,7 @@ module.exports = {
             options: [
                 {
                     name: "channel",
-                    type: "CHANNEL",
+                    type: 7,
                     description: "The channel you want birthdays in",
                     required: true,
                 },
@@ -40,7 +40,7 @@ module.exports = {
             options: [
                 {
                     name: "date",
-                    type: "STRING",
+                    type: 3,
                     description: "Adds your birthday do the database",
                     required: true,
                 },
@@ -53,7 +53,7 @@ module.exports = {
             options: [
                 {
                     name: "new_date",
-                    type: "STRING",
+                    type: 3,
                     description: "Edits your birthday do the database",
                     required: true,
                 },

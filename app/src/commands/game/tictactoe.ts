@@ -1,5 +1,7 @@
 import Discord, { MessageReaction } from "discord.js";
 
+import { warn } from "utils/logger";
+
 // Fun command
 
 /**
@@ -148,7 +150,7 @@ module.exports = {
                     createReactionCollector(msg);
                 })
                 .catch((err) => {
-                    console.log(err);
+                    warn(err);
                 });
         }
 

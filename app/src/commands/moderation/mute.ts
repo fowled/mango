@@ -20,14 +20,14 @@ module.exports = {
     options: [
         {
             name: "user",
-            type: "USER",
+            type: 6,
             description: "The user I have to mute",
             required: true,
         },
 
         {
             name: "reason",
-            type: "STRING",
+            type: 3,
             description: "The reason of the mute",
             required: false,
         },

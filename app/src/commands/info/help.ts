@@ -18,7 +18,7 @@ module.exports = {
     options: [
         {
             name: "command",
-            type: "STRING",
+            type: 3,
             description: "Get precise help on a specified command",
             required: false,
         },

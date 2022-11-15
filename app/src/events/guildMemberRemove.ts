@@ -3,11 +3,19 @@ import canvaslib from "canvas";
 
 import { supabase } from "index";
 
-import { error } from "utils/logger";
+import { warn } from "utils/logger";
 
 module.exports = {
     name: "guildMemberRemove",
     async execute(Client: Discord.Client, member: Discord.GuildMember) {
+        const fetchUserFromDB = await supabase.from("users").select("guilds").like("user_id", member.id).single();
+
+        if (fetchUserFromDB.data) {
+            const filterGuild = fetchUserFromDB.data.guilds.filter(g => g !== member.guild.id);
+
+            await supabase.from("users").update({ guilds: filterGuild }).like("user_id", member.user.id);
+        }
+
         const welcomechannel = await supabase.from("guilds").select().like("guild_id", member.guild.id).single();
 
         if (!welcomechannel) return;
@@ -55,7 +63,7 @@ module.exports = {
         try {
             await channel.send({ embeds: [embed], files: [attachment] });
         } catch (err) {
-            error("Didn't find the channel to post attachment [guildMemberRemove]");
+            warn("Didn't find the channel to post attachment [guildMemberRemove]");
         }
     },
 };

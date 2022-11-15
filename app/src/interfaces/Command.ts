@@ -8,13 +8,13 @@ export interface Command {
     name: string;
     description: string;
     category: string;
-    options?: [{ name: string; type: string; description: string; required: boolean }];
+    options?: [{ name: string; type: number; description: string; required: boolean }];
     subcommands?: [
         {
             name: string;
             description: string;
             type: number;
-            options?: [{ name: string; type: string; description: string; required: boolean }];
+            options?: [{ name: string; type: number; description: string; required: boolean }];
         },
     ];
     botPermissions?: string[];

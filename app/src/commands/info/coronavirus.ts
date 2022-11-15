@@ -17,7 +17,7 @@ module.exports = {
     options: [
         {
             name: "country",
-            type: "STRING",
+            type: 3,
             description: "The country you'd like to get information from",
             required: false,
         },

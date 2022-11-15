@@ -21,7 +21,7 @@ module.exports = {
     options: [
         {
             name: "channel",
-            type: "CHANNEL",
+            type: 7,
             description: "The channel you want to set logs to",
             required: false,
         },

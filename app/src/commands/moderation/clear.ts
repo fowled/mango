@@ -20,7 +20,7 @@ module.exports = {
     options: [
         {
             name: "number",
-            type: "STRING",
+            type: 3,
             description: "The number of messages to delete",
             required: true,
         },
