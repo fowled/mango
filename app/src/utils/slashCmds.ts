@@ -9,7 +9,7 @@ import { log } from "./logger";
 export async function create(client: Discord.Client) {
     const commandFiles = glob.sync("src/commands/**/*.ts");
 
-    commandFiles.map(async (file) => {
+    await Promise.all(commandFiles.map(async (file) => {
         const command: Command = await import(path.resolve(file));
 
         const commandObject = {
@@ -28,7 +28,7 @@ export async function create(client: Discord.Client) {
         await client.application.commands.create(commandObject);
 
         log(`${command.name} has been created`);
-    });
+    }));
 }
 
 export async function remove(client: Discord.Client) {

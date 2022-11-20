@@ -24,7 +24,7 @@ module.exports = {
             options: [
                 {
                     name: "player",
-                    type: "STRING",
+                    type: 3,
                     description: "The player's username or UUID",
                     required: true,
                 },
@@ -38,7 +38,7 @@ module.exports = {
             options: [
                 {
                     name: "player",
-                    type: "STRING",
+                    type: 3,
                     description: "The player's username or UUID",
                     required: true,
                 },
@@ -52,7 +52,7 @@ module.exports = {
             options: [
                 {
                     name: "player",
-                    type: "STRING",
+                    type: 3,
                     description: "The player's username or UUID",
                     required: true,
                 },
@@ -66,7 +66,7 @@ module.exports = {
             options: [
                 {
                     name: "player",
-                    type: "STRING",
+                    type: 3,
                     description: "The player's username or UUID",
                     required: true,
                 },
@@ -80,7 +80,7 @@ module.exports = {
             options: [
                 {
                     name: "player",
-                    type: "STRING",
+                    type: 3,
                     description: "The player's username or UUID",
                     required: true,
                 },

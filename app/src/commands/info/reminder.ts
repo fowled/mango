@@ -18,14 +18,14 @@ module.exports = {
     options: [
         {
             name: "duration",
-            type: "STRING",
+            type: 3,
             description: "The time to wait before sending you the reminder",
             required: true,
         },
 
         {
             name: "content",
-            type: "STRING",
+            type: 3,
             description: "The reminder's content",
             required: true,
         },

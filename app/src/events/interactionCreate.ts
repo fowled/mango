@@ -1,23 +1,21 @@
 import Discord from "discord.js";
 
-import { clientInteractions, supabase } from "index";
+import { clientInteractions, supabase, cachedIds } from "index";
 
 import { logCommand } from "utils/sendLog";
-import { error } from "utils/logger";
+import { warn } from "utils/logger";
 
 module.exports = {
     name: "interactionCreate",
-    execute: async function(Client: Discord.Client, interaction: Discord.BaseInteraction) {
+    execute: async function (Client: Discord.Client, interaction: Discord.BaseInteraction) {
         if (interaction.isButton()) {
             return await interaction.deferUpdate();
         }
 
-        if (!interaction.isChatInputCommand()) return;
+        if (!interaction.isChatInputCommand() || !interaction.isCommand() || !clientInteractions.has(interaction.commandName)) return;
 
         const args = interaction.options.data.filter((data) => data.type !== Discord.ApplicationCommandOptionType.Subcommand).map((opt) => opt.value.toString());
         const command = interaction.commandName;
-
-        if (!interaction.isCommand() && !clientInteractions.has(command)) return;
 
         const commandInteraction = clientInteractions.get(command);
         const interactionMember = interaction.member as Discord.GuildMember;
@@ -57,7 +55,13 @@ module.exports = {
         try {
             await commandInteraction.execute(Client, interaction, args, supabase);
         } catch (err) {
-            error(err);
+            warn(err);
+        }
+
+        if (!cachedIds.includes(interaction.user.id)) {
+            await checkAccount();
+
+            cachedIds.push(interaction.user.id);
         }
 
         const commandEmbed = new Discord.EmbedBuilder()
@@ -75,10 +79,33 @@ module.exports = {
 
         logCommand(Client, commandEmbed);
 
-        async function fetchCommonServers() {
-            return Client.guilds.cache.filter(async (guild) => {
-                return (await guild.members.fetch(interaction.user.id));
-            }).map(guild => guild.id);
+        async function checkAccount() {
+            const fetchDBAccount = await supabase.from("users").select("user_id").eq("user_id", interaction.user.id).single();
+
+            if (!fetchDBAccount.data) {
+                await supabase.from("users").insert({
+                    user_id: interaction.user.id,
+                    money: 500,
+                    guilds: await fetchMutualServers(),
+                    inventory: [],
+                });
+            } else {
+                await supabase.from("users").update({ guilds: await fetchMutualServers() }).like("user_id", interaction.user.id);
+            }
+        }
+
+        async function fetchMutualServers() {
+            const mutualServers = [];
+
+            await Promise.all(Client.guilds.cache.map(async (g) => {
+                try {
+                    await g.members.fetch({ user: interaction.user.id });
+
+                    mutualServers.push(g.id);
+                } catch (err) { };
+            }));
+
+            return mutualServers;
         }
     },
 };

@@ -20,14 +20,14 @@ module.exports = {
     options: [
         {
             name: "user",
-            type: "USER",
+            type: 6,
             description: "The user you want to kick",
             required: true,
         },
 
         {
             name: "reason",
-            type: "STRING",
+            type: 3,
             description: "The reason of the kick",
             required: false,
         },

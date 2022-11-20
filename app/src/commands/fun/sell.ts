@@ -20,14 +20,14 @@ module.exports = {
     options: [
         {
             name: "price",
-            type: "STRING",
+            type: 3,
             description: "The item's price",
             required: true,
         },
 
         {
             name: "item",
-            type: "STRING",
+            type: 3,
             description: "The item's name",
             required: true,
         },

@@ -18,7 +18,7 @@ module.exports = {
     options: [
         {
             name: "text",
-            type: "STRING",
+            type: 3,
             description: "The message you want to display on the picture",
             required: true,
         },

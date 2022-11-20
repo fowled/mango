@@ -53,22 +53,20 @@ module.exports = {
 
             switch (interaction.options.getSubcommand()) {
                 case "list":
-                    query = await supabase.from("users").select().contains("guilds[]", [interaction.guild.id]).order("birthday", { ascending: true }).neq("birthday", null);
+                    query = await supabase.from("users").select().contains("guilds[]", [interaction.guild.id]).order("birthday", { ascending: true }).not("birthday", "is", null);
 
                     birthdays = query.data;
                     break;
 
                 case "upcoming":
-                    query = await supabase.from("users").select().contains("guilds[]", [interaction.guild.id]).order("birthday", { ascending: true }).neq("birthday", null);
+                    query = await supabase.from("users").select().contains("guilds[]", [interaction.guild.id]).order("birthday", { ascending: true }).not("birthday", "is", null);
 
                     if (!query.data?.length) return;
 
                     birthdays = query.data.filter((data) => {
                         const currentDate = new Date();
                         const birthdayDate = new Date(data.birthday);
-
-                        birthdayDate.setMonth(birthdayDate.getMonth() + 1);
-
+                        
                         [currentDate, birthdayDate].forEach((date) => {
                             date.setFullYear(new Date().getFullYear());
                         });

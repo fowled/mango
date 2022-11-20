@@ -18,7 +18,7 @@ module.exports = {
 
         log(`${chalk.yellow("logged in")} as ${chalk.magentaBright(Client.user.username)}`);
 
-        // await bootupChecks();
+        await bootupChecks();
 
         function switchStatuses() {
             const statuses = [
@@ -38,43 +38,42 @@ module.exports = {
 
         async function bootupChecks() {
             const fetchCurrentGuilds = await supabase.from("guilds").select("guild_id");
+            const fetchUsers = await supabase.from("users").select();
 
             const addedGuilds = Client.guilds.cache.map(guild => guild.id).filter(x => !fetchCurrentGuilds.data.map(guild => guild.guild_id).includes(x));
             const removedGuilds = fetchCurrentGuilds.data.map(guild => guild.guild_id).filter(x => !Client.guilds.cache.map(guild => guild.id).includes(x));
 
             if (!addedGuilds.length && !removedGuilds.length) return;
 
-            for (const guild of addedGuilds) {
-                const users = await supabase.from("users").select();
+            for (const guild of addedGuilds) { // not using Parallel.all() here to avoid rate limits (needs to fetch a large amount of users)
+                const fetchGuild = Client.guilds.cache.get(guild);
 
-                for (const user of users.data) {
-                    if (!await isInGuild(user.user_id, guild)) return;
+                for (const user of fetchUsers.data) {
+                    const fetchMutualGuilds = await supabase.from("users").select("guilds").like("user_id", user.user_id).single();
 
-                    await supabase.from("users").update({ guilds: [...user.guilds, guild] }).like("user_id", user.user_id);
+                    try {
+                        await fetchGuild.members.fetch({ user: user.user_id });
+
+                        await supabase.from("users").update({ guilds: [...fetchMutualGuilds.data.guilds, guild] }).like("user_id", user.user_id);
+                    } catch { };
                 }
 
                 await supabase.from("guilds").insert({ guild_id: guild });
             }
 
-            for (const guild of removedGuilds) {
+            await Promise.all(removedGuilds.map(async (guild) => {
                 const findPeopleInGuild = await supabase.from("users").select().contains("guilds", [guild]);
 
-                for (const user of findPeopleInGuild.data) {
+                await Promise.all(findPeopleInGuild.data.map(async (user) => {
                     const removeGuild = user.guilds.filter(item => item !== guild);
 
                     await supabase.from("users").update({ guilds: removeGuild }).like("user_id", user.user_id);
-                }
+                }));
 
                 await supabase.from("guilds").delete().like("guild_id", guild);
-            }
+            }));
 
             return log(`${chalk.greenBright("joined")} ${chalk.yellow(addedGuilds.length)} ${chalk.blueBright("guild(s)")} and ${chalk.red("left")} ${chalk.yellow(removedGuilds.length)} ${chalk.blueBright("guild(s)")}`);
-        }
-
-        async function isInGuild(userId: string, guild: string) {
-            const getGuild = await Client.guilds.fetch(guild);
-
-            return await getGuild.members.fetch(userId);
         }
     },
 };

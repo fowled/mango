@@ -18,42 +18,42 @@ module.exports = {
     options: [
         {
             name: "duration",
-            type: "STRING",
+            type: 3,
             description: "The poll's duration",
             required: true,
         },
 
         {
             name: "first-option",
-            type: "STRING",
+            type: 3,
             description: "The first required option",
             required: true,
         },
 
         {
             name: "second-option",
-            type: "STRING",
+            type: 3,
             description: "The second required option",
             required: true,
         },
 
         {
             name: "third-option",
-            type: "STRING",
+            type: 3,
             description: "The third optionnal option",
             required: false,
         },
 
         {
             name: "fourth-option",
-            type: "STRING",
+            type: 3,
             description: "The fourth optionnal option",
             required: false,
         },
 
         {
             name: "fifth-option",
-            type: "STRING",
+            type: 3,
             description: "The fifth optionnal option",
             required: false,
         },

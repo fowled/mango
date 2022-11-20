@@ -20,7 +20,7 @@ module.exports = {
     options: [
         {
             name: "id",
-            type: "STRING",
+            type: 3,
             description: "The ID of the item you want to buy",
             required: true,
         },

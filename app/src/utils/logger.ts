@@ -11,3 +11,9 @@ export function error(message: string | Error): void {
 
     process.stderr.write(erroutput.join(" "));
 }
+
+export function warn(message: string | Error): void {
+    const warnoutput = [chalk.gray(new Date().toLocaleTimeString()), chalk.yellowBright("[warn]"), message instanceof Error ? `${message.name}\n\t${message.message}\n\t${message.stack}` : message, "\n"];
+
+    process.stdout.write(warnoutput.join(" "));
+}

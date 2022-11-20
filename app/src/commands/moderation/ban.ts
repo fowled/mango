@@ -1,7 +1,7 @@
 import Discord from "discord.js";
 
 import { insertLog } from "utils/logChecker";
-import { error } from "utils/logger";
+import { warn } from "utils/logger";
 
 // Moderation command
 
@@ -21,14 +21,14 @@ module.exports = {
     options: [
         {
             name: "user",
-            type: "USER",
+            type: 6,
             description: "The user you want to ban",
             required: true,
         },
 
         {
             name: "reason",
-            type: "STRING",
+            type: 3,
             description: "The reason of the ban",
             required: false,
         },
@@ -83,7 +83,7 @@ module.exports = {
                         await insertLog(Client, interaction.guild.id, interaction.user, `**${memberBan.user.tag}** has been __banned__ by ${interaction.user.tag} for: *${reason}* \nDuration of the punishment: infinite`);
                     })
                     .catch(async (err: Error) => {
-                        error(err);
+                        warn(err);
                     });
             }, 500);
         } else {

@@ -2,7 +2,7 @@ import Discord from "discord.js";
 
 import { supabase } from "index";
 
-import { error } from "./logger";
+import { warn } from "./logger";
 
 export async function insertLog(Client: Discord.Client, guildID: string, author: Discord.User, msg: string) {
     const logchannel = await supabase.from("guilds").select().like("guild_id", guildID).single();
@@ -18,6 +18,6 @@ export async function insertLog(Client: Discord.Client, guildID: string, author:
             embeds: [logMessageEmbed],
         });
     } catch (e) {
-        error(e);
+        warn(e);
     }
 }

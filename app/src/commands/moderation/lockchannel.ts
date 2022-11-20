@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import { error } from "utils/logger";
+import { warn } from "utils/logger";
 import { insertLog } from "utils/logChecker";
 
 // Mod command
@@ -21,14 +21,14 @@ module.exports = {
     options: [
         {
             name: "role",
-            type: "MENTIONABLE",
+            type: 9,
             description: "The role you want to lock the channel to",
             required: true,
         },
 
         {
             name: "channel",
-            type: "CHANNEL",
+            type: 7,
             description: "The channel that will be locked",
             required: false,
         },
@@ -50,7 +50,7 @@ module.exports = {
                 interaction.editReply(`<:yes:835565213498736650> ${messageChannel} has been locked for ${role}.`);
             })
             .catch((err) => {
-                error(err);
+                warn(err);
 
                 interaction.editReply("An error occured. <:no:835565213322575963> ```\n" + err + "```");
             });
