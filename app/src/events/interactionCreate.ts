@@ -19,6 +19,24 @@ module.exports = {
 
         const commandInteraction = clientInteractions.get(command);
         const interactionMember = interaction.member as Discord.GuildMember;
+        const cachedIds = [];
+
+        if (!(interaction.user.id in cachedIds)) {
+            const fetchDBAccount = await supabase.from("users").select("user_id").eq("user_id", interaction.user.id).single();
+
+            if (!fetchDBAccount.data) {
+                await supabase.from("users").insert({
+                    user_id: interaction.user.id,
+                    money: 500,
+                    guilds: await fetchMutualServers(),
+                    inventory: [],
+                });
+            } else {
+                await supabase.from("users").update({ guilds: await fetchMutualServers() }).like("user_id", interaction.user.id);
+            }
+
+            cachedIds.push(interaction.user.id);
+        }
 
         if (commandInteraction.memberPermissions && !interactionMember.permissions.has(commandInteraction.memberPermissions as Discord.PermissionResolvable)) {
             return interaction.reply({

@@ -2,16 +2,18 @@
 import { ShieldCheckIcon, CakeIcon, InformationCircleIcon, CubeIcon, EllipsisHorizontalCircleIcon } from "@heroicons/vue/24/outline";
 import { RouterLink } from "vue-router";
 
-import { getStats } from "shared/requests";
+import Navbar from "components/Navbar.vue";
+import Footer from "components/Footer.vue";
 
-import Navbar from "lib/Navbar.vue";
-import Footer from "lib/Footer.vue";
+import { fetchStats, filterGuilds } from "lib/fetchData";
+import { session } from "lib/sessionManager";
+import { supabase } from "lib/supabase";
 
-const gatherStats = await getStats();
+const getStats = await fetchStats();
 
 const stats = [
-	{ figure: gatherStats.users, description: "Users" },
-	{ figure: gatherStats.servers, description: "Servers" },
+	{ figure: getStats.users, description: "Users" },
+	{ figure: getStats.guilds, description: "Servers" },
 	{ figure: "4.8/5", description: "Rating" },
 ];
 
@@ -62,6 +64,12 @@ const features = [
 		name: "fowled, head developer",
 	},
 ];
+
+if (!session.value?.user.user_metadata.guilds && session.value) {
+	const guilds = await filterGuilds();
+
+	await supabase.auth.updateUser({ data: { guilds } });
+}
 </script>
 
 <template>

@@ -1,6 +1,8 @@
-import Discord from "discord.js";
 import si from "systeminformation";
+import Discord from "discord.js";
 import moment from "moment";
+
+import { getUsersCount } from "utils/usersCount";
 
 // Infobot command
 
@@ -41,7 +43,7 @@ module.exports = {
                 { name: "Uptime", value: moment.duration(Client.uptime).humanize() },
                 {
                     name: "Stats",
-                    value: `» \`${await collectUsers()}\` users \n» \`${Client.guilds.cache.size}\` guilds`,
+                    value: `» \`${await getUsersCount(Client)}\` users \n» \`${Client.guilds.cache.size}\` guilds`,
                 },
             )
             .setColor("Random")
@@ -51,17 +53,5 @@ module.exports = {
                 iconURL: Client.user.displayAvatarURL(),
             });
         interaction.editReply({ embeds: [info] });
-
-        async function collectUsers() {
-            let usersCount = 0;
-
-            await Client.guilds.cache.map((guild) => {
-                if (guild.memberCount === undefined) return;
-
-                return (usersCount += guild.memberCount);
-            });
-
-            return usersCount;
-        }
     },
 };

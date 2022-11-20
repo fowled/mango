@@ -5,4 +5,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
 	plugins: [vue(), tsconfigPaths({ loose: true, root: "./" })],
 	server: { port: 3002 },
+	build: {
+		target: "esnext"
+	}
 });

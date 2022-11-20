@@ -4,11 +4,11 @@ import { TransitionRoot } from "@headlessui/vue";
 import { useRoute } from "vue-router";
 import { reactive, ref } from "vue";
 
-import { getGuildInfo } from "shared/requests";
+import { fetchGuild } from "lib/fetchData";
 
 const route = useRoute();
 
-const guild = await getGuildInfo(route.params.guildId as string);
+const guild = await fetchGuild(route.params.guildId as string);
 
 const stats = [
 	{ name: "Members", stat: guild.memberCount },
@@ -18,7 +18,7 @@ const stats = [
 
 const showBanner = ref(false);
 
-const forms = reactive([
+/* const forms = reactive([
 	{ name: "birthdays", content: guild.birthdays, maxLength: 200 },
 	{ name: "welcome", content: guild.welcome, maxLength: 250 },
 ]);
@@ -45,7 +45,7 @@ const resetChanges = () => {
 
 const saveChanges = () => {
 	return (showBanner.value = false);
-};
+}; */
 </script>
 
 <template>
@@ -63,7 +63,7 @@ const saveChanges = () => {
 			</div>
 		</dl>
 
-		<div class="flex flex-row space-x-4 sm:max-w-3xl mx-auto my-6 justify-center">
+		<!-- <div class="flex flex-row space-x-4 sm:max-w-3xl mx-auto my-6 justify-center">
 			<div v-for="form in forms" class="space-y-2">
 				<span class="block text-sm"> {{ form.name }} • {{ form.content!.length }}/{{ form.maxLength }} </span>
 
@@ -94,6 +94,6 @@ const saveChanges = () => {
 
 				<span class="flex cursor-pointer ml-2 order-4 items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50" @click="saveChanges" role="button"> Save changes </span>
 			</div>
-		</transition-root>
+		</transition-root> -->
 	</section>
 </template>

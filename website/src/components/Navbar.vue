@@ -2,28 +2,37 @@
 import { ArrowRightOnRectangleIcon } from "@heroicons/vue/24/outline";
 import { onMounted } from "vue";
 
-import { getUser, logout } from "shared/requests";
+import { session } from "lib/sessionManager";
+import { supabase } from "lib/supabase";
+
 import { manageTheme } from "scripts/theme";
 
-const redirectURI = import.meta.env.VITE_REDIRECT_URI;
+import { router } from "main";
 
-const user = await getUser();
+const user = session.value?.user;
 
 const navigation = [
-	{ name: "Features", link: "/" },
-	{ name: "Support server", link: "https://discord.gg/9aT626ABdq" },
-	{ name: "Organization", link: "https://github.com/addmango" },
-	{ name: "Upvote", link: "https://top.gg/bot/497443144632238090" },
+    { name: "Features", link: "/" },
+    { name: "Support server", link: "https://discord.gg/9aT626ABdq" },
+    { name: "Organization", link: "https://github.com/addmango" },
+    { name: "Upvote", link: "https://top.gg/bot/497443144632238090" },
 ];
 
-const logOutAndRedirect = async () => {
-	await logout();
+async function login() {
+    await supabase.auth.signInWithOAuth({
+        provider: "discord",
+        options: { scopes: "identify guilds" },
+    });
+}
 
-	window.location.href = "/";
-};
+async function logout() {
+    await supabase.auth.signOut();
 
-onMounted(() => {
-	manageTheme();
+    return router.go(0);
+}
+
+onMounted(async () => {
+    manageTheme();
 });
 </script>
 
@@ -59,19 +68,19 @@ onMounted(() => {
 					</svg>
 				</button>
 
-				<div v-if="!user.message" class="flex flex-row space-x-3">
-					<img alt="user's avatar" :src="user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256` : '/assets/discord_default.png'" class="h-10 rounded-full" />
+				<div v-if="user?.aud === 'authenticated'" class="flex flex-row space-x-3">
+					<img alt="user's avatar" :src="user.user_metadata.avatar_url + '?size=256'" class="h-10 rounded-full" />
 
-					<h1 class="flex items-center dark:text-gray-300">{{ user.username }}#{{ user.discriminator }}</h1>
+					<h1 class="flex items-center dark:text-gray-300">{{ user.user_metadata.name }}</h1>
 
-					<span @click="logOutAndRedirect" class="my-auto">
+					<span @click="logout" class="my-auto">
 						<ArrowRightOnRectangleIcon class="self-center h-6 w-6 cursor-pointer dark:text-white" />
 					</span>
 				</div>
 
 				<div v-else class="self-center">
-					<button>
-						<a :href="redirectURI" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Login </a>
+					<button @click="login">
+						<p class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Login </p>
 					</button>
 				</div>
 			</div>

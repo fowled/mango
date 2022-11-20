@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Spinner from "lib/Spinner.vue";
+import Spinner from "components/Spinner.vue";
 
 import "./style/index.css";
 </script>
