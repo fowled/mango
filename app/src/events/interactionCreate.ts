@@ -28,11 +28,11 @@ module.exports = {
                 await supabase.from("users").insert({
                     user_id: interaction.user.id,
                     money: 500,
-                    guilds: await fetchCommonServers(),
+                    guilds: await fetchMutualServers(),
                     inventory: [],
                 });
             } else {
-                await supabase.from("users").update({ guilds: await fetchCommonServers() }).like("user_id", interaction.user.id);
+                await supabase.from("users").update({ guilds: await fetchMutualServers() }).like("user_id", interaction.user.id);
             }
 
             cachedIds.push(interaction.user.id);
