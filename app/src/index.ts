@@ -1,12 +1,15 @@
-﻿import { createClient } from "@supabase/supabase-js";
-import Discord, { TextChannel } from "discord.js";
-import hypixel from "hypixel-api-reborn";
-import cron from "node-schedule";
-import glob from "fast-glob";
-import dotenv from "dotenv";
-import chalk from "chalk";
-import path from "path";
+﻿import { Client, TextChannel, Collection, EmbedBuilder } from "discord.js";
+import { Client as Hypixel } from "hypixel-api-reborn";
+import { createClient } from "@supabase/supabase-js";
+import { scheduleJob } from "node-schedule";
+import { yellow, redBright } from "chalk";
+import { sync } from "fast-glob";
+import { config } from "dotenv";
+import { resolve } from "path";
+import express from "express";
+import cors from "cors";
 
+import { getUsersCount } from "utils/usersCount";
 import { timestampYear } from "utils/timestamp";
 import { logError } from "utils/sendLog";
 import { log } from "utils/logger";
@@ -16,31 +19,34 @@ import { Event } from "interfaces/Event";
 
 import { Database } from "interfaces/DB";
 
-dotenv.config();
+config();
 
-export const client = new Discord.Client({
+export const client = new Client({
     intents: ["Guilds", "GuildMembers", "GuildMessages", "GuildMessageReactions"],
 });
 
 export const supabase = createClient<Database>(process.env.SUPABASE_URL, process.env.SUPABASE_API_KEY);
 
-export const hypixelClient = new hypixel.Client(process.env.API_KEY);
+export const hypixelClient = new Hypixel(process.env.API_KEY);
 
-export const clientInteractions = new Discord.Collection<string, Command>();
+export const clientInteractions = new Collection<string, Command>();
 
 (async () => {
-    await binder();
-    await client.login(process.env.TOKEN);
-    await handleRejections();
-    await runCronJobs();
+    await Promise.all([
+        await binder(),
+        await client.login(process.env.TOKEN),
+        await httpServer(),
+        await handleRejections(),
+        await runCronJobs()
+    ])
 })();
 
 async function binder() {
-    const eventFiles = glob.sync("src/events/*.ts");
-    const commandFiles = glob.sync("src/commands/**/*.ts");
+    const eventFiles = sync("src/events/*.ts");
+    const commandFiles = sync("src/commands/**/*.ts");
 
     eventFiles.map(async (file) => {
-        const event: Event = await import(path.resolve(file));
+        const event: Event = await import(resolve(file));
 
         if (event.once) {
             client.once(event.name, async (...args) => await event.execute(client, ...args));
@@ -50,17 +56,17 @@ async function binder() {
     });
 
     commandFiles.map(async (file) => {
-        const command: Command = await import(path.resolve(file));
+        const command: Command = await import(resolve(file));
 
         clientInteractions.set(command.name, command);
     });
 
-    log(`${chalk.yellow("loaded")} all ${chalk.redBright("commands")} & ${chalk.redBright("events")}`);
+    log(`${yellow("loaded")} all ${redBright("commands")} & ${redBright("events")}`);
 }
 
 async function handleRejections() {
     process.on("unhandledRejection", (error: Error) => {
-        const errorEmbed = new Discord.EmbedBuilder()
+        const errorEmbed = new EmbedBuilder()
             .setDescription("<:no:835565213322575963> An error has been detected... \n" + `\`\`\`${error.stack}\`\`\``)
             .setTimestamp()
             .setFooter({
@@ -74,7 +80,7 @@ async function handleRejections() {
 }
 
 async function runCronJobs() {
-    cron.scheduleJob("51 13 * * *", async function() {
+    scheduleJob("0 0 * * *", async function () {
         const findBirthdaysToday = await supabase.rpc("get_today_birthdays");
 
         if (findBirthdaysToday.data.length === 0) return;
@@ -96,5 +102,23 @@ async function runCronJobs() {
                 await fetchChannel.send(`:partying_face: Happy birthday ${fetchUser}! According to my database, you were born ${timestampYear(getBirthday)}.`);
             }
         }
+    });
+}
+
+async function httpServer() {
+    const app = express();
+
+    app.use(cors({ origin: process.env.CLIENT_URL }));
+
+    app.get("/stats", async (_req, res) => {
+        return res.send({ guilds: client.guilds.cache.size, users: await getUsersCount(client) });
+    });
+
+    app.get("/guild/:guildId", async (req, res) => {
+        return res.send(await client.guilds.fetch(req.params.guildId));
+    });
+
+    app.listen(process.env.PORT, () => {
+        log(`${yellow("listening")} to ${redBright("requests")}`);
     });
 }

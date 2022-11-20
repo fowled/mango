@@ -18,7 +18,7 @@ module.exports = {
 
         log(`${chalk.yellow("logged in")} as ${chalk.magentaBright(Client.user.username)}`);
 
-        await bootupChecks();
+        // await bootupChecks();
 
         function switchStatuses() {
             const statuses = [
