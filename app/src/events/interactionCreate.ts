@@ -14,29 +14,13 @@ module.exports = {
 
         if (!interaction.isChatInputCommand() || !interaction.isCommand() || !clientInteractions.has(interaction.commandName)) return;
 
+        await interaction.deferReply();
+
         const args = interaction.options.data.filter((data) => data.type !== Discord.ApplicationCommandOptionType.Subcommand).map((opt) => opt.value.toString());
         const command = interaction.commandName;
 
         const commandInteraction = clientInteractions.get(command);
         const interactionMember = interaction.member as Discord.GuildMember;
-        const cachedIds = [];
-
-        if (!(interaction.user.id in cachedIds)) {
-            const fetchDBAccount = await supabase.from("users").select("user_id").eq("user_id", interaction.user.id).single();
-
-            if (!fetchDBAccount.data) {
-                await supabase.from("users").insert({
-                    user_id: interaction.user.id,
-                    money: 500,
-                    guilds: await fetchMutualServers(),
-                    inventory: [],
-                });
-            } else {
-                await supabase.from("users").update({ guilds: await fetchMutualServers() }).like("user_id", interaction.user.id);
-            }
-
-            cachedIds.push(interaction.user.id);
-        }
 
         if (commandInteraction.memberPermissions && !interactionMember.permissions.has(commandInteraction.memberPermissions as Discord.PermissionResolvable)) {
             return interaction.reply({
@@ -49,8 +33,6 @@ module.exports = {
                 ephemeral: true,
             });
         }
-
-        await interaction.deferReply();
 
         try {
             await commandInteraction.execute(Client, interaction, args, supabase);
