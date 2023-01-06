@@ -18,7 +18,7 @@ module.exports = {
 
         const welcomechannel = await supabase.from("guilds").select().like("guild_id", member.guild.id).single();
 
-        if (!welcomechannel.data.guild_id) return;
+        if (!welcomechannel.data.welcome) return;
 
         const channel = (await Client.channels.fetch(welcomechannel.data.welcome)) as Discord.TextChannel;
         const fetchNumberOfMembers = member.guild.memberCount;
