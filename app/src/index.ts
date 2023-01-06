@@ -11,7 +11,7 @@ import cors from "cors";
 
 import { getUsersCount } from "utils/usersCount";
 import { timestampYear } from "utils/timestamp";
-import { log, error } from "utils/logger";
+import { log, warn } from "utils/logger";
 
 import { Command } from "interfaces/Command";
 import { Event } from "interfaces/Event";
@@ -67,7 +67,7 @@ function binder() {
 
 function handleRejections() {
     process.on("unhandledRejection", (err: Error) => {
-        error(err.stack);
+        warn(err.stack);
     });
 }
 

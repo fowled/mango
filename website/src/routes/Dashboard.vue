@@ -23,11 +23,11 @@ if (!guilds) {
 }
 
 onMounted(async () => {
-	await refreshGuildsList();
+	await refreshGuildsList(true);
 });
 
-async function refreshGuildsList() {
-	loading.value = true;
+async function refreshGuildsList(silent: boolean) {
+	!silent && (loading.value = true);
 
 	const mutualGuildsFromAPI = await filterGuilds();
 
@@ -37,7 +37,7 @@ async function refreshGuildsList() {
 		await supabase.auth.updateUser({ data: { guilds: mutualGuildsFromAPI } });
 	}
 
-	loading.value = false;
+	!silent && (loading.value = false);
 }
 
 console.log(guilds);
@@ -73,7 +73,7 @@ console.log(guilds);
 			</a>
 		</div>
 
-		<button v-if="guilds.length > 0" @click="refreshGuildsList" :class="loading && 'cursor-not-allowed !bg-blue-700 hover:!bg-blue-800 focus:!ring-blue-300'" class="text-white bg-green-600 hover:bg-green-700 focus:ring-green-300 focus:ring-4 font-medium rounded-lg text-sm px-5 py-3 text-center md:mr-0"> 
+		<button v-if="guilds.length > 0" @click="refreshGuildsList(false)" :class="loading && 'cursor-not-allowed !bg-blue-700 hover:!bg-blue-800 focus:!ring-blue-300'" class="text-white bg-green-600 hover:bg-green-700 focus:ring-green-300 focus:ring-4 font-medium rounded-lg text-sm px-5 py-3 text-center md:mr-0"> 
 			{{ loading ? "⌛ Fetching..." : "🔄 Refresh" }}
 		</button>
 	</section>
