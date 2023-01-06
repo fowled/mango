@@ -21,7 +21,6 @@
         "url": "git+https://github.com/mazzlabs/mango.git"
     },
     "dependencies": {
-        "@discordjs/rest": "^1.0.0",
         "@sapphire/snowflake": "^3.2.2",
         "@supabase/supabase-js": "^2.0.5",
         "@types/inquirer": "^8.2.1",
