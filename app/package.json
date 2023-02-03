@@ -63,7 +63,7 @@
         "@swc/core": "1.2.220",
         "@types/cookie-parser": "1.4.3",
         "@types/cors": "2.8.12",
-        "@types/express": "4.17.13",
+        "@types/express": "4.17.17",
         "@types/express-session": "1.17.5",
         "@types/node": "16.11.47",
         "@types/node-cron": "3.0.2",
