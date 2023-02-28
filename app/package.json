@@ -50,7 +50,7 @@
         "node-schedule": "^2.1.0",
         "nodemon": "^2.0.16",
         "prettier": "^2.6.2",
-        "prisma": "4.4.0",
+        "prisma": "4.11.0",
         "scratchlib": "^0.4.0",
         "sequelize": "^6.19.0",
         "sqlite3": "^5.0.8",
