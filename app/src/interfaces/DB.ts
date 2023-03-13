@@ -97,7 +97,7 @@ export interface Database {
     Functions: {
       get_today_birthdays: {
         Args: Record<PropertyKey, never>
-        Returns: Database["public"]["Tables"]["users"]["Row"]
+        Returns: Database["public"]["Tables"]["users"]["Row"][]
       }
     }
     Enums: {

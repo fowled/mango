@@ -1,4 +1,4 @@
-import { Client, TextChannel, Collection, EmbedBuilder } from "discord.js";
+import { Client, TextChannel, Collection } from "discord.js";
 import { Client as Hypixel } from "hypixel-api-reborn";
 import { createClient } from "@supabase/supabase-js";
 import { scheduleJob } from "node-schedule";
@@ -33,34 +33,32 @@ export const clientInteractions = new Collection<string, Command>();
 export const cachedIds = [];
 
 (async () => {
-    await Promise.all([
-        binder(),
-        await client.login(process.env.TOKEN),
-        httpServer(),
-        handleRejections(),
-        runCronJobs()
-    ])
+    await Promise.all([binder(), await client.login(process.env.TOKEN), httpServer(), handleRejections(), runCronJobs()]);
 })();
 
 function binder() {
     const eventFiles = sync("src/events/*.ts");
     const commandFiles = sync("src/commands/**/*.ts");
 
-    Promise.all(eventFiles.map(async (file) => {
-        const event: Event = await import(resolve(file));
+    Promise.all(
+        eventFiles.map(async (file) => {
+            const event: Event = await import(resolve(file));
 
-        if (event.once) {
-            client.once(event.name, async (...args) => await event.execute(client, ...args));
-        } else {
-            client.on(event.name, async (...args) => await event.execute(client, ...args));
-        }
-    }));
+            if (event.once) {
+                client.once(event.name, async (...args) => await event.execute(client, ...args));
+            } else {
+                client.on(event.name, async (...args) => await event.execute(client, ...args));
+            }
+        }),
+    );
 
-    Promise.all(commandFiles.map(async (file) => {
-        const command: Command = await import(resolve(file));
+    Promise.all(
+        commandFiles.map(async (file) => {
+            const command: Command = await import(resolve(file));
 
-        clientInteractions.set(command.name, command);
-    }));
+            clientInteractions.set(command.name, command);
+        }),
+    );
 
     log(`${yellow("loaded")} all ${redBright("commands")} & ${redBright("events")}`);
 }
@@ -77,23 +75,33 @@ function runCronJobs() {
 
         if (findBirthdaysToday.data.length === 0) return;
 
-        Promise.all(findBirthdaysToday.data.map(async (data) => {
-            if (!data.guilds) return;
+        Promise.all(
+            findBirthdaysToday.data.map(async (data) => {
+                if (!data.guilds) return;
 
-            Promise.all(data.guilds.map(async (guildId) => {
-                const fetchGuildFromDB = await supabase.from("guilds").select().like("guild_id", guildId).single();
+                Promise.all(
+                    data.guilds.map(async (guildId) => {
+                        const fetchGuildFromDB = await supabase.from("guilds").select().like("guild_id", guildId).single();
 
-                if (!fetchGuildFromDB.data?.birthdays) return;
+                        if (!fetchGuildFromDB.data?.birthdays) return;
 
-                const fetchGuild = await client.guilds.fetch(guildId.toString());
-                const fetchChannel = await fetchGuild.channels.fetch(fetchGuildFromDB.data.birthdays.toString()) as TextChannel;
-                const fetchUser = await client.users.fetch(data.user_id);
+                        const fetchGuild = await client.guilds.fetch(guildId.toString());
+                        const fetchChannel = (await fetchGuild.channels.fetch(
+                            fetchGuildFromDB.data.birthdays.toString(),
+                        )) as TextChannel;
+                        const fetchUser = await client.users.fetch(data.user_id);
 
-                const getBirthday = new Date(data.birthday).getTime();
+                        const getBirthday = new Date(data.birthday).getTime();
 
-                await fetchChannel.send(`:partying_face: Happy birthday ${fetchUser}! According to my database, you were born ${timestampYear(getBirthday)}.`);
-            }));
-        }));
+                        await fetchChannel.send(
+                            `:partying_face: Happy birthday ${fetchUser}! According to my database, you were born ${timestampYear(
+                                getBirthday,
+                            )}.`,
+                        );
+                    }),
+                );
+            }),
+        );
     });
 }
 
