@@ -11,8 +11,6 @@ import { router } from "main";
 
 const user = session.value?.user;
 
-console.log(user);
-
 const navigation = [
     { name: "Features", link: "/" },
     { name: "Support server", link: "https://discord.gg/9aT626ABdq" },
@@ -34,6 +32,8 @@ async function logout() {
 }
 
 onMounted(async () => {
+    console.log(user);
+
     manageTheme();
 });
 </script>
