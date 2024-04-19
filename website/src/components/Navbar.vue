@@ -12,9 +12,9 @@ import { router } from "main";
 const user = session.value?.user;
 
 const navigation = [
-    { name: "Features", link: "/" },
+    { name: "Features", link: "/#features" },
     { name: "Support server", link: "https://discord.gg/9aT626ABdq" },
-    { name: "Organization", link: "https://github.com/addmango" },
+    { name: "Repository", link: "https://github.com/fowled/mango" },
     { name: "Upvote", link: "https://top.gg/bot/497443144632238090" },
 ];
 
