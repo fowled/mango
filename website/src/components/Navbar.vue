@@ -32,8 +32,6 @@ async function logout() {
 }
 
 onMounted(async () => {
-    console.log(user);
-
     manageTheme();
 });
 </script>

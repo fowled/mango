@@ -7,7 +7,7 @@
         "dev": "npx nodemon src/index.ts",
         "start": "npx ts-node src/index.ts",
         "pm2": "pm2 start mango.sh",
-        "test": "npx tsc"
+        "test": "pnpm exec tsc"
     },
     "author": "fowled",
     "license": "MIT",
