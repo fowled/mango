@@ -71,7 +71,7 @@ onMounted(async () => {
 				<div v-if="user?.aud === 'authenticated'" class="flex flex-row space-x-3">
 					<img alt="user's avatar" :src="user.user_metadata.avatar_url + '?size=256'" class="h-10 rounded-full" />
 
-					<h1 class="flex items-center dark:text-gray-300">{{ user.user_metadata.name }}</h1>
+					<h1 class="flex items-center dark:text-gray-300">{{ user.user_metadata.full_name }}</h1>
 
 					<span @click="logout" class="my-auto">
 						<ArrowRightOnRectangleIcon class="self-center h-6 w-6 cursor-pointer dark:text-white" />
