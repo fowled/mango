@@ -53,7 +53,7 @@ console.log(guilds);
 
 		<ul
 			v-if="guilds.length > 0"
-			class="flex flex-wrap flex-col sm:flex-row justify-center mx-auto sm:gap-x-12 my-14 sm:space-x-4 space-x-0 sm:space-y-0"
+			class="flex flex-wrap flex-col sm:flex-row justify-center mx-auto sm:gap-x-12 space-y-3 my-14 sm:space-x-4 space-x-0 sm:space-y-0"
 		>
 			<router-link
 				v-for="guild in guilds"
@@ -71,7 +71,9 @@ console.log(guilds);
 				/>
 
 				<div class="text-lg leading-6 font-medium space-y-1">
-					<h3 class="max-w-[12rem] text-ellipsis whitespace-nowrap overflow-hidden">{{ guild.name }}</h3>
+					<h3 class="max-w-[12rem] text-ellipsis mx-auto whitespace-nowrap overflow-hidden">
+						{{ guild.name }}
+					</h3>
 
 					<p class="text-indigo-600">Configure server</p>
 				</div>
