@@ -42,7 +42,7 @@ function binder() {
 
     Promise.all(
         eventFiles.map(async (file) => {
-            const event: Event = await import(resolve(file));
+            const event: Event = (await import(resolve(file))).default;
 
             if (event.once) {
                 client.once(event.name, async (...args) => await event.execute(client, ...args));
@@ -54,7 +54,7 @@ function binder() {
 
     Promise.all(
         commandFiles.map(async (file) => {
-            const command: Command = await import(resolve(file));
+            const command: Command = (await import(resolve(file))).default;
 
             clientInteractions.set(command.name, command);
         }),
