@@ -53,7 +53,7 @@ console.log(guilds);
 
 		<div
 			v-if="guilds.length > 0"
-			class="flex flex-wrap flex-col sm:flex-row justify-center mx-auto sm:gap-x-12 space-y-3 my-14 gap-y-12 sm:gap-y-0 gap-x-0"
+			class="flex flex-wrap flex-col sm:flex-row justify-center mx-auto sm:gap-x-12 gap-y-5 my-14 sm:gap-y-0 gap-x-0"
 		>
 			<router-link
 				v-for="guild in guilds"
