@@ -1,37 +1,41 @@
 name: Server
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    push:
+        branches: [master]
+    pull_request:
+        branches: [master]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        working-directory: app
+    build:
+        runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x.x]
+        defaults:
+            run:
+                working-directory: app
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Setup PNPM
-      run: npm install -g pnpm
-    - name: Setup NodeJS with PNPM caching
-      uses: actions/setup-node@v3
-      with:
-        node-version: "20.10.0"
-        cache: pnpm
-    - run: pnpm install
-    - run: npm run test
-      env:
-        CI: true
+        strategy:
+            matrix:
+                node-version: [20.x.x]
+
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: Setup PNPM
+              run: npm install -g pnpm
+            - name: Install Dependencies
+              run: |
+                  sudo apt update
+                  sudo apt install -y libcairo2-dev libjpeg-dev libpango1.0-dev libgif-dev librsvg2-dev
+            - name: Setup NodeJS with PNPM caching
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "20.10.0"
+                  cache: pnpm
+            - run: pnpm install
+            - run: npm run test
+              env:
+                  CI: true
