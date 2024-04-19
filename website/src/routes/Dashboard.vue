@@ -71,7 +71,7 @@ console.log(guilds);
 				/>
 
 				<div class="text-lg leading-6 font-medium space-y-1">
-					<h3 class="max-w-48 text-ellipsis whitespace-nowrap overflow-hidden">{{ guild.name }}</h3>
+					<h3 class="max-w-[12rem] text-ellipsis whitespace-nowrap overflow-hidden">{{ guild.name }}</h3>
 
 					<p class="text-indigo-600">Configure server</p>
 				</div>
