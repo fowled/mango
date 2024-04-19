@@ -51,14 +51,14 @@ console.log(guilds);
 			{{ guilds.length > 0 ? "Select a server to get started!" : "Add Mango to a server you manage!" }}
 		</p>
 
-		<ul
+		<div
 			v-if="guilds.length > 0"
 			class="flex flex-wrap flex-col sm:flex-row justify-center mx-auto sm:gap-x-12 space-y-3 my-14 sm:space-x-4 space-x-0 sm:space-y-0"
 		>
 			<router-link
 				v-for="guild in guilds"
 				:to="`manage/${guild.id}`"
-				class="transition transform sm:hover:-translate-y-1 space-y-4"
+				class="transition transform sm:hover:-translate-y-1"
 			>
 				<img
 					alt="guild's icon"
@@ -78,7 +78,7 @@ console.log(guilds);
 					<p class="text-indigo-600">Configure server</p>
 				</div>
 			</router-link>
-		</ul>
+		</div>
 
 		<div class="my-14 max-w-fit mx-auto" v-else>
 			<a href="https://go.fowled.club/mango" class="space-y-4 transition transform sm:hover:-translate-y-1">
