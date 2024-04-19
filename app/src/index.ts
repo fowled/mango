@@ -110,6 +110,10 @@ function httpServer() {
 
     app.use(cors({ origin: process.env.CLIENT_URL }));
 
+    app.get("/", async (_req, res) => {
+        return res.send("Hello world");
+    });
+
     app.get("/stats", async (_req, res) => {
         return res.send({ guilds: client.guilds.cache.size, users: await getUsersCount(client) });
     });

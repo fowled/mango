@@ -11,6 +11,8 @@ import { router } from "main";
 
 const user = session.value?.user;
 
+console.log(user)
+
 const navigation = [
     { name: "Features", link: "/" },
     { name: "Support server", link: "https://discord.gg/9aT626ABdq" },
@@ -49,7 +51,7 @@ onMounted(async () => {
 					<ul class="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-semibold">
 						<li v-for="element in navigation">
 							<a
-								href="{navelement.link}"
+								:href="navelement.link"
 								class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
 							>
 								{{ element.name }}
