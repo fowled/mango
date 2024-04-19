@@ -11,7 +11,7 @@ import { router } from "main";
 
 const user = session.value?.user;
 
-console.log(user)
+console.log(user);
 
 const navigation = [
     { name: "Features", link: "/" },
